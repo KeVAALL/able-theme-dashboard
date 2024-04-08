@@ -51,17 +51,17 @@ const AuthLogin = ({ forgot }) => {
     <>
       <Formik
         initialValues={{
-          email: 'info@phoenixcoded.co',
+          email_id: 'info@phoenixcoded.co',
           password: '123456',
           submit: null
         }}
         validationSchema={Yup.object().shape({
-          email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
+          email_id: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
           password: Yup.string().max(255).required('Password is required')
         })}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
           try {
-            await login(values.email, values.password);
+            await login(values.email_id, values.password);
             if (scriptedRef.current) {
               setStatus({ success: true });
               setSubmitting(false);
@@ -85,17 +85,17 @@ const AuthLogin = ({ forgot }) => {
                   <OutlinedInput
                     id="email-login"
                     type="email"
-                    value={values.email}
-                    name="email"
+                    value={values.email_id}
+                    name="email_id"
                     onBlur={handleBlur}
                     onChange={handleChange}
                     placeholder="Enter email address"
                     fullWidth
-                    error={Boolean(touched.email && errors.email)}
+                    error={Boolean(touched.email_id && errors.email_id)}
                   />
-                  {touched.email && errors.email && (
+                  {touched.email_id && errors.email_id && (
                     <FormHelperText error id="standard-weight-helper-text-email-login">
-                      {errors.email}
+                      {errors.email_id}
                     </FormHelperText>
                   )}
                 </Stack>
