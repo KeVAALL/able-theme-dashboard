@@ -1,7 +1,8 @@
 import { useMemo, useState } from 'react';
 // material-ui
 
-import { Box, Button, Grid, InputLabel, Stack, TextField } from '@mui/material';
+import { Divider, Box, Card, Button, Grid, InputLabel, Stack, TextField, CardHeader, CardContent } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 
 // project-imports
 import MainCard from 'components/MainCard';
@@ -14,9 +15,34 @@ import MultiTable from 'pages/tables/react-table/multi-table';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 
+const headerSX = {
+  p: 2.5,
+  '& .MuiCardHeader-action': { m: '0px auto', alignSelf: 'center' }
+};
+
+const SubmitButton = () => {
+  return (
+    <Stack direction="row" alignItems="center" justifyContent="space-between">
+      <CardHeader sx={headerSX} titleTypographyProps={{ variant: 'subtitle1' }} title="Form" />
+      <Box sx={{ px: 2.5 }}>
+        <AnimateButton>
+          <Button
+            variant="contained"
+            type="submit"
+            //   onClick={changeTableVisibility}
+          >
+            Submit
+          </Button>
+        </AnimateButton>
+      </Box>
+    </Stack>
+  );
+};
+
 function BasicForm() {
   const [showTable, setShowTable] = useState(false);
   const [data, setData] = useState([]);
+  const theme = useTheme();
 
   const columns = useMemo(
     () => [
@@ -59,28 +85,51 @@ function BasicForm() {
           initialValues={formValues}
           validationSchema={validationSchema}
           onSubmit={(values, { setSubmitting, resetForm }) => {
-            changeTableVisibility();
             setData((prevData) => {
               return [...prevData, values];
             });
+            changeTableVisibility();
             console.log(values);
           }}
         >
           {({ values, errors, touched, handleChange, handleBlur, handleSubmit, resetForm, isSubmitting }) => (
-            <MainCard title="Table" changeTableVisibility={changeTableVisibility} border={false}>
-              <MainCard border={false} sx={{ height: '100%' }}>
-                <Box
-                  component="form"
-                  onSubmit={(event) => {
-                    event.preventDefault();
-                    handleSubmit();
-                  }}
-                  sx={{ mt: 1, width: '100%' }}
-                >
+            // <MainCard
+            //   title="Form"
+            //   showButton
+            //   changeTableVisibility={changeTableVisibility}
+            //   component="form"
+            //   onSubmit={(event) => {
+            //     event.preventDefault();
+            //     handleSubmit();
+            //   }}
+            //   border={false}
+            //   sx={{ height: '100%' }}
+            // >
+            <Box
+              component="form"
+              onSubmit={(event) => {
+                event.preventDefault();
+                handleSubmit();
+              }}
+              sx={{ mt: 1, width: '100%' }}
+            >
+              <Card
+                sx={{
+                  position: 'relative',
+                  border: '1px solid',
+                  borderRadius: 1.5,
+                  borderColor: theme.palette.divider
+                }}
+              >
+                <SubmitButton />
+
+                <Divider />
+
+                <CardContent>
                   <Grid container spacing={3}>
                     <Grid item xs={6}>
                       <Stack spacing={1}>
-                        <InputLabel htmlFor="userName">Email Address</InputLabel>
+                        <InputLabel htmlFor="userName">Username</InputLabel>
                         <TextField
                           fullWidth
                           // id="userName"
@@ -128,19 +177,20 @@ function BasicForm() {
                         />
                       </Stack>
                     </Grid>
-                    <Grid item xs={12}>
-                      <Stack direction="row" justifyContent="flex-end">
-                        {/* <AnimateButton> */}
-                        <Button variant="contained" type="submit">
-                          Submit
-                        </Button>
-                        {/* </AnimateButton> */}
-                      </Stack>
-                    </Grid>
+                    {/* <Grid item xs={12}>
+                  <Stack direction="row" justifyContent="flex-end">
+                    <AnimateButton>
+                    <Button variant="contained" type="submit">
+                      Submit
+                    </Button>
+                    </AnimateButton>
+                  </Stack>
+                </Grid> */}
                   </Grid>
-                </Box>
-              </MainCard>
-            </MainCard>
+                </CardContent>
+              </Card>
+            </Box>
+            // </MainCard>
           )}
         </Formik>
       )}
