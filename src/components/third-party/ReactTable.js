@@ -500,7 +500,7 @@ CSVExport.propTypes = {
 // ==============================|| EMPTY TABLE - NO DATA  ||============================== //
 
 const StyledGridOverlay = styled(Stack)(({ theme }) => ({
-  height: '400px',
+  height: '150px',
   '& .ant-empty-img-1': {
     fill: theme.palette.mode === ThemeMode.DARK ? theme.palette.secondary[200] : theme.palette.secondary[400]
   },

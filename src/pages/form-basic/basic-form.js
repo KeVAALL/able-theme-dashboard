@@ -93,18 +93,6 @@ function BasicForm() {
           }}
         >
           {({ values, errors, touched, handleChange, handleBlur, handleSubmit, resetForm, isSubmitting }) => (
-            // <MainCard
-            //   title="Form"
-            //   showButton
-            //   changeTableVisibility={changeTableVisibility}
-            //   component="form"
-            //   onSubmit={(event) => {
-            //     event.preventDefault();
-            //     handleSubmit();
-            //   }}
-            //   border={false}
-            //   sx={{ height: '100%' }}
-            // >
             <Box
               component="form"
               onSubmit={(event) => {
@@ -177,20 +165,10 @@ function BasicForm() {
                         />
                       </Stack>
                     </Grid>
-                    {/* <Grid item xs={12}>
-                  <Stack direction="row" justifyContent="flex-end">
-                    <AnimateButton>
-                    <Button variant="contained" type="submit">
-                      Submit
-                    </Button>
-                    </AnimateButton>
-                  </Stack>
-                </Grid> */}
                   </Grid>
                 </CardContent>
               </Card>
             </Box>
-            // </MainCard>
           )}
         </Formik>
       )}
@@ -229,3 +207,16 @@ export default BasicForm;
 {
   /* <Divider /> */
 }
+
+// <MainCard
+//   title="Form"
+//   showButton
+//   changeTableVisibility={changeTableVisibility}
+//   component="form"
+//   onSubmit={(event) => {
+//     event.preventDefault();
+//     handleSubmit();
+//   }}
+//   border={false}
+//   sx={{ height: '100%' }}
+// >

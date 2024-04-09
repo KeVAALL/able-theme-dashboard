@@ -75,18 +75,22 @@ function ReactTable({ columns, data }) {
           ))}
         </TableHead>
         <TableBody {...getTableBodyProps()}>
-          {page.map((row) => {
-            prepareRow(row);
-            return (
-              <TableRow key={row} {...row.getRowProps()}>
-                {row.cells.map((cell) => (
-                  <TableCell key={cell} {...cell.getCellProps([{ className: cell.column.className }])}>
-                    {cell.render('Cell')}
-                  </TableCell>
-                ))}
-              </TableRow>
-            );
-          })}
+          {page.length > 0 ? (
+            page.map((row) => {
+              prepareRow(row);
+              return (
+                <TableRow key={row} {...row.getRowProps()}>
+                  {row.cells.map((cell) => (
+                    <TableCell key={cell} {...cell.getCellProps([{ className: cell.column.className }])}>
+                      {cell.render('Cell')}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              );
+            })
+          ) : (
+            <EmptyTable msg="No Data" colSpan={3} />
+          )}
           {/* {sortingRow.length > 0 ? (
             sortingRow.map((row) => {
               prepareRow(row);
