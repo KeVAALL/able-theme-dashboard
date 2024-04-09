@@ -72,7 +72,7 @@ const BasicTable = ({ columns, data, title }) => {
     <MainCard
       content={false}
       title={title}
-      sx={{ borderRadius: 0 }}
+      sx={{ borderRadius: 1 }}
       // secondary={<CSVExport data={data.slice(0, 10)} filename={striped ? 'striped-table.csv' : 'basic-table.csv'} />}
     >
       <Stack direction="row" justifyContent="flex-end" alignItems="center" spacing={2}></Stack>

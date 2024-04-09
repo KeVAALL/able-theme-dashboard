@@ -38,6 +38,7 @@ const MainCard = forwardRef(
       codeString,
       modal = false,
       changeTableVisibility,
+      showButton,
       ...others
     },
     ref
@@ -82,7 +83,25 @@ const MainCard = forwardRef(
         }}
       >
         {/* card header and action */}
-        {!darkTitle && title && (
+        {/* {!darkTitle && title && (
+          <Stack direction="row" alignItems="center" justifyContent="space-between">
+            <CardHeader
+              sx={headerSX}
+              titleTypographyProps={{ variant: 'subtitle1' }}
+              title={title}
+              action={secondary}
+              subheader={subheader}
+            />
+            <Box sx={{ px: 2.5 }}>
+              <AnimateButton>
+                <Button variant="contained" type="button" onClick={changeTableVisibility}>
+                  Add
+                </Button>
+              </AnimateButton>
+            </Box>
+          </Stack>
+        )} */}
+        {showButton && title && (
           <Stack direction="row" alignItems="center" justifyContent="space-between">
             <CardHeader
               sx={headerSX}
@@ -136,6 +155,8 @@ MainCard.propTypes = {
   shadow: PropTypes.string,
   sx: PropTypes.object,
   title: PropTypes.oneOfType([PropTypes.node, PropTypes.string, PropTypes.object]),
+  changeTableVisibility: PropTypes.func,
+  showButton: PropTypes.bool,
   modal: PropTypes.bool,
   codeHighlight: PropTypes.bool,
   codeString: PropTypes.string

@@ -8,6 +8,7 @@ import MainCard from 'components/MainCard';
 import AnimateButton from 'components/@extended/AnimateButton';
 import { openSnackbar } from 'store/reducers/snackbar';
 import BasicTable from 'sections/tables/react-table/BasicTable';
+import MultiTable from 'pages/tables/react-table/multi-table';
 
 // third-party
 import { Formik } from 'formik';
@@ -54,96 +55,104 @@ function BasicForm() {
   return (
     <>
       {showTable && (
-        <MainCard border={false} sx={{ height: '100%' }}>
-          <Formik
-            initialValues={formValues}
-            validationSchema={validationSchema}
-            onSubmit={(values, { setSubmitting, resetForm }) => {
-              changeTableVisibility();
-              setData((prevData) => {
-                return [...prevData, values];
-              });
-              console.log(values);
-            }}
-          >
-            {({ values, errors, touched, handleChange, handleBlur, handleSubmit, resetForm, isSubmitting }) => (
-              <Box
-                component="form"
-                onSubmit={(event) => {
-                  event.preventDefault();
-                  handleSubmit();
-                }}
-                sx={{ mt: 1, width: '100%' }}
-              >
-                <Grid container spacing={3}>
-                  <Grid item xs={6}>
-                    <Stack spacing={1}>
-                      <InputLabel htmlFor="userName">Email Address</InputLabel>
-                      <TextField
-                        fullWidth
-                        // id="userName"
-                        name="userName"
-                        placeholder="Enter User Name"
-                        value={values.userName}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        error={touched.userName && Boolean(errors.userName)}
-                        helperText={touched.userName && errors.userName}
-                      />
-                    </Stack>
+        <Formik
+          initialValues={formValues}
+          validationSchema={validationSchema}
+          onSubmit={(values, { setSubmitting, resetForm }) => {
+            changeTableVisibility();
+            setData((prevData) => {
+              return [...prevData, values];
+            });
+            console.log(values);
+          }}
+        >
+          {({ values, errors, touched, handleChange, handleBlur, handleSubmit, resetForm, isSubmitting }) => (
+            <MainCard title="Table" changeTableVisibility={changeTableVisibility} border={false}>
+              <MainCard border={false} sx={{ height: '100%' }}>
+                <Box
+                  component="form"
+                  onSubmit={(event) => {
+                    event.preventDefault();
+                    handleSubmit();
+                  }}
+                  sx={{ mt: 1, width: '100%' }}
+                >
+                  <Grid container spacing={3}>
+                    <Grid item xs={6}>
+                      <Stack spacing={1}>
+                        <InputLabel htmlFor="userName">Email Address</InputLabel>
+                        <TextField
+                          fullWidth
+                          // id="userName"
+                          name="userName"
+                          placeholder="Enter User Name"
+                          value={values.userName}
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          error={touched.userName && Boolean(errors.userName)}
+                          helperText={touched.userName && errors.userName}
+                        />
+                      </Stack>
+                    </Grid>
+                    <Grid item xs={6}>
+                      <Stack spacing={1}>
+                        <InputLabel htmlFor="email">Email</InputLabel>
+                        <TextField
+                          fullWidth
+                          // id="email"
+                          name="email"
+                          placeholder="Enter your Email"
+                          type="email"
+                          value={values.email}
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          error={touched.email && Boolean(errors.email)}
+                          helperText={touched.email && errors.email}
+                        />
+                      </Stack>
+                    </Grid>
+                    <Grid item xs={6}>
+                      <Stack spacing={1}>
+                        <InputLabel htmlFor="phone">Phone</InputLabel>
+                        <TextField
+                          fullWidth
+                          // id="phone"
+                          name="phone"
+                          placeholder="Enter your Phone number"
+                          type="tel"
+                          value={values.phone}
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          error={touched.phone && Boolean(errors.phone)}
+                          helperText={touched.phone && errors.phone}
+                        />
+                      </Stack>
+                    </Grid>
+                    <Grid item xs={12}>
+                      <Stack direction="row" justifyContent="flex-end">
+                        {/* <AnimateButton> */}
+                        <Button variant="contained" type="submit">
+                          Submit
+                        </Button>
+                        {/* </AnimateButton> */}
+                      </Stack>
+                    </Grid>
                   </Grid>
-                  <Grid item xs={6}>
-                    <Stack spacing={1}>
-                      <InputLabel htmlFor="email">Email</InputLabel>
-                      <TextField
-                        fullWidth
-                        // id="email"
-                        name="email"
-                        placeholder="Enter your Email"
-                        type="email"
-                        value={values.email}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        error={touched.email && Boolean(errors.email)}
-                        helperText={touched.email && errors.email}
-                      />
-                    </Stack>
-                  </Grid>
-                  <Grid item xs={6}>
-                    <Stack spacing={1}>
-                      <InputLabel htmlFor="phone">Phone</InputLabel>
-                      <TextField
-                        fullWidth
-                        // id="phone"
-                        name="phone"
-                        placeholder="Enter your Phone number"
-                        type="tel"
-                        value={values.phone}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        error={touched.phone && Boolean(errors.phone)}
-                        helperText={touched.phone && errors.phone}
-                      />
-                    </Stack>
-                  </Grid>
-                  <Grid item xs={12}>
-                    <Stack direction="row" justifyContent="flex-end">
-                      {/* <AnimateButton> */}
-                      <Button variant="contained" type="submit">
-                        Submit
-                      </Button>
-                      {/* </AnimateButton> */}
-                    </Stack>
-                  </Grid>
-                </Grid>
-              </Box>
-            )}
-          </Formik>
-        </MainCard>
+                </Box>
+              </MainCard>
+            </MainCard>
+          )}
+        </Formik>
       )}
       {!showTable && (
-        <MainCard title="Table" changeTableVisibility={changeTableVisibility} border={false} sx={{ height: '100%', boxShadow: 1 }}>
-          <BasicTable columns={columns} data={data} />
+        <MainCard
+          title="Table"
+          changeTableVisibility={changeTableVisibility}
+          showButton
+          border={false}
+          sx={{ height: '100%', boxShadow: 1 }}
+        >
+          <MultiTable columns={columns} data={data} />
         </MainCard>
       )}
     </>
