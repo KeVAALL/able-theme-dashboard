@@ -8,5 +8,5 @@ import ComponentsRoutes from './ComponentsRoutes';
 // ==============================|| ROUTES RENDER ||============================== //
 
 export default function ThemeRoutes() {
-  return useRoutes([LoginRoutes, MainRoutes]);
+  return useRoutes([LoginRoutes, MainRoutes, ComponentsRoutes]);
 }

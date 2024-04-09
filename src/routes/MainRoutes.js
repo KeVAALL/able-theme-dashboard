@@ -60,6 +60,7 @@ const FormsLayoutBasic = Loadable(lazy(() => import('pages/forms/layouts/basic')
 const FormsLayoutMultiColumn = Loadable(lazy(() => import('pages/forms/layouts/multi-column')));
 const FormsLayoutActionBar = Loadable(lazy(() => import('pages/forms/layouts/action-bar')));
 const FormsLayoutStickyBar = Loadable(lazy(() => import('pages/forms/layouts/sticky-bar')));
+const FormsBasic = Loadable(lazy(() => import('pages/form-basic/basic-form')));
 
 const FormsPluginsMask = Loadable(lazy(() => import('pages/forms/plugins/mask')));
 const FormsPluginsClipboard = Loadable(lazy(() => import('pages/forms/plugins/clipboard')));
@@ -149,6 +150,15 @@ const MainRoutes = {
             {
               path: 'analytics',
               element: <DashboardAnalytics />
+            }
+          ]
+        },
+        {
+          path: 'form',
+          children: [
+            {
+              path: 'basic',
+              element: <FormsBasic />
             }
           ]
         },

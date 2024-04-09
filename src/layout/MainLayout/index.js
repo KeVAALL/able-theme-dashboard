@@ -53,7 +53,8 @@ const MainLayout = () => {
             position: 'relative',
             minHeight: 'calc(100vh - 110px)',
             display: 'flex',
-            flexDirection: 'column'
+            flexDirection: 'column',
+            mt: -2.5
           }}
         >
           <Breadcrumbs navigation={navigation} title titleBottom card={false} divider={false} />

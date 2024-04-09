@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 
 // material-ui
 import { Chip, Stack, Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
@@ -27,6 +27,9 @@ import {
 // ==============================|| REACT TABLE ||============================== //
 
 function ReactTable({ columns, data }) {
+  useEffect(() => {
+    console.log(data);
+  }, [data]);
   const filterTypes = useMemo(() => renderFilterTypes, []);
   const defaultColumn = useMemo(() => ({ Filter: DefaultColumnFilter }), []);
   const initialState = useMemo(() => ({ filters: [{ id: 'status', value: '' }] }), []);
