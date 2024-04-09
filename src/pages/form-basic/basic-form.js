@@ -141,7 +141,11 @@ function BasicForm() {
           </Formik>
         </MainCard>
       )}
-      {!showTable && <BasicTable columns={columns} data={data} title="Basic Table" changeTableVisibility={changeTableVisibility} />}
+      {!showTable && (
+        <MainCard title="Table" changeTableVisibility={changeTableVisibility} border={false} sx={{ height: '100%', boxShadow: 1 }}>
+          <BasicTable columns={columns} data={data} />
+        </MainCard>
+      )}
     </>
   );
 }
