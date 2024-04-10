@@ -8,7 +8,7 @@ import { Box, Chip, Grid, Stack, Table, TableBody, TableCell, TableHead, TableRo
 import { useTable, useFilters, usePagination } from 'react-table';
 
 // project-imports
-import makeData from 'data/react-table';
+// import makeData from 'data/react-table';
 import MainCard from 'components/MainCard';
 import ScrollX from 'components/ScrollX';
 import LinearWithLabel from 'components/@extended/progress/LinearWithLabel';
@@ -91,22 +91,7 @@ function ReactTable({ columns, data }) {
           ) : (
             <EmptyTable msg="No Data" colSpan={3} />
           )}
-          {/* {sortingRow.length > 0 ? (
-            sortingRow.map((row) => {
-              prepareRow(row);
-              return (
-                <TableRow key={row} {...row.getRowProps()}>
-                  {row.cells.map((cell) => (
-                    <TableCell key={cell} {...cell.getCellProps([{ className: cell.column.className }])}>
-                      {cell.render('Cell')}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              );
-            })
-          ) : (
-            <EmptyTable msg="No Data" colSpan={7} />
-          )} */}
+
           <TableRow>
             <TableCell sx={{ p: 2 }} colSpan={7}>
               <TablePagination gotoPage={gotoPage} rows={rows} setPageSize={setPageSize} pageIndex={pageIndex} pageSize={pageSize} />
@@ -127,15 +112,11 @@ ReactTable.propTypes = {
 
 const MultiTable = ({ columns, data }) => {
   return (
-    // <Grid container spacing={3}>
-    //   <Grid item xs={12}>
     <MainCard title="Pagination at Bottom" content={false} secondary={<CSVExport data={data} filename={'pagination-bottom-table.csv'} />}>
       <ScrollX>
         <ReactTable columns={columns} data={data} />
       </ScrollX>
     </MainCard>
-    //   </Grid>
-    // </Grid>
   );
 };
 
@@ -145,3 +126,22 @@ MultiTable.propTypes = {
 };
 
 export default MultiTable;
+
+{
+  /* {sortingRow.length > 0 ? (
+            sortingRow.map((row) => {
+              prepareRow(row);
+              return (
+                <TableRow key={row} {...row.getRowProps()}>
+                  {row.cells.map((cell) => (
+                    <TableCell key={cell} {...cell.getCellProps([{ className: cell.column.className }])}>
+                      {cell.render('Cell')}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              );
+            })
+          ) : (
+            <EmptyTable msg="No Data" colSpan={7} />
+          )} */
+}
