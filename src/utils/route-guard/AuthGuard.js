@@ -8,11 +8,12 @@ import useAuth from 'hooks/useAuth';
 // ==============================|| AUTH GUARD ||============================== //
 
 const AuthGuard = ({ children }) => {
-  const { isLoggedIn } = useAuth();
+  const { isLoggedIn, state } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
 
   useEffect(() => {
+    console.log(isLoggedIn, location.pathname);
     if (!isLoggedIn) {
       navigate('login', {
         state: {
@@ -21,7 +22,7 @@ const AuthGuard = ({ children }) => {
         replace: true
       });
     }
-  }, [isLoggedIn, navigate, location]);
+  }, [isLoggedIn, navigate, location, state]);
 
   return children;
 };

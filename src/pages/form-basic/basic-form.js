@@ -20,21 +20,26 @@ const headerSX = {
   '& .MuiCardHeader-action': { m: '0px auto', alignSelf: 'center' }
 };
 
-const SubmitButton = () => {
+const SubmitButton = ({ changeTableVisibility }) => {
   return (
     <Stack direction="row" alignItems="center" justifyContent="space-between">
       <CardHeader sx={headerSX} titleTypographyProps={{ variant: 'subtitle1' }} title="Form" />
-      <Box sx={{ px: 2.5 }}>
-        <AnimateButton>
-          <Button
-            variant="contained"
-            type="submit"
-            //   onClick={changeTableVisibility}
-          >
-            Submit
-          </Button>
-        </AnimateButton>
-      </Box>
+      <Stack direction="row" alignItems="center" spacing={2.5} paddingRight={2.5}>
+        <Box>
+          <AnimateButton>
+            <Button variant="contained" type="submit">
+              Submit
+            </Button>
+          </AnimateButton>
+        </Box>
+        <Box>
+          <AnimateButton>
+            <Button variant="outlined" type="button" onClick={changeTableVisibility}>
+              Cancel
+            </Button>
+          </AnimateButton>
+        </Box>
+      </Stack>
     </Stack>
   );
 };
@@ -71,7 +76,6 @@ function BasicForm() {
     email: yup.string().required('Email is required'),
     phone: yup.string().required('Phone Number is required')
   });
-
   const formValues = {
     userName: '',
     email: '',
@@ -99,7 +103,7 @@ function BasicForm() {
                 event.preventDefault();
                 handleSubmit();
               }}
-              sx={{ mt: 1, width: '100%' }}
+              sx={{ width: '100%' }}
             >
               <Card
                 sx={{
@@ -109,17 +113,17 @@ function BasicForm() {
                   borderColor: theme.palette.divider
                 }}
               >
-                <SubmitButton />
+                <SubmitButton changeTableVisibility={changeTableVisibility} />
 
                 <Divider />
 
                 <CardContent>
                   <Grid container spacing={3}>
-                    <Grid item xs={6}>
+                    <Grid item xs={4}>
                       <Stack spacing={1}>
                         <InputLabel htmlFor="userName">Username</InputLabel>
                         <TextField
-                          fullWidth
+                          // fullWidth
                           // id="userName"
                           name="userName"
                           placeholder="Enter User Name"
@@ -131,11 +135,11 @@ function BasicForm() {
                         />
                       </Stack>
                     </Grid>
-                    <Grid item xs={6}>
+                    <Grid item xs={4}>
                       <Stack spacing={1}>
                         <InputLabel htmlFor="email">Email</InputLabel>
                         <TextField
-                          fullWidth
+                          // fullWidth
                           // id="email"
                           name="email"
                           placeholder="Enter your Email"
@@ -148,11 +152,11 @@ function BasicForm() {
                         />
                       </Stack>
                     </Grid>
-                    <Grid item xs={6}>
+                    <Grid item xs={4}>
                       <Stack spacing={1}>
                         <InputLabel htmlFor="phone">Phone</InputLabel>
                         <TextField
-                          fullWidth
+                          // fullWidth
                           // id="phone"
                           name="phone"
                           placeholder="Enter your Phone number"
@@ -173,14 +177,8 @@ function BasicForm() {
         </Formik>
       )}
       {!showTable && (
-        <MainCard
-          title="Table"
-          changeTableVisibility={changeTableVisibility}
-          showButton
-          border={false}
-          sx={{ height: '100%', boxShadow: 1 }}
-        >
-          <MultiTable columns={columns} data={data} />
+        <MainCard title="Table" changeTableVisibility={changeTableVisibility} showButton border sx={{ height: '100%', boxShadow: 1 }}>
+          <MultiTable columns={columns} data={data} formValues={formValues} />
         </MainCard>
       )}
     </>

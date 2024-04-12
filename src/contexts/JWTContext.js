@@ -35,8 +35,10 @@ const verifyToken = (serviceToken) => {
 };
 
 const setSession = (serviceToken) => {
+  console.log(serviceToken);
   if (serviceToken) {
     localStorage.setItem('serviceToken', serviceToken);
+    console.log('Token set');
     axios.defaults.headers.common.Authorization = `Bearer ${serviceToken}`;
   } else {
     localStorage.removeItem('serviceToken');
@@ -52,19 +54,22 @@ export const JWTProvider = ({ children }) => {
   const [state, dispatch] = useReducer(authReducer, initialState);
 
   useEffect(() => {
+    console.log('JWT Provider Running');
     const init = async () => {
       try {
         const serviceToken = localStorage.getItem('serviceToken');
         if (serviceToken && verifyToken(serviceToken)) {
+          console.log('Token found');
+          // && verifyToken(serviceToken)
           setSession(serviceToken);
-          const response = await axios.get('/api/account/me');
-          const { user } = response.data;
+          // const response = await axios.get('/api/account/me');
+          // const user = response.data;
 
           dispatch({
             type: LOGIN,
             payload: {
-              isLoggedIn: true,
-              user
+              isLoggedIn: true
+              // user
             }
           });
         } else {
@@ -84,9 +89,15 @@ export const JWTProvider = ({ children }) => {
   }, []);
 
   const login = async (email_id, password) => {
-    const response = await axios.post('/api/account/login', { email: email_id, password });
-    const { serviceToken, user } = response.data;
-    setSession(serviceToken);
+    // const response = await axios.post('/api/account/login', { email: email_id, password });
+    const response = await axios.post('/user/login', { email_id, password });
+    // const { serviceToken, user } = response.data;
+
+    const user = response.data;
+    console.log(user.data);
+    // setSession(serviceToken);
+    console.log(user.data.token);
+    setSession(user.data.token);
     dispatch({
       type: LOGIN,
       payload: {

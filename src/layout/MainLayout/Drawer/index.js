@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
@@ -22,6 +22,9 @@ const MainDrawer = ({ window }) => {
 
   const { drawerOpen } = useSelector((state) => state.menu);
 
+  useEffect(() => {
+    console.log(`Drawer Open: ${drawerOpen}`);
+  }, [drawerOpen]);
   // responsive drawer container
   const container = window !== undefined ? () => window().document.body : undefined;
 
@@ -33,6 +36,7 @@ const MainDrawer = ({ window }) => {
     <Box component="nav" sx={{ flexShrink: { md: 0 }, zIndex: 1200 }} aria-label="mailbox folders">
       {!downLG ? (
         <MiniDrawerStyled variant="permanent" open={drawerOpen}>
+          {/* change here */}
           {drawerHeader}
           {drawerContent}
         </MiniDrawerStyled>
@@ -40,6 +44,7 @@ const MainDrawer = ({ window }) => {
         <Drawer
           container={container}
           variant="temporary"
+          // {/* change here */}
           open={drawerOpen}
           onClose={() => dispatch(openDrawer(!drawerOpen))}
           ModalProps={{ keepMounted: true }}

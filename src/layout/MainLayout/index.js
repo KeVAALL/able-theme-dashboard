@@ -32,6 +32,9 @@ const MainLayout = () => {
 
   // set media wise responsive drawer
   useEffect(() => {
+    console.log(`is Horizontal: ${isHorizontal}`);
+  }, [isHorizontal]);
+  useEffect(() => {
     if (!miniDrawer) {
       dispatch(openDrawer(!downXL));
     }
@@ -42,6 +45,7 @@ const MainLayout = () => {
     <Box sx={{ display: 'flex', width: '100%' }}>
       <Header />
       {!isHorizontal ? <Drawer /> : <HorizontalBar />}
+      {/* {<HorizontalBar />} */}
 
       <Box component="main" sx={{ width: `calc(100% - ${DRAWER_WIDTH}px)`, flexGrow: 1, p: { xs: 2, md: 3 } }}>
         <Toolbar sx={{ mt: isHorizontal ? 8 : 'inherit', mb: isHorizontal ? 2 : 'inherit' }} />
