@@ -20,6 +20,8 @@ import {
 // third-party
 import * as Yup from 'yup';
 import { Formik } from 'formik';
+// import { toast } from 'react-toastify';
+// import 'react-toastify/dist/ReactToastify.css';
 
 // project-imports
 import useAuth from 'hooks/useAuth';
@@ -29,6 +31,8 @@ import AnimateButton from 'components/@extended/AnimateButton';
 
 // assets
 import { Eye, EyeSlash } from 'iconsax-react';
+import { dispatch } from 'store';
+import { openSnackbar } from 'store/reducers/snackbar';
 
 // ============================|| JWT - LOGIN ||============================ //
 
@@ -47,6 +51,8 @@ const AuthLogin = ({ forgot }) => {
     event.preventDefault();
   };
 
+  // const notify = () => toast.success('Login Successful');
+
   return (
     <>
       <Formik
@@ -63,13 +69,26 @@ const AuthLogin = ({ forgot }) => {
         })}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
           try {
-            await login(values.email_id, values.password);
+            const response = await login(values.email_id, values.password);
+            console.log(response);
+
             if (scriptedRef.current) {
               setStatus({ success: true });
               setSubmitting(false);
             }
           } catch (err) {
             console.error(err);
+            dispatch(
+              openSnackbar({
+                open: true,
+                anchorOrigin: { vertical: 'top', horizontal: 'right' },
+                message: 'Invalid Login Credentials',
+                variant: 'alert',
+                alert: {
+                  color: 'error'
+                }
+              })
+            );
             if (scriptedRef.current) {
               setStatus({ success: false });
               setErrors({ submit: err.message });
@@ -80,7 +99,7 @@ const AuthLogin = ({ forgot }) => {
       >
         {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
           <form noValidate onSubmit={handleSubmit}>
-            <Grid container spacing={3}>
+            <Grid container spacing={2}>
               <Grid item xs={12}>
                 <Stack spacing={1}>
                   <InputLabel htmlFor="email-login">Email Address</InputLabel>
@@ -157,11 +176,11 @@ const AuthLogin = ({ forgot }) => {
                   </Link>
                 </Stack>
               </Grid>
-              {errors.submit && (
+              {/* {errors.submit && (
                 <Grid item xs={12}>
                   <FormHelperText error>{errors.submit}</FormHelperText>
                 </Grid>
-              )}
+              )} */}
               <Grid item xs={12}>
                 <AnimateButton>
                   <Button disableElevation disabled={isSubmitting} fullWidth size="large" type="submit" variant="contained" color="primary">

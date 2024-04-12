@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 // project-imports
 import Routes from 'routes';
 import ThemeCustomization from 'themes';
+import { ToastContainer } from 'react-toastify';
 
 import Loader from 'components/Loader';
 import Locales from 'components/Locales';
@@ -42,6 +43,7 @@ const App = () => {
             <AuthProvider>
               <>
                 <Notistack>
+                  <ToastContainer />
                   <Routes />
                   {/* <Customization /> */}
                   <Snackbar />
