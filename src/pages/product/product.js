@@ -15,6 +15,7 @@ import MultiTable from 'pages/tables/react-table/multi-table';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import Loader from 'components/Loader';
+import axios from 'utils/axios';
 
 function Product() {
   const [showTable, setShowTable] = useState(false);
@@ -40,7 +41,7 @@ function Product() {
     () => [
       {
         Header: 'Method Name',
-        accessor: 'methodName'
+        accessor: 'method_name'
       },
       {
         Header: 'Product Type',
@@ -55,11 +56,18 @@ function Product() {
   };
 
   const validationSchema = yup.object({
-    methodName: yup.string().required('Name is required'),
-    productType: yup.string().required('Email is required')
+    method_name: yup.string().required('Name is required'),
+    product_type_name: yup.string().required('Email is required')
   });
 
   useEffect(() => {
+    async function getData() {
+      const response = await axios.get('/product/getproductmethod');
+      console.log(response);
+    }
+
+    getData();
+
     setTimeout(() => {
       setLoading(false);
     }, 2000);
@@ -73,11 +81,13 @@ function Product() {
         <Formik
           initialValues={formValues}
           validationSchema={validationSchema}
-          onSubmit={(values, { setSubmitting, resetForm }) => {
+          onSubmit={async (values, { setSubmitting, resetForm }) => {
             if (isEditing === false) {
-              setData((prevData) => {
-                return [...prevData, values];
-              });
+              const response = await axios.post('/product/createproduct-type', values);
+              console.log(response);
+              //   setData((prevData) => {
+              //     return [...prevData, values];
+              //   });
             } else {
               setIsEditing(!isEditing);
             }
@@ -110,35 +120,35 @@ function Product() {
                   <Grid container spacing={3}>
                     <Grid item xs={4}>
                       <Stack spacing={1}>
-                        <InputLabel htmlFor="userName">Method Name</InputLabel>
+                        <InputLabel htmlFor="method_name">Method Name</InputLabel>
                         <TextField
                           // fullWidth
                           // id="userName"
-                          name="methodName"
+                          name="method_name"
                           placeholder="Enter Method Name"
                           type="text"
-                          value={values.methodName}
+                          value={values.method_name}
                           onChange={handleChange}
                           onBlur={handleBlur}
-                          error={touched.methodName && Boolean(errors.methodName)}
-                          helperText={touched.methodName && errors.methodName}
+                          error={touched.method_name && Boolean(errors.method_name)}
+                          helperText={touched.method_name && errors.method_name}
                         />
                       </Stack>
                     </Grid>
                     <Grid item xs={4}>
                       <Stack spacing={1}>
-                        <InputLabel htmlFor="email">Product Type</InputLabel>
+                        <InputLabel htmlFor="product_type_name">Product Type</InputLabel>
                         <TextField
                           // fullWidth
                           // id="email"
-                          name="productType"
+                          name="product_type_name"
                           placeholder="Enter your Product Type"
                           type="text"
-                          value={values.productType}
+                          value={values.product_type_name}
                           onChange={handleChange}
                           onBlur={handleBlur}
-                          error={touched.productType && Boolean(errors.productType)}
-                          helperText={touched.productType && errors.productType}
+                          error={touched.product_type_name && Boolean(errors.product_type_name)}
+                          helperText={touched.product_type_name && errors.product_type_name}
                         />
                       </Stack>
                     </Grid>
