@@ -166,8 +166,8 @@ const ProfilePage = () => {
                       </Grid>
                     </Grid>
                   </CardContent>
-
-                  <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                  {/* sx={{ borderBottom: 1, borderColor: 'divider' }} */}
+                  <Box>
                     <Tabs variant="fullWidth" value={value} onChange={handleChange} aria-label="profile tabs">
                       <Tab
                         sx={{
@@ -181,7 +181,7 @@ const ProfilePage = () => {
                         label="Profile"
                         {...a11yProps(0)}
                       />
-                      <Tab
+                      {/* <Tab
                         sx={{
                           display: 'flex',
                           flexDirection: 'row',
@@ -192,15 +192,15 @@ const ProfilePage = () => {
                         icon={<Setting2 size={18} style={{ marginBottom: 0, marginRight: '10px' }} />}
                         label="Setting"
                         {...a11yProps(1)}
-                      />
+                      /> */}
                     </Tabs>
                   </Box>
                   <TabPanel value={value} index={0} dir={theme.direction}>
                     <ProfileTab handleLogout={handleLogout} />
                   </TabPanel>
-                  <TabPanel value={value} index={1} dir={theme.direction}>
+                  {/* <TabPanel value={value} index={1} dir={theme.direction}>
                     <SettingTab />
-                  </TabPanel>
+                  </TabPanel> */}
                 </MainCard>
               </ClickAwayListener>
             </Paper>

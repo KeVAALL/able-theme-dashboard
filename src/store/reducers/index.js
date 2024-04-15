@@ -6,6 +6,7 @@ import storage from 'redux-persist/lib/storage';
 // project-imports
 import chat from './chat';
 import calendar from './calendar';
+// import menuReducer from './menu';
 import menu from './menu';
 import snackbar from './snackbar';
 import productReducer from './product';
@@ -20,6 +21,7 @@ const reducers = combineReducers({
   calendar,
   menu,
   snackbar,
+  // cart: cartReducer,
   cart: persistReducer(
     {
       key: 'cart',
@@ -28,6 +30,14 @@ const reducers = combineReducers({
     },
     cartReducer
   ),
+  // menu: persistReducer(
+  //   {
+  //     key: 'menu',
+  //     storage,
+  //     keyPrefix: 'able-pro-material-ts-'
+  //   },
+  //   menuReducer
+  // ),
   product: productReducer,
   kanban,
   invoice

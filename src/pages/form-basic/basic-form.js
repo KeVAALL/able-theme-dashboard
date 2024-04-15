@@ -20,6 +20,7 @@ const headerSX = {
   '& .MuiCardHeader-action': { m: '0px auto', alignSelf: 'center' }
 };
 
+// eslint-disable-next-line react/prop-types
 const SubmitButton = ({ changeTableVisibility }) => {
   return (
     <Stack direction="row" alignItems="center" justifyContent="space-between">

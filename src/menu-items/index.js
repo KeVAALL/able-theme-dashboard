@@ -7,8 +7,6 @@ import support from './support';
 import pages from './pages';
 import form from './form';
 
-import { useSelector } from 'store';
-
 // ==============================|| MENU ITEMS ||============================== //
 
 const menuItems = {

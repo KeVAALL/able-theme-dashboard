@@ -3,6 +3,7 @@ import { useEffect, useMemo } from 'react';
 
 // material-ui
 import { Box, Chip, Grid, Stack, Table, TableBody, TableCell, TableHead, TableRow, InputLabel, TextField, Button } from '@mui/material';
+import { Edit } from 'iconsax-react';
 
 // third-party
 import { useTable, useFilters, usePagination } from 'react-table';
@@ -29,7 +30,7 @@ import { useSortBy } from 'react-table';
 
 // ==============================|| REACT TABLE ||============================== //
 
-function ReactTable({ columns, data, formValues }) {
+function ReactTable({ columns, data, formValues, changeTableVisibility, setEditing }) {
   const filterTypes = useMemo(() => renderFilterTypes, []);
   const defaultColumn = useMemo(() => ({ Filter: DefaultColumnFilter }), []);
   const initialState = useMemo(() => ({ filters: [{ id: 'status', value: '' }] }), []);
@@ -69,7 +70,7 @@ function ReactTable({ columns, data, formValues }) {
   );
   const sortingRow = rows.slice(0, 10);
   useEffect(() => {
-    console.log(columns);
+    console.log(columns, data);
   }, [columns]);
 
   return (
@@ -102,28 +103,6 @@ function ReactTable({ columns, data, formValues }) {
                   helperText={touched.userName && errors.userName}
                 />
 
-                {/* <TextField
-                  name="email"
-                  placeholder="Email"
-                  type="email"
-                  value={values.email}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  error={touched.email && Boolean(errors.email)}
-                  helperText={touched.email && errors.email}
-                />
-
-                <TextField
-                  name="phone"
-                  placeholder="Phone number"
-                  type="tel"
-                  value={values.phone}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  error={touched.phone && Boolean(errors.phone)}
-                  helperText={touched.phone && errors.phone}
-                /> */}
-
                 <AnimateButton>
                   <Button variant="outlined" type="submit" sx={{ justifySelf: 'center', padding: '10px 14px' }}>
                     Search
@@ -146,6 +125,7 @@ function ReactTable({ columns, data, formValues }) {
                   <HeaderSort column={column} sort />
                 </TableCell>
               ))}
+              <TableCell>Actions</TableCell>
             </TableRow>
           ))}
         </TableHead>
@@ -160,6 +140,16 @@ function ReactTable({ columns, data, formValues }) {
                       {cell.render('Cell')}
                     </TableCell>
                   ))}
+                  <TableCell>
+                    <Edit
+                      onClick={() => {
+                        changeTableVisibility();
+                        setEditing(row.original);
+                        // handleEdit(row.original);
+                        console.log(row.original);
+                      }}
+                    />
+                  </TableCell>
                 </TableRow>
               );
             })
@@ -185,11 +175,17 @@ ReactTable.propTypes = {
 
 // ==============================|| REACT TABLE - PAGINATION - FILTERING ||============================== //
 
-const MultiTable = ({ columns, data, formValues }) => {
+const MultiTable = ({ columns, data, formValues, changeTableVisibility, setEditing }) => {
   return (
     <MainCard title="Pagination at Bottom" content={false} secondary={<CSVExport data={data} filename={'pagination-bottom-table.csv'} />}>
       <ScrollX>
-        <ReactTable columns={columns} data={data} formValues={formValues} />
+        <ReactTable
+          columns={columns}
+          data={data}
+          formValues={formValues}
+          changeTableVisibility={changeTableVisibility}
+          setEditing={setEditing}
+        />
       </ScrollX>
     </MainCard>
   );
@@ -198,7 +194,8 @@ const MultiTable = ({ columns, data, formValues }) => {
 MultiTable.propTypes = {
   columns: PropTypes.array,
   data: PropTypes.array,
-  formValues: PropTypes.object
+  formValues: PropTypes.object,
+  changeTableVisibility: PropTypes.func
 };
 
 export default MultiTable;
