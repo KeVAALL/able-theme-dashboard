@@ -21,6 +21,7 @@ const auth = (state = initialState, action) => {
     }
     case LOGIN: {
       const { user } = action.payload;
+      console.log(user);
       return {
         ...state,
         isLoggedIn: true,

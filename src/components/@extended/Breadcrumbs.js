@@ -146,13 +146,13 @@ const Breadcrumbs = ({
               {mainContent}
             </MuiBreadcrumbs>
           </Grid>
-          {title && titleBottom && (
+          {/* {title && titleBottom && (
             <Grid item sx={{ mt: card === false ? 0 : 1 }}>
               <Typography variant="h2" sx={{ fontWeight: 700 }}>
                 {main.title}
               </Typography>
             </Grid>
-          )}
+          )} */}
         </Grid>
         {card === false && divider !== false && <Divider sx={{ mt: 2 }} />}
       </MainCard>
@@ -212,13 +212,13 @@ const Breadcrumbs = ({
                 {itemContent}
               </MuiBreadcrumbs>
             </Grid>
-            {title && titleBottom && (
+            {/* {title && titleBottom && (
               <Grid item sx={{ mt: card === false ? 0 : 1 }}>
                 <Typography variant="h2" sx={{ fontWeight: 700 }}>
                   {item.title}
                 </Typography>
               </Grid>
-            )}
+            )} */}
           </Grid>
           {card === false && divider !== false && <Divider sx={{ mt: 2 }} />}
         </MainCard>

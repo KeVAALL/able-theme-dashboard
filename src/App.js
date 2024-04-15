@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 // project-imports
 import Routes from 'routes';
 import ThemeCustomization from 'themes';
+import { ToastContainer } from 'react-toastify';
 
 import Loader from 'components/Loader';
 import Locales from 'components/Locales';
@@ -27,9 +28,12 @@ const App = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    dispatch(fetchMenu()).then(() => {
+    // dispatch(fetchMenu()).then(() => {
+    //   setLoading(false);
+    // });
+    setTimeout(() => {
       setLoading(false);
-    });
+    }, 2000);
   }, []);
 
   if (loading) return <Loader />;
@@ -42,6 +46,7 @@ const App = () => {
             <AuthProvider>
               <>
                 <Notistack>
+                  <ToastContainer />
                   <Routes />
                   {/* <Customization /> */}
                   <Snackbar />

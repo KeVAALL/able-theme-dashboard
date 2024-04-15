@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { useSelector } from 'store';
 
 // project-imports
 import useAuth from 'hooks/useAuth';
@@ -8,11 +9,14 @@ import useAuth from 'hooks/useAuth';
 // ==============================|| AUTH GUARD ||============================== //
 
 const AuthGuard = ({ children }) => {
-  const { isLoggedIn } = useAuth();
+  const { isLoggedIn, state } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+  const { menuItem } = useSelector((state) => state.menu);
+  console.log(menuItem);
 
   useEffect(() => {
+    // console.log(isLoggedIn, location.pathname);
     if (!isLoggedIn) {
       navigate('login', {
         state: {
@@ -21,7 +25,7 @@ const AuthGuard = ({ children }) => {
         replace: true
       });
     }
-  }, [isLoggedIn, navigate, location]);
+  }, [isLoggedIn, navigate, location, state]);
 
   return children;
 };

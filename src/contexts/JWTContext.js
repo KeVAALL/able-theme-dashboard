@@ -1,3 +1,4 @@
+/* eslint-disable no-debugger */
 import PropTypes from 'prop-types';
 import { createContext, useEffect, useReducer } from 'react';
 
@@ -12,6 +13,7 @@ import authReducer from 'store/reducers/auth';
 // project-imports
 import Loader from 'components/Loader';
 import axios from 'utils/axios';
+import { enqueueSnackbar } from 'notistack';
 
 const chance = new Chance();
 
@@ -35,8 +37,10 @@ const verifyToken = (serviceToken) => {
 };
 
 const setSession = (serviceToken) => {
+  // console.log(serviceToken);
   if (serviceToken) {
     localStorage.setItem('serviceToken', serviceToken);
+    // console.log('Token set');
     axios.defaults.headers.common.Authorization = `Bearer ${serviceToken}`;
   } else {
     localStorage.removeItem('serviceToken');
@@ -52,19 +56,21 @@ export const JWTProvider = ({ children }) => {
   const [state, dispatch] = useReducer(authReducer, initialState);
 
   useEffect(() => {
+    // console.log('JWT Provider Running');
     const init = async () => {
       try {
         const serviceToken = localStorage.getItem('serviceToken');
         if (serviceToken && verifyToken(serviceToken)) {
+          // console.log('Token found');
           setSession(serviceToken);
-          const response = await axios.get('/api/account/me');
-          const { user } = response.data;
+          // const response = await axios.get('/api/account/me');
+          // const user = response.data;
 
           dispatch({
             type: LOGIN,
             payload: {
-              isLoggedIn: true,
-              user
+              isLoggedIn: true
+              // user
             }
           });
         } else {
@@ -83,17 +89,28 @@ export const JWTProvider = ({ children }) => {
     init();
   }, []);
 
-  const login = async (email, password) => {
-    const response = await axios.post('/api/account/login', { email, password });
-    const { serviceToken, user } = response.data;
-    setSession(serviceToken);
-    dispatch({
-      type: LOGIN,
-      payload: {
-        isLoggedIn: true,
-        user
-      }
-    });
+  const login = async (email_id, password) => {
+    // const response = await axios.post('/api/account/login', { email: email_id, password });
+    const response = await axios.post('/user/login', { email_id, password });
+    // return response;
+
+    // console.log(response);
+    if (response.status === 200) {
+      // const { serviceToken, user } = response.data;
+
+      const user = response.data;
+
+      // setSession(serviceToken);
+      setSession(user.data.token);
+      dispatch({
+        type: LOGIN,
+        payload: {
+          isLoggedIn: true,
+          user
+        }
+      });
+    }
+    return response;
   };
 
   const register = async (email, password, firstName, lastName) => {

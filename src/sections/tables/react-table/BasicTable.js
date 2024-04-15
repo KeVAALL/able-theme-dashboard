@@ -10,12 +10,15 @@ import { useTable } from 'react-table';
 // project-imports
 import MainCard from 'components/MainCard';
 import ScrollX from 'components/ScrollX';
+// eslint-disable-next-line no-unused-vars
 import { CSVExport } from 'components/third-party/ReactTable';
+// eslint-disable-next-line no-unused-vars
 import LinearWithLabel from 'components/@extended/progress/LinearWithLabel';
 
 // ==============================|| REACT TABLE ||============================== //
 
-function ReactTable({ columns, data, striped }) {
+function ReactTable({ columns, data }) {
+  // , striped
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = useTable({
     columns,
     data
@@ -34,7 +37,10 @@ function ReactTable({ columns, data, striped }) {
           </TableRow>
         ))}
       </TableHead>
-      <TableBody {...getTableBodyProps()} {...(striped && { className: 'striped' })}>
+      <TableBody
+        {...getTableBodyProps()}
+        // {...(striped && { className: 'striped' })}
+      >
         {rows.map((row) => {
           prepareRow(row);
           return (
@@ -59,60 +65,23 @@ ReactTable.propTypes = {
 
 // ==============================|| REACT TABLE - BASIC ||============================== //
 
-const BasicTable = ({ data, striped, title }) => {
-  const columns = useMemo(
-    () => [
-      {
-        Header: 'First Name',
-        accessor: 'firstName'
-      },
-      {
-        Header: 'Last Name',
-        accessor: 'lastName'
-      },
-      {
-        Header: 'Age',
-        accessor: 'age',
-        className: 'cell-right'
-      },
-      {
-        Header: 'Visits',
-        accessor: 'visits',
-        className: 'cell-right'
-      },
-      {
-        Header: 'Status',
-        accessor: 'status',
-        Cell: ({ value }) => {
-          switch (value) {
-            case 'Complicated':
-              return <Chip color="error" label="Complicated" size="small" variant="light" />;
-            case 'Relationship':
-              return <Chip color="success" label="Relationship" size="small" variant="light" />;
-            case 'Single':
-            default:
-              return <Chip color="info" label="Single" size="small" variant="light" />;
-          }
-        }
-      },
-      {
-        Header: 'Profile Progress',
-        accessor: 'progress',
-        Cell: ({ value }) => <LinearWithLabel value={value} sx={{ minWidth: 75 }} />
-      }
-    ],
-    []
-  );
+const BasicTable = ({ columns, data, title }) => {
+  // striped,
 
   return (
     <MainCard
       content={false}
       title={title}
-      secondary={<CSVExport data={data.slice(0, 10)} filename={striped ? 'striped-table.csv' : 'basic-table.csv'} />}
+      sx={{ borderRadius: 1 }}
+      // secondary={<CSVExport data={data.slice(0, 10)} filename={striped ? 'striped-table.csv' : 'basic-table.csv'} />}
     >
       <Stack direction="row" justifyContent="flex-end" alignItems="center" spacing={2}></Stack>
       <ScrollX>
-        <ReactTable columns={columns} data={data} striped={striped} />
+        <ReactTable
+          columns={columns}
+          data={data}
+          // striped={striped}
+        />
       </ScrollX>
     </MainCard>
   );
@@ -126,3 +95,47 @@ BasicTable.propTypes = {
 };
 
 export default BasicTable;
+
+// const columns = useMemo(
+//   () => [
+//     {
+//       Header: 'First Name',
+//       accessor: 'firstName'
+//     },
+//     {
+//       Header: 'Last Name',
+//       accessor: 'lastName'
+//     },
+//     {
+//       Header: 'Age',
+//       accessor: 'age',
+//       className: 'cell-right'
+//     },
+//     {
+//       Header: 'Visits',
+//       accessor: 'visits',
+//       className: 'cell-right'
+//     },
+//     {
+//       Header: 'Status',
+//       accessor: 'status',
+//       Cell: ({ value }) => {
+//         switch (value) {
+//           case 'Complicated':
+//             return <Chip color="error" label="Complicated" size="small" variant="light" />;
+//           case 'Relationship':
+//             return <Chip color="success" label="Relationship" size="small" variant="light" />;
+//           case 'Single':
+//           default:
+//             return <Chip color="info" label="Single" size="small" variant="light" />;
+//         }
+//       }
+//     },
+//     {
+//       Header: 'Profile Progress',
+//       accessor: 'progress',
+//       Cell: ({ value }) => <LinearWithLabel value={value} sx={{ minWidth: 75 }} />
+//     }
+//   ],
+//   []
+// );

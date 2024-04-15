@@ -10,14 +10,15 @@ const initialState = {
   selectedID: null,
   drawerOpen: false,
   componentDrawerOpen: true,
-  menu: {},
+  menu: [],
+  menuItem: [],
   error: null
 };
 
 // ==============================|| SLICE - MENU ||============================== //
 
 export const fetchMenu = createAsyncThunk('', async () => {
-  const response = await axios.get('/api/menu/dashboard');
+  const response = await axios.get('menu/getmenus');
   return response.data;
 });
 
@@ -47,6 +48,10 @@ const menu = createSlice({
 
     hasError(state, action) {
       state.error = action.payload;
+    },
+
+    setMenuItems(state, action) {
+      state.menuItem = action.payload;
     }
   },
 
@@ -59,4 +64,4 @@ const menu = createSlice({
 
 export default menu.reducer;
 
-export const { activeItem, activeComponent, openDrawer, openComponentDrawer, activeID } = menu.actions;
+export const { activeItem, activeComponent, openDrawer, openComponentDrawer, activeID, setMenuItems } = menu.actions;

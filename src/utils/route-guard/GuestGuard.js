@@ -9,11 +9,12 @@ import useAuth from 'hooks/useAuth';
 // ==============================|| GUEST GUARD ||============================== //
 
 const GuestGuard = ({ children }) => {
-  const { isLoggedIn } = useAuth();
+  const { isLoggedIn, state } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
 
   useEffect(() => {
+    // console.log(isLoggedIn, location.pathname);
     if (isLoggedIn) {
       navigate(location?.state?.from ? location?.state?.from : APP_DEFAULT_PATH, {
         state: {
@@ -22,7 +23,7 @@ const GuestGuard = ({ children }) => {
         replace: true
       });
     }
-  }, [isLoggedIn, navigate, location]);
+  }, [isLoggedIn, navigate, location, state]);
 
   return children;
 };
