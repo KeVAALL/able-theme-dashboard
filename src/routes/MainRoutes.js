@@ -140,16 +140,50 @@ const MainRoutes = {
         </AuthGuard>
       ),
       children: [
+        // {
+        //   path: 'dashboard',
+        //   children: [
+        //     {
+        //       path: 'default',
+        //       element: <DashboardDefault />
+        //     },
+        //     {
+        //       path: 'analytics',
+        //       element: <DashboardAnalytics />
+        //     }
+        //   ]
+        // },
         {
-          path: 'dashboard',
+          path: 'dash_board',
+          element: <DashboardDefault />
+        },
+        {
+          path: 'investor',
           children: [
             {
-              path: 'default',
+              path: 'investor_list',
               element: <DashboardDefault />
             },
             {
-              path: 'analytics',
-              element: <DashboardAnalytics />
+              path: 'add_new_investor',
+              element: <DashboardDefault />
+            },
+            {
+              path: 'transaction_list',
+              element: <DashboardDefault />
+            }
+          ]
+        },
+        {
+          path: 'product',
+          children: [
+            {
+              path: 'add_product',
+              element: <DashboardDefault />
+            },
+            {
+              path: 'fixed_deposit',
+              element: <DashboardDefault />
             }
           ]
         },

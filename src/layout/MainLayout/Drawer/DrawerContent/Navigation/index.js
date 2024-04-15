@@ -6,7 +6,7 @@ import { Box, Typography, useMediaQuery } from '@mui/material';
 
 // project-imports
 import NavGroup from './NavGroup';
-import menuItem from 'menu-items';
+// import menuItem from 'menu-items';
 import { Menu } from 'menu-items/dashboard';
 
 import { useSelector } from 'store';
@@ -18,6 +18,8 @@ import { MenuOrientation } from 'config';
 
 const Navigation = () => {
   const theme = useTheme();
+  const { menuItem } = useSelector((state) => state.menu);
+  console.log(menuItem);
 
   const downLG = useMediaQuery(theme.breakpoints.down('lg'));
 
@@ -26,7 +28,8 @@ const Navigation = () => {
 
   const [selectedItems, setSelectedItems] = useState('');
   const [selectedLevel, setSelectedLevel] = useState(0);
-  const [menuItems, setMenuItems] = useState({ items: [] });
+  // const [menuItems, setMenuItems] = useState({ items: [] });
+  const [menuItems, setMenuItems] = useState([]);
 
   useEffect(() => {
     handlerMenuItem();
@@ -40,7 +43,13 @@ const Navigation = () => {
 
   let getMenu = Menu();
   const handlerMenuItem = () => {
-    const isFound = menuItem.items.some((element) => {
+    // const isFound = menuItem.items.some((element) => {
+    //   if (element.id === 'group-dashboard') {
+    //     return true;
+    //   }
+    //   return false;
+    // });
+    const isFound = menuItem.some((element) => {
       if (element.id === 'group-dashboard') {
         return true;
       }
@@ -56,7 +65,8 @@ const Navigation = () => {
   const isHorizontal = menuOrientation === MenuOrientation.HORIZONTAL && !downLG;
 
   const lastItem = isHorizontal ? HORIZONTAL_MAX_ITEM : null;
-  let lastItemIndex = menuItems.items.length - 1;
+  let lastItemIndex = menuItems.length - 1;
+  // let lastItemIndex = menuItems.items.length - 1;
   let remItems = [];
   let lastItemId;
 
@@ -70,7 +80,9 @@ const Navigation = () => {
     }));
   }
 
-  const navGroups = menuItems.items.slice(0, lastItemIndex + 1).map((item) => {
+  // const navGroups = menuItems.items.slice(0, lastItemIndex + 1).map((item) => {
+  console.log(menuItems);
+  const navGroups = menuItems.slice(0, lastItemIndex + 1).map((item) => {
     switch (item.type) {
       case 'group':
         return (

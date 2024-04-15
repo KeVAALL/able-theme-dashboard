@@ -160,11 +160,11 @@ const NavGroup = ({ item, lastItem, remItems, lastItemId, setSelectedItems, sele
 
   const moreItems = remItems.map((itemRem, i) => (
     <Fragment key={i}>
-      {itemRem.title && (
+      {/* {itemRem.title && (
         <Typography variant="caption" sx={{ pl: 2 }}>
           {itemRem.title}
         </Typography>
-      )}
+      )} */}
       {itemRem?.elements?.map((menu) => {
         switch (menu.type) {
           case 'collapse':
@@ -232,13 +232,13 @@ const NavGroup = ({ item, lastItem, remItems, lastItemId, setSelectedItems, sele
             drawerOpen &&
             menuCaption && (
               <Box sx={{ pl: 3, mb: 1.5 }}>
-                <Typography
+                {/* <Typography
                   variant="h5"
                   color={theme.palette.mode === ThemeMode.DARK ? 'textSecondary' : 'secondary.dark'}
                   sx={{ textTransform: 'uppercase', fontSize: '0.688rem' }}
                 >
                   {item.title}
-                </Typography>
+                </Typography> */}
                 {item.caption && (
                   <Typography variant="caption" color="secondary">
                     {item.caption}

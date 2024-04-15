@@ -2,6 +2,11 @@ import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 
+// assets
+import { HomeTrendUp, Profile2User, ShoppingBag, Eye, EyeSlash } from 'iconsax-react';
+// import Story from 'iconsax-react/Story';
+
+import { FormattedMessage } from 'react-intl';
 // material-ui
 import {
   Button,
@@ -30,9 +35,9 @@ import IconButton from 'components/@extended/IconButton';
 import AnimateButton from 'components/@extended/AnimateButton';
 
 // assets
-import { Eye, EyeSlash } from 'iconsax-react';
 import { dispatch } from 'store';
 import { openSnackbar } from 'store/reducers/snackbar';
+import { setMenuItems } from 'store/reducers/menu';
 
 // ============================|| JWT - LOGIN ||============================ //
 
@@ -50,8 +55,41 @@ const AuthLogin = ({ forgot }) => {
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
+  // icons
+  const icons = {
+    HomeTrendUp: HomeTrendUp,
+    Profile2User: Profile2User,
+    ShoppingBag: ShoppingBag
+    // data: Fatrows
+  };
 
-  // const notify = () => toast.success('Login Successful');
+  const transformData = (menu) => {
+    console.log(menu);
+
+    let organizedMenu = [];
+
+    menu?.forEach((item, index) => {
+      organizedMenu[index] = {
+        id: item.menu_id,
+        title: <FormattedMessage id={item.menu_name} />,
+        icon: icons[item.menu_icon],
+        type: item.child_menu === null ? 'item' : 'collapse',
+        url: item.child_menu === null && `/${item.menu_url}`,
+        children:
+          item.child_menu?.length > 0 &&
+          item.child_menu?.map((item) => {
+            return {
+              id: item.menu_id,
+              title: <FormattedMessage id={item.menu_name} />,
+              type: 'item',
+              url: `/${item.menu_url}`
+            };
+          })
+      };
+    });
+
+    return organizedMenu;
+  };
 
   return (
     <>
@@ -70,7 +108,21 @@ const AuthLogin = ({ forgot }) => {
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
           try {
             const response = await login(values.email_id, values.password);
-            console.log(response);
+            console.log(response.data.data.menus);
+
+            const transformedData = transformData(response.data.data.menus);
+
+            dispatch(
+              setMenuItems([
+                {
+                  id: 'group-applications',
+                  title: <FormattedMessage id="applications" />,
+                  icon: icons.data,
+                  type: 'group',
+                  children: transformedData
+                }
+              ])
+            );
 
             if (scriptedRef.current) {
               setStatus({ success: true });

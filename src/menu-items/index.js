@@ -7,10 +7,13 @@ import support from './support';
 import pages from './pages';
 import form from './form';
 
+import { useSelector } from 'store';
+
 // ==============================|| MENU ITEMS ||============================== //
 
 const menuItems = {
   items: [form, widget, applications, formsTables, chartsMap, pages, support]
+  // items: []
 };
 
 export default menuItems;

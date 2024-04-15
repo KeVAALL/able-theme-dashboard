@@ -28,9 +28,12 @@ const App = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    dispatch(fetchMenu()).then(() => {
+    // dispatch(fetchMenu()).then(() => {
+    //   setLoading(false);
+    // });
+    setTimeout(() => {
       setLoading(false);
-    });
+    }, 2000);
   }, []);
 
   if (loading) return <Loader />;
