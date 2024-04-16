@@ -46,7 +46,7 @@ const Header = () => {
           color="secondary"
           variant="light"
           size="large"
-          sx={{ color: 'secondary.main', bgcolor: drawerOpen ? iconBackColorOpen : iconBackColor, ml: { xs: 0, lg: -2 }, p: 1 }}
+          sx={{ color: 'secondary.main', bgcolor: drawerOpen ? iconBackColorOpen : 'eaeced', ml: { xs: 0, lg: -2 }, p: 1 }}
         >
           <HambergerMenu />
         </IconButton>

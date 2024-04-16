@@ -64,7 +64,7 @@ const MainLayout = () => {
         >
           <Breadcrumbs navigation={menuItem} title titleBottom card={false} divider={false} />
           <Outlet />
-          <Footer />
+          {/* <Footer /> */}
         </Container>
       </Box>
     </Box>
