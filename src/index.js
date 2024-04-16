@@ -21,8 +21,10 @@ import 'assets/third-party/react-table.css';
 import App from './App';
 import { store, persister } from 'store';
 import { ConfigProvider } from 'contexts/ConfigContext';
+import { QueryClientProvider, QueryClient } from 'react-query';
 import reportWebVitals from './reportWebVitals';
 
+const queryClient = new QueryClient();
 const container = document.getElementById('root');
 const root = createRoot(container);
 
@@ -31,11 +33,13 @@ const root = createRoot(container);
 root.render(
   <ReduxProvider store={store}>
     <PersistGate loading={null} persistor={persister}>
-      <ConfigProvider>
-        <BrowserRouter basename={process.env.REACT_APP_BASE_NAME}>
-          <App />
-        </BrowserRouter>
-      </ConfigProvider>
+      <QueryClientProvider client={queryClient}>
+        <ConfigProvider>
+          <BrowserRouter basename={process.env.REACT_APP_BASE_NAME}>
+            <App />
+          </BrowserRouter>
+        </ConfigProvider>
+      </QueryClientProvider>
     </PersistGate>
   </ReduxProvider>
 );

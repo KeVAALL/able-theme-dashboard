@@ -112,7 +112,7 @@ const MainCard = forwardRef(
             />
             <Box sx={{ px: 2.5 }}>
               <AnimateButton>
-                <Button variant="contained" type="button" onClick={changeTableVisibility}>
+                <Button variant="contained" color="primary" type="button" onClick={changeTableVisibility}>
                   Add
                 </Button>
               </AnimateButton>

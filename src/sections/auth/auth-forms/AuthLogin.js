@@ -98,7 +98,7 @@ const AuthLogin = ({ forgot }) => {
           // email_id: 'info@phoenixcoded.co',
           // password: '123456',
           email_id: '',
-          password: '',
+          password: 'Admin@2024',
           submit: null
         }}
         validationSchema={Yup.object().shape({
