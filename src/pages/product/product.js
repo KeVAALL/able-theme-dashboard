@@ -42,10 +42,6 @@ function Product() {
 
   const columns = useMemo(
     () => [
-      //   {
-      //     Header: 'ID',
-      //     accessor: 'product_type_id'
-      //   },
       {
         Header: 'Product Type',
         accessor: 'product_type'
@@ -63,7 +59,6 @@ function Product() {
   const autocompleteData = [
     { product_type_id: 1, product_type: 'Electronics', is_active: true, is_deleted: false },
     { product_type_id: 2, product_type: 'Clothing', is_active: true, is_deleted: false }
-    // More options...
   ];
 
   async function getData() {
@@ -160,7 +155,7 @@ function Product() {
                   overflow: 'visible'
                 }}
               >
-                <SubmitButton changeTableVisibility={changeTableVisibility} clearFormValues={clearFormValues} />
+                <SubmitButton title="Product Type Entry" changeTableVisibility={changeTableVisibility} clearFormValues={clearFormValues} />
 
                 <Divider />
 
@@ -187,9 +182,9 @@ function Product() {
 
                       {/* </Stack> */}
                     </Grid>
-                    <Grid item xs={4}>
+                    {/* <Grid item xs={4}>
                       <CustomAutoComplete options={autocompleteData} optionName="product_type" label="Label" />
-                    </Grid>
+                    </Grid> */}
                   </Grid>
                 </CardContent>
               </Card>
@@ -198,7 +193,13 @@ function Product() {
         </Formik>
       )}
       {!showTable && (
-        <MainCard title="Products" changeTableVisibility={changeTableVisibility} showButton border sx={{ height: '100%', boxShadow: 1 }}>
+        <MainCard
+          title="Product Type Search"
+          changeTableVisibility={changeTableVisibility}
+          showButton
+          border
+          sx={{ height: '100%', boxShadow: 1 }}
+        >
           <MultiTable
             columns={columns}
             data={data}

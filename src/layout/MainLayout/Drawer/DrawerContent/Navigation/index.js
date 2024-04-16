@@ -3,6 +3,7 @@ import { useEffect, useLayoutEffect, useState } from 'react';
 // material-ui
 import { useTheme } from '@mui/material/styles';
 import { Box, Typography, useMediaQuery } from '@mui/material';
+import { HomeTrendUp, Profile2User, ShoppingBag } from 'iconsax-react';
 
 // project-imports
 import NavGroup from './NavGroup';
@@ -19,7 +20,13 @@ import { MenuOrientation } from 'config';
 const Navigation = () => {
   const theme = useTheme();
   const { menuItem } = useSelector((state) => state.menu);
-  // console.log(menuItem);
+  console.log(menuItem);
+  const icons = {
+    HomeTrendUp: HomeTrendUp,
+    Profile2User: Profile2User,
+    ShoppingBag: ShoppingBag
+    // data: Fatrows
+  };
 
   const downLG = useMediaQuery(theme.breakpoints.down('lg'));
 
@@ -57,7 +64,9 @@ const Navigation = () => {
     });
 
     if (getMenu?.id !== undefined && !isFound) {
-      menuItem.items.splice(0, 0, getMenu);
+      // menuItem.items.splice(0, 0, getMenu);
+      menuItem.splice(0, 0, getMenu);
+      console.log('Set Menu' + menuItem);
       setMenuItems(menuItem);
     }
   };
@@ -65,24 +74,30 @@ const Navigation = () => {
   const isHorizontal = menuOrientation === MenuOrientation.HORIZONTAL && !downLG;
 
   const lastItem = isHorizontal ? HORIZONTAL_MAX_ITEM : null;
-  let lastItemIndex = menuItems.length - 1;
+  let lastItemIndex = menuItems.length - 1; //0
   // let lastItemIndex = menuItems.items.length - 1;
   let remItems = [];
   let lastItemId;
 
-  if (lastItem && lastItem < menuItems.items.length) {
-    lastItemId = menuItems.items[lastItem - 1].id;
+  // if (lastItem && lastItem < menuItems.items.length) {
+  if (lastItem && lastItem < menuItems.length) {
+    // lastItemId = menuItems.items[lastItem - 1].id;
+    lastItemId = menuItems[lastItem - 1].id;
     lastItemIndex = lastItem - 1;
-    remItems = menuItems.items.slice(lastItem - 1, menuItems.items.length).map((item) => ({
+    // remItems = menuItems.items.slice(lastItem - 1, menuItems.items.length).map((item) => ({
+    remItems = menuItems.slice(lastItem - 1, menuItems.length).map((item) => ({
       title: item.title,
       elements: item.children,
       icon: item.icon
     }));
+    console.log(remItems);
   }
 
   // const navGroups = menuItems.items.slice(0, lastItemIndex + 1).map((item) => {
-  // console.log(menuItems);
+  console.log(menuItems);
+  console.log(menuItems.slice(0, lastItemIndex + 1));
   const navGroups = menuItems.slice(0, lastItemIndex + 1).map((item) => {
+    // const navGroups = menuItems.map((item) => {
     switch (item.type) {
       case 'group':
         return (
@@ -96,6 +111,7 @@ const Navigation = () => {
             remItems={remItems}
             lastItemId={lastItemId}
             item={item}
+            icons={icons}
           />
         );
       default:

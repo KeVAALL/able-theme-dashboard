@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import PropTypes from 'prop-types';
 import { useEffect, useMemo } from 'react';
 
@@ -5,7 +6,7 @@ import { useEffect, useMemo } from 'react';
 import { Box, Chip, Grid, Stack, Table, TableBody, TableCell, TableHead, TableRow, InputLabel, Button, Autocomplete } from '@mui/material';
 import CustomTextField from 'utils/textfield';
 // import Button from 'themes/overrides/Button';
-import { Edit } from 'iconsax-react';
+import { Edit, Trash, Edit2 } from 'iconsax-react';
 
 // third-party
 import { useTable, useFilters, usePagination } from 'react-table';
@@ -96,18 +97,19 @@ function ReactTable({
     <Stack>
       <Stack direction="row" spacing={2} alignItems="center" justifyContent="space-between" sx={{ padding: 2 }}>
         <Formik
-          initialValues={{ product_type_id: '' }}
+          initialValues={{ product_type: '' }}
           validationSchema={Yup.object().shape({
-            product_type_id: Yup.number()
+            product_type: Yup.string()
           })}
           onSubmit={async (values, { setSubmitting, resetForm }) => {
             console.log({
-              ...values,
+              // ...values,
+              product_type: values.product_type,
               method_name: 'getone'
             });
             const response = await axios.post('/product/getproductmethod', {
               method_name: 'getone',
-              ...values
+              product_type: values.product_type
             });
             setSearchData(response.data.data);
             resetForm();
@@ -122,13 +124,12 @@ function ReactTable({
               }}
               sx={{ width: '60%' }}
             >
-              <Stack direction="row" spacing={5} alignItems="center" sx={{ width: '60%' }}>
+              <Stack direction="row" spacing={2} alignItems="center" sx={{ width: '60%' }}>
                 <CustomTextField
-                  label="Product ID"
-                  name="product_type_id"
+                  label="Product Type"
+                  name="product_type"
                   values={values}
-                  // placeholder="Product ID"
-                  type="number"
+                  type="text"
                   onChange={handleChange}
                   onBlur={handleBlur}
                   touched={touched}
@@ -138,19 +139,6 @@ function ReactTable({
                 <Stack direction="row" spacing={2} alignItems="center">
                   <Button variant="contained" color="success" type="submit" sx={{ justifySelf: 'center' }}>
                     Search
-                  </Button>
-
-                  <Button
-                    variant="outlined"
-                    color="secondary"
-                    type="submit"
-                    sx={{ justifySelf: 'center' }}
-                    onClick={() => {
-                      // getData()
-                      tableDataRefetch();
-                    }}
-                  >
-                    Reset
                   </Button>
                 </Stack>
               </Stack>
@@ -170,7 +158,9 @@ function ReactTable({
                   <HeaderSort column={column} sort />
                 </TableCell>
               ))}
-              <TableCell width={250}>Actions</TableCell>
+              <TableCell width={150} sx={{ textAlign: 'right' }}>
+                Actions
+              </TableCell>
             </TableRow>
           ))}
         </TableHead>
@@ -185,9 +175,9 @@ function ReactTable({
                       {cell.render('Cell')}
                     </TableCell>
                   ))}
-                  <TableCell>
-                    <Edit
-                      style={{ marginRight: 35 }}
+                  <TableCell sx={{ textAlign: 'right' }}>
+                    <Edit2
+                      style={{ marginRight: 20 }}
                       onClick={() => {
                         changeTableVisibility();
                         setEditing({ product_type_id: row.original.product_type_id, product_type: row.original.product_type });
@@ -195,7 +185,7 @@ function ReactTable({
                         console.log(row.original);
                       }}
                     />
-                    <Delete
+                    <Trash
                       onClick={async () => {
                         await axios.post('/product/createproduct-type', {
                           product_type_id: row.original.product_type_id,

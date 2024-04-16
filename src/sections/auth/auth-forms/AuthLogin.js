@@ -71,8 +71,10 @@ const AuthLogin = ({ forgot }) => {
     menu?.forEach((item, index) => {
       organizedMenu[index] = {
         id: item.menu_id,
-        title: <FormattedMessage id={item.menu_name} />,
-        icon: icons[item.menu_icon],
+        // title: <FormattedMessage id={item.menu_name} />,
+        title: item.menu_name,
+        // icon: icons[item.menu_icon],
+        icon: item.menu_icon,
         type: item.child_menu === null ? 'item' : 'collapse',
         url: item.child_menu === null && `/${item.menu_url}`,
         children:
@@ -80,14 +82,15 @@ const AuthLogin = ({ forgot }) => {
           item.child_menu?.map((item) => {
             return {
               id: item.menu_id,
-              title: <FormattedMessage id={item.menu_name} />,
+              // title: <FormattedMessage id={item.menu_name} />,
+              title: item.menu_name,
               type: 'item',
               url: `/${item.menu_url}`
             };
           })
       };
     });
-
+    console.log(organizedMenu);
     return organizedMenu;
   };
 

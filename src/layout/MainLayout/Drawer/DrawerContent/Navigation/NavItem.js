@@ -5,6 +5,7 @@ import { Link, useLocation } from 'react-router-dom';
 // material-ui
 import { useTheme } from '@mui/material/styles';
 import { Avatar, Chip, ListItemButton, ListItemIcon, ListItemText, Typography, useMediaQuery } from '@mui/material';
+import { HomeTrendUp, Profile2User, ShoppingBag } from 'iconsax-react';
 
 // project-imports
 import Dot from 'components/@extended/Dot';
@@ -12,6 +13,7 @@ import useConfig from 'hooks/useConfig';
 import { dispatch, useSelector } from 'store';
 import { activeItem, openDrawer } from 'store/reducers/menu';
 import { MenuOrientation, ThemeMode } from 'config';
+// icons
 
 // ==============================|| NAVIGATION - ITEM ||============================== //
 
@@ -21,6 +23,12 @@ const NavItem = ({ item, level }) => {
 
   const { drawerOpen, openItem } = useSelector((state) => state.menu);
   const { menuOrientation } = useConfig();
+  const icons = {
+    HomeTrendUp: HomeTrendUp,
+    Profile2User: Profile2User,
+    ShoppingBag: ShoppingBag
+    // data: Fatrows
+  };
 
   let itemTarget = '_self';
   if (item.target) {
@@ -29,8 +37,12 @@ const NavItem = ({ item, level }) => {
 
   const isSelected = openItem.findIndex((id) => id === item.id) > -1;
 
-  const Icon = item.icon;
-  const itemIcon = item.icon ? <Icon variant="Bulk" size={drawerOpen ? 20 : 22} /> : false;
+  const Icon = icons[item.icon];
+  console.log(item.icon);
+  console.log(item.title);
+  // const itemIcon = HomeTrendUp;
+  // const itemIcon = item.icon ? <Icon variant="Bulk" size={drawerOpen ? 20 : 22} /> : false;
+  const itemIcon = icons[item.icon] ? <Icon variant="Bulk" size={drawerOpen ? 20 : 22} /> : false;
 
   const { pathname } = useLocation();
 

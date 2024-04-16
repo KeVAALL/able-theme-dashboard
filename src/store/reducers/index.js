@@ -13,7 +13,7 @@ import cartReducer from './cart';
 
 const reducers = combineReducers({
   menu,
-  snackbar,
+  snackbar
   // menu: persistReducer(
   //   {
   //     key: 'menu',
@@ -22,14 +22,14 @@ const reducers = combineReducers({
   //   },
   //   menuReducer
   // )
-  cart: persistReducer(
-    {
-      key: 'cart',
-      storage,
-      keyPrefix: 'able-pro-material-ts-'
-    },
-    cartReducer
-  )
+  // cart: persistReducer(
+  //   {
+  //     key: 'cart',
+  //     storage,
+  //     keyPrefix: 'able-pro-material-ts-'
+  //   },
+  //   cartReducer
+  // )
 });
 
 export default reducers;
