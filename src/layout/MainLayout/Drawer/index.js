@@ -22,9 +22,9 @@ const MainDrawer = ({ window }) => {
 
   const { drawerOpen } = useSelector((state) => state.menu);
 
-  useEffect(() => {
-    console.log(`Drawer Open: ${drawerOpen}`);
-  }, [drawerOpen]);
+  // useEffect(() => {
+  //   console.log(`Drawer Open: ${drawerOpen}`);
+  // }, [drawerOpen]);
   // responsive drawer container
   const container = window !== undefined ? () => window().document.body : undefined;
 

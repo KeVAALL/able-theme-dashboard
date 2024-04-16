@@ -19,7 +19,7 @@ import { MenuOrientation } from 'config';
 const Navigation = () => {
   const theme = useTheme();
   const { menuItem } = useSelector((state) => state.menu);
-  console.log(menuItem);
+  // console.log(menuItem);
 
   const downLG = useMediaQuery(theme.breakpoints.down('lg'));
 
@@ -81,7 +81,7 @@ const Navigation = () => {
   }
 
   // const navGroups = menuItems.items.slice(0, lastItemIndex + 1).map((item) => {
-  console.log(menuItems);
+  // console.log(menuItems);
   const navGroups = menuItems.slice(0, lastItemIndex + 1).map((item) => {
     switch (item.type) {
       case 'group':

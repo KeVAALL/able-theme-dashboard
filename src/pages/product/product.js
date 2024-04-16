@@ -21,31 +21,33 @@ function Product() {
   const [showTable, setShowTable] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [data, setData] = useState([]);
 
   const setEditing = (value) => {
     setIsEditing(!isEditing);
     setFormValues(value);
   };
+  const setSearchData = (product) => {
+    setData([product]);
+  };
   const formAllValues = {
-    methodName: '',
-    productType: ''
+    product_type: ''
   };
   const clearFormValues = () => {
     setFormValues(formAllValues);
   };
   const [formValues, setFormValues] = useState(formAllValues);
-  const [data, setData] = useState([]);
   const theme = useTheme();
 
   const columns = useMemo(
     () => [
       {
-        Header: 'Method Name',
-        accessor: 'method_name'
+        Header: 'ID',
+        accessor: 'product_type_id'
       },
       {
         Header: 'Product Type',
-        accessor: 'productType'
+        accessor: 'product_type'
       }
     ],
     []
@@ -54,18 +56,18 @@ function Product() {
   const changeTableVisibility = () => {
     setShowTable(!showTable);
   };
-
   const validationSchema = yup.object({
-    method_name: yup.string().required('Name is required'),
-    product_type_name: yup.string().required('Email is required')
+    product_type: yup.string().required('Email is required')
   });
 
+  async function getData() {
+    const response = await axios.post('/product/getproductmethod', {
+      method_name: 'getall'
+    });
+    console.log(response.data.data);
+    setData(response.data.data);
+  }
   useEffect(() => {
-    async function getData() {
-      const response = await axios.get('/product/getproductmethod');
-      console.log(response);
-    }
-
     getData();
 
     setTimeout(() => {
@@ -83,13 +85,18 @@ function Product() {
           validationSchema={validationSchema}
           onSubmit={async (values, { setSubmitting, resetForm }) => {
             if (isEditing === false) {
-              const response = await axios.post('/product/createproduct-type', values);
+              const response = await axios.post('/product/createproduct-type', { ...values, method_name: 'add' });
               console.log(response);
-              //   setData((prevData) => {
-              //     return [...prevData, values];
-              //   });
-            } else {
+              clearFormValues();
+              getData();
+            }
+            if (isEditing === true) {
+              console.log('i am editing');
+              console.log({ ...values, method_name: 'update' });
+              const response = await axios.post('/product/createproduct-type', { ...values, method_name: 'update' });
+              clearFormValues();
               setIsEditing(!isEditing);
+              getData();
             }
 
             changeTableVisibility();
@@ -118,7 +125,7 @@ function Product() {
 
                 <CardContent>
                   <Grid container spacing={3}>
-                    <Grid item xs={4}>
+                    {/* <Grid item xs={4}>
                       <Stack spacing={1}>
                         <InputLabel htmlFor="method_name">Method Name</InputLabel>
                         <TextField
@@ -134,21 +141,21 @@ function Product() {
                           helperText={touched.method_name && errors.method_name}
                         />
                       </Stack>
-                    </Grid>
+                    </Grid> */}
                     <Grid item xs={4}>
                       <Stack spacing={1}>
-                        <InputLabel htmlFor="product_type_name">Product Type</InputLabel>
+                        <InputLabel htmlFor="product_type">Product Type</InputLabel>
                         <TextField
                           // fullWidth
                           // id="email"
-                          name="product_type_name"
+                          name="product_type"
                           placeholder="Enter your Product Type"
                           type="text"
-                          value={values.product_type_name}
+                          value={values.product_type}
                           onChange={handleChange}
                           onBlur={handleBlur}
-                          error={touched.product_type_name && Boolean(errors.product_type_name)}
-                          helperText={touched.product_type_name && errors.product_type_name}
+                          error={touched.product_type && Boolean(errors.product_type)}
+                          helperText={touched.product_type && errors.product_type}
                         />
                       </Stack>
                     </Grid>
@@ -167,6 +174,8 @@ function Product() {
             formValues={formValues}
             changeTableVisibility={changeTableVisibility}
             setEditing={setEditing}
+            setSearchData={setSearchData}
+            getData={getData}
           />
         </MainCard>
       )}
