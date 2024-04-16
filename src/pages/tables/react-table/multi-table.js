@@ -3,6 +3,7 @@ import { useEffect, useMemo } from 'react';
 
 // material-ui
 import { Box, Chip, Grid, Stack, Table, TableBody, TableCell, TableHead, TableRow, InputLabel, TextField, Button } from '@mui/material';
+// import Button from 'themes/overrides/Button';
 import { Edit } from 'iconsax-react';
 
 // third-party
@@ -33,7 +34,16 @@ import { Delete } from '@mui/icons-material';
 
 // ==============================|| REACT TABLE ||============================== //
 
-function ReactTable({ columns, data, formValues, changeTableVisibility, setEditing, setSearchData, getData }) {
+function ReactTable({
+  columns,
+  data,
+  formValues,
+  changeTableVisibility,
+  setEditing,
+  setSearchData,
+  tableDataRefetch
+  // getData
+}) {
   const filterTypes = useMemo(() => renderFilterTypes, []);
   const defaultColumn = useMemo(() => ({ Filter: DefaultColumnFilter }), []);
   const initialState = useMemo(() => ({ filters: [{ id: 'status', value: '' }] }), []);
@@ -106,11 +116,14 @@ function ReactTable({ columns, data, formValues, changeTableVisibility, setEditi
               }}
               sx={{ width: '100%' }}
             >
-              <Stack direction="row" spacing={2} alignItems="center" sx={{ width: '60%' }}>
+              <Stack direction="row" spacing={5} alignItems="center" sx={{ width: '60%' }}>
                 <TextField
+                  variant="standard"
+                  label="Product ID"
                   name="product_type_id"
                   type="number"
-                  placeholder="Product ID"
+                  autoComplete="off"
+                  // placeholder="Product ID"
                   value={values.product_type_id}
                   onChange={handleChange}
                   onBlur={handleBlur}
@@ -118,17 +131,24 @@ function ReactTable({ columns, data, formValues, changeTableVisibility, setEditi
                   helperText={touched.product_type_id && errors.product_type_id}
                 />
 
-                <AnimateButton>
-                  <Button variant="outlined" type="submit" sx={{ justifySelf: 'center', padding: '10px 14px' }}>
+                <Stack direction="row" spacing={2} alignItems="center">
+                  <Button variant="outlined" color="success" type="submit" sx={{ justifySelf: 'center' }}>
                     Search
                   </Button>
-                </AnimateButton>
 
-                <AnimateButton>
-                  <Button variant="outlined" type="submit" sx={{ justifySelf: 'center', padding: '10px 14px' }} onClick={() => getData()}>
+                  <Button
+                    variant="outlined"
+                    color="warning"
+                    type="submit"
+                    sx={{ justifySelf: 'center' }}
+                    onClick={() => {
+                      // getData()
+                      tableDataRefetch();
+                    }}
+                  >
                     Reset
                   </Button>
-                </AnimateButton>
+                </Stack>
               </Stack>
             </Box>
           )}
@@ -146,7 +166,7 @@ function ReactTable({ columns, data, formValues, changeTableVisibility, setEditi
                   <HeaderSort column={column} sort />
                 </TableCell>
               ))}
-              <TableCell>Actions</TableCell>
+              <TableCell width={250}>Actions</TableCell>
             </TableRow>
           ))}
         </TableHead>
@@ -162,9 +182,8 @@ function ReactTable({ columns, data, formValues, changeTableVisibility, setEditi
                     </TableCell>
                   ))}
                   <TableCell>
-                    {/* <Stack spacing={2} flexDirection={row}> */}
                     <Edit
-                      style={{ marginRight: 10 }}
+                      style={{ marginRight: 35 }}
                       onClick={() => {
                         changeTableVisibility();
                         setEditing({ product_type_id: row.original.product_type_id, product_type: row.original.product_type });
@@ -178,11 +197,11 @@ function ReactTable({ columns, data, formValues, changeTableVisibility, setEditi
                           product_type_id: row.original.product_type_id,
                           method_name: 'delete'
                         });
-                        getData();
+                        tableDataRefetch();
+                        // getData();
                         console.log(row.original);
                       }}
                     />
-                    {/* </Stack> */}
                   </TableCell>
                 </TableRow>
               );
@@ -209,7 +228,16 @@ ReactTable.propTypes = {
 
 // ==============================|| REACT TABLE - PAGINATION - FILTERING ||============================== //
 
-const MultiTable = ({ columns, data, formValues, changeTableVisibility, setEditing, setSearchData, getData }) => {
+const MultiTable = ({
+  columns,
+  data,
+  formValues,
+  changeTableVisibility,
+  setEditing,
+  setSearchData,
+  tableDataRefetch
+  // getData
+}) => {
   return (
     <MainCard title="Pagination at Bottom" content={false} secondary={<CSVExport data={data} filename={'pagination-bottom-table.csv'} />}>
       <ScrollX>
@@ -220,7 +248,8 @@ const MultiTable = ({ columns, data, formValues, changeTableVisibility, setEditi
           changeTableVisibility={changeTableVisibility}
           setEditing={setEditing}
           setSearchData={setSearchData}
-          getData={getData}
+          tableDataRefetch={tableDataRefetch}
+          // getData={getData}
         />
       </ScrollX>
     </MainCard>

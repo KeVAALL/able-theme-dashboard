@@ -15,7 +15,7 @@ export const SubmitButton = ({ changeTableVisibility, clearFormValues }) => {
       <Stack direction="row" alignItems="center" spacing={2.5} paddingRight={2.5}>
         <Box>
           <AnimateButton>
-            <Button variant="contained" type="submit">
+            <Button variant="contained" color="success" type="submit">
               Submit
             </Button>
           </AnimateButton>
@@ -24,6 +24,7 @@ export const SubmitButton = ({ changeTableVisibility, clearFormValues }) => {
           <AnimateButton>
             <Button
               variant="outlined"
+              color="error"
               type="button"
               onClick={() => {
                 changeTableVisibility();
