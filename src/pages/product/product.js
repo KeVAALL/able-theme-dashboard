@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 // material-ui
 
-import { Divider, Box, Card, Grid, InputLabel, Stack, TextField, CardContent } from '@mui/material';
+import { Divider, Box, Card, Grid, InputLabel, Stack, TextField, CardContent, Autocomplete } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { useQuery } from 'react-query';
 
@@ -16,6 +16,7 @@ import Loader from 'components/Loader';
 import axios from 'utils/axios';
 import { SubmitButton } from 'utils/button';
 import { enqueueSnackbar } from 'notistack';
+import CustomTextField, { CustomAutoComplete } from 'utils/textfield';
 
 function Product() {
   const [showTable, setShowTable] = useState(false);
@@ -57,8 +58,13 @@ function Product() {
     setShowTable(!showTable);
   };
   const validationSchema = yup.object({
-    product_type: yup.string().required('Email is required')
+    product_type: yup.string().required('Product Type is required')
   });
+  const autocompleteData = [
+    { product_type_id: 1, product_type: 'Electronics', is_active: true, is_deleted: false },
+    { product_type_id: 2, product_type: 'Clothing', is_active: true, is_deleted: false }
+    // More options...
+  ];
 
   async function getData() {
     try {
@@ -150,7 +156,8 @@ function Product() {
                   position: 'relative',
                   border: '1px solid',
                   borderRadius: 1.5,
-                  borderColor: theme.palette.divider
+                  borderColor: theme.palette.divider,
+                  overflow: 'visible'
                 }}
               >
                 <SubmitButton changeTableVisibility={changeTableVisibility} clearFormValues={clearFormValues} />
@@ -160,29 +167,28 @@ function Product() {
                 <CardContent>
                   <Grid container spacing={3}>
                     <Grid item xs={4}>
-                      <Stack spacing={1}>
-                        {/* <InputLabel htmlFor="product_type">Product Type</InputLabel> */}
-                        <TextField
-                          // fullWidth
-                          // id="email"
-                          variant="standard"
-                          label="Product Type"
-                          name="product_type"
-                          autoComplete="off"
-                          placeholder="Enter your Product Type"
-                          type="text"
-                          value={values.product_type}
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          error={touched.product_type && Boolean(errors.product_type)}
-                          helperText={touched.product_type && errors.product_type}
-                          FormHelperTextProps={{
-                            style: {
-                              marginLeft: 0
-                            }
-                          }}
-                        />
-                      </Stack>
+                      {/* <Stack spacing={1}> */}
+                      {/* <InputLabel htmlFor="product_type">Product Type</InputLabel> */}
+                      <CustomTextField
+                        label="Product Type"
+                        name="product_type"
+                        values={values}
+                        type="text"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        touched={touched}
+                        errors={errors}
+                        FormHelperTextProps={{
+                          style: {
+                            marginLeft: 0
+                          }
+                        }}
+                      />
+
+                      {/* </Stack> */}
+                    </Grid>
+                    <Grid item xs={4}>
+                      <CustomAutoComplete options={autocompleteData} optionName="product_type" label="Label" />
                     </Grid>
                   </Grid>
                 </CardContent>
@@ -234,3 +240,16 @@ export default Product;
 //       />;
 //     }
 //   }
+// {
+/* <Autocomplete
+                        fullWidth
+                        disablePortal
+                        
+                        className="common-autocomplete"
+                        //   style={{paddingBlock:"6px"}}
+                        id="basic-autocomplete-label"
+                        options={autocompleteData}
+                        getOptionLabel={(option) => option.product_type} // Assuming 'product_type' is the label you want to display
+                        renderInput={(params) => <TextField {...params} label="Label" />}
+                                          /> */
+// }

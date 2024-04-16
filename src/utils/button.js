@@ -24,7 +24,7 @@ export const SubmitButton = ({ changeTableVisibility, clearFormValues }) => {
           <AnimateButton>
             <Button
               variant="outlined"
-              color="error"
+              color="secondary"
               type="button"
               onClick={() => {
                 changeTableVisibility();

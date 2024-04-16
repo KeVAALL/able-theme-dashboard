@@ -2,7 +2,8 @@ import PropTypes from 'prop-types';
 import { useEffect, useMemo } from 'react';
 
 // material-ui
-import { Box, Chip, Grid, Stack, Table, TableBody, TableCell, TableHead, TableRow, InputLabel, TextField, Button } from '@mui/material';
+import { Box, Chip, Grid, Stack, Table, TableBody, TableCell, TableHead, TableRow, InputLabel, Button, Autocomplete } from '@mui/material';
+import CustomTextField from 'utils/textfield';
 // import Button from 'themes/overrides/Button';
 import { Edit } from 'iconsax-react';
 
@@ -82,6 +83,11 @@ function ReactTable({
     usePagination
   );
   const sortingRow = rows.slice(0, 10);
+  const autocompleteData = [
+    { product_type_id: 1, product_type: 'Electronics', is_active: true, is_deleted: false },
+    { product_type_id: 2, product_type: 'Clothing', is_active: true, is_deleted: false }
+    // More options...
+  ];
   useEffect(() => {
     console.log(columns, data);
   }, [columns]);
@@ -114,31 +120,29 @@ function ReactTable({
                 event.preventDefault();
                 handleSubmit();
               }}
-              sx={{ width: '100%' }}
+              sx={{ width: '60%' }}
             >
               <Stack direction="row" spacing={5} alignItems="center" sx={{ width: '60%' }}>
-                <TextField
-                  variant="standard"
+                <CustomTextField
                   label="Product ID"
                   name="product_type_id"
-                  type="number"
-                  autoComplete="off"
+                  values={values}
                   // placeholder="Product ID"
-                  value={values.product_type_id}
+                  type="number"
                   onChange={handleChange}
                   onBlur={handleBlur}
-                  error={touched.product_type_id && Boolean(errors.product_type_id)}
-                  helperText={touched.product_type_id && errors.product_type_id}
+                  touched={touched}
+                  errors={errors}
                 />
 
                 <Stack direction="row" spacing={2} alignItems="center">
-                  <Button variant="outlined" color="success" type="submit" sx={{ justifySelf: 'center' }}>
+                  <Button variant="contained" color="success" type="submit" sx={{ justifySelf: 'center' }}>
                     Search
                   </Button>
 
                   <Button
                     variant="outlined"
-                    color="warning"
+                    color="secondary"
                     type="submit"
                     sx={{ justifySelf: 'center' }}
                     onClick={() => {
@@ -239,7 +243,7 @@ const MultiTable = ({
   // getData
 }) => {
   return (
-    <MainCard title="Pagination at Bottom" content={false} secondary={<CSVExport data={data} filename={'pagination-bottom-table.csv'} />}>
+    <MainCard title="Product Type Entry" content={false} secondary={<CSVExport data={data} filename={'pagination-bottom-table.csv'} />}>
       <ScrollX>
         <ReactTable
           columns={columns}
