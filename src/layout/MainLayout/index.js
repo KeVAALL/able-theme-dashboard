@@ -31,9 +31,9 @@ const MainLayout = () => {
   const isHorizontal = menuOrientation === MenuOrientation.HORIZONTAL && !downLG;
 
   // set media wise responsive drawer
-  useEffect(() => {
-    console.log(`is Horizontal: ${isHorizontal}`);
-  }, [isHorizontal]);
+  // useEffect(() => {
+  //   console.log(`is Horizontal: ${isHorizontal}`);
+  // }, [isHorizontal]);
   useEffect(() => {
     if (!miniDrawer) {
       dispatch(openDrawer(!downXL));

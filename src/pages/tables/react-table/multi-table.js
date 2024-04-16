@@ -8,6 +8,8 @@ import { Edit } from 'iconsax-react';
 // third-party
 import { useTable, useFilters, usePagination } from 'react-table';
 import { Formik } from 'formik';
+import * as Yup from 'yup';
+import axios from 'utils/axios';
 
 // project-imports
 // import makeData from 'data/react-table';
@@ -27,10 +29,11 @@ import { CSVExport, TablePagination, EmptyTable, HeaderSort } from 'components/t
 import { useGlobalFilter } from 'react-table/dist/react-table.development';
 import AnimateButton from 'components/@extended/AnimateButton';
 import { useSortBy } from 'react-table';
+import { Delete } from '@mui/icons-material';
 
 // ==============================|| REACT TABLE ||============================== //
 
-function ReactTable({ columns, data, formValues, changeTableVisibility, setEditing }) {
+function ReactTable({ columns, data, formValues, changeTableVisibility, setEditing, setSearchData, getData }) {
   const filterTypes = useMemo(() => renderFilterTypes, []);
   const defaultColumn = useMemo(() => ({ Filter: DefaultColumnFilter }), []);
   const initialState = useMemo(() => ({ filters: [{ id: 'status', value: '' }] }), []);
@@ -77,9 +80,20 @@ function ReactTable({ columns, data, formValues, changeTableVisibility, setEditi
     <Stack>
       <Stack direction="row" spacing={2} alignItems="center" justifyContent="space-between" sx={{ padding: 2 }}>
         <Formik
-          initialValues={formValues}
-          onSubmit={(values, { setSubmitting, resetForm }) => {
-            console.log(values);
+          initialValues={{ product_type_id: '' }}
+          validationSchema={Yup.object().shape({
+            product_type_id: Yup.number()
+          })}
+          onSubmit={async (values, { setSubmitting, resetForm }) => {
+            console.log({
+              ...values,
+              method_name: 'getone'
+            });
+            const response = await axios.post('/product/getproductmethod', {
+              method_name: 'getone',
+              ...values
+            });
+            setSearchData(response.data.data);
             resetForm();
           }}
         >
@@ -94,18 +108,25 @@ function ReactTable({ columns, data, formValues, changeTableVisibility, setEditi
             >
               <Stack direction="row" spacing={2} alignItems="center" sx={{ width: '60%' }}>
                 <TextField
-                  name="userName"
-                  placeholder="User Name"
-                  value={values.userName}
+                  name="product_type_id"
+                  type="number"
+                  placeholder="Product ID"
+                  value={values.product_type_id}
                   onChange={handleChange}
                   onBlur={handleBlur}
-                  error={touched.userName && Boolean(errors.userName)}
-                  helperText={touched.userName && errors.userName}
+                  error={touched.product_type_id && Boolean(errors.product_type_id)}
+                  helperText={touched.product_type_id && errors.product_type_id}
                 />
 
                 <AnimateButton>
                   <Button variant="outlined" type="submit" sx={{ justifySelf: 'center', padding: '10px 14px' }}>
                     Search
+                  </Button>
+                </AnimateButton>
+
+                <AnimateButton>
+                  <Button variant="outlined" type="submit" sx={{ justifySelf: 'center', padding: '10px 14px' }} onClick={() => getData()}>
+                    Reset
                   </Button>
                 </AnimateButton>
               </Stack>
@@ -141,14 +162,27 @@ function ReactTable({ columns, data, formValues, changeTableVisibility, setEditi
                     </TableCell>
                   ))}
                   <TableCell>
+                    {/* <Stack spacing={2} flexDirection={row}> */}
                     <Edit
+                      style={{ marginRight: 10 }}
                       onClick={() => {
                         changeTableVisibility();
-                        setEditing(row.original);
+                        setEditing({ product_type_id: row.original.product_type_id, product_type: row.original.product_type });
                         // handleEdit(row.original);
                         console.log(row.original);
                       }}
                     />
+                    <Delete
+                      onClick={async () => {
+                        await axios.post('/product/createproduct-type', {
+                          product_type_id: row.original.product_type_id,
+                          method_name: 'delete'
+                        });
+                        getData();
+                        console.log(row.original);
+                      }}
+                    />
+                    {/* </Stack> */}
                   </TableCell>
                 </TableRow>
               );
@@ -175,7 +209,7 @@ ReactTable.propTypes = {
 
 // ==============================|| REACT TABLE - PAGINATION - FILTERING ||============================== //
 
-const MultiTable = ({ columns, data, formValues, changeTableVisibility, setEditing }) => {
+const MultiTable = ({ columns, data, formValues, changeTableVisibility, setEditing, setSearchData, getData }) => {
   return (
     <MainCard title="Pagination at Bottom" content={false} secondary={<CSVExport data={data} filename={'pagination-bottom-table.csv'} />}>
       <ScrollX>
@@ -185,6 +219,8 @@ const MultiTable = ({ columns, data, formValues, changeTableVisibility, setEditi
           formValues={formValues}
           changeTableVisibility={changeTableVisibility}
           setEditing={setEditing}
+          setSearchData={setSearchData}
+          getData={getData}
         />
       </ScrollX>
     </MainCard>

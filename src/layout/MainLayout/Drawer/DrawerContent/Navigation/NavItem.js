@@ -16,7 +16,6 @@ import { MenuOrientation, ThemeMode } from 'config';
 // ==============================|| NAVIGATION - ITEM ||============================== //
 
 const NavItem = ({ item, level }) => {
-  console.log(item);
   const theme = useTheme();
   const downLG = useMediaQuery(theme.breakpoints.down('lg'));
 
