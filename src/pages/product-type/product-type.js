@@ -1,7 +1,7 @@
-import { useEffect, useMemo, useState } from 'react';
-// material-ui
+import { useMemo, useState } from 'react';
 
-import { Divider, Box, Card, Grid, InputLabel, Stack, TextField, CardContent, Autocomplete } from '@mui/material';
+// material-ui
+import { Divider, Box, Card, Grid, CardContent } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { useQuery } from 'react-query';
 
@@ -18,10 +18,9 @@ import { SubmitButton } from 'utils/button';
 import { enqueueSnackbar } from 'notistack';
 import CustomTextField, { CustomAutoComplete } from 'utils/textfield';
 
-function Product() {
+function ProductType() {
   const [showTable, setShowTable] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
-  const [loading, setLoading] = useState(true);
   const [data, setData] = useState([]);
 
   const setEditing = (value) => {
@@ -74,7 +73,6 @@ function Product() {
   const {
     isPending,
     error,
-    data: tableData,
     refetch: tableDataRefetch
   } = useQuery({
     queryKey: ['productTableData'],
@@ -113,7 +111,6 @@ function Product() {
                 }
               });
               tableDataRefetch();
-              //   getData();
             }
             if (isEditing === true) {
               console.log('i am editing');
@@ -130,8 +127,6 @@ function Product() {
                 }
               });
               tableDataRefetch();
-
-              //   getData();
             }
 
             changeTableVisibility();
@@ -212,41 +207,4 @@ function Product() {
   );
 }
 
-export default Product;
-
-//   {
-//     Header: 'Actions',
-//     accessor: 'actions',
-//     Cell: ({ row: { original } }) => {
-//       <Edit
-//         style={{
-//           lineHeight: 1.66,
-//           fontWeight: 400,
-//           display: 'table-cell',
-//           verticalAlign: 'inherit',
-//           textAlign: 'left',
-//           color: '#1D2630',
-//           fontSize: '0.875rem',
-//           borderColor: 'rgba(219, 224, 229, 0.65)'
-//         }}
-//         onClick={() => {
-//           // handleEdit(row.original);
-//           changeTableVisibility();
-//           console.log(original);
-//         }}
-//       />;
-//     }
-//   }
-// {
-/* <Autocomplete
-                        fullWidth
-                        disablePortal
-                        
-                        className="common-autocomplete"
-                        //   style={{paddingBlock:"6px"}}
-                        id="basic-autocomplete-label"
-                        options={autocompleteData}
-                        getOptionLabel={(option) => option.product_type} // Assuming 'product_type' is the label you want to display
-                        renderInput={(params) => <TextField {...params} label="Label" />}
-                                          /> */
-// }
+export default ProductType;

@@ -5,11 +5,12 @@ import { Box, Typography } from '@mui/material';
 
 // project-imports
 import NavGroup from './NavGroup';
-import menuItem from 'menu-items/components';
+// import menuItem from 'menu-items/components';
 
 // ==============================|| DRAWER - NAVIGATION ||============================== //
 
 const Navigation = ({ searchValue }) => {
+  const { menuItem } = useSelector((state) => state.menu);
   let filteredMenuItems = [];
 
   // if no value searched, we will render all menu items

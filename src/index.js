@@ -14,7 +14,6 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
 // apex-chart
-import 'assets/third-party/apex-chart.css';
 import 'assets/third-party/react-table.css';
 
 // project-imports
@@ -44,7 +43,4 @@ root.render(
   </ReduxProvider>
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();

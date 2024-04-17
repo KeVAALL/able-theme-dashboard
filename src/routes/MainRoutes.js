@@ -2,17 +2,11 @@ import { lazy } from 'react';
 
 // project-imports
 import MainLayout from 'layout/MainLayout';
-import CommonLayout from 'layout/CommonLayout';
 import Loadable from 'components/Loadable';
 import AuthGuard from 'utils/route-guard/AuthGuard';
 
-const AppCustomerList = Loadable(lazy(() => import('pages/apps/customer/list')));
-const AppCustomerCard = Loadable(lazy(() => import('pages/apps/customer/card')));
-
-const AccountProfile = Loadable(lazy(() => import('pages/apps/profiles/account')));
-
 // Product
-const Product = Loadable(lazy(() => import('pages/product/product')));
+const Product = Loadable(lazy(() => import('pages/product-type/product-type')));
 
 const FormsBasic = Loadable(lazy(() => import('pages/form-basic/basic-form')));
 
@@ -35,10 +29,6 @@ const AuthLogin3 = Loadable(lazy(() => import('pages/auth/auth3/login3')));
 
 const MaintenanceError = Loadable(lazy(() => import('pages/maintenance/error/404')));
 const MaintenanceError500 = Loadable(lazy(() => import('pages/maintenance/error/500')));
-const MaintenanceUnderConstruction = Loadable(lazy(() => import('pages/maintenance/under-construction/under-construction')));
-const MaintenanceUnderConstruction2 = Loadable(lazy(() => import('pages/maintenance/under-construction/under-construction2')));
-const MaintenanceComingSoon = Loadable(lazy(() => import('pages/maintenance/coming-soon/coming-soon')));
-const MaintenanceComingSoon2 = Loadable(lazy(() => import('pages/maintenance/coming-soon/coming-soon2')));
 
 // ==============================|| MAIN ROUTES ||============================== //
 
