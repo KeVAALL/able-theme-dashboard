@@ -59,7 +59,7 @@ const PopperStyled = styled(Popper)(({ theme }) => ({
   }
 }));
 
-const NavGroup = ({ item, lastItem, remItems, lastItemId, setSelectedItems, selectedItems, setSelectedLevel, selectedLevel }) => {
+const NavGroup = ({ item, lastItem, remItems, lastItemId, setSelectedItems, selectedItems, setSelectedLevel, selectedLevel, icons }) => {
   const theme = useTheme();
   const { pathname } = useLocation();
 
@@ -148,7 +148,7 @@ const NavGroup = ({ item, lastItem, remItems, lastItemId, setSelectedItems, sele
           />
         );
       case 'item':
-        return <NavItem key={menuItem.id} item={menuItem} level={1} />;
+        return <NavItem key={menuItem.id} item={menuItem} level={1} icons={icons} />;
       default:
         return (
           <Typography key={menuItem.id} variant="h6" color="error" align="center">
@@ -181,7 +181,7 @@ const NavGroup = ({ item, lastItem, remItems, lastItemId, setSelectedItems, sele
               />
             );
           case 'item':
-            return <NavItem key={menu.id} item={menu} level={1} />;
+            return <NavItem key={menu.id} item={menu} level={1} icons={icons} />;
           default:
             return (
               <Typography key={menu.id} variant="h6" color="error" align="center">
@@ -210,7 +210,7 @@ const NavGroup = ({ item, lastItem, remItems, lastItemId, setSelectedItems, sele
           />
         );
       case 'item':
-        return <NavItem key={menu.id} item={menu} level={1} />;
+        return <NavItem key={menu.id} item={menu} level={1} icons={icons} />;
       default:
         return (
           <Typography key={menu.id} variant="h6" color="error" align="center">

@@ -15,7 +15,7 @@ import Breadcrumbs from 'components/@extended/Breadcrumbs';
 import { DRAWER_WIDTH } from 'config';
 import navigation from 'menu-items';
 import useConfig from 'hooks/useConfig';
-import { dispatch } from 'store';
+import { dispatch, useSelector } from 'store';
 import { openDrawer } from 'store/reducers/menu';
 import { MenuOrientation } from 'config';
 
@@ -25,6 +25,7 @@ const MainLayout = () => {
   const theme = useTheme();
   const downXL = useMediaQuery(theme.breakpoints.down('xl'));
   const downLG = useMediaQuery(theme.breakpoints.down('lg'));
+  const { menuItem } = useSelector((state) => state.menu);
 
   const { container, miniDrawer, menuOrientation } = useConfig();
 
@@ -61,9 +62,9 @@ const MainLayout = () => {
             mt: -2.5
           }}
         >
-          <Breadcrumbs navigation={navigation} title titleBottom card={false} divider={false} />
+          <Breadcrumbs navigation={menuItem} title titleBottom card={false} divider={false} />
           <Outlet />
-          <Footer />
+          {/* <Footer /> */}
         </Container>
       </Box>
     </Box>

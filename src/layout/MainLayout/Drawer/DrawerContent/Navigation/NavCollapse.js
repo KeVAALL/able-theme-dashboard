@@ -31,6 +31,7 @@ import { MenuOrientation, ThemeMode } from 'config';
 
 // assets
 import { ArrowDown2, ArrowUp2, ArrowRight2, Copy } from 'iconsax-react';
+import { HomeTrendUp, Profile2User, ShoppingBag } from 'iconsax-react';
 
 // mini-menu - wrapper
 const PopperStyled = styled(Popper)(({ theme }) => ({
@@ -58,6 +59,12 @@ const PopperStyled = styled(Popper)(({ theme }) => ({
 const NavCollapse = ({ menu, level, parentId, setSelectedItems, selectedItems, setSelectedLevel, selectedLevel }) => {
   const theme = useTheme();
   const navigation = useNavigate();
+  const icons = {
+    HomeTrendUp: HomeTrendUp,
+    Profile2User: Profile2User,
+    ShoppingBag: ShoppingBag
+    // data: Fatrows
+  };
 
   const downLG = useMediaQuery(theme.breakpoints.down('lg'));
   const { drawerOpen } = useSelector((state) => state.menu);
@@ -202,8 +209,9 @@ const NavCollapse = ({ menu, level, parentId, setSelectedItems, selectedItems, s
 
   const isSelected = selected === menu.id;
   const borderIcon = level === 1 ? <Copy variant="Bulk" size={drawerOpen ? 22 : 24} /> : false;
-  const Icon = menu.icon;
-  const menuIcon = menu.icon ? <Icon variant="Bulk" size={drawerOpen ? 22 : 24} /> : borderIcon;
+  console.log(menu.icon);
+  const Icon = icons[menu.icon];
+  const menuIcon = icons[menu.icon] ? <Icon variant="Bulk" size={drawerOpen ? 22 : 24} /> : borderIcon;
   const textColor = theme.palette.mode === ThemeMode.DARK ? theme.palette.secondary[400] : theme.palette.secondary.main;
   const iconSelectedColor = theme.palette.mode === ThemeMode.DARK && drawerOpen ? theme.palette.text.primary : theme.palette.primary.main;
   const popperId = miniMenuOpened ? `collapse-pop-${menu.id}` : undefined;

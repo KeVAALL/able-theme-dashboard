@@ -2,20 +2,21 @@
 import React from 'react';
 import { Divider, Box, Card, Button, Grid, InputLabel, Stack, TextField, CardHeader, CardContent } from '@mui/material';
 import AnimateButton from 'components/@extended/AnimateButton';
+import { AddCircle } from 'iconsax-react';
 
 const headerSX = {
   p: 2.5,
   '& .MuiCardHeader-action': { m: '0px auto', alignSelf: 'center' }
 };
 
-export const SubmitButton = ({ changeTableVisibility, clearFormValues }) => {
+export const SubmitButton = ({ title, changeTableVisibility, clearFormValues }) => {
   return (
     <Stack direction="row" alignItems="center" justifyContent="space-between">
-      <CardHeader sx={headerSX} titleTypographyProps={{ variant: 'subtitle1' }} title="Form" />
-      <Stack direction="row" alignItems="center" spacing={2.5} paddingRight={2.5}>
+      <CardHeader sx={headerSX} titleTypographyProps={{ variant: 'subtitle1' }} title={title} />
+      <Stack direction="row" alignItems="center" spacing={1.5} paddingRight={2.5}>
         <Box>
           <AnimateButton>
-            <Button variant="contained" color="success" type="submit">
+            <Button variant="contained" color="success" startIcon={<AddCircle />} type="submit">
               Submit
             </Button>
           </AnimateButton>
@@ -24,7 +25,7 @@ export const SubmitButton = ({ changeTableVisibility, clearFormValues }) => {
           <AnimateButton>
             <Button
               variant="outlined"
-              color="error"
+              color="secondary"
               type="button"
               onClick={() => {
                 changeTableVisibility();

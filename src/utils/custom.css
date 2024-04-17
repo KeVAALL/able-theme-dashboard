@@ -1,0 +1,16 @@
+.common-textfield .MuiFormControl-root {
+  width: 100% !important;
+}
+.common-textfield .MuiFormLabel-root {
+  line-height: 1.5em !important;
+}
+
+.common-autocomplete .MuiFormLabel-root {
+  top: -3px !important;
+}
+.common-autocomplete .MuiAutocomplete-input {
+  padding: 7.5px 4px 3px 5px !important;
+}
+.common-autocomplete .MuiOutlinedInput-root {
+  padding: 3.02px 9px !important;
+}
