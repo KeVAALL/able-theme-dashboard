@@ -7,12 +7,12 @@ import { AppBar, Toolbar, useMediaQuery } from '@mui/material';
 // project-imports
 import AppBarStyled from './AppBarStyled';
 import HeaderContent from './HeaderContent';
-import IconButton from 'components/@extended/IconButton';
+import IconButton from 'helpers/@extended/IconButton';
 
 import { DRAWER_WIDTH, MINI_DRAWER_WIDTH } from 'config';
 import useConfig from 'hooks/useConfig';
-import { dispatch, useSelector } from 'store';
-import { openDrawer } from 'store/reducers/menu';
+import { dispatch, useSelector } from '../../../redux';
+import { openDrawer } from 'redux/reducers/menu';
 import { MenuOrientation, ThemeMode } from 'config';
 
 // assets

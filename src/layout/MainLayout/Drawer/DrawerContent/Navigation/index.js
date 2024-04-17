@@ -10,7 +10,7 @@ import NavGroup from './NavGroup';
 // import menuItem from 'menu-items';
 import { Menu } from 'menu-items/dashboard';
 
-import { useSelector } from 'store';
+import { useSelector } from '../../../../../redux';
 import useConfig from 'hooks/useConfig';
 import { HORIZONTAL_MAX_ITEM } from 'config';
 import { MenuOrientation } from 'config';

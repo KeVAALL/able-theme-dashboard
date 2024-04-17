@@ -9,10 +9,10 @@ import { Box, ButtonBase, CardContent, ClickAwayListener, Grid, Paper, Popper, S
 // project-imports
 import ProfileTab from './ProfileTab';
 import SettingTab from './SettingTab';
-import Avatar from 'components/@extended/Avatar';
-import MainCard from 'components/MainCard';
-import Transitions from 'components/@extended/Transitions';
-import IconButton from 'components/@extended/IconButton';
+import Avatar from 'helpers/@extended/Avatar';
+import MainCard from 'components/organisms/mainCard/MainCard';
+import Transitions from 'helpers/@extended/Transitions';
+import IconButton from 'helpers/@extended/IconButton';
 import useAuth from 'hooks/useAuth';
 import { ThemeMode } from 'config';
 

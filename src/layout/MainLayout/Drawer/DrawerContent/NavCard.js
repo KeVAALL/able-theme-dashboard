@@ -2,11 +2,11 @@
 import { Button, Link, CardMedia, Stack, Typography } from '@mui/material';
 
 // project-imports
-import MainCard from 'components/MainCard';
+import MainCard from 'components/organisms/mainCard/MainCard';
 
 // assets
 import avatar from 'assets/images/users/customer-support-1.png';
-import AnimateButton from 'components/@extended/AnimateButton';
+import AnimateButton from 'helpers/@extended/AnimateButton';
 
 // ==============================|| DRAWER CONTENT - NAV CARD ||============================== //
 

@@ -20,13 +20,13 @@ import {
 
 // project-imports
 import NavItem from './NavItem';
-import Dot from 'components/@extended/Dot';
-import SimpleBar from 'components/third-party/SimpleBar';
-import Transitions from 'components/@extended/Transitions';
+import Dot from 'helpers/@extended/Dot';
+import SimpleBar from 'helpers/third-party/SimpleBar';
+import Transitions from 'helpers/@extended/Transitions';
 
 import useConfig from 'hooks/useConfig';
-import { dispatch, useSelector } from 'store';
-import { activeItem } from 'store/reducers/menu';
+import { dispatch, useSelector } from '../../../../../redux';
+import { activeItem } from 'redux/reducers/menu';
 import { MenuOrientation, ThemeMode } from 'config';
 
 // assets

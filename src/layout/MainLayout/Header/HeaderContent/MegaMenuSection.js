@@ -21,11 +21,11 @@ import {
 } from '@mui/material';
 
 // project-imports
-import MainCard from 'components/MainCard';
-import Dot from 'components/@extended/Dot';
-import IconButton from 'components/@extended/IconButton';
-import Transitions from 'components/@extended/Transitions';
-import AnimateButton from 'components/@extended/AnimateButton';
+import MainCard from 'components/organisms/mainCard/MainCard';
+import Dot from 'helpers/@extended/Dot';
+import IconButton from 'helpers/@extended/IconButton';
+import Transitions from 'helpers/@extended/Transitions';
+import AnimateButton from 'helpers/@extended/AnimateButton';
 import { DRAWER_WIDTH, ThemeMode } from 'config';
 
 // assets

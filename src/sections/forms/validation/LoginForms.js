@@ -4,7 +4,7 @@ import { dispatch } from 'store';
 import { Button, Grid, InputLabel, Stack, TextField } from '@mui/material';
 
 // project-imports
-import MainCard from 'components/MainCard';
+import MainCard from 'componentss/organisms/mainCard/MainCard';
 import AnimateButton from 'components/@extended/AnimateButton';
 import { openSnackbar } from 'store/reducers/snackbar';
 

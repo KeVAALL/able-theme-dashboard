@@ -11,8 +11,8 @@ import DrawerContent from './DrawerContent';
 import MiniDrawerStyled from './MiniDrawerStyled';
 
 import { DRAWER_WIDTH } from 'config';
-import { dispatch, useSelector } from 'store';
-import { openDrawer } from 'store/reducers/menu';
+import { dispatch, useSelector } from '../../../redux';
+import { openDrawer } from 'redux/reducers/menu';
 
 // ==============================|| MAIN LAYOUT - DRAWER ||============================== //
 

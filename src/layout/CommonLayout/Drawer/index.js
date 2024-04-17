@@ -6,7 +6,7 @@ import { useTheme } from '@mui/material/styles';
 import { useMediaQuery, Box, Drawer as MuiDrawer, TextField } from '@mui/material';
 
 // project-imports
-import MainCard from 'components/MainCard';
+import MainCard from 'components/organisms/mainCard/MainCard';
 import DrawerContent from './DrawerContent';
 import { DRAWER_WIDTH } from 'config';
 

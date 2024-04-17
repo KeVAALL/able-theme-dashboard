@@ -8,8 +8,8 @@ import { Container, Toolbar } from '@mui/material';
 
 // project-imports
 import ComponentLayout from './ComponentLayout';
-import { dispatch, useSelector } from 'store';
-import { openComponentDrawer } from 'store/reducers/menu';
+import { dispatch, useSelector } from '../../redux';
+import { openComponentDrawer } from 'redux/reducers/menu';
 
 // material-ui
 import { styled } from '@mui/material/styles';

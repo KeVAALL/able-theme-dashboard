@@ -8,7 +8,7 @@ import { useMediaQuery } from '@mui/material';
 import DrawerHeaderStyled from './DrawerHeaderStyled';
 import { MenuOrientation } from 'config';
 
-import Logo from 'components/logo';
+import Logo from 'helpers/logo';
 import { DRAWER_WIDTH, HEADER_HEIGHT } from 'config';
 import useConfig from 'hooks/useConfig';
 

@@ -10,13 +10,13 @@ import Drawer from './Drawer';
 import Header from './Header';
 import Footer from './Footer';
 import HorizontalBar from './Drawer/HorizontalBar';
-import Breadcrumbs from 'components/@extended/Breadcrumbs';
+import Breadcrumbs from 'helpers/@extended/Breadcrumbs';
 
 import { DRAWER_WIDTH } from 'config';
 import navigation from 'menu-items';
 import useConfig from 'hooks/useConfig';
-import { dispatch, useSelector } from 'store';
-import { openDrawer } from 'store/reducers/menu';
+import { dispatch, useSelector } from '../../redux';
+import { openDrawer } from 'redux/reducers/menu';
 import { MenuOrientation } from 'config';
 
 // ==============================|| MAIN LAYOUT ||============================== //

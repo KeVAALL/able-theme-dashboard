@@ -5,10 +5,10 @@ import { useTheme } from '@mui/material/styles';
 import { Box, Drawer, Grid, Stack, Typography } from '@mui/material';
 
 // project-imports
-import MainCard from 'components/MainCard';
-import IconButton from 'components/@extended/IconButton';
-import SimpleBar from 'components/third-party/SimpleBar';
-import MessageCard from 'components/cards/statistics/MessageCard';
+import MainCard from 'components/organisms/mainCard/MainCard';
+import IconButton from 'helpers/@extended/IconButton';
+import SimpleBar from 'helpers/third-party/SimpleBar';
+import MessageCard from 'helpers/cards/statistics/MessageCard';
 import { ThemeMode } from 'config';
 
 // assets

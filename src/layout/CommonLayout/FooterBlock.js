@@ -8,7 +8,7 @@ import { Box, Container, Grid, Link, Stack, Typography } from '@mui/material';
 import { motion } from 'framer-motion';
 
 // project-imports
-import Logo from 'components/logo';
+import Logo from 'helpers/logo';
 
 // assets
 import { Facebook } from 'iconsax-react';

@@ -11,7 +11,7 @@ import countries from 'data/countries';
 
 // assets
 import GoogleMaps from './GoogleMap';
-import MainCard from 'components/MainCard';
+import MainCard from 'componentss/organisms/mainCard/MainCard';
 import trimFc from 'utils/trimFc';
 
 // validation schema

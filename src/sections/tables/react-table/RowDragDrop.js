@@ -13,8 +13,8 @@ import { isMobile } from 'react-device-detect';
 import update from 'immutability-helper';
 
 // project-imports
-import MainCard from 'components/MainCard';
-import ScrollX from 'components/ScrollX';
+import MainCard from 'componentss/organisms/mainCard/MainCard';
+import ScrollX from 'componentss/organisms/scrollX/ScrollX';
 import { CSVExport, DraggableRow } from 'components/third-party/ReactTable';
 import LinearWithLabel from 'components/@extended/progress/LinearWithLabel';
 

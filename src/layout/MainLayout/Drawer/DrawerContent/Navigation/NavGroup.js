@@ -23,12 +23,12 @@ import { FormattedMessage } from 'react-intl';
 // project-imports
 import NavItem from './NavItem';
 import NavCollapse from './NavCollapse';
-import SimpleBar from 'components/third-party/SimpleBar';
-import Transitions from 'components/@extended/Transitions';
+import SimpleBar from 'helpers/third-party/SimpleBar';
+import Transitions from 'helpers/@extended/Transitions';
 
 import useConfig from 'hooks/useConfig';
-import { dispatch, useSelector } from 'store';
-import { activeID } from 'store/reducers/menu';
+import { dispatch, useSelector } from '../../../../../redux';
+import { activeID } from 'redux/reducers/menu';
 import { MenuOrientation, ThemeMode } from 'config';
 
 // assets

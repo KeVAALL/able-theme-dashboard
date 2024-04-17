@@ -2,7 +2,7 @@
 import { FormattedMessage } from 'react-intl';
 
 // project-imports
-import { useSelector } from 'store';
+import { useSelector } from '../redux';
 
 // assets
 import { Home3, HomeTrendUp, Box1 } from 'iconsax-react';

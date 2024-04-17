@@ -10,8 +10,8 @@ import { useMediaQuery, Box } from '@mui/material';
 import Drawer from './Drawer';
 import { DRAWER_WIDTH } from 'config';
 
-import { dispatch } from 'store';
-import { openComponentDrawer } from 'store/reducers/menu';
+import { dispatch } from '../../redux';
+import { openComponentDrawer } from 'redux/reducers/menu';
 
 // components content
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(({ theme, open }) => ({

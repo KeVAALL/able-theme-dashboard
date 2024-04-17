@@ -13,8 +13,8 @@ import { TouchBackend } from 'react-dnd-touch-backend';
 import { isMobile } from 'react-device-detect';
 
 // project-imports
-import MainCard from 'components/MainCard';
-import ScrollX from 'components/ScrollX';
+import MainCard from 'componentss/organisms/mainCard/MainCard';
+import ScrollX from 'componentss/organisms/scrollX/ScrollX';
 import LinearWithLabel from 'components/@extended/progress/LinearWithLabel';
 import { CSVExport, DraggableHeader, DragPreview } from 'components/third-party/ReactTable';
 

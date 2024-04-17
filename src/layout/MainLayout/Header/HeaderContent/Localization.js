@@ -5,9 +5,9 @@ import { useTheme } from '@mui/material/styles';
 import { Box, ClickAwayListener, Grid, List, ListItemButton, ListItemText, Paper, Popper, Typography, useMediaQuery } from '@mui/material';
 
 // project-imports
-import MainCard from 'components/MainCard';
-import IconButton from 'components/@extended/IconButton';
-import Transitions from 'components/@extended/Transitions';
+import MainCard from 'components/organisms/mainCard/MainCard';
+import IconButton from 'helpers/@extended/IconButton';
+import Transitions from 'helpers/@extended/Transitions';
 import useConfig from 'hooks/useConfig';
 import { ThemeMode } from 'config';
 

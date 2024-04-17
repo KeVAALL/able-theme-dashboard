@@ -8,8 +8,8 @@ import { Box, Chip, Stack, Table, TableBody, TableCell, TableHead, TableRow } fr
 import { useTable, useGroupBy, useExpanded } from 'react-table';
 
 // project-imports
-import MainCard from 'components/MainCard';
-import ScrollX from 'components/ScrollX';
+import MainCard from 'componentss/organisms/mainCard/MainCard';
+import ScrollX from 'componentss/organisms/scrollX/ScrollX';
 import { CSVExport } from 'components/third-party/ReactTable';
 import LinearWithLabel from 'components/@extended/progress/LinearWithLabel';
 import { roundedMedian } from 'utils/react-table';

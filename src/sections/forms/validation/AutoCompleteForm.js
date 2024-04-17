@@ -8,7 +8,7 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 
 // project-imports
-import MainCard from 'components/MainCard';
+import MainCard from 'componentss/organisms/mainCard/MainCard';
 import AnimateButton from 'components/@extended/AnimateButton';
 import { openSnackbar } from 'store/reducers/snackbar';
 

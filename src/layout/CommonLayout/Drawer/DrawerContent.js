@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { Box } from '@mui/material';
 
 // project-imports
-import SimpleBar from 'components/third-party/SimpleBar';
+import SimpleBar from 'helpers/third-party/SimpleBar';
 import Navigation from './Navigation';
 
 // ==============================|| DRWAER - CONTENT ||============================== //

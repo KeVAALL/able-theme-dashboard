@@ -8,10 +8,10 @@ import { Avatar, Chip, ListItemButton, ListItemIcon, ListItemText, Typography, u
 import { HomeTrendUp, Profile2User, ShoppingBag } from 'iconsax-react';
 
 // project-imports
-import Dot from 'components/@extended/Dot';
+import Dot from 'helpers/@extended/Dot';
 import useConfig from 'hooks/useConfig';
-import { dispatch, useSelector } from 'store';
-import { activeItem, openDrawer } from 'store/reducers/menu';
+import { dispatch, useSelector } from '../../../../../redux';
+import { activeItem, openDrawer } from 'redux/reducers/menu';
 import { MenuOrientation, ThemeMode } from 'config';
 // icons
 

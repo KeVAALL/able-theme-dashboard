@@ -3,7 +3,7 @@ import { Box, Grid, Rating, Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 
 // project-imports
-import Avatar from 'components/@extended/Avatar';
+import Avatar from 'helpers/@extended/Avatar';
 
 // third-party
 import Slider from 'react-slick';

@@ -8,8 +8,8 @@ import { Chip, Stack, Table, TableBody, TableCell, TableHead, TableRow } from '@
 import { useTable } from 'react-table';
 
 // project-imports
-import MainCard from 'components/MainCard';
-import ScrollX from 'components/ScrollX';
+import MainCard from 'componentss/organisms/mainCard/MainCard';
+import ScrollX from 'componentss/organisms/scrollX/ScrollX';
 // eslint-disable-next-line no-unused-vars
 import { CSVExport } from 'components/third-party/ReactTable';
 // eslint-disable-next-line no-unused-vars

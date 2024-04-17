@@ -1,15 +1,15 @@
 import { useEffect, useState } from 'react';
 
 // project-imports
-import Routes from 'routes';
+import Routes from 'components/pages/routes';
 import ThemeCustomization from 'themes';
 import { ToastContainer } from 'react-toastify';
 
-import Loader from 'components/Loader';
-import RTLLayout from 'components/RTLLayout';
-import ScrollTop from 'components/ScrollTop';
-import Snackbar from 'components/@extended/Snackbar';
-import Notistack from 'components/third-party/Notistack';
+import Loader from 'components/atoms/loader/Loader';
+import RTLLayout from 'helpers/RTLLayout';
+import ScrollTop from 'helpers/ScrollTop';
+import Snackbar from 'helpers/@extended/Snackbar';
+import Notistack from 'helpers/third-party/Notistack';
 
 // auth-provider
 import { JWTProvider as AuthProvider } from 'contexts/JWTContext';

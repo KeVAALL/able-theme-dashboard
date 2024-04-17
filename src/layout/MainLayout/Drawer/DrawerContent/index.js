@@ -4,8 +4,8 @@ import { useMediaQuery, useTheme } from '@mui/material';
 // project-imports
 import NavCard from './NavCard';
 import Navigation from './Navigation';
-import SimpleBar from 'components/third-party/SimpleBar';
-import { useSelector } from 'store';
+import SimpleBar from 'helpers/third-party/SimpleBar';
+import { useSelector } from '../../../../redux';
 
 // ==============================|| DRAWER CONTENT ||============================== //
 

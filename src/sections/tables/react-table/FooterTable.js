@@ -8,8 +8,8 @@ import { Chip, Table, TableBody, TableCell, TableFooter, TableHead, TableRow } f
 import { useTable } from 'react-table';
 
 // project-imports
-import MainCard from 'components/MainCard';
-import ScrollX from 'components/ScrollX';
+import MainCard from 'componentss/organisms/mainCard/MainCard';
+import ScrollX from 'componentss/organisms/scrollX/ScrollX';
 import { CSVExport } from 'components/third-party/ReactTable';
 import LinearWithLabel from 'components/@extended/progress/LinearWithLabel';
 

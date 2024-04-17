@@ -12,7 +12,7 @@ import { matchSorter } from 'match-sorter';
 import { format } from 'date-fns';
 
 // project-imports
-import IconButton from 'components/@extended/IconButton';
+import IconButton from 'helpers/@extended/IconButton';
 
 // assets
 import { Add, Minus, SearchNormal1 } from 'iconsax-react';

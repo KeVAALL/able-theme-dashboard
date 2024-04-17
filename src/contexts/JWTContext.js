@@ -7,13 +7,12 @@ import { Chance } from 'chance';
 import jwtDecode from 'jwt-decode';
 
 // reducer - state management
-import { LOGIN, LOGOUT } from 'store/reducers/actions';
-import authReducer from 'store/reducers/auth';
+import { LOGIN, LOGOUT } from 'redux/reducers/actions';
+import authReducer from 'redux/reducers/auth';
 
 // project-imports
-import Loader from 'components/Loader';
+import Loader from 'components/atoms/loader/Loader';
 import axios from 'utils/axios';
-import { enqueueSnackbar } from 'notistack';
 
 const chance = new Chance();
 

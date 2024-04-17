@@ -18,10 +18,9 @@ import 'assets/third-party/react-table.css';
 
 // project-imports
 import App from './App';
-import { store, persister } from 'store';
+import { store, persister } from './redux';
 import { ConfigProvider } from 'contexts/ConfigContext';
 import { QueryClientProvider, QueryClient } from 'react-query';
-import reportWebVitals from './reportWebVitals';
 
 const queryClient = new QueryClient();
 const container = document.getElementById('root');
@@ -42,5 +41,3 @@ root.render(
     </PersistGate>
   </ReduxProvider>
 );
-
-reportWebVitals();

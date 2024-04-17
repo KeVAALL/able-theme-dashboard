@@ -25,9 +25,9 @@ import {
 
 // project-imports
 import { APP_DEFAULT_PATH } from 'config';
-import IconButton from 'components/@extended/IconButton';
-import AnimateButton from 'components/@extended/AnimateButton';
-import Logo from 'components/logo';
+import IconButton from 'helpers/@extended/IconButton';
+import AnimateButton from 'helpers/@extended/AnimateButton';
+import Logo from 'helpers/logo';
 import { ThemeDirection } from 'config';
 
 // assets

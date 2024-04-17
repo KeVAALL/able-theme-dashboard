@@ -24,7 +24,7 @@ import { PatternFormat } from 'react-number-format';
 
 // project-imports
 import Avatar from 'components/@extended/Avatar';
-import MainCard from 'components/MainCard';
+import MainCard from 'componentss/organisms/mainCard/MainCard';
 
 // assets
 import { CallCalling, Link1, Location, Sms } from 'iconsax-react';

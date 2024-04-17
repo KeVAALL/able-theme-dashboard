@@ -7,7 +7,7 @@ import { Button, Step, Stepper, StepLabel, Stack, Typography } from '@mui/materi
 import AddressForm from './AddressForm';
 import PaymentForm from './PaymentForm';
 import Review from './Review';
-import MainCard from 'components/MainCard';
+import MainCard from 'componentss/organisms/mainCard/MainCard';
 import AnimateButton from 'components/@extended/AnimateButton';
 
 // step options

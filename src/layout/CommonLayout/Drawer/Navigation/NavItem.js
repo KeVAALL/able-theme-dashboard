@@ -7,8 +7,8 @@ import { useTheme } from '@mui/material/styles';
 import { useMediaQuery, Avatar, Chip, ListItemButton, ListItemText, Typography } from '@mui/material';
 
 // project-imports
-import { dispatch, useSelector } from 'store';
-import { activeComponent, openComponentDrawer } from 'store/reducers/menu';
+import { dispatch, useSelector } from '../../../../redux';
+import { activeComponent, openComponentDrawer } from 'redux/reducers/menu';
 import { ThemeMode } from 'config';
 
 // ==============================|| NAVIGATION - ITEM ||============================== //
