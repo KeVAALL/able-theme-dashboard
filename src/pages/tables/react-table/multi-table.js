@@ -87,7 +87,6 @@ function ReactTable({
   const autocompleteData = [
     { product_type_id: 1, product_type: 'Electronics', is_active: true, is_deleted: false },
     { product_type_id: 2, product_type: 'Clothing', is_active: true, is_deleted: false }
-    // More options...
   ];
   useEffect(() => {
     console.log(columns, data);
@@ -103,7 +102,6 @@ function ReactTable({
           })}
           onSubmit={async (values, { setSubmitting, resetForm }) => {
             console.log({
-              // ...values,
               product_type: values.product_type,
               method_name: 'getone'
             });
