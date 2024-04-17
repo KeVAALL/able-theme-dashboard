@@ -13,7 +13,7 @@ const AccountProfile = Loadable(lazy(() => import('pages/apps/profiles/account')
 
 // Product
 const Product = Loadable(lazy(() => import('pages/product/product')));
-
+const FixedDeposit= Loadable(lazy(() => import('pages/fixed_deposit/fixedDeposit')));
 const FormsBasic = Loadable(lazy(() => import('pages/form-basic/basic-form')));
 
 // pages routing
@@ -83,7 +83,7 @@ const MainRoutes = {
             },
             {
               path: 'fixed_deposit',
-              element: <></>
+              element: <FixedDeposit/>
             }
           ]
         },
