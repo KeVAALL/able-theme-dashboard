@@ -162,8 +162,6 @@ function Product() {
                 <CardContent>
                   <Grid container spacing={3}>
                     <Grid item xs={4}>
-                      {/* <Stack spacing={1}> */}
-                      {/* <InputLabel htmlFor="product_type">Product Type</InputLabel> */}
                       <CustomTextField
                         label="Product Type"
                         name="product_type"
@@ -179,8 +177,6 @@ function Product() {
                           }
                         }}
                       />
-
-                      {/* </Stack> */}
                     </Grid>
                     {/* <Grid item xs={4}>
                       <CustomAutoComplete options={autocompleteData} optionName="product_type" label="Label" />

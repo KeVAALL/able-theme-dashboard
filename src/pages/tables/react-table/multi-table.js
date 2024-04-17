@@ -6,7 +6,7 @@ import { useEffect, useMemo } from 'react';
 import { Box, Chip, Grid, Stack, Table, TableBody, TableCell, TableHead, TableRow, InputLabel, Button, Autocomplete } from '@mui/material';
 import CustomTextField from 'utils/textfield';
 // import Button from 'themes/overrides/Button';
-import { Edit, Trash, Edit2 } from 'iconsax-react';
+import { Edit, Trash, Edit2, FilterSearch } from 'iconsax-react';
 
 // third-party
 import { useTable, useFilters, usePagination } from 'react-table';
@@ -137,7 +137,7 @@ function ReactTable({
                 />
 
                 <Stack direction="row" spacing={2} alignItems="center">
-                  <Button variant="contained" color="success" type="submit" sx={{ justifySelf: 'center' }}>
+                  <Button variant="contained" color="success" type="submit" startIcon={<FilterSearch />} sx={{ justifySelf: 'center' }}>
                     Search
                   </Button>
                 </Stack>

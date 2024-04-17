@@ -9,6 +9,7 @@ import AnimateButton from './@extended/AnimateButton';
 // project-imports
 import Highlighter from 'components/third-party/Highlighter';
 import useConfig from 'hooks/useConfig';
+import { AddCircle } from 'iconsax-react';
 
 // header style
 const headerSX = {
@@ -112,7 +113,7 @@ const MainCard = forwardRef(
             />
             <Box sx={{ px: 2.5 }}>
               <AnimateButton>
-                <Button variant="contained" color="success" type="button" onClick={changeTableVisibility}>
+                <Button variant="contained" color="success" startIcon={<AddCircle />} type="button" onClick={changeTableVisibility}>
                   Add
                 </Button>
               </AnimateButton>
