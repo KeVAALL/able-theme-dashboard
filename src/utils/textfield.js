@@ -19,6 +19,7 @@ export const CustomTextField = (props) => {
       multiline={props.multiline ? true : false}
       autoComplete="off"
       error={props.touched[props.name] && Boolean(props.errors[props.name])}
+      placeholder={props.touched[props.name] && props.errors[props.name]}
       helperText={props.touched[props.name] && props.errors[props.name]}
       {...props}
       //   InputProps={{

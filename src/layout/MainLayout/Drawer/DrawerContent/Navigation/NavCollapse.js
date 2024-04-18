@@ -30,7 +30,7 @@ import { activeItem } from 'redux/reducers/menu';
 import { MenuOrientation, ThemeMode } from 'config';
 
 // assets
-import { ArrowDown2, ArrowUp2, ArrowRight2, Copy } from 'iconsax-react';
+import { ArrowDown2, ArrowUp2, ArrowRight2, Copy, Bank } from 'iconsax-react';
 import { HomeTrendUp, Profile2User, ShoppingBag } from 'iconsax-react';
 
 // mini-menu - wrapper
@@ -62,8 +62,8 @@ const NavCollapse = ({ menu, level, parentId, setSelectedItems, selectedItems, s
   const icons = {
     HomeTrendUp: HomeTrendUp,
     Profile2User: Profile2User,
-    ShoppingBag: ShoppingBag
-    // data: Fatrows
+    ShoppingBag: ShoppingBag,
+    Bank: Bank
   };
 
   const downLG = useMediaQuery(theme.breakpoints.down('lg'));
@@ -209,7 +209,7 @@ const NavCollapse = ({ menu, level, parentId, setSelectedItems, selectedItems, s
 
   const isSelected = selected === menu.id;
   const borderIcon = level === 1 ? <Copy variant="Bulk" size={drawerOpen ? 22 : 24} /> : false;
-  console.log(menu.icon);
+  // console.log(menu.icon);
   const Icon = icons[menu.icon];
   const menuIcon = icons[menu.icon] ? <Icon variant="Bulk" size={drawerOpen ? 22 : 24} /> : borderIcon;
   const textColor = theme.palette.mode === ThemeMode.DARK ? theme.palette.secondary[400] : theme.palette.secondary.main;

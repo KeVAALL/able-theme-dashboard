@@ -7,7 +7,7 @@ import { useTheme } from '@mui/material/styles';
 // project-imports
 import MainCard from 'components/organisms/mainCard/MainCard';
 import AnimateButton from 'helpers/@extended/AnimateButton';
-import MultiTable from 'components/pages/multiTable/multi-table';
+import MultiTable from 'components/pages/multiTable/multiTable';
 
 // third-party
 import { Formik } from 'formik';

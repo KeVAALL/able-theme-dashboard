@@ -4,6 +4,7 @@ import { lazy } from 'react';
 import MainLayout from 'layout/MainLayout';
 import Loadable from 'helpers/Loadable';
 import AuthGuard from 'utils/route-guard/AuthGuard';
+import Issuer from '../issuer/issuer';
 
 // Product
 const Product = Loadable(lazy(() => import('components/pages/productType/productType')));
@@ -68,7 +69,7 @@ const MainRoutes = {
           path: 'product',
           children: [
             {
-              path: 'add_product',
+              path: 'product_type',
               element: <Product />
             },
             {
@@ -76,6 +77,11 @@ const MainRoutes = {
               element: <></>
             }
           ]
+        },
+        {
+          path: 'issuer',
+          element: <Issuer />
+          // element: <></>
         },
         {
           path: 'form',

@@ -3,7 +3,7 @@ import { useEffect, useLayoutEffect, useState } from 'react';
 // material-ui
 import { useTheme } from '@mui/material/styles';
 import { Box, Typography, useMediaQuery } from '@mui/material';
-import { HomeTrendUp, Profile2User, ShoppingBag } from 'iconsax-react';
+import { HomeTrendUp, Profile2User, ShoppingBag, Bank } from 'iconsax-react';
 
 // project-imports
 import NavGroup from './NavGroup';
@@ -20,12 +20,12 @@ import { MenuOrientation } from 'config';
 const Navigation = () => {
   const theme = useTheme();
   const { menuItem } = useSelector((state) => state.menu);
-  console.log(menuItem);
+  // console.log(menuItem);
   const icons = {
     HomeTrendUp: HomeTrendUp,
     Profile2User: Profile2User,
-    ShoppingBag: ShoppingBag
-    // data: Fatrows
+    ShoppingBag: ShoppingBag,
+    Bank: Bank
   };
 
   const downLG = useMediaQuery(theme.breakpoints.down('lg'));
@@ -94,8 +94,8 @@ const Navigation = () => {
   }
 
   // const navGroups = menuItems.items.slice(0, lastItemIndex + 1).map((item) => {
-  console.log(menuItems);
-  console.log(menuItems.slice(0, lastItemIndex + 1));
+  // console.log(menuItems);
+  // console.log(menuItems.slice(0, lastItemIndex + 1));
   const navGroups = menuItems.slice(0, lastItemIndex + 1).map((item) => {
     // const navGroups = menuItems.map((item) => {
     switch (item.type) {

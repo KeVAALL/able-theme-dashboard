@@ -2,7 +2,7 @@
 import React from 'react';
 import { Box, Button, Stack, CardHeader } from '@mui/material';
 import AnimateButton from 'helpers/@extended/AnimateButton';
-import { AddCircle } from 'iconsax-react';
+import { Additem } from 'iconsax-react';
 
 const headerSX = {
   p: 2.5,
@@ -16,7 +16,7 @@ export const SubmitButton = ({ title, changeTableVisibility, clearFormValues }) 
       <Stack direction="row" alignItems="center" spacing={1.5} paddingRight={2.5}>
         <Box>
           <AnimateButton>
-            <Button variant="contained" color="success" startIcon={<AddCircle />} type="submit">
+            <Button variant="contained" color="success" startIcon={<Additem />} type="submit">
               Submit
             </Button>
           </AnimateButton>

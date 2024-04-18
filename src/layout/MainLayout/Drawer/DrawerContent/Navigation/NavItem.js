@@ -5,7 +5,7 @@ import { Link, useLocation } from 'react-router-dom';
 // material-ui
 import { useTheme } from '@mui/material/styles';
 import { Avatar, Chip, ListItemButton, ListItemIcon, ListItemText, Typography, useMediaQuery } from '@mui/material';
-import { HomeTrendUp, Profile2User, ShoppingBag } from 'iconsax-react';
+import { HomeTrendUp, Profile2User, ShoppingBag, Bank } from 'iconsax-react';
 
 // project-imports
 import Dot from 'helpers/@extended/Dot';
@@ -26,8 +26,8 @@ const NavItem = ({ item, level }) => {
   const icons = {
     HomeTrendUp: HomeTrendUp,
     Profile2User: Profile2User,
-    ShoppingBag: ShoppingBag
-    // data: Fatrows
+    ShoppingBag: ShoppingBag,
+    Bank: Bank
   };
 
   let itemTarget = '_self';
@@ -38,8 +38,8 @@ const NavItem = ({ item, level }) => {
   const isSelected = openItem.findIndex((id) => id === item.id) > -1;
 
   const Icon = icons[item.icon];
-  console.log(item.icon);
-  console.log(item.title);
+  // console.log(item.icon);
+  // console.log(item.title);
   // const itemIcon = HomeTrendUp;
   // const itemIcon = item.icon ? <Icon variant="Bulk" size={drawerOpen ? 20 : 22} /> : false;
   const itemIcon = icons[item.icon] ? <Icon variant="Bulk" size={drawerOpen ? 20 : 22} /> : false;
