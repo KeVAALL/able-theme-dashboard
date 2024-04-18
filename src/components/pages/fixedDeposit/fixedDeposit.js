@@ -16,60 +16,66 @@ import axios from 'utils/axios';
 import Loader from 'components/atoms/loader/Loader';
 import { SubmitButton } from 'components/atoms/button/button';
 import { enqueueSnackbar } from 'notistack';
-import CustomTextField from 'utils/textfield';
+import CustomTextField, { CustomCheckbox } from 'utils/textfield';
 
-function Issuer() {
+function FixDeposit() {
   const [showTable, setShowTable] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
-  const [issuerData, setIssuerData] = useState([]);
-  useEffect(() => {
-    console.log(isEditing);
-  }, [isEditing]);
+  const [productData, setProductData] = useState([]);
+  const [checkedCumulative, setCheckedCumulative] = useState(false); // Initial state
+  const [checkedNonCumulative, setCheckedNonCumulative] = useState(false); // Initial state
 
-  // Custom cell component for rendering images
-  const ImageCell = ({ value }) => {
-    return (
-      <TableCell style={{ paddingLeft: '0px' }}>
-        <img src={value} alt="Custom" style={{ width: '90%', height: 60 }} />
-      </TableCell>
-    );
+  // Toggle checked state between 0 and 1 when clicked
+  const handleCumulativeChange = () => {
+    setCheckedCumulative((prevChecked) => (!prevChecked ? 1 : 0)); // Toggle between 0 and 1
+  };
+  const handleNonCumulativeChange = () => {
+    setCheckedNonCumulative((prevChecked) => (!prevChecked ? 1 : 0)); // Toggle between 0 and 1
+  };
+  const changeTableVisibility = () => {
+    setShowTable(!showTable);
+  };
+  const toInteger = (boolValue) => {
+    return boolValue ? 1 : 0;
   };
 
   const setEditing = (value) => {
     setIsEditing(!isEditing);
     setFormValues(value);
   };
-  const setSearchData = (issuer) => {
-    setIssuerData([issuer]);
+  const setSearchData = (fixedDeposit) => {
+    setProductData([fixedDeposit]);
   };
 
   const filterFormValues = {
-    osb_issuer_id: ''
+    fd_name: ''
   };
   const formValueFields = [
     {
-      fieldName: 'osb_issuer_id',
-      label: 'OSB Issuer ID',
+      fieldName: 'fd_name',
+      label: 'FD Name',
       type: 'text'
     }
   ];
   const filterValidationSchema = yup.object({
-    osb_issuer_id: yup.string().required('Issuer ID is required')
+    fd_name: yup.string().required('FD Name is required')
   });
 
   // Add Form Values
   const formAllValues = {
-    issuer_gst_number: '',
-    issuer_name: '',
-    issuer_pan: '',
-    issuer_tollfree_number: '',
+    fd_name: '',
+    min_tenure: '',
+    max_tenure: '',
+    // is_cumulative: 0,
+    // is_non_cumulative: 0,
     logo_url: ''
   };
   const validationSchema = yup.object({
-    issuer_gst_number: yup.string().required('Issuer GST Number is required'),
-    issuer_name: yup.string().required('Issuer Name is required'),
-    issuer_pan: yup.string().required('Issuer PAN is required'),
-    issuer_tollfree_number: yup.string().required('Tollfree Number is required'),
+    fd_name: yup.string().required('FD Name is required'),
+    min_tenure: yup.string().required('Minimum Tenure is required'),
+    max_tenure: yup.string().required('Max Tenure is required'),
+    // is_cumulative: yup.number().required('Required'),
+    // is_non_cumulative: yup.number().required('Required'),
     logo_url: yup.string().required('Logo URL is required')
   });
   const clearFormValues = () => {
@@ -78,6 +84,13 @@ function Issuer() {
   const [formValues, setFormValues] = useState(formAllValues);
   const theme = useTheme();
 
+  const ImageCell = ({ value }) => {
+    return (
+      <TableCell style={{ paddingLeft: '0px' }}>
+        <img src={value} alt="Custom" style={{ width: '90%', height: 60 }} />
+      </TableCell>
+    );
+  };
   const columns = useMemo(
     () => [
       {
@@ -85,17 +98,18 @@ function Issuer() {
         accessor: 'issuer_name'
       },
       {
-        Header: 'Issuer GST Number',
-        accessor: 'issuer_gst_number'
+        Header: 'Min Tenure',
+        accessor: 'min_tenure'
       },
       {
-        Header: 'Issuer PAN',
-        accessor: 'issuer_pan'
+        Header: 'Max Tenure',
+        accessor: 'max_tenure'
       },
       {
-        Header: 'Issuer Tollfree Number',
-        accessor: 'issuer_tollfree_number'
+        Header: 'Is Cumulative',
+        accessor: 'is_cumulative'
       },
+      { Header: 'Is Non-Cumulative', accessor: 'is_non_cumulative' },
       {
         Header: 'Logo URL',
         accessor: 'logo_url',
@@ -105,20 +119,16 @@ function Issuer() {
     []
   );
 
-  const changeTableVisibility = () => {
-    setShowTable(!showTable);
-  };
-
-  async function getOneIssuer(values) {
-    const response = await axios.post('/issuer/getissuer', {
+  async function getOneProduct(values) {
+    const response = await axios.post('product/getproduct', {
       method_name: 'getone',
       ...values
     });
     setSearchData(response.data.data);
   }
-  async function getAllIssuer() {
+  async function getAllProduct() {
     try {
-      const response = await axios.post('/issuer/getissuer', {
+      const response = await axios.post('product/getproduct', {
         method_name: 'getall'
       });
       console.log(response);
@@ -130,24 +140,23 @@ function Issuer() {
   const {
     isPending,
     error,
-    refetch: issuerTableDataRefetch
+    refetch: ProductTableDataRefetch
   } = useQuery({
-    queryKey: ['issuerTableData'],
+    queryKey: ['productTableData'],
     refetchOnWindowFocus: false,
     keepPreviousData: true,
-    queryFn: getAllIssuer,
+    queryFn: getAllProduct,
     onSuccess: (data) => {
-      setIssuerData(data);
+      setProductData(data);
     }
   });
-  async function deleteOneIssuer(values) {
+  async function deleteOneProduct(values) {
     console.log(values.osb_issuer_id);
-    await axios.post('/issuer/saveissuer', {
+    await axios.post('/product/saveproduct', {
       osb_issuer_id: values.osb_issuer_id,
-      user_id: 2,
       method_name: 'delete'
     });
-    enqueueSnackbar('Issuer Deleted', {
+    enqueueSnackbar('Product Deleted', {
       variant: 'success',
       autoHideDuration: 2000,
       anchorOrigin: {
@@ -167,35 +176,36 @@ function Issuer() {
           validationSchema={validationSchema}
           onSubmit={async (values, { setSubmitting, resetForm }) => {
             if (isEditing === false) {
-              const response = await axios.post('/issuer/saveissuer', {
+              console.log({
                 ...values,
-                method_name: 'add',
-                max_dp_fd_limit: 0,
-                max_fd_nominee_limit: 0,
-                max_pms_nominee_limit: 0,
-                renewable_lower_bound: 0,
-                renewable_upper_bound: 0,
-                is_renewable: 0,
-                user_id: 2
+                is_cumulative: toInteger(checkedCumulative),
+                is_non_cumulative: toInteger(checkedNonCumulative),
+                method_name: 'add'
               });
-              clearFormValues();
-              enqueueSnackbar('Issuer added', {
-                variant: 'success',
-                autoHideDuration: 2000,
-                anchorOrigin: {
-                  vertical: 'top',
-                  horizontal: 'right'
-                }
-              });
-              issuerTableDataRefetch();
+              //   const response = await axios.post('/product/saveproduct', {
+              //     ...values,
+              //     is_cumulative: checkedCumulative,
+              //     is_non_cumulative: checkedNonCumulative,
+              //     method_name: 'add'
+              //   });
+              //   clearFormValues();
+              //   enqueueSnackbar('Product added', {
+              //     variant: 'success',
+              //     autoHideDuration: 2000,
+              //     anchorOrigin: {
+              //       vertical: 'top',
+              //       horizontal: 'right'
+              //     }
+              //   });
+              //   ProductTableDataRefetch();
             }
             if (isEditing === true) {
               console.log('i am editing');
               console.log({ ...values, method_name: 'update' });
-              await axios.post('/issuer/saveissuer', { ...values, method_name: 'update', user_id: 2 });
+              await axios.post('/product/saveproduct', { ...values, method_name: 'update' });
               clearFormValues();
               setIsEditing(!isEditing);
-              enqueueSnackbar('Issuer Updated', {
+              enqueueSnackbar('Product Updated', {
                 variant: 'success',
                 autoHideDuration: 2000,
                 anchorOrigin: {
@@ -203,7 +213,7 @@ function Issuer() {
                   horizontal: 'right'
                 }
               });
-              issuerTableDataRefetch();
+              ProductTableDataRefetch();
             }
 
             changeTableVisibility();
@@ -227,79 +237,68 @@ function Issuer() {
                   overflow: 'visible'
                 }}
               >
-                <SubmitButton title="Issuer Entry" changeTableVisibility={changeTableVisibility} clearFormValues={clearFormValues} />
+                <SubmitButton title="FD Entry" changeTableVisibility={changeTableVisibility} clearFormValues={clearFormValues} />
 
                 <Divider />
 
                 <CardContent>
                   <Grid container spacing={3}>
-                    {/* issuer_name: issuer_pan issuer_tollfree_number logo_url */}
                     <Grid item xs={4}>
+                      {/* fd_name: yup.string().required('FD Name is required'),
+                          min_tenure: yup.string().required('Minimum Tenure is required'),
+                          max_tenure: yup.string().required('Max Tenure is required'),
+                          is_cumulative: yup.number().required('Required'),
+                          is_non_cumulative: yup.number().required('Required'),
+                          logo_url: yup.string().required('Logo URL is required') */}
                       <CustomTextField
-                        label="GST Number"
-                        name="issuer_gst_number"
+                        label="FD Name"
+                        name="fd_name"
                         values={values}
                         type="text"
                         onChange={handleChange}
                         onBlur={handleBlur}
                         touched={touched}
                         errors={errors}
-                        FormHelperTextProps={{
-                          style: {
-                            marginLeft: 0
-                          }
-                        }}
                       />
                     </Grid>
                     <Grid item xs={4}>
                       <CustomTextField
-                        label="Issuer Name"
-                        name="issuer_name"
+                        label="Minimum Tenure"
+                        name="min_tenure"
                         values={values}
-                        type="text"
+                        type="number"
                         onChange={handleChange}
                         onBlur={handleBlur}
                         touched={touched}
                         errors={errors}
-                        FormHelperTextProps={{
-                          style: {
-                            marginLeft: 0
-                          }
-                        }}
                       />
                     </Grid>
                     <Grid item xs={4}>
                       <CustomTextField
-                        label="Issuer PAN"
-                        name="issuer_pan"
+                        label="Max Tenure"
+                        name="max_tenure"
                         values={values}
-                        type="text"
+                        type="number"
                         onChange={handleChange}
                         onBlur={handleBlur}
                         touched={touched}
                         errors={errors}
-                        FormHelperTextProps={{
-                          style: {
-                            marginLeft: 0
-                          }
-                        }}
                       />
                     </Grid>
-                    <Grid item xs={4}>
-                      <CustomTextField
-                        label="Issuer Tollfree Number"
-                        name="issuer_tollfree_number"
-                        values={values}
-                        type="text"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        touched={touched}
-                        errors={errors}
-                        FormHelperTextProps={{
-                          style: {
-                            marginLeft: 0
-                          }
-                        }}
+                    <Grid item xs={2}>
+                      <CustomCheckbox
+                        checked={checkedCumulative}
+                        handleChange={handleCumulativeChange}
+                        name="checkedCumulative"
+                        label="Cumulative"
+                      />
+                    </Grid>
+                    <Grid item xs={2}>
+                      <CustomCheckbox
+                        checked={checkedNonCumulative}
+                        handleChange={handleNonCumulativeChange}
+                        name="checkedNonCumulative"
+                        label="Non Cumulative"
                       />
                     </Grid>
                     <Grid item xs={4}>
@@ -312,11 +311,6 @@ function Issuer() {
                         onBlur={handleBlur}
                         touched={touched}
                         errors={errors}
-                        FormHelperTextProps={{
-                          style: {
-                            marginLeft: 0
-                          }
-                        }}
                       />
                     </Grid>
                   </Grid>
@@ -327,19 +321,19 @@ function Issuer() {
         </Formik>
       )}
       {!showTable && (
-        <MainCard title="Issuer" changeTableVisibility={changeTableVisibility} showButton border sx={{ height: '100%', boxShadow: 1 }}>
+        <MainCard title="Product" changeTableVisibility={changeTableVisibility} showButton border sx={{ height: '100%', boxShadow: 1 }}>
           <MultiTable
             columns={columns}
-            data={issuerData}
+            data={productData}
             formValues={filterFormValues}
             formValueFields={formValueFields}
             validationSchema={filterValidationSchema}
             changeTableVisibility={changeTableVisibility}
             setEditing={setEditing}
-            getOneItem={getOneIssuer}
-            deleteOneItem={deleteOneIssuer}
+            getOneItem={getOneProduct}
+            deleteOneItem={deleteOneProduct}
             setSearchData={setSearchData}
-            tableDataRefetch={issuerTableDataRefetch}
+            tableDataRefetch={ProductTableDataRefetch}
             // getData={getData}
           />
         </MainCard>
@@ -348,4 +342,4 @@ function Issuer() {
   );
 }
 
-export default Issuer;
+export default FixDeposit;

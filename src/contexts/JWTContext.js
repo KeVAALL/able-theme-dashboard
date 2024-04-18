@@ -35,10 +35,11 @@ const verifyToken = (serviceToken) => {
   return decoded.exp > Date.now() / 1000;
 };
 
-const setSession = (serviceToken) => {
+const setSession = (serviceToken, userID) => {
   // console.log(serviceToken);
   if (serviceToken) {
     localStorage.setItem('serviceToken', serviceToken);
+    localStorage.setItem('userID', userID);
     // console.log('Token set');
     axios.defaults.headers.common.Authorization = `Bearer ${serviceToken}`;
   } else {
@@ -98,9 +99,10 @@ export const JWTProvider = ({ children }) => {
       // const { serviceToken, user } = response.data;
 
       const user = response.data;
+      console.log(response.data);
 
       // setSession(serviceToken);
-      setSession(user.data.token);
+      setSession(user.data.token, user.data.user_id);
       dispatch({
         type: LOGIN,
         payload: {

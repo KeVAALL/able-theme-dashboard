@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { Autocomplete, TextField } from '@mui/material';
+import { Autocomplete, Checkbox, FormControlLabel, TextField } from '@mui/material';
 import React from 'react';
 import './custom.css';
 
@@ -21,6 +21,11 @@ export const CustomTextField = (props) => {
       error={props.touched[props.name] && Boolean(props.errors[props.name])}
       placeholder={props.touched[props.name] && props.errors[props.name]}
       helperText={props.touched[props.name] && props.errors[props.name]}
+      FormHelperTextProps={{
+        style: {
+          marginLeft: 0
+        }
+      }}
       {...props}
       //   InputProps={{
       //     disableUnderline: true, // <== added this
@@ -57,6 +62,18 @@ export const CustomAutoComplete = (props) => {
       options={props.options}
       getOptionLabel={(option) => option[props.optionName]} // Assuming 'product_type' is the label you want to display
       renderInput={(params) => <TextField {...params} label={props.label} />}
+    />
+  );
+};
+
+export const CustomCheckbox = (props) => {
+  return (
+    <FormControlLabel
+      value={props.checked}
+      control={<Checkbox checked={props.checked === 1} onChange={props.handleChange} name={props.name} />}
+      label={props.label}
+      labelPlacement="start"
+      sx={{ mr: 1, ml: 0 }}
     />
   );
 };

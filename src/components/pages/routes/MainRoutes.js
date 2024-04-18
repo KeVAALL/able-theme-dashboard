@@ -5,6 +5,7 @@ import MainLayout from 'layout/MainLayout';
 import Loadable from 'helpers/Loadable';
 import AuthGuard from 'utils/route-guard/AuthGuard';
 import Issuer from '../issuer/issuer';
+import FixDeposit from '../fixedDeposit/fixedDeposit';
 
 // Product
 const Product = Loadable(lazy(() => import('components/pages/productType/productType')));
@@ -74,7 +75,7 @@ const MainRoutes = {
             },
             {
               path: 'fixed_deposit',
-              element: <></>
+              element: <FixDeposit />
             }
           ]
         },
