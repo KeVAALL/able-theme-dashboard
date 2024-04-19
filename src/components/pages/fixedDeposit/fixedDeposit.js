@@ -18,6 +18,9 @@ import { SubmitButton } from 'components/atoms/button/button';
 import { enqueueSnackbar } from 'notistack';
 import CustomTextField, { CustomCheckbox } from 'utils/textfield';
 
+// assets
+import { GetProductData, GetOneProduct, SaveProduct, EditProduct, DeleteOneProduct } from 'hooks/fixedDeposit/fixedDeposit';
+
 function FixDeposit() {
   const [showTable, setShowTable] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
@@ -35,16 +38,15 @@ function FixDeposit() {
   const changeTableVisibility = () => {
     setShowTable(!showTable);
   };
-  const toInteger = (boolValue) => {
-    return boolValue ? 1 : 0;
-  };
 
   const setEditing = (value) => {
     setIsEditing(!isEditing);
     setFormValues(value);
+    setCheckedCumulative(Boolean(value.is_cumulative));
+    setCheckedNonCumulative(Boolean(value.is_non_cumulative));
   };
   const setSearchData = (fixedDeposit) => {
-    setProductData([fixedDeposit]);
+    setProductData(fixedDeposit);
   };
 
   const filterFormValues = {
@@ -66,20 +68,18 @@ function FixDeposit() {
     fd_name: '',
     min_tenure: '',
     max_tenure: '',
-    // is_cumulative: 0,
-    // is_non_cumulative: 0,
     logo_url: ''
   };
   const validationSchema = yup.object({
     fd_name: yup.string().required('FD Name is required'),
     min_tenure: yup.string().required('Minimum Tenure is required'),
     max_tenure: yup.string().required('Max Tenure is required'),
-    // is_cumulative: yup.number().required('Required'),
-    // is_non_cumulative: yup.number().required('Required'),
     logo_url: yup.string().required('Logo URL is required')
   });
   const clearFormValues = () => {
     setFormValues(formAllValues);
+    setCheckedCumulative(false);
+    setCheckedNonCumulative(false);
   };
   const [formValues, setFormValues] = useState(formAllValues);
   const theme = useTheme();
@@ -94,6 +94,15 @@ function FixDeposit() {
   const columns = useMemo(
     () => [
       {
+        Header: 'Logo URL',
+        accessor: 'logo_url',
+        customCell: ImageCell
+      },
+      {
+        Header: 'FD Name',
+        accessor: 'fd_name'
+      },
+      {
         Header: 'Issuer Name',
         accessor: 'issuer_name'
       },
@@ -104,39 +113,16 @@ function FixDeposit() {
       {
         Header: 'Max Tenure',
         accessor: 'max_tenure'
-      },
-      {
-        Header: 'Is Cumulative',
-        accessor: 'is_cumulative'
-      },
-      { Header: 'Is Non-Cumulative', accessor: 'is_non_cumulative' },
-      {
-        Header: 'Logo URL',
-        accessor: 'logo_url',
-        customCell: ImageCell
       }
+      //   {
+      //     Header: 'Is Cumulative',
+      //     accessor: 'is_cumulative'
+      //   },
+      //   { Header: 'Is Non-Cumulative', accessor: 'is_non_cumulative' }
     ],
     []
   );
 
-  async function getOneProduct(values) {
-    const response = await axios.post('product/getproduct', {
-      method_name: 'getone',
-      ...values
-    });
-    setSearchData(response.data.data);
-  }
-  async function getAllProduct() {
-    try {
-      const response = await axios.post('product/getproduct', {
-        method_name: 'getall'
-      });
-      console.log(response);
-      return response.data.data;
-    } catch (err) {
-      return err;
-    }
-  }
   const {
     isPending,
     error,
@@ -145,26 +131,11 @@ function FixDeposit() {
     queryKey: ['productTableData'],
     refetchOnWindowFocus: false,
     keepPreviousData: true,
-    queryFn: getAllProduct,
+    queryFn: GetProductData,
     onSuccess: (data) => {
       setProductData(data);
     }
   });
-  async function deleteOneProduct(values) {
-    console.log(values.osb_issuer_id);
-    await axios.post('/product/saveproduct', {
-      osb_issuer_id: values.osb_issuer_id,
-      method_name: 'delete'
-    });
-    enqueueSnackbar('Product Deleted', {
-      variant: 'success',
-      autoHideDuration: 2000,
-      anchorOrigin: {
-        vertical: 'top',
-        horizontal: 'right'
-      }
-    });
-  }
 
   if (isPending) return <Loader />;
 
@@ -176,12 +147,7 @@ function FixDeposit() {
           validationSchema={validationSchema}
           onSubmit={async (values, { setSubmitting, resetForm }) => {
             if (isEditing === false) {
-              console.log({
-                ...values,
-                is_cumulative: toInteger(checkedCumulative),
-                is_non_cumulative: toInteger(checkedNonCumulative),
-                method_name: 'add'
-              });
+              SaveProduct(values, ProductTableDataRefetch, clearFormValues, checkedCumulative, checkedNonCumulative);
               //   const response = await axios.post('/product/saveproduct', {
               //     ...values,
               //     is_cumulative: checkedCumulative,
@@ -244,12 +210,6 @@ function FixDeposit() {
                 <CardContent>
                   <Grid container spacing={3}>
                     <Grid item xs={4}>
-                      {/* fd_name: yup.string().required('FD Name is required'),
-                          min_tenure: yup.string().required('Minimum Tenure is required'),
-                          max_tenure: yup.string().required('Max Tenure is required'),
-                          is_cumulative: yup.number().required('Required'),
-                          is_non_cumulative: yup.number().required('Required'),
-                          logo_url: yup.string().required('Logo URL is required') */}
                       <CustomTextField
                         label="FD Name"
                         name="fd_name"
@@ -330,11 +290,11 @@ function FixDeposit() {
             validationSchema={filterValidationSchema}
             changeTableVisibility={changeTableVisibility}
             setEditing={setEditing}
-            getOneItem={getOneProduct}
-            deleteOneItem={deleteOneProduct}
+            // getOneItem={getOneProduct}
+            getOneItem={GetOneProduct}
+            deleteOneItem={DeleteOneProduct}
             setSearchData={setSearchData}
             tableDataRefetch={ProductTableDataRefetch}
-            // getData={getData}
           />
         </MainCard>
       )}

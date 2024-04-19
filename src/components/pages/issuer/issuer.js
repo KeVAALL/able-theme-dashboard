@@ -12,19 +12,20 @@ import MultiTable from '../multiTable/multiTable';
 // third-party
 import { Formik } from 'formik';
 import * as yup from 'yup';
-import axios from 'utils/axios';
 import Loader from 'components/atoms/loader/Loader';
 import { SubmitButton } from 'components/atoms/button/button';
-import { enqueueSnackbar } from 'notistack';
 import CustomTextField from 'utils/textfield';
+
+// assets
+import { GetIssuerData, GetOneIssuer, SaveIssuer, EditIssuer, DeleteOneIssuer } from 'hooks/issuer/issuer';
+import { toInteger } from 'lodash';
 
 function Issuer() {
   const [showTable, setShowTable] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+  const [isIssuerActive, setIssuerActive] = useState();
   const [issuerData, setIssuerData] = useState([]);
-  useEffect(() => {
-    console.log(isEditing);
-  }, [isEditing]);
+  const theme = useTheme();
 
   // Custom cell component for rendering images
   const ImageCell = ({ value }) => {
@@ -34,27 +35,44 @@ function Issuer() {
       </TableCell>
     );
   };
+  const StatusCell = ({ value }) => {
+    return value === 0 ? 'Not Active' : 'Active';
+  };
 
   const setEditing = (value) => {
-    setIsEditing(!isEditing);
     setFormValues(value);
   };
+  const setActiveEditing = () => {
+    setIsEditing(true);
+  };
+  const setActiveClose = () => {
+    setIsEditing(false);
+  };
   const setSearchData = (issuer) => {
-    setIssuerData([issuer]);
+    setIssuerData(issuer);
+  };
+  const changeTableVisibility = () => {
+    setShowTable(!showTable);
+  };
+  const clearFormValues = () => {
+    setFormValues(formAllValues);
+  };
+  const handleIsIssuerActive = (initialValue) => {
+    setIssuerActive(initialValue);
   };
 
   const filterFormValues = {
-    osb_issuer_id: ''
+    issuer_name: ''
   };
   const formValueFields = [
     {
-      fieldName: 'osb_issuer_id',
-      label: 'OSB Issuer ID',
+      fieldName: 'issuer_name',
+      label: 'Issuer Name',
       type: 'text'
     }
   ];
   const filterValidationSchema = yup.object({
-    osb_issuer_id: yup.string().required('Issuer ID is required')
+    issuer_name: yup.string().required('Issuer Name is required')
   });
 
   // Add Form Values
@@ -72,61 +90,33 @@ function Issuer() {
     issuer_tollfree_number: yup.string().required('Tollfree Number is required'),
     logo_url: yup.string().required('Logo URL is required')
   });
-  const clearFormValues = () => {
-    setFormValues(formAllValues);
-  };
+
   const [formValues, setFormValues] = useState(formAllValues);
-  const theme = useTheme();
 
   const columns = useMemo(
     () => [
+      {
+        Header: 'Logo URL',
+        accessor: 'logo_url',
+        customCell: ImageCell
+      },
       {
         Header: 'Issuer Name',
         accessor: 'issuer_name'
       },
       {
-        Header: 'Issuer GST Number',
-        accessor: 'issuer_gst_number'
-      },
-      {
-        Header: 'Issuer PAN',
-        accessor: 'issuer_pan'
-      },
-      {
-        Header: 'Issuer Tollfree Number',
+        Header: 'Tollfree Number',
         accessor: 'issuer_tollfree_number'
       },
       {
-        Header: 'Logo URL',
-        accessor: 'logo_url',
-        customCell: ImageCell
+        Header: 'Status',
+        accessor: 'is_active',
+        customCell: StatusCell
       }
     ],
     []
   );
 
-  const changeTableVisibility = () => {
-    setShowTable(!showTable);
-  };
-
-  async function getOneIssuer(values) {
-    const response = await axios.post('/issuer/getissuer', {
-      method_name: 'getone',
-      ...values
-    });
-    setSearchData(response.data.data);
-  }
-  async function getAllIssuer() {
-    try {
-      const response = await axios.post('/issuer/getissuer', {
-        method_name: 'getall'
-      });
-      console.log(response);
-      return response.data.data;
-    } catch (err) {
-      return err;
-    }
-  }
   const {
     isPending,
     error,
@@ -135,27 +125,11 @@ function Issuer() {
     queryKey: ['issuerTableData'],
     refetchOnWindowFocus: false,
     keepPreviousData: true,
-    queryFn: getAllIssuer,
+    queryFn: GetIssuerData,
     onSuccess: (data) => {
       setIssuerData(data);
     }
   });
-  async function deleteOneIssuer(values) {
-    console.log(values.osb_issuer_id);
-    await axios.post('/issuer/saveissuer', {
-      osb_issuer_id: values.osb_issuer_id,
-      user_id: 2,
-      method_name: 'delete'
-    });
-    enqueueSnackbar('Issuer Deleted', {
-      variant: 'success',
-      autoHideDuration: 2000,
-      anchorOrigin: {
-        vertical: 'top',
-        horizontal: 'right'
-      }
-    });
-  }
 
   if (isPending) return <Loader />;
 
@@ -167,45 +141,12 @@ function Issuer() {
           validationSchema={validationSchema}
           onSubmit={async (values, { setSubmitting, resetForm }) => {
             if (isEditing === false) {
-              const response = await axios.post('/issuer/saveissuer', {
-                ...values,
-                method_name: 'add',
-                max_dp_fd_limit: 0,
-                max_fd_nominee_limit: 0,
-                max_pms_nominee_limit: 0,
-                renewable_lower_bound: 0,
-                renewable_upper_bound: 0,
-                is_renewable: 0,
-                user_id: 2
-              });
-              clearFormValues();
-              enqueueSnackbar('Issuer added', {
-                variant: 'success',
-                autoHideDuration: 2000,
-                anchorOrigin: {
-                  vertical: 'top',
-                  horizontal: 'right'
-                }
-              });
-              issuerTableDataRefetch();
+              SaveIssuer(values, issuerTableDataRefetch, clearFormValues);
             }
             if (isEditing === true) {
-              console.log('i am editing');
-              console.log({ ...values, method_name: 'update' });
-              await axios.post('/issuer/saveissuer', { ...values, method_name: 'update', user_id: 2 });
-              clearFormValues();
-              setIsEditing(!isEditing);
-              enqueueSnackbar('Issuer Updated', {
-                variant: 'success',
-                autoHideDuration: 2000,
-                anchorOrigin: {
-                  vertical: 'top',
-                  horizontal: 'right'
-                }
-              });
-              issuerTableDataRefetch();
+              console.log({ ...values, is_active: toInteger(isIssuerActive), method_name: 'update' });
+              EditIssuer(values, isIssuerActive, issuerTableDataRefetch, clearFormValues, setActiveClose);
             }
-
             changeTableVisibility();
           }}
         >
@@ -227,13 +168,21 @@ function Issuer() {
                   overflow: 'visible'
                 }}
               >
-                <SubmitButton title="Issuer Entry" changeTableVisibility={changeTableVisibility} clearFormValues={clearFormValues} />
+                <SubmitButton
+                  title="Issuer Entry"
+                  changeTableVisibility={changeTableVisibility}
+                  clearFormValues={clearFormValues}
+                  isEditing={isEditing}
+                  formValues={formValues}
+                  setActiveClose={setActiveClose}
+                  setIsActive={handleIsIssuerActive}
+                  isActive={isIssuerActive}
+                />
 
                 <Divider />
 
                 <CardContent>
                   <Grid container spacing={3}>
-                    {/* issuer_name: issuer_pan issuer_tollfree_number logo_url */}
                     <Grid item xs={4}>
                       <CustomTextField
                         label="GST Number"
@@ -327,7 +276,14 @@ function Issuer() {
         </Formik>
       )}
       {!showTable && (
-        <MainCard title="Issuer" changeTableVisibility={changeTableVisibility} showButton border sx={{ height: '100%', boxShadow: 1 }}>
+        <MainCard
+          title="Issuer"
+          changeTableVisibility={changeTableVisibility}
+          showButton
+          setActiveAdding={setActiveClose}
+          border
+          sx={{ height: '100%', boxShadow: 1 }}
+        >
           <MultiTable
             columns={columns}
             data={issuerData}
@@ -336,11 +292,11 @@ function Issuer() {
             validationSchema={filterValidationSchema}
             changeTableVisibility={changeTableVisibility}
             setEditing={setEditing}
-            getOneItem={getOneIssuer}
-            deleteOneItem={deleteOneIssuer}
+            getOneItem={GetOneIssuer}
+            deleteOneItem={DeleteOneIssuer}
             setSearchData={setSearchData}
             tableDataRefetch={issuerTableDataRefetch}
-            // getData={getData}
+            setActiveEditing={setActiveEditing}
           />
         </MainCard>
       )}

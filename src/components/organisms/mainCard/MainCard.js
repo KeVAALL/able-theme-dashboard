@@ -40,6 +40,7 @@ const MainCard = forwardRef(
       modal = false,
       changeTableVisibility,
       showButton,
+      setActiveAdding,
       ...others
     },
     ref
@@ -113,7 +114,16 @@ const MainCard = forwardRef(
             />
             <Box sx={{ px: 2.5 }}>
               <AnimateButton>
-                <Button variant="contained" color="success" startIcon={<AddCircle />} type="button" onClick={changeTableVisibility}>
+                <Button
+                  variant="contained"
+                  color="success"
+                  startIcon={<AddCircle />}
+                  type="button"
+                  onClick={() => {
+                    setActiveAdding();
+                    changeTableVisibility();
+                  }}
+                >
                   Add
                 </Button>
               </AnimateButton>

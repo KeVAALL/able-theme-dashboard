@@ -23,6 +23,7 @@ import AnimateButton from 'helpers/@extended/AnimateButton';
 import { dispatch } from '../../../redux';
 import { openSnackbar } from 'redux/reducers/snackbar';
 import { setMenuItems } from 'redux/reducers/menu';
+import CustomTextField from 'utils/textfield';
 
 // ============================|| JWT - LOGIN ||============================ //
 
@@ -83,8 +84,6 @@ const AuthLogin = ({ forgot }) => {
     <>
       <Formik
         initialValues={{
-          // email_id: 'info@phoenixcoded.co',
-          // password: '123456',
           email_id: '',
           password: 'Admin@2024',
           submit: null
@@ -142,28 +141,40 @@ const AuthLogin = ({ forgot }) => {
           <form noValidate onSubmit={handleSubmit}>
             <Grid container spacing={2}>
               <Grid item xs={12}>
-                <Stack spacing={1}>
-                  <InputLabel htmlFor="email-login">Email Address</InputLabel>
-                  <OutlinedInput
-                    // id="email-login"
-                    type="email"
-                    value={values.email_id}
-                    name="email_id"
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    placeholder="Enter email address"
-                    fullWidth
-                    error={Boolean(touched.email_id && errors.email_id)}
-                  />
-                  {touched.email_id && errors.email_id && (
-                    <FormHelperText error id="standard-weight-helper-text-email-login">
-                      {errors.email_id}
-                    </FormHelperText>
-                  )}
-                </Stack>
+                <CustomTextField
+                  label="Email Address"
+                  name="email_id"
+                  values={values}
+                  type="email"
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  touched={touched}
+                  errors={errors}
+                  autoComplete
+                  FormHelperTextProps={{
+                    style: {
+                      marginLeft: 0
+                    }
+                  }}
+                />
               </Grid>
               <Grid item xs={12}>
-                <Stack spacing={1}>
+                <CustomTextField
+                  label="Password"
+                  name="password"
+                  values={values}
+                  type="text"
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  touched={touched}
+                  errors={errors}
+                  FormHelperTextProps={{
+                    style: {
+                      marginLeft: 0
+                    }
+                  }}
+                />
+                {/* <Stack spacing={1}>
                   <InputLabel htmlFor="password-login">Password</InputLabel>
                   <OutlinedInput
                     fullWidth
@@ -194,7 +205,7 @@ const AuthLogin = ({ forgot }) => {
                       {errors.password}
                     </FormHelperText>
                   )}
-                </Stack>
+                </Stack> */}
               </Grid>
 
               <Grid item xs={12} sx={{ mt: -1 }}>

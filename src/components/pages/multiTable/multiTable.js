@@ -44,7 +44,8 @@ function ReactTable({
   getOneItem,
   deleteOneItem,
   setSearchData,
-  tableDataRefetch
+  tableDataRefetch,
+  setActiveEditing
   // getData
 }) {
   const filterTypes = useMemo(() => renderFilterTypes, []);
@@ -102,7 +103,8 @@ function ReactTable({
           initialValues={formValues}
           validationSchema={validationSchema}
           onSubmit={async (values, { setSubmitting, resetForm }) => {
-            getOneItem(values);
+            // getOneItem(values);
+            getOneItem(values, setSearchData);
             resetForm();
           }}
         >
@@ -193,6 +195,7 @@ function ReactTable({
                       onClick={() => {
                         changeTableVisibility();
                         setEditing(row.original);
+                        setActiveEditing();
                         console.log(row.original);
                       }}
                     />
@@ -245,7 +248,8 @@ const MultiTable = ({
   getOneItem,
   deleteOneItem,
   setSearchData,
-  tableDataRefetch
+  tableDataRefetch,
+  setActiveEditing
 }) => {
   return (
     <MainCard content={false} secondary={<CSVExport data={data} filename={'pagination-bottom-table.csv'} />}>
@@ -262,6 +266,7 @@ const MultiTable = ({
           deleteOneItem={deleteOneItem}
           setSearchData={setSearchData}
           tableDataRefetch={tableDataRefetch}
+          setActiveEditing={setActiveEditing}
         />
       </ScrollX>
     </MainCard>
