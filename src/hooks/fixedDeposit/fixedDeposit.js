@@ -42,18 +42,29 @@ export async function GetOneProduct(values, setSearchData) {
     );
   }
 }
-export async function SaveProduct(values, ProductTableDataRefetch, clearFormValues, checkedCumulative, checkedNonCumulative) {
+export async function SaveProduct(
+  values,
+  ProductTableDataRefetch,
+  clearFormValues,
+  checkedCumulative,
+  checkedNonCumulative,
+  selectedIssuerID
+) {
+  console.log({
+    ...values,
+    issuer_id: selectedIssuerID,
+    is_cumulative: toInteger(!checkedCumulative ? false : checkedCumulative),
+    is_non_cumulative: toInteger(!checkedNonCumulative ? false : checkedNonCumulative),
+    user_id: 2,
+    method_name: 'add'
+  });
   try {
-    console.log({
-      ...values,
-      is_cumulative: toInteger(!checkedCumulative ? false : checkedCumulative),
-      is_non_cumulative: toInteger(!checkedNonCumulative ? false : checkedNonCumulative),
-      method_name: 'add'
-    });
     await axios.post('/product/saveproduct', {
       ...values,
+      issuer_id: selectedIssuerID,
       is_cumulative: toInteger(!checkedCumulative ? false : checkedCumulative),
       is_non_cumulative: toInteger(!checkedNonCumulative ? false : checkedNonCumulative),
+      user_id: 2,
       method_name: 'add'
     });
     clearFormValues();
@@ -77,15 +88,27 @@ export async function SaveProduct(values, ProductTableDataRefetch, clearFormValu
     });
   }
 }
-export async function EditProduct(values, issuerTableDataRefetch, clearFormValues, setIsEditing) {
+export async function EditProduct(
+  values,
+  isFDActive,
+  ProductTableDataRefetch,
+  clearFormValues,
+  checkedCumulative,
+  checkedNonCumulative,
+  setActiveClose
+) {
   try {
-    const response = await axios.post('/issuer/saveissuer', { ...values, method_name: 'update', user_id: 2 });
-    if (response.status === 409) {
-      throw response;
-    }
+    await axios.post('/product/saveproduct', {
+      ...values,
+      is_active: toInteger(isFDActive),
+      method_name: 'update',
+      is_cumulative: toInteger(!checkedCumulative ? false : checkedCumulative),
+      is_non_cumulative: toInteger(!checkedNonCumulative ? false : checkedNonCumulative),
+      user_id: 2
+    });
     clearFormValues();
-    setIsEditing(false);
-    enqueueSnackbar('Issuer Updated', {
+    setActiveClose();
+    enqueueSnackbar('Product Updated', {
       variant: 'success',
       autoHideDuration: 2000,
       anchorOrigin: {
@@ -93,7 +116,7 @@ export async function EditProduct(values, issuerTableDataRefetch, clearFormValue
         horizontal: 'right'
       }
     });
-    issuerTableDataRefetch();
+    ProductTableDataRefetch();
   } catch (err) {
     enqueueSnackbar(err.message, {
       variant: 'error',
@@ -109,7 +132,7 @@ export async function DeleteOneProduct(values) {
   try {
     console.log(values.osb_issuer_id);
     await axios.post('/product/saveproduct', {
-      osb_issuer_id: values.osb_issuer_id,
+      fd_id: values.fd_id,
       method_name: 'delete'
     });
     enqueueSnackbar('Product Deleted', {

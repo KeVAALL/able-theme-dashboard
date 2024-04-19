@@ -16,15 +16,20 @@ import axios from 'utils/axios';
 import Loader from 'components/atoms/loader/Loader';
 import { SubmitButton } from 'components/atoms/button/button';
 import { enqueueSnackbar } from 'notistack';
-import CustomTextField, { CustomCheckbox } from 'utils/textfield';
+import CustomTextField, { CustomAutoComplete, CustomCheckbox } from 'utils/textfield';
 
 // assets
 import { GetProductData, GetOneProduct, SaveProduct, EditProduct, DeleteOneProduct } from 'hooks/fixedDeposit/fixedDeposit';
+import { GetActiveIssuerData } from 'hooks/issuer/issuer';
 
 function FixDeposit() {
   const [showTable, setShowTable] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [productData, setProductData] = useState([]);
+  const [activeIssuers, setActiveIssuers] = useState([]);
+  const [selectedIssuerID, setSelectedIssuerID] = useState(null);
+  const [isFDActive, setFDActive] = useState();
+
   const [checkedCumulative, setCheckedCumulative] = useState(false); // Initial state
   const [checkedNonCumulative, setCheckedNonCumulative] = useState(false); // Initial state
 
@@ -38,15 +43,32 @@ function FixDeposit() {
   const changeTableVisibility = () => {
     setShowTable(!showTable);
   };
+  const handleOnIssuerChange = (event) => {
+    activeIssuers.map((el) => {
+      if (el.issuer_name === event.target.outerText) {
+        console.log(el.issuer_id);
+        setSelectedIssuerID(el.issuer_id);
+      }
+    });
+  };
 
   const setEditing = (value) => {
-    setIsEditing(!isEditing);
+    console.log(value.is_cumulative, value.is_non_cumulative);
     setFormValues(value);
     setCheckedCumulative(Boolean(value.is_cumulative));
     setCheckedNonCumulative(Boolean(value.is_non_cumulative));
   };
+  const setActiveEditing = () => {
+    setIsEditing(true);
+  };
+  const setActiveClose = () => {
+    setIsEditing(false);
+  };
   const setSearchData = (fixedDeposit) => {
     setProductData(fixedDeposit);
+  };
+  const handleIsFDActive = (initialValue) => {
+    setFDActive(initialValue);
   };
 
   const filterFormValues = {
@@ -66,14 +88,18 @@ function FixDeposit() {
   // Add Form Values
   const formAllValues = {
     fd_name: '',
+    fd_max_amount: '',
+    fd_min_amount: '',
     min_tenure: '',
     max_tenure: '',
     logo_url: ''
   };
   const validationSchema = yup.object({
     fd_name: yup.string().required('FD Name is required'),
-    min_tenure: yup.string().required('Minimum Tenure is required'),
-    max_tenure: yup.string().required('Max Tenure is required'),
+    fd_max_amount: yup.number().required('Mini Amount is required'),
+    fd_min_amount: yup.number().required('Max Amount is required'),
+    min_tenure: yup.number().required('Minimum Tenure is required'),
+    max_tenure: yup.number().required('Max Tenure is required'),
     logo_url: yup.string().required('Logo URL is required')
   });
   const clearFormValues = () => {
@@ -90,6 +116,9 @@ function FixDeposit() {
         <img src={value} alt="Custom" style={{ width: '90%', height: 60 }} />
       </TableCell>
     );
+  };
+  const StatusCell = ({ value }) => {
+    return value === 0 ? 'Not Active' : 'Active';
   };
   const columns = useMemo(
     () => [
@@ -113,6 +142,11 @@ function FixDeposit() {
       {
         Header: 'Max Tenure',
         accessor: 'max_tenure'
+      },
+      {
+        Header: 'Status',
+        accessor: 'is_active',
+        customCell: StatusCell
       }
       //   {
       //     Header: 'Is Cumulative',
@@ -123,6 +157,20 @@ function FixDeposit() {
     []
   );
 
+  const {
+    isPending: isActiveIssuerPending,
+    error: activeIssuerError,
+    refetch
+  } = useQuery({
+    queryKey: ['activeIssuerData'],
+    refetchOnWindowFocus: false,
+    keepPreviousData: true,
+    queryFn: GetActiveIssuerData,
+    onSuccess: (data) => {
+      console.log(data);
+      setActiveIssuers(data);
+    }
+  });
   const {
     isPending,
     error,
@@ -147,39 +195,20 @@ function FixDeposit() {
           validationSchema={validationSchema}
           onSubmit={async (values, { setSubmitting, resetForm }) => {
             if (isEditing === false) {
-              SaveProduct(values, ProductTableDataRefetch, clearFormValues, checkedCumulative, checkedNonCumulative);
-              //   const response = await axios.post('/product/saveproduct', {
-              //     ...values,
-              //     is_cumulative: checkedCumulative,
-              //     is_non_cumulative: checkedNonCumulative,
-              //     method_name: 'add'
-              //   });
-              //   clearFormValues();
-              //   enqueueSnackbar('Product added', {
-              //     variant: 'success',
-              //     autoHideDuration: 2000,
-              //     anchorOrigin: {
-              //       vertical: 'top',
-              //       horizontal: 'right'
-              //     }
-              //   });
-              //   ProductTableDataRefetch();
+              SaveProduct(values, ProductTableDataRefetch, clearFormValues, checkedCumulative, checkedNonCumulative, selectedIssuerID);
             }
             if (isEditing === true) {
               console.log('i am editing');
               console.log({ ...values, method_name: 'update' });
-              await axios.post('/product/saveproduct', { ...values, method_name: 'update' });
-              clearFormValues();
-              setIsEditing(!isEditing);
-              enqueueSnackbar('Product Updated', {
-                variant: 'success',
-                autoHideDuration: 2000,
-                anchorOrigin: {
-                  vertical: 'top',
-                  horizontal: 'right'
-                }
-              });
-              ProductTableDataRefetch();
+              EditProduct(
+                values,
+                isFDActive,
+                ProductTableDataRefetch,
+                clearFormValues,
+                checkedCumulative,
+                checkedNonCumulative,
+                setActiveClose
+              );
             }
 
             changeTableVisibility();
@@ -203,7 +232,16 @@ function FixDeposit() {
                   overflow: 'visible'
                 }}
               >
-                <SubmitButton title="FD Entry" changeTableVisibility={changeTableVisibility} clearFormValues={clearFormValues} />
+                <SubmitButton
+                  title="FD Entry"
+                  changeTableVisibility={changeTableVisibility}
+                  clearFormValues={clearFormValues}
+                  isEditing={isEditing}
+                  formValues={formValues}
+                  setActiveClose={setActiveClose}
+                  setIsActive={handleIsFDActive}
+                  isActive={isFDActive}
+                />
 
                 <Divider />
 
@@ -215,6 +253,30 @@ function FixDeposit() {
                         name="fd_name"
                         values={values}
                         type="text"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        touched={touched}
+                        errors={errors}
+                      />
+                    </Grid>
+                    <Grid item xs={4}>
+                      <CustomTextField
+                        label="Max Amount"
+                        name="fd_max_amount"
+                        values={values}
+                        type="number"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        touched={touched}
+                        errors={errors}
+                      />
+                    </Grid>
+                    <Grid item xs={4}>
+                      <CustomTextField
+                        label="Min Amount"
+                        name="fd_min_amount"
+                        values={values}
+                        type="number"
                         onChange={handleChange}
                         onBlur={handleBlur}
                         touched={touched}
@@ -273,6 +335,15 @@ function FixDeposit() {
                         errors={errors}
                       />
                     </Grid>
+                    <Grid item xs={4}>
+                      <CustomAutoComplete
+                        options={activeIssuers}
+                        value={selectedIssuerID}
+                        handleChange={handleOnIssuerChange}
+                        optionName="issuer_name"
+                        label="Issuers"
+                      />
+                    </Grid>
                   </Grid>
                 </CardContent>
               </Card>
@@ -281,7 +352,14 @@ function FixDeposit() {
         </Formik>
       )}
       {!showTable && (
-        <MainCard title="Product" changeTableVisibility={changeTableVisibility} showButton border sx={{ height: '100%', boxShadow: 1 }}>
+        <MainCard
+          title="Product"
+          changeTableVisibility={changeTableVisibility}
+          showButton
+          setActiveAdding={setActiveClose}
+          border
+          sx={{ height: '100%', boxShadow: 1 }}
+        >
           <MultiTable
             columns={columns}
             data={productData}
@@ -295,6 +373,7 @@ function FixDeposit() {
             deleteOneItem={DeleteOneProduct}
             setSearchData={setSearchData}
             tableDataRefetch={ProductTableDataRefetch}
+            setActiveEditing={setActiveEditing}
           />
         </MainCard>
       )}

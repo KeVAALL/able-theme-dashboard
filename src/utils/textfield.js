@@ -56,10 +56,13 @@ export const CustomAutoComplete = (props) => {
           ]
         }
       }}
-      //   style={{paddingBlock:"6px"}}
       id="basic-autocomplete-label"
-      //   options={autocompleteData}
       options={props.options}
+      // value={props.value}
+      onChange={(e) => {
+        console.log(e.target.outerText);
+        props.handleChange(e);
+      }}
       getOptionLabel={(option) => option[props.optionName]} // Assuming 'product_type' is the label you want to display
       renderInput={(params) => <TextField {...params} label={props.label} />}
     />
@@ -70,7 +73,7 @@ export const CustomCheckbox = (props) => {
   return (
     <FormControlLabel
       value={props.checked}
-      control={<Checkbox checked={props.checked === 1} onChange={props.handleChange} name={props.name} />}
+      control={<Checkbox checked={props.checked} onChange={props.handleChange} name={props.name} />}
       label={props.label}
       labelPlacement="start"
       sx={{ mr: 1, ml: 0 }}
