@@ -31,6 +31,9 @@ const Breadcrumbs = ({
 }) => {
   const theme = useTheme();
   const location = useLocation();
+  const pathSegments = location.pathname.split('/');
+  const lastSegment = pathSegments[pathSegments.length - 1];
+  console.log('Last segment:', lastSegment);
   const [main, setMain] = useState();
   const [item, setItem] = useState();
 
@@ -68,6 +71,11 @@ const Breadcrumbs = ({
       setItem(undefined);
     }
   }, [item, customLocation]);
+
+  //setting the title of the page
+  useEffect(() => {
+    document.title = lastSegment;
+  }, [lastSegment, location]);
 
   // set active item state
   const getCollapse = (menu) => {
