@@ -139,7 +139,7 @@ const AuthLogin = ({ forgot }) => {
       >
         {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
           <form noValidate onSubmit={handleSubmit}>
-            <Grid container spacing={2}>
+            <Grid container spacing={3.5}>
               <Grid item xs={12}>
                 <CustomTextField
                   label="Email Address"
