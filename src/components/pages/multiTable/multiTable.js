@@ -6,7 +6,7 @@ import { useState, useEffect, useMemo } from 'react';
 // material-ui
 import { Box, Stack, Table, TableBody, TableCell, TableHead, TableRow, Button, Grid } from '@mui/material';
 import CustomTextField from 'utils/textfield';
-import { Trash, Edit2, FilterSearch } from 'iconsax-react';
+import { Trash, Edit2, FilterSearch, DiscountShape, Additem } from 'iconsax-react';
 
 // third-party
 import { useTable, useFilters, usePagination } from 'react-table';
@@ -30,6 +30,7 @@ import { CSVExport, TablePagination, EmptyTable, HeaderSort } from 'helpers/thir
 import { useGlobalFilter } from 'react-table/dist/react-table.development';
 import { useSortBy } from 'react-table';
 import { DialogBox } from 'components/atoms/dialog/dialog';
+import AnimateButton from 'helpers/@extended/AnimateButton';
 
 // ==============================|| REACT TABLE ||============================== //
 
@@ -45,12 +46,16 @@ function ReactTable({
   deleteOneItem,
   setSearchData,
   tableDataRefetch,
-  setActiveEditing
-  // getData
+  setActiveEditing,
+  isEditingInterestRateButton,
+  isEditingInterestRate,
+  showActionHeadButton,
+  handleIROpenDialog
 }) {
   const filterTypes = useMemo(() => renderFilterTypes, []);
   const defaultColumn = useMemo(() => ({ Filter: DefaultColumnFilter }), []);
   const initialState = useMemo(() => ({ filters: [{ id: 'status', value: '' }] }), []);
+  // console.warn(editingInterestRate);
   const {
     getTableProps,
     getTableBodyProps,
@@ -99,52 +104,53 @@ function ReactTable({
   return (
     <Stack>
       <Stack direction="row" spacing={2} alignItems="center" justifyContent="space-between" sx={{ padding: 2 }}>
-        <Formik
-          initialValues={formValues}
-          validationSchema={validationSchema}
-          onSubmit={async (values, { setSubmitting, resetForm }) => {
-            // getOneItem(values);
-            getOneItem(values, setSearchData);
-            resetForm();
-          }}
-        >
-          {({ values, errors, touched, handleChange, handleBlur, handleSubmit, isSubmitting }) => (
-            <Box
-              component="form"
-              onSubmit={(event) => {
-                event.preventDefault();
-                handleSubmit();
-              }}
-              sx={{ width: '60%' }}
-            >
-              <Grid container direction="row" spacing={2} alignItems="center" sx={{ width: '100%' }}>
-                {formValueFields.map((field, id) => {
-                  return (
-                    <Grid item xs={4} key={id}>
-                      <CustomTextField
-                        label={field.label}
-                        name={field.fieldName}
-                        values={values}
-                        type={field.type}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        touched={touched}
-                        errors={errors}
-                      />
-                    </Grid>
-                  );
-                })}
+        {formValueFields?.length >= 1 && (
+          <Formik
+            initialValues={formValues}
+            validationSchema={validationSchema}
+            onSubmit={async (values, { setSubmitting, resetForm }) => {
+              // getOneItem(values);
+              getOneItem(values, setSearchData);
+              resetForm();
+            }}
+          >
+            {({ values, errors, touched, handleChange, handleBlur, handleSubmit, isSubmitting }) => (
+              <Box
+                component="form"
+                onSubmit={(event) => {
+                  event.preventDefault();
+                  handleSubmit();
+                }}
+                sx={{ width: '60%' }}
+              >
+                <Grid container direction="row" spacing={2} alignItems="center" sx={{ width: '100%' }}>
+                  {formValueFields?.map((field, id) => {
+                    return (
+                      <Grid item xs={4} key={id}>
+                        <CustomTextField
+                          label={field.label}
+                          name={field.fieldName}
+                          values={values}
+                          type={field.type}
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          touched={touched}
+                          errors={errors}
+                        />
+                      </Grid>
+                    );
+                  })}
 
-                <Grid item xs={4}>
-                  <Button variant="contained" color="success" type="submit" startIcon={<FilterSearch />} sx={{ justifySelf: 'center' }}>
-                    Search
-                  </Button>
+                  <Grid item xs={4}>
+                    <Button variant="contained" color="success" type="submit" startIcon={<FilterSearch />} sx={{ justifySelf: 'center' }}>
+                      Search
+                    </Button>
+                  </Grid>
                 </Grid>
-              </Grid>
-            </Box>
-          )}
-        </Formik>
-        {/* <GlobalFilter preGlobalFilteredRows={preGlobalFilteredRows} globalFilter={globalFilter} setGlobalFilter={setGlobalFilter} /> */}
+              </Box>
+            )}
+          </Formik>
+        )}
         <CSVExport data={rows.map((d) => d.original)} filename={'filtering-table.csv'} />
       </Stack>
 
@@ -167,9 +173,22 @@ function ReactTable({
                   <HeaderSort column={column} sort />
                 </TableCell>
               ))}
-              <TableCell width={150} sx={{ textAlign: 'right' }}>
-                Actions
-              </TableCell>
+              {!showActionHeadButton && (
+                <TableCell width={150} sx={{ textAlign: 'right' }}>
+                  Actions
+                </TableCell>
+              )}
+              {showActionHeadButton && (
+                <TableCell width={150} sx={{ textAlign: 'right' }}>
+                  <Box>
+                    <AnimateButton>
+                      <Button variant="contained" color="success" startIcon={<Additem />} onClick={handleIROpenDialog}>
+                        Add
+                      </Button>
+                    </AnimateButton>
+                  </Box>
+                </TableCell>
+              )}
             </TableRow>
           ))}
         </TableHead>
@@ -202,7 +221,7 @@ function ReactTable({
 
                     <Trash
                       size={22}
-                      style={{ cursor: 'pointer' }}
+                      style={{ marginRight: 20, cursor: 'pointer' }}
                       onClick={async () => {
                         setItem(row.original);
                         setTimeout(() => {
@@ -211,12 +230,22 @@ function ReactTable({
                         console.log(row.original);
                       }}
                     />
+
+                    {isEditingInterestRateButton && (
+                      <DiscountShape
+                        size={22}
+                        style={{ cursor: 'pointer' }}
+                        onClick={async () => {
+                          isEditingInterestRate();
+                        }}
+                      />
+                    )}
                   </TableCell>
                 </TableRow>
               );
             })
           ) : (
-            <EmptyTable msg="No Data" colSpan={3} />
+            <EmptyTable msg="No Data" colSpan={columns.length + 1} />
           )}
 
           <TableRow>
@@ -249,7 +278,11 @@ const MultiTable = ({
   deleteOneItem,
   setSearchData,
   tableDataRefetch,
-  setActiveEditing
+  setActiveEditing,
+  isEditingInterestRateButton,
+  isEditingInterestRate,
+  showActionHeadButton,
+  handleIROpenDialog
 }) => {
   return (
     <MainCard content={false} secondary={<CSVExport data={data} filename={'pagination-bottom-table.csv'} />}>
@@ -267,6 +300,10 @@ const MultiTable = ({
           setSearchData={setSearchData}
           tableDataRefetch={tableDataRefetch}
           setActiveEditing={setActiveEditing}
+          isEditingInterestRateButton={isEditingInterestRateButton}
+          isEditingInterestRate={isEditingInterestRate}
+          showActionHeadButton={showActionHeadButton}
+          handleIROpenDialog={handleIROpenDialog}
         />
       </ScrollX>
     </MainCard>
@@ -277,7 +314,19 @@ MultiTable.propTypes = {
   columns: PropTypes.array,
   data: PropTypes.array,
   formValues: PropTypes.object,
-  changeTableVisibility: PropTypes.func
+  formValueFields: PropTypes.any,
+  validationSchema: PropTypes.any,
+  changeTableVisibility: PropTypes.func,
+  setEditing: PropTypes.any,
+  getOneItem: PropTypes.any,
+  deleteOneItem: PropTypes.any,
+  setSearchData: PropTypes.any,
+  tableDataRefetch: PropTypes.any,
+  setActiveEditing: PropTypes.any,
+  isEditingInterestRateButton: PropTypes.any,
+  isEditingInterestRate: PropTypes.any,
+  showActionHeadButton: PropTypes.any,
+  handleIROpenDialog: PropTypes.any
 };
 
 export default MultiTable;

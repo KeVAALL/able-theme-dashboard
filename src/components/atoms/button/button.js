@@ -22,22 +22,23 @@ export const SubmitButton = ({
   // const [isActive, setIsActive] = useState();
 
   useEffect(() => {
-    setIsActive(formValues.is_active);
+    if (setIsActive) {
+      setIsActive(formValues.is_active);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [formValues.is_active]);
+  }, [formValues?.is_active]);
 
   return (
     <Stack direction="row" alignItems="center" justifyContent="space-between">
       <CardHeader sx={headerSX} titleTypographyProps={{ variant: 'subtitle1' }} title={title} />
       <Stack direction="row" alignItems="center" spacing={1.5} paddingRight={2.5}>
-        {isEditing && (
+        {isEditing ? (
           <Box>
             <FormControlLabel
               value="start"
               control={
                 <Switch
                   color="primary"
-                  // checked={Boolean(formValues.is_active)}
                   checked={isActive}
                   onChange={() => {
                     setIsActive(!isActive);
@@ -50,6 +51,8 @@ export const SubmitButton = ({
               sx={{ mr: 1 }}
             />
           </Box>
+        ) : (
+          <></>
         )}
 
         <Box>
@@ -67,7 +70,9 @@ export const SubmitButton = ({
               type="button"
               onClick={() => {
                 changeTableVisibility();
-                setActiveClose();
+                if (setActiveClose) {
+                  setActiveClose();
+                }
                 clearFormValues();
               }}
             >
