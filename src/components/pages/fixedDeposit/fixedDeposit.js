@@ -19,7 +19,7 @@ import CustomTextField, { CustomAutoComplete, CustomCheckbox } from 'utils/textf
 // assets
 import { GetProductData, GetOneProduct, SaveProduct, EditProduct, DeleteOneProduct } from 'hooks/fixedDeposit/fixedDeposit';
 import { GetActiveIssuerData } from 'hooks/issuer/issuer';
-import InterestRate from './interestRate';
+import InterestRate from '../../organisms/fixedDeposit/interestRate';
 
 function FixDeposit() {
   // Main data
