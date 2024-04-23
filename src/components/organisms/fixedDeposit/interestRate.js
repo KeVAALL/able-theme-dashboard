@@ -18,7 +18,8 @@ import {
   SaveInterestRate,
   EditInterestRate,
   DeleteOneInterestRate,
-  GetPayoutMethod
+  GetPayoutMethod,
+  GetSchemeSearch
 } from 'hooks/interestRate/interestRate';
 import { DialogForm } from 'components/atoms/dialog/formdialog';
 
@@ -149,7 +150,7 @@ export default function InterestRate({ formValues, changeTableVisibility, isNotE
         initialValues={IRformValues}
         validationSchema={validationSchema}
         onSubmit={async (values, { resetForm }) => {
-          console.log(values);
+          GetSchemeSearch(formValues.fd_id, selectedPayoutMethod);
         }}
       >
         {({ values, errors, touched, handleChange, handleBlur, handleSubmit, resetForm }) => (
