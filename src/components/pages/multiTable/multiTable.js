@@ -32,7 +32,7 @@ import { useGlobalFilter } from 'react-table/dist/react-table.development';
 import { useSortBy } from 'react-table';
 import { DialogBox } from 'components/atoms/dialog/dialog';
 import AnimateButton from 'helpers/@extended/AnimateButton';
-import './multiTable.css';
+// import './multiTable.css';
 
 // ==============================|| REACT TABLE ||============================== //
 
