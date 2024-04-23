@@ -12,7 +12,7 @@ import { APP_DEFAULT_PATH } from 'config';
 // ==============================|| MAIN LOGO ||============================== //
 
 const LogoSection = ({ reverse, isIcon, sx, to }) => (
-  <ButtonBase disableRipple component={Link} to={!to ? APP_DEFAULT_PATH : to} sx={sx}>
+  <ButtonBase disableRipple component={Link} to={!to ? APP_DEFAULT_PATH : to} sx={sx} style={{width:isIcon? "100%": ""}}>
     {isIcon ? <LogoIcon /> : <Logo reverse={reverse} />}
   </ButtonBase>
 );

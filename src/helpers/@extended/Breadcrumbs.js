@@ -31,9 +31,7 @@ const Breadcrumbs = ({
 }) => {
   const theme = useTheme();
   const location = useLocation();
-  const pathSegments = location.pathname.split('/');
-  const lastSegment = pathSegments[pathSegments.length - 1];
-  console.log('Last segment:', lastSegment);
+
   const [main, setMain] = useState();
   const [item, setItem] = useState();
 
@@ -73,8 +71,15 @@ const Breadcrumbs = ({
   }, [item, customLocation]);
 
   //setting the title of the page
+  const pathSegments = location.pathname.split('/');
+  const lastSegment = pathSegments[pathSegments.length - 1];
+  console.log('Last segment:', lastSegment);
   useEffect(() => {
-    document.title = lastSegment;
+    // Replace underscores with spaces and capitalize the first letter of each word
+    const formattedLastSegment = lastSegment.replace(/_/g, ' ').replace(/\b\w/g, function (l) {
+      return l.toUpperCase();
+    });
+    document.title = `AltCase - ${formattedLastSegment}`;
   }, [lastSegment, location]);
 
   // set active item state

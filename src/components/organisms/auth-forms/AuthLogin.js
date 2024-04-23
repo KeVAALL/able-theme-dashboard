@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 
 // assets
@@ -80,6 +80,9 @@ const AuthLogin = ({ forgot }) => {
     return organizedMenu;
   };
 
+  useEffect(() => {
+    document.title = 'AltCase - Login';
+  }, []);
   return (
     <>
       <Formik
@@ -139,7 +142,7 @@ const AuthLogin = ({ forgot }) => {
       >
         {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
           <form noValidate onSubmit={handleSubmit}>
-            <Grid container spacing={2}>
+            <Grid container spacing={3.5}>
               <Grid item xs={12}>
                 <CustomTextField
                   label="Email Address"

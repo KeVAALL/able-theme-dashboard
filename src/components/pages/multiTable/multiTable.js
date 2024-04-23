@@ -5,7 +5,7 @@ import { useState, useEffect, useMemo } from 'react';
 
 // material-ui
 import { Box, Stack, Table, TableBody, TableCell, TableHead, TableRow, Button, Grid } from '@mui/material';
-import CustomTextField from 'utils/textfield';
+import CustomTextField, { CustomAutoComplete } from 'utils/textfield';
 import { Trash, Edit2, FilterSearch } from 'iconsax-react';
 
 // third-party
@@ -26,7 +26,7 @@ import {
   renderFilterTypes,
   filterGreaterThan
 } from 'utils/react-table';
-import { CSVExport, TablePagination, EmptyTable, HeaderSort } from 'helpers/third-party/ReactTable';
+import { CSVExport, TablePagination, EmptyTable, HeaderSort, HidingSelect } from 'helpers/third-party/ReactTable';
 import { useGlobalFilter } from 'react-table/dist/react-table.development';
 import { useSortBy } from 'react-table';
 import { DialogBox } from 'components/atoms/dialog/dialog';
@@ -120,18 +120,33 @@ function ReactTable({
               <Grid container direction="row" spacing={2} alignItems="center" sx={{ width: '100%' }}>
                 {formValueFields.map((field, id) => {
                   return (
-                    <Grid item xs={4} key={id}>
-                      <CustomTextField
-                        label={field.label}
-                        name={field.fieldName}
-                        values={values}
-                        type={field.type}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        touched={touched}
-                        errors={errors}
-                      />
-                    </Grid>
+                    <>
+                      <Grid item xs={4} key={id}>
+                        <CustomTextField
+                          label={field.label}
+                          name={field.fieldName}
+                          values={values}
+                          type={field.type}
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          touched={touched}
+                          errors={errors}
+                        />
+                      </Grid>
+                      <Grid item xs={4} key={id}>
+                        <CustomAutoComplete
+                          options={[
+                            { name: 'web', id: 1 },
+                            { name: 'app', id: 2 },
+                            { name: 'keval', id: 3 }
+                          ]}
+                          value={'selectedIssuerID'}
+                          handleChange={() => {}}
+                          optionName="name"
+                          label="fFid"
+                        />
+                      </Grid>
+                    </>
                   );
                 })}
 
@@ -145,6 +160,8 @@ function ReactTable({
           )}
         </Formik>
         {/* <GlobalFilter preGlobalFilteredRows={preGlobalFilteredRows} globalFilter={globalFilter} setGlobalFilter={setGlobalFilter} /> */}
+        {/* <HidingSelect hiddenColumns={hiddenColumns} setHiddenColumns={setHiddenColumns} allColumns={allColumns} /> */}
+
         <CSVExport data={rows.map((d) => d.original)} filename={'filtering-table.csv'} />
       </Stack>
 
