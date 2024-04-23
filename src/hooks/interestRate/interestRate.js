@@ -26,12 +26,12 @@ export async function GetPayoutMethod(fdId) {
 export async function GetSchemeSearch(fdId, selectedPayoutMethod) {
   try {
     const response = await axios.post('product/getscheme', {
-      method_name: 'getpayouts',
+      method_name: 'getscheme',
       fd_id: fdId,
-      payout_type: selectedPayoutMethod
+      fd_payout_method_id: selectedPayoutMethod
     });
     console.log(response);
-    // return response.data.data;
+    return response.data.data;
   } catch (err) {
     return err;
   }

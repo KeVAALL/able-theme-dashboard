@@ -201,6 +201,7 @@ function FixDeposit() {
         formValues={formValues}
         changeTableVisibility={changeTableVisibility}
         isNotEditingInterestRate={isNotEditingInterestRate}
+        isEditingInterestRate={editingInterestRate}
       />
     );
 

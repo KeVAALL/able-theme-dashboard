@@ -4,6 +4,7 @@ import React from 'react';
 import './custom.css';
 
 export const CustomTextField = (props) => {
+  // console.log(props.value, props.name);
   return (
     <TextField
       //   variant="standard"

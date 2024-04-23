@@ -2,7 +2,7 @@ import { useState, useMemo, useEffect } from 'react';
 import { useTheme } from '@mui/material/styles';
 import { Divider, Box, Card, Grid, CardContent, Button, Stack, CardHeader, FormControlLabel, Switch } from '@mui/material';
 import AnimateButton from 'helpers/@extended/AnimateButton';
-import { ReceiptSearch } from 'iconsax-react';
+import { SearchNormal1 } from 'iconsax-react';
 import PropTypes from 'prop-types';
 // third-party
 import { Formik } from 'formik';
@@ -10,7 +10,6 @@ import * as yup from 'yup';
 import { useQuery } from 'react-query';
 import Loader from 'components/atoms/loader/Loader';
 import CustomTextField, { CustomAutoComplete } from 'utils/textfield';
-import MultiTable from '../../pages/multiTable/multiTable';
 // assets
 import {
   GetInterestRateData,
@@ -22,20 +21,27 @@ import {
   GetSchemeSearch
 } from 'hooks/interestRate/interestRate';
 import { DialogForm } from 'components/atoms/dialog/formdialog';
+import InterestRateTable from 'components/molecules/fixedDeposit/interestRateTable';
 
 const headerSX = {
   p: 2.5,
   '& .MuiCardHeader-action': { m: '0px auto', alignSelf: 'center' }
 };
 
-export default function InterestRate({ formValues, changeTableVisibility, isNotEditingInterestRate }) {
+export default function InterestRate({ formValues, changeTableVisibility, isNotEditingInterestRate, isEditingInterestRate }) {
   useEffect(() => {
     console.log(formValues);
     setEditing(formValues);
     setTimeout(() => {
       setLoading(false);
-    }, 100);
+    }, 200);
   }, [formValues]);
+  //
+  const [schemeData, setSchemeData] = useState([]);
+  const [isSchemeActive, setSchemeActive] = useState(true);
+  const handleIsSchemeActive = (initialValue) => {
+    setSchemeActive(initialValue);
+  };
 
   // Autocomplete field state
   const [selectedPayoutMethod, setSelectedPayoutMethod] = useState(null);
@@ -83,19 +89,22 @@ export default function InterestRate({ formValues, changeTableVisibility, isNotE
   };
   // Edit Logic State
   const [loading, setLoading] = useState(true);
-  const [isEditing, setIsEditing] = useState(false);
+  const [isEditingScheme, setIsEditingScheme] = useState(false);
+  const [schemeFormValues, setSchemeFormValues] = useState();
   const setEditing = (value) => {
-    console.log(value);
     setFormValues({
       fd_name: value.fd_name,
       issuer_name: value.issuer_name
     });
   };
+  const schemeEditing = (value) => {
+    setSchemeFormValues(value);
+  };
   const setActiveEditing = () => {
-    setIsEditing(true);
+    setIsEditingScheme(true);
   };
   const setActiveClose = () => {
-    setIsEditing(false);
+    setIsEditingScheme(false);
   };
   // Custom fields/ columns
   const theme = useTheme();
@@ -107,32 +116,23 @@ export default function InterestRate({ formValues, changeTableVisibility, isNotE
       },
       {
         Header: 'Normal Citizen',
-        accessor: 'normal_citizen'
+        accessor: 'rate_of_interest_regular'
       },
       {
         Header: 'Senior Citizen',
-        accessor: 'senior_citizen'
+        accessor: 'rate_of_interest_senior_citezen'
       },
       {
         Header: 'Female Citizen',
-        accessor: 'female_citizen'
+        accessor: 'rate_of_interest_female'
       },
       {
         Header: 'Senior Female Citizen',
-        accessor: 'senior_female_citizen'
+        accessor: 'rate_of_interest_female_senior_citezen'
       }
     ],
     []
   );
-  const interestData = [
-    // {
-    //   tenure: '51-59',
-    //   normal_citizen: 'Akshyad',
-    //   senior_citizen: '5%',
-    //   female_citizen: '6%',
-    //   senior_female_citizen: '10%'
-    // }
-  ];
 
   if (loading) return <Loader />;
 
@@ -141,16 +141,25 @@ export default function InterestRate({ formValues, changeTableVisibility, isNotE
       <DialogForm
         openDialog={openDialog}
         handleOpenDialog={handleOpenDialog}
+        schemeEditFormValues={schemeFormValues}
         fdId={formValues.fd_id}
         selectedPayoutMethod={selectedPayoutMethod}
         clearFormValues={clearFormValues}
         SaveInterestRate={SaveInterestRate}
+        setIsActive={handleIsSchemeActive}
+        isActive={isSchemeActive}
+        isEditingScheme={isEditingScheme}
+        setActiveClose={setActiveClose}
       />
       <Formik
         initialValues={IRformValues}
         validationSchema={validationSchema}
         onSubmit={async (values, { resetForm }) => {
-          GetSchemeSearch(formValues.fd_id, selectedPayoutMethod);
+          const searchResult = await GetSchemeSearch(formValues.fd_id, selectedPayoutMethod);
+          if (searchResult) {
+            console.log(searchResult);
+            setSchemeData(searchResult);
+          }
         }}
       >
         {({ values, errors, touched, handleChange, handleBlur, handleSubmit, resetForm }) => (
@@ -174,29 +183,6 @@ export default function InterestRate({ formValues, changeTableVisibility, isNotE
               <Stack direction="row" alignItems="center" justifyContent="space-between">
                 <CardHeader sx={headerSX} titleTypographyProps={{ variant: 'subtitle1' }} title="Interest Rate" />
                 <Stack direction="row" alignItems="center" spacing={1.5} paddingRight={2.5}>
-                  {isEditing ? (
-                    <Box>
-                      <FormControlLabel
-                        value="start"
-                        control={
-                          <Switch
-                            color="primary"
-                            checked={isActive}
-                            onChange={() => {
-                              setIsActive(!isActive);
-                            }}
-                          />
-                        }
-                        // control={<Switch color="primary" checked={isActive} onChange={setIsActive} />}
-                        label="Active"
-                        labelPlacement="start"
-                        sx={{ mr: 1 }}
-                      />
-                    </Box>
-                  ) : (
-                    <></>
-                  )}
-
                   <Box>
                     <AnimateButton>
                       <Button
@@ -262,10 +248,10 @@ export default function InterestRate({ formValues, changeTableVisibility, isNotE
                       label="Payout Method"
                     />
                   </Grid>
-                  <Grid item xs={3}>
+                  <Grid item xs={2}>
                     <Box>
                       <AnimateButton>
-                        <Button fullWidth variant="contained" color="success" startIcon={<ReceiptSearch />} type="submit">
+                        <Button fullWidth variant="contained" color="success" startIcon={<SearchNormal1 />} type="submit">
                           Show
                         </Button>
                       </AnimateButton>
@@ -273,11 +259,11 @@ export default function InterestRate({ formValues, changeTableVisibility, isNotE
                   </Grid>
 
                   <Grid item xs={12}>
-                    <MultiTable
+                    <InterestRateTable
                       columns={columns}
-                      data={interestData}
+                      data={schemeData}
                       changeTableVisibility={changeTableVisibility}
-                      setEditing={setEditing}
+                      schemeEditing={schemeEditing}
                       getOneItem={GetOneInterestRate}
                       deleteOneItem={DeleteOneInterestRate}
                       setSearchData={setSearchData}
@@ -286,6 +272,7 @@ export default function InterestRate({ formValues, changeTableVisibility, isNotE
                       showActionHeadButton={showActionHeadButton}
                       handleIROpenDialog={handleOpenDialog}
                     />
+                    {/* New table for this */}
                   </Grid>
                 </Grid>
               </CardContent>

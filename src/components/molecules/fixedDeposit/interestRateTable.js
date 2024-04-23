@@ -32,7 +32,6 @@ import { useGlobalFilter } from 'react-table/dist/react-table.development';
 import { useSortBy } from 'react-table';
 import { DialogBox } from 'components/atoms/dialog/dialog';
 import AnimateButton from 'helpers/@extended/AnimateButton';
-import './multiTable.css';
 
 // ==============================|| REACT TABLE ||============================== //
 
@@ -50,16 +49,12 @@ function ReactTable({
   setSearchData,
   tableDataRefetch,
   setActiveEditing,
-  isEditingInterestRateButton,
-  isEditingInterestRate,
-  showActionHeadButton,
   handleIROpenDialog,
   isEditingInterestRateLogic
 }) {
   const filterTypes = useMemo(() => renderFilterTypes, []);
   const defaultColumn = useMemo(() => ({ Filter: DefaultColumnFilter }), []);
   const initialState = useMemo(() => ({ filters: [{ id: 'status', value: '' }] }), []);
-  // console.warn(editingInterestRate);
   const {
     getTableProps,
     getTableBodyProps,
@@ -181,27 +176,20 @@ function ReactTable({
                   <HeaderSort column={column} sort />
                 </TableCell>
               ))}
-              {!showActionHeadButton && (
-                <TableCell width={150} sx={{ textAlign: 'right' }}>
-                  Actions
-                </TableCell>
-              )}
-              {showActionHeadButton && (
-                <TableCell width={150} sx={{ textAlign: 'right' }}>
-                  <Box>
-                    <AnimateButton>
-                      <Button
-                        className="icon-only-button"
-                        variant="contained"
-                        color="success"
-                        startIcon={<Additem size={40} />}
-                        onClick={handleIROpenDialog}
-                      ></Button>
-                      {/* <Additem style={{ backgroundColor: theme.palette.primary }} /> */}
-                    </AnimateButton>
-                  </Box>
-                </TableCell>
-              )}
+
+              <TableCell width={150} sx={{ textAlign: 'right' }}>
+                <Box>
+                  <AnimateButton>
+                    <Button
+                      className="icon-only-button"
+                      variant="contained"
+                      color="success"
+                      startIcon={<Additem size={40} />}
+                      onClick={handleIROpenDialog}
+                    ></Button>
+                  </AnimateButton>
+                </Box>
+              </TableCell>
             </TableRow>
           ))}
         </TableHead>
@@ -225,30 +213,12 @@ function ReactTable({
                       size={22}
                       style={{ marginRight: 20, cursor: 'pointer' }}
                       onClick={() => {
-                        console.log(isEditingInterestRateLogic);
-                        if (isEditingInterestRateLogic) {
-                          handleIROpenDialog();
-                          console.log(row.original);
-                          schemeEditing(row.original);
-                          setActiveEditing();
-                        } else {
-                          changeTableVisibility();
-                          setEditing(row.original);
-                          setActiveEditing();
-                        }
+                        handleIROpenDialog();
+                        console.log(row.original);
+                        schemeEditing(row.original);
+                        setActiveEditing();
                       }}
                     />
-
-                    {isEditingInterestRateButton && (
-                      <DiscountShape
-                        size={22}
-                        style={{ marginRight: 20, cursor: 'pointer' }}
-                        onClick={async () => {
-                          setEditing(row.original);
-                          isEditingInterestRate();
-                        }}
-                      />
-                    )}
 
                     <Trash
                       size={22}
@@ -287,7 +257,7 @@ ReactTable.propTypes = {
 
 // ==============================|| REACT TABLE - PAGINATION - FILTERING ||============================== //
 
-const MultiTable = ({
+const InterestRateTable = ({
   columns,
   data,
   formValues,
@@ -301,8 +271,6 @@ const MultiTable = ({
   setSearchData,
   tableDataRefetch,
   setActiveEditing,
-  isEditingInterestRateButton,
-  isEditingInterestRate,
   showActionHeadButton,
   handleIROpenDialog,
   isEditingInterestRateLogic
@@ -324,8 +292,6 @@ const MultiTable = ({
           setSearchData={setSearchData}
           tableDataRefetch={tableDataRefetch}
           setActiveEditing={setActiveEditing}
-          isEditingInterestRateButton={isEditingInterestRateButton}
-          isEditingInterestRate={isEditingInterestRate}
           showActionHeadButton={showActionHeadButton}
           handleIROpenDialog={handleIROpenDialog}
           isEditingInterestRateLogic={isEditingInterestRateLogic}
@@ -335,7 +301,7 @@ const MultiTable = ({
   );
 };
 
-MultiTable.propTypes = {
+InterestRateTable.propTypes = {
   columns: PropTypes.array,
   data: PropTypes.array,
   formValues: PropTypes.object,
@@ -350,11 +316,9 @@ MultiTable.propTypes = {
   tableDataRefetch: PropTypes.any,
   setActiveEditing: PropTypes.any,
   // Add new table for below
-  isEditingInterestRateButton: PropTypes.any,
-  isEditingInterestRate: PropTypes.any,
   showActionHeadButton: PropTypes.any,
   handleIROpenDialog: PropTypes.any,
   isEditingInterestRateLogic: PropTypes.any
 };
 
-export default MultiTable;
+export default InterestRateTable;
