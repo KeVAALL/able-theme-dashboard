@@ -4,6 +4,9 @@
 .common-textfield .MuiFormLabel-root {
   line-height: 1.5em !important;
 }
+.common-textfield .Mui-disabled {
+  -webkit-text-fill-color: #768087 !important;
+}
 
 .common-autocomplete .MuiFormLabel-root {
   top: -3px !important;

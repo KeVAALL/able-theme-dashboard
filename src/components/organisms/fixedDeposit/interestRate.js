@@ -1,16 +1,15 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useTheme } from '@mui/material/styles';
 import { Divider, Box, Card, Grid, CardContent, Button, Stack, CardHeader, FormControlLabel, Switch } from '@mui/material';
 import AnimateButton from 'helpers/@extended/AnimateButton';
-import { Additem } from 'iconsax-react';
+import { ReceiptSearch } from 'iconsax-react';
 import PropTypes from 'prop-types';
 // third-party
 import { Formik } from 'formik';
 import * as yup from 'yup';
+import { useQuery } from 'react-query';
 import Loader from 'components/atoms/loader/Loader';
-import { SubmitButton } from 'components/atoms/button/button';
-import CustomTextField from 'utils/textfield';
-import MainCard from 'components/organisms/mainCard/MainCard';
+import CustomTextField, { CustomAutoComplete } from 'utils/textfield';
 import MultiTable from '../../pages/multiTable/multiTable';
 // assets
 import {
@@ -18,7 +17,8 @@ import {
   GetOneInterestRate,
   SaveInterestRate,
   EditInterestRate,
-  DeleteOneInterestRate
+  DeleteOneInterestRate,
+  GetPayoutMethod
 } from 'hooks/interestRate/interestRate';
 import { DialogForm } from 'components/atoms/dialog/formdialog';
 
@@ -27,7 +27,36 @@ const headerSX = {
   '& .MuiCardHeader-action': { m: '0px auto', alignSelf: 'center' }
 };
 
-export default function InterestRate({ changeTableVisibility, isNotEditingInterestRate }) {
+export default function InterestRate({ formValues, changeTableVisibility, isNotEditingInterestRate }) {
+  useEffect(() => {
+    console.log(formValues);
+    setEditing(formValues);
+    setTimeout(() => {
+      setLoading(false);
+    }, 100);
+  }, [formValues]);
+
+  // Autocomplete field state
+  const [selectedPayoutMethod, setSelectedPayoutMethod] = useState(null);
+  const [payoutData, setPayoutData] = useState([]);
+  const { isPending, error, refetch } = useQuery({
+    queryKey: ['payoutData', formValues.fd_id],
+    refetchOnWindowFocus: false,
+    keepPreviousData: true,
+    queryFn: () => GetPayoutMethod(formValues.fd_id),
+    onSuccess: (data) => {
+      console.log(data);
+      setPayoutData(data);
+    }
+  });
+  const handleOnIssuerChange = (event) => {
+    payoutData.map((el) => {
+      if (el.item_value === event.target.outerText) {
+        console.log(el.item_id);
+        setSelectedPayoutMethod(el.item_id);
+      }
+    });
+  };
   // Search one item state
   const setSearchData = (interestRate) => {
     setIssuerData(interestRate);
@@ -37,26 +66,13 @@ export default function InterestRate({ changeTableVisibility, isNotEditingIntere
   const handleOpenDialog = () => {
     setOpenDialog(!openDialog);
   };
-  // Search one item form fields
-  //   const filterFormValues = {
-  //     issuer_name: ''
-  //   };
-  //   const formValueFields = [
-  //     {
-  //       fieldName: 'issuer_name',
-  //       label: 'Issuer Name',
-  //       type: 'text'
-  //     }
-  //   ];
-  //   const filterValidationSchema = yup.object({
-  //     issuer_name: yup.string().required('Issuer Name is required')
-  //   });
+
   // Add form Values
   const formAllValues = {
     fd_name: '',
     issuer_name: ''
   };
-  const [formValues, setFormValues] = useState(formAllValues);
+  const [IRformValues, setFormValues] = useState(formAllValues);
   const validationSchema = yup.object({
     fd_name: yup.string().required('FD Name is required'),
     issuer_name: yup.string().required('Issuer Name is required')
@@ -65,9 +81,14 @@ export default function InterestRate({ changeTableVisibility, isNotEditingIntere
     setFormValues(formAllValues);
   };
   // Edit Logic State
+  const [loading, setLoading] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
   const setEditing = (value) => {
-    setFormValues(value);
+    console.log(value);
+    setFormValues({
+      fd_name: value.fd_name,
+      issuer_name: value.issuer_name
+    });
   };
   const setActiveEditing = () => {
     setIsEditing(true);
@@ -112,10 +133,25 @@ export default function InterestRate({ changeTableVisibility, isNotEditingIntere
     // }
   ];
 
+  if (loading) return <Loader />;
+
   return (
     <Stack spacing={2}>
-      <DialogForm openDialog={openDialog} handleOpenDialog={handleOpenDialog} />
-      <Formik initialValues={formValues} validationSchema={validationSchema} onSubmit={async (values, { resetForm }) => {}}>
+      <DialogForm
+        openDialog={openDialog}
+        handleOpenDialog={handleOpenDialog}
+        fdId={formValues.fd_id}
+        selectedPayoutMethod={selectedPayoutMethod}
+        clearFormValues={clearFormValues}
+        SaveInterestRate={SaveInterestRate}
+      />
+      <Formik
+        initialValues={IRformValues}
+        validationSchema={validationSchema}
+        onSubmit={async (values, { resetForm }) => {
+          console.log(values);
+        }}
+      >
         {({ values, errors, touched, handleChange, handleBlur, handleSubmit, resetForm }) => (
           <Box
             component="form"
@@ -162,13 +198,6 @@ export default function InterestRate({ changeTableVisibility, isNotEditingIntere
 
                   <Box>
                     <AnimateButton>
-                      <Button variant="contained" color="success" startIcon={<Additem />} type="submit">
-                        Show
-                      </Button>
-                    </AnimateButton>
-                  </Box>
-                  <Box>
-                    <AnimateButton>
                       <Button
                         variant="outlined"
                         color="secondary"
@@ -188,7 +217,7 @@ export default function InterestRate({ changeTableVisibility, isNotEditingIntere
 
               <CardContent>
                 <Grid container spacing={3}>
-                  <Grid item xs={4}>
+                  <Grid item xs={3}>
                     <CustomTextField
                       label="FD Name"
                       name="fd_name"
@@ -198,6 +227,7 @@ export default function InterestRate({ changeTableVisibility, isNotEditingIntere
                       onBlur={handleBlur}
                       touched={touched}
                       errors={errors}
+                      disabled
                       FormHelperTextProps={{
                         style: {
                           marginLeft: 0
@@ -205,7 +235,7 @@ export default function InterestRate({ changeTableVisibility, isNotEditingIntere
                       }}
                     />
                   </Grid>
-                  <Grid item xs={4}>
+                  <Grid item xs={3}>
                     <CustomTextField
                       label="Issuer Name"
                       name="issuer_name"
@@ -215,6 +245,7 @@ export default function InterestRate({ changeTableVisibility, isNotEditingIntere
                       onBlur={handleBlur}
                       touched={touched}
                       errors={errors}
+                      disabled
                       FormHelperTextProps={{
                         style: {
                           marginLeft: 0
@@ -222,15 +253,28 @@ export default function InterestRate({ changeTableVisibility, isNotEditingIntere
                       }}
                     />
                   </Grid>
-                  <Grid item xs={4}></Grid>
+                  <Grid item xs={3}>
+                    <CustomAutoComplete
+                      options={payoutData}
+                      handleChange={handleOnIssuerChange}
+                      optionName="item_value"
+                      label="Payout Method"
+                    />
+                  </Grid>
+                  <Grid item xs={3}>
+                    <Box>
+                      <AnimateButton>
+                        <Button fullWidth variant="contained" color="success" startIcon={<ReceiptSearch />} type="submit">
+                          Show
+                        </Button>
+                      </AnimateButton>
+                    </Box>
+                  </Grid>
 
                   <Grid item xs={12}>
                     <MultiTable
                       columns={columns}
                       data={interestData}
-                      //   formValues={filterFormValues}
-                      //   formValueFields={formValueFields}
-                      //   validationSchema={filterValidationSchema}
                       changeTableVisibility={changeTableVisibility}
                       setEditing={setEditing}
                       getOneItem={GetOneInterestRate}
@@ -253,5 +297,8 @@ export default function InterestRate({ changeTableVisibility, isNotEditingIntere
 }
 
 InterestRate.propTypes = {
-  setActiveClose: PropTypes.any
+  formValues: PropTypes.array,
+  setActiveClose: PropTypes.any,
+  changeTableVisibility: PropTypes.any,
+  isNotEditingInterestRate: PropTypes.any
 };

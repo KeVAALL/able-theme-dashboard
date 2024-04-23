@@ -10,15 +10,72 @@ const toInteger = (boolValue) => {
   return boolValue ? 1 : 0;
 };
 
-export async function GetInterestRateData() {
+export async function GetPayoutMethod(fdId) {
   try {
-    const response = await axios.post('investor/getinvestor', {
-      method_name: 'getall'
+    const response = await axios.post('product/getpayouts', {
+      method_name: 'getpayouts',
+      //   fd_id: 1
+      fd_id: fdId
     });
     console.log(response);
     return response.data.data;
   } catch (err) {
     return err;
+  }
+}
+export async function GetPayoutSearch(fdId, selectedPayoutMethod) {
+  try {
+    const response = await axios.post('product/getpayouts', {
+      method_name: 'getpayouts',
+      fd_id: fdId,
+      payout_type: selectedPayoutMethod
+    });
+    console.log(response);
+    return response.data.data;
+  } catch (err) {
+    return err;
+  }
+}
+
+export async function SaveInterestRate(
+  values,
+  fdId,
+  selectedPayoutMethod,
+  //   ProductTableDataRefetch,
+  clearFormValues
+) {
+  console.log({
+    ...values,
+    fd_id: fdId,
+    fd_payout_method: selectedPayoutMethod,
+    method_name: 'add'
+  });
+  try {
+    await axios.post('/product/savescheme', {
+      ...values,
+      fd_id: fdId,
+      fd_payout_method: selectedPayoutMethod,
+      method_name: 'add'
+    });
+    clearFormValues();
+    enqueueSnackbar('Product added', {
+      variant: 'success',
+      autoHideDuration: 2000,
+      anchorOrigin: {
+        vertical: 'top',
+        horizontal: 'right'
+      }
+    });
+    // ProductTableDataRefetch();
+  } catch (err) {
+    enqueueSnackbar(err.message, {
+      variant: 'success',
+      autoHideDuration: 2000,
+      anchorOrigin: {
+        vertical: 'top',
+        horizontal: 'right'
+      }
+    });
   }
 }
 export async function GetOneInterestRate(values, setSearchData) {
@@ -40,52 +97,6 @@ export async function GetOneInterestRate(values, setSearchData) {
         }
       })
     );
-  }
-}
-export async function SaveInterestRate(
-  values,
-  ProductTableDataRefetch,
-  clearFormValues,
-  checkedCumulative,
-  checkedNonCumulative,
-  selectedIssuerID
-) {
-  console.log({
-    ...values,
-    issuer_id: selectedIssuerID,
-    is_cumulative: toInteger(!checkedCumulative ? false : checkedCumulative),
-    is_non_cumulative: toInteger(!checkedNonCumulative ? false : checkedNonCumulative),
-    user_id: 2,
-    method_name: 'add'
-  });
-  try {
-    await axios.post('/product/saveproduct', {
-      ...values,
-      issuer_id: selectedIssuerID,
-      is_cumulative: toInteger(!checkedCumulative ? false : checkedCumulative),
-      is_non_cumulative: toInteger(!checkedNonCumulative ? false : checkedNonCumulative),
-      user_id: 2,
-      method_name: 'add'
-    });
-    clearFormValues();
-    enqueueSnackbar('Product added', {
-      variant: 'success',
-      autoHideDuration: 2000,
-      anchorOrigin: {
-        vertical: 'top',
-        horizontal: 'right'
-      }
-    });
-    ProductTableDataRefetch();
-  } catch (err) {
-    enqueueSnackbar(err.message, {
-      variant: 'success',
-      autoHideDuration: 2000,
-      anchorOrigin: {
-        vertical: 'top',
-        horizontal: 'right'
-      }
-    });
   }
 }
 export async function EditInterestRate(

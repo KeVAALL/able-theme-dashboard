@@ -5,6 +5,7 @@ import { useState, useEffect, useMemo } from 'react';
 
 // material-ui
 import { Box, Stack, Table, TableBody, TableCell, TableHead, TableRow, Button, Grid } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 import CustomTextField from 'utils/textfield';
 import { Trash, Edit2, FilterSearch, DiscountShape, Additem } from 'iconsax-react';
 
@@ -31,6 +32,7 @@ import { useGlobalFilter } from 'react-table/dist/react-table.development';
 import { useSortBy } from 'react-table';
 import { DialogBox } from 'components/atoms/dialog/dialog';
 import AnimateButton from 'helpers/@extended/AnimateButton';
+import './multiTable.css';
 
 // ==============================|| REACT TABLE ||============================== //
 
@@ -95,11 +97,16 @@ function ReactTable({
     { product_type_id: 1, product_type: 'Electronics', is_active: true, is_deleted: false },
     { product_type_id: 2, product_type: 'Clothing', is_active: true, is_deleted: false }
   ];
+
+  // For Delete Item
   const [item, setItem] = useState();
+  // For Dialog
   const [openDialog, setOpenDialog] = useState(false);
   const handleOpenDialog = () => {
     setOpenDialog(!openDialog);
   };
+  // Custom fields/ columns
+  const theme = useTheme();
 
   return (
     <Stack>
@@ -109,7 +116,6 @@ function ReactTable({
             initialValues={formValues}
             validationSchema={validationSchema}
             onSubmit={async (values, { setSubmitting, resetForm }) => {
-              // getOneItem(values);
               getOneItem(values, setSearchData);
               resetForm();
             }}
@@ -182,9 +188,14 @@ function ReactTable({
                 <TableCell width={150} sx={{ textAlign: 'right' }}>
                   <Box>
                     <AnimateButton>
-                      <Button variant="contained" color="success" startIcon={<Additem />} onClick={handleIROpenDialog}>
-                        Add
-                      </Button>
+                      <Button
+                        className="icon-only-button"
+                        variant="contained"
+                        color="success"
+                        startIcon={<Additem size={40} />}
+                        onClick={handleIROpenDialog}
+                      ></Button>
+                      {/* <Additem style={{ backgroundColor: theme.palette.primary }} /> */}
                     </AnimateButton>
                   </Box>
                 </TableCell>
@@ -219,9 +230,20 @@ function ReactTable({
                       }}
                     />
 
+                    {isEditingInterestRateButton && (
+                      <DiscountShape
+                        size={22}
+                        style={{ marginRight: 20, cursor: 'pointer' }}
+                        onClick={async () => {
+                          setEditing(row.original);
+                          isEditingInterestRate();
+                        }}
+                      />
+                    )}
+
                     <Trash
                       size={22}
-                      style={{ marginRight: 20, cursor: 'pointer' }}
+                      style={{ cursor: 'pointer' }}
                       onClick={async () => {
                         setItem(row.original);
                         setTimeout(() => {
@@ -230,16 +252,6 @@ function ReactTable({
                         console.log(row.original);
                       }}
                     />
-
-                    {isEditingInterestRateButton && (
-                      <DiscountShape
-                        size={22}
-                        style={{ cursor: 'pointer' }}
-                        onClick={async () => {
-                          isEditingInterestRate();
-                        }}
-                      />
-                    )}
                   </TableCell>
                 </TableRow>
               );
