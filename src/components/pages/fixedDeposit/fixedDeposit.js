@@ -19,6 +19,7 @@ import CustomTextField, { CustomAutoComplete, CustomCheckbox } from 'utils/textf
 // assets
 import { GetProductData, GetOneProduct, SaveProduct, EditProduct, DeleteOneProduct } from 'hooks/fixedDeposit/fixedDeposit';
 import { GetActiveIssuerData } from 'hooks/issuer/issuer';
+import InterestRate from '../../organisms/fixedDeposit/interestRate';
 
 function FixDeposit() {
   // Main data
@@ -32,6 +33,7 @@ function FixDeposit() {
 
   // Edit Logic State
   const [isEditing, setIsEditing] = useState(false);
+  const [editingInterestRate, setEditingInterestRate] = useState(false);
   const [activeIssuers, setActiveIssuers] = useState([]);
   const [selectedIssuerID, setSelectedIssuerID] = useState(null);
   const [isFDActive, setFDActive] = useState();
@@ -50,6 +52,12 @@ function FixDeposit() {
   };
   const handleIsFDActive = (initialValue) => {
     setFDActive(initialValue);
+  };
+  const isEditingInterestRate = () => {
+    setEditingInterestRate(true);
+  };
+  const isNotEditingInterestRate = () => {
+    setEditingInterestRate(false);
   };
 
   // Select field state
@@ -186,6 +194,9 @@ function FixDeposit() {
   });
 
   if (isPending) return <Loader />;
+
+  if (editingInterestRate)
+    return <InterestRate changeTableVisibility={changeTableVisibility} isNotEditingInterestRate={isNotEditingInterestRate} />;
 
   return (
     <>
@@ -351,6 +362,7 @@ function FixDeposit() {
           )}
         </Formik>
       )}
+      {/* {editingInterestRate && <InterestRate />} */}
       {!showTable && (
         <MainCard
           title="Product"
@@ -373,6 +385,8 @@ function FixDeposit() {
             setSearchData={setSearchData}
             tableDataRefetch={ProductTableDataRefetch}
             setActiveEditing={setActiveEditing}
+            isEditingInterestRateButton={true}
+            isEditingInterestRate={isEditingInterestRate}
           />
         </MainCard>
       )}
