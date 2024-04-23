@@ -19,8 +19,6 @@ export const SubmitButton = ({
   setIsActive,
   isActive
 }) => {
-  // const [isActive, setIsActive] = useState();
-
   useEffect(() => {
     if (setIsActive) {
       setIsActive(formValues.is_active);

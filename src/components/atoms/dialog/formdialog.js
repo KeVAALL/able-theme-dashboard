@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import {
   Dialog,
   Box,
@@ -29,17 +29,14 @@ export function DialogForm({
   schemeEditFormValues,
   fdId,
   selectedPayoutMethod,
-  clearFormValues,
   SaveInterestRate,
   setIsActive,
   isActive,
   isEditingScheme,
   setActiveClose
 }) {
-  // const [isLoading, setIsLoading] = useState(true);
-
   const formAllSchemeValues = {
-    min_days: '8',
+    min_days: '',
     max_days: '',
     rate_of_interest_regular: '',
     rate_of_interest_senior_citezen: '',
@@ -48,6 +45,7 @@ export function DialogForm({
   };
   // const [schemeFormValues, setSchemeFormValues] = useState(formAllSchemeValues);
   const [schemeFormValues, setSchemeFormValues] = useState();
+  const triggerRef = useRef(false);
 
   const validationSchema = yup.object({
     min_days: yup.number().required('Min Tenure is required'),
@@ -57,28 +55,19 @@ export function DialogForm({
     rate_of_interest_female: yup.number().required('Rate is required'),
     rate_of_interest_female_senior_citezen: yup.number().required('Rate is required')
   });
+  const clearFormValues = () => {
+    setSchemeFormValues(formAllSchemeValues);
+  };
 
   useEffect(() => {
-    // console.warn(isEditingScheme);
-    // console.warn(schemeEditFormValues);
-    setSchemeFormValues(schemeEditFormValues);
-    // setSchemeFormValues({
-    //   scheme_master_id: 7,
-    //   fd_id: 1,
-    //   min_days: 540,
-    //   max_days: 600,
-    //   tenure: '540-600',
-    //   fd_payout_method: 'NC1',
-    //   rate_of_interest_regular: 7.91,
-    //   rate_of_interest_female: 7.67,
-    //   rate_of_interest_senior_citezen: 7.92,
-    //   rate_of_interest_female_senior_citezen: 7.91,
-    //   fd_type: 'NC',
-    //   is_active: 1
-    // });
-    console.log('acacs');
-    // }, [schemeEditFormValues, isEditingScheme]);
-  }, [schemeEditFormValues]);
+    console.warn(schemeEditFormValues);
+    console.warn(isEditingScheme);
+
+    if (schemeEditFormValues) {
+      console.log('Here');
+      setSchemeFormValues(schemeEditFormValues);
+    }
+  }, [schemeEditFormValues, isEditingScheme]);
 
   // if (isLoading) return <Loader />;
 
@@ -107,7 +96,6 @@ export function DialogForm({
                     }}
                   />
                 }
-                // control={<Switch color="primary" checked={isActive} onChange={setIsActive} />}
                 label="Active"
                 labelPlacement="start"
                 sx={{ mr: 1 }}
@@ -115,37 +103,20 @@ export function DialogForm({
             </Box>
           </Stack>
         </DialogTitle>
-        <DialogContent sx={{ p: 2, overflowY: 'unset' }}>
-          <Formik
-            // initialValues={{
-            //   scheme_master_id: 7,
-            //   fd_id: 1,
-            //   min_days: 540,
-            //   max_days: 600,
-            //   tenure: '540-600',
-            //   fd_payout_method: 'NC1',
-            //   rate_of_interest_regular: 7.91,
-            //   rate_of_interest_female: 7.67,
-            //   rate_of_interest_senior_citezen: 7.92,
-            //   rate_of_interest_female_senior_citezen: 7.91,
-            //   fd_type: 'NC',
-            //   is_active: 1
-            // }}
-            // initialValues={schemeEditFormValues || schemeFormValues}
-            initialValues={schemeFormValues || formAllSchemeValues}
-            // initialValues={schemeFormValues ? schemeFormValues : formAllSchemeValues}
-            validationSchema={validationSchema}
-            onSubmit={async (values, { resetForm }) => {
-              console.log(values);
-              // SaveInterestRate(values, fdId, selectedPayoutMethod, clearFormValues);
-            }}
-          >
-            {({ values, errors, touched, handleChange, handleBlur, handleSubmit, resetForm }) => (
+        <Formik
+          initialValues={schemeFormValues || formAllSchemeValues}
+          validationSchema={validationSchema}
+          onSubmit={async (values, { resetForm }) => {
+            console.log(values);
+            // SaveInterestRate(values, fdId, selectedPayoutMethod, clearFormValues);
+          }}
+        >
+          {({ values, errors, touched, handleChange, handleBlur, handleSubmit, resetForm }) => (
+            <DialogContent sx={{ p: 2, overflowY: 'unset' }}>
               <Box
                 component="form"
                 onSubmit={(event) => {
                   event.preventDefault();
-                  console.log(values);
                   handleSubmit();
                 }}
                 sx={{ width: '100%' }}
@@ -155,20 +126,6 @@ export function DialogForm({
                     <CustomTextField
                       label="Min Tenure"
                       name="min_days"
-                      // values={{
-                      //   scheme_master_id: 7,
-                      //   fd_id: 1,
-                      //   min_days: 540,
-                      //   max_days: 600,
-                      //   tenure: '540-600',
-                      //   fd_payout_method: 'NC1',
-                      //   rate_of_interest_regular: 7.91,
-                      //   rate_of_interest_female: 7.67,
-                      //   rate_of_interest_senior_citezen: 7.92,
-                      //   rate_of_interest_female_senior_citezen: 7.91,
-                      //   fd_type: 'NC',
-                      //   is_active: 1
-                      // }}
                       values={values}
                       type="number"
                       onChange={handleChange}
@@ -280,32 +237,50 @@ export function DialogForm({
                     />
                   </Grid>
                 </Grid>
+                <DialogActions sx={{ p: 2 }}>
+                  <Button
+                    color="secondary"
+                    onClick={() => {
+                      handleOpenDialog();
+                      setActiveClose();
+                      clearFormValues();
+                    }}
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    variant="contained"
+                    color="success"
+                    type="submit"
+                    onClick={() => {
+                      // handleOpenDialog();
+                    }}
+                  >
+                    Add
+                  </Button>
+                </DialogActions>
               </Box>
-            )}
-          </Formik>
-          <DialogActions sx={{ p: 2 }}>
-            <Button
-              color="secondary"
-              onClick={() => {
-                handleOpenDialog();
-                setActiveClose();
-                // clearFormValues();
-              }}
-            >
-              Cancel
-            </Button>
-            <Button
-              variant="contained"
-              color="success"
-              onClick={() => {
-                handleOpenDialog();
-              }}
-            >
-              Add
-            </Button>
-          </DialogActions>
-        </DialogContent>
+            </DialogContent>
+          )}
+        </Formik>
       </Box>
     </Dialog>
   );
 }
+
+// setSchemeFormValues({
+//   scheme_master_id: 7,
+//   fd_id: 1,
+//   min_days: 540,
+//   max_days: 600,
+//   tenure: '540-600',
+//   fd_payout_method: 'NC1',
+//   rate_of_interest_regular: 7.91,
+//   rate_of_interest_female: 7.67,
+//   rate_of_interest_senior_citezen: 7.92,
+//   rate_of_interest_female_senior_citezen: 7.91,
+//   fd_type: 'NC',
+//   is_active: 1
+// });
+
+// initialValues={schemeEditFormValues || schemeFormValues}

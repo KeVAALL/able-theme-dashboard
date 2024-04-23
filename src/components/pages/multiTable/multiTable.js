@@ -51,10 +51,7 @@ function ReactTable({
   tableDataRefetch,
   setActiveEditing,
   isEditingInterestRateButton,
-  isEditingInterestRate,
-  showActionHeadButton,
-  handleIROpenDialog,
-  isEditingInterestRateLogic
+  isEditingInterestRate
 }) {
   const filterTypes = useMemo(() => renderFilterTypes, []);
   const defaultColumn = useMemo(() => ({ Filter: DefaultColumnFilter }), []);
@@ -181,27 +178,9 @@ function ReactTable({
                   <HeaderSort column={column} sort />
                 </TableCell>
               ))}
-              {!showActionHeadButton && (
-                <TableCell width={150} sx={{ textAlign: 'right' }}>
-                  Actions
-                </TableCell>
-              )}
-              {showActionHeadButton && (
-                <TableCell width={150} sx={{ textAlign: 'right' }}>
-                  <Box>
-                    <AnimateButton>
-                      <Button
-                        className="icon-only-button"
-                        variant="contained"
-                        color="success"
-                        startIcon={<Additem size={40} />}
-                        onClick={handleIROpenDialog}
-                      ></Button>
-                      {/* <Additem style={{ backgroundColor: theme.palette.primary }} /> */}
-                    </AnimateButton>
-                  </Box>
-                </TableCell>
-              )}
+              <TableCell width={150} sx={{ textAlign: 'right' }}>
+                Actions
+              </TableCell>
             </TableRow>
           ))}
         </TableHead>
@@ -225,17 +204,9 @@ function ReactTable({
                       size={22}
                       style={{ marginRight: 20, cursor: 'pointer' }}
                       onClick={() => {
-                        console.log(isEditingInterestRateLogic);
-                        if (isEditingInterestRateLogic) {
-                          handleIROpenDialog();
-                          console.log(row.original);
-                          schemeEditing(row.original);
-                          setActiveEditing();
-                        } else {
-                          changeTableVisibility();
-                          setEditing(row.original);
-                          setActiveEditing();
-                        }
+                        changeTableVisibility();
+                        setEditing(row.original);
+                        setActiveEditing();
                       }}
                     />
 
@@ -302,10 +273,7 @@ const MultiTable = ({
   tableDataRefetch,
   setActiveEditing,
   isEditingInterestRateButton,
-  isEditingInterestRate,
-  showActionHeadButton,
-  handleIROpenDialog,
-  isEditingInterestRateLogic
+  isEditingInterestRate
 }) => {
   return (
     <MainCard content={false} secondary={<CSVExport data={data} filename={'pagination-bottom-table.csv'} />}>
@@ -326,9 +294,6 @@ const MultiTable = ({
           setActiveEditing={setActiveEditing}
           isEditingInterestRateButton={isEditingInterestRateButton}
           isEditingInterestRate={isEditingInterestRate}
-          showActionHeadButton={showActionHeadButton}
-          handleIROpenDialog={handleIROpenDialog}
-          isEditingInterestRateLogic={isEditingInterestRateLogic}
         />
       </ScrollX>
     </MainCard>
@@ -351,10 +316,7 @@ MultiTable.propTypes = {
   setActiveEditing: PropTypes.any,
   // Add new table for below
   isEditingInterestRateButton: PropTypes.any,
-  isEditingInterestRate: PropTypes.any,
-  showActionHeadButton: PropTypes.any,
-  handleIROpenDialog: PropTypes.any,
-  isEditingInterestRateLogic: PropTypes.any
+  isEditingInterestRate: PropTypes.any
 };
 
 export default MultiTable;

@@ -36,10 +36,10 @@ export default function InterestRate({ formValues, changeTableVisibility, isNotE
       setLoading(false);
     }, 200);
   }, [formValues]);
-  //
   const [schemeData, setSchemeData] = useState([]);
-  const [isSchemeActive, setSchemeActive] = useState(true);
+  const [isSchemeActive, setSchemeActive] = useState();
   const handleIsSchemeActive = (initialValue) => {
+    console.log(initialValue);
     setSchemeActive(initialValue);
   };
 

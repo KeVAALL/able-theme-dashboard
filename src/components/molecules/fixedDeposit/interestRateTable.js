@@ -213,10 +213,12 @@ function ReactTable({
                       size={22}
                       style={{ marginRight: 20, cursor: 'pointer' }}
                       onClick={() => {
-                        handleIROpenDialog();
                         console.log(row.original);
                         schemeEditing(row.original);
                         setActiveEditing();
+                        setTimeout(() => {
+                          handleIROpenDialog();
+                        }, 200);
                       }}
                     />
 
