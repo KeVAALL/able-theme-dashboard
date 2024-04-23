@@ -1,5 +1,5 @@
-// / eslint-disable react/prop-types /
-/ eslint-disable no-unused-vars /
+/* eslint-disable react/prop-types */
+/* eslint-disable no-unused-vars */
 import PropTypes from 'prop-types';
 import { useState, useEffect, useMemo } from 'react';
 
@@ -195,7 +195,7 @@ function ReactTable({
                         startIcon={<Additem size={40} />}
                         onClick={handleIROpenDialog}
                       ></Button>
-                      {/* {/ <Additem style={{ backgroundColor: theme.palette.primary }} /> /} */}
+                      {/* <Additem style={{ backgroundColor: theme.palette.primary }} /> */}
                     </AnimateButton>
                   </Box>
                 </TableCell>
@@ -213,7 +213,7 @@ function ReactTable({
                   {row.cells.map((cell) => {
                     return (
                       <TableCell key={cell} {...cell.getCellProps([{ className: cell.column.className }])}>
-                        {/ {cell.render('Cell')} /}
+                        {/* {cell.render('Cell')} */}
                         {cell.column.customCell ? <cell.column.customCell value={cell.value} /> : cell.render('Cell')}
                       </TableCell>
                     );
