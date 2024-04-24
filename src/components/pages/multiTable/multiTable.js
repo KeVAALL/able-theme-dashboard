@@ -207,7 +207,7 @@ function ReactTable({
                   <TableCell sx={{ textAlign: 'right' }}>
                     <Edit2
                       size={22}
-                      style={{ marginRight: 20, cursor: 'pointer' }}
+                      style={{ marginRight: 14, cursor: 'pointer' }}
                       onClick={() => {
                         changeTableVisibility();
                         setEditing(row.original);
@@ -218,7 +218,7 @@ function ReactTable({
                     {isEditingInterestRateButton && (
                       <DiscountShape
                         size={22}
-                        style={{ marginRight: 20, cursor: 'pointer' }}
+                        style={{ marginRight: 14, cursor: 'pointer' }}
                         onClick={async () => {
                           setEditing(row.original);
                           isEditingInterestRate();

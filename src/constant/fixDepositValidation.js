@@ -1,4 +1,5 @@
-import { TableCell } from '@mui/material';
+/* eslint-disable react/prop-types */
+import { TableCell, Chip } from '@mui/material';
 import * as yup from 'yup';
 
 // Add form values
@@ -59,7 +60,15 @@ const ImageCell = ({ value }) => {
   );
 };
 const StatusCell = ({ value }) => {
-  return value === 0 ? 'Not Active' : 'Active';
+  // return value === 0 ? 'Not Active' : 'Active';
+  switch (value) {
+    case 0:
+      return <Chip color="error" label="Not Active" size="medium" variant="light" />;
+    case 1:
+      return <Chip color="success" label="Active" size="medium" variant="light" />;
+    default:
+      return <Chip color="info" label="None" size="medium" variant="light" />;
+  }
 };
 const VisibleColumn = [];
 const tableColumns = [
