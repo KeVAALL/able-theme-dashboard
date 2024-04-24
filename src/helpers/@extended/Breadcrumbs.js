@@ -68,6 +68,17 @@ const Breadcrumbs = ({
       setItem(undefined);
     }
   }, [item, customLocation]);
+  //setting the title of the page
+  const pathSegments = location.pathname.split('/');
+  const lastSegment = pathSegments[pathSegments.length - 1];
+  console.log('Last segment:', lastSegment);
+  useEffect(() => {
+    // Replace underscores with spaces and capitalize the first letter of each word
+    const formattedLastSegment = lastSegment.replace(/_/g, ' ').replace(/\b\w/g, function (l) {
+      return l.toUpperCase();
+    });
+    document.title = `AltCase - ${formattedLastSegment}`;
+  }, [lastSegment, location]);
 
   // set active item state
   const getCollapse = (menu) => {

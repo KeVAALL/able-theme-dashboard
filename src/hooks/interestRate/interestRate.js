@@ -47,36 +47,36 @@ export async function SaveInterestRate(
   console.log({
     ...values,
     fd_id: fdId,
-    fd_payout_method: selectedPayoutMethod,
+    fd_payout_method_id: selectedPayoutMethod,
     method_name: 'add'
   });
-  try {
-    await axios.post('/product/savescheme', {
-      ...values,
-      fd_id: fdId,
-      fd_payout_method: selectedPayoutMethod,
-      method_name: 'add'
-    });
-    clearFormValues();
-    enqueueSnackbar('Product added', {
-      variant: 'success',
-      autoHideDuration: 2000,
-      anchorOrigin: {
-        vertical: 'top',
-        horizontal: 'right'
-      }
-    });
-    // ProductTableDataRefetch();
-  } catch (err) {
-    enqueueSnackbar(err.message, {
-      variant: 'success',
-      autoHideDuration: 2000,
-      anchorOrigin: {
-        vertical: 'top',
-        horizontal: 'right'
-      }
-    });
-  }
+  // try {
+  //   await axios.post('/product/savescheme', {
+  //     ...values,
+  //     fd_id: fdId,
+  //     fd_payout_method_id: selectedPayoutMethod,
+  //     method_name: 'add'
+  //   });
+  //   clearFormValues();
+  //   enqueueSnackbar('Product added', {
+  //     variant: 'success',
+  //     autoHideDuration: 2000,
+  //     anchorOrigin: {
+  //       vertical: 'top',
+  //       horizontal: 'right'
+  //     }
+  //   });
+  //   // ProductTableDataRefetch();
+  // } catch (err) {
+  //   enqueueSnackbar(err.message, {
+  //     variant: 'success',
+  //     autoHideDuration: 2000,
+  //     anchorOrigin: {
+  //       vertical: 'top',
+  //       horizontal: 'right'
+  //     }
+  //   });
+  // }
 }
 export async function GetOneInterestRate(values, setSearchData) {
   try {

@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 
 // assets
@@ -79,6 +79,10 @@ const AuthLogin = ({ forgot }) => {
     console.log(organizedMenu);
     return organizedMenu;
   };
+
+  useEffect(() => {
+    document.title = 'AltCase - Login';
+  }, []);
 
   return (
     <>

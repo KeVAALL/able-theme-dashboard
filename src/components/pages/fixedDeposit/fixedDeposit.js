@@ -95,7 +95,7 @@ function FixDeposit() {
     }
   ];
   const filterValidationSchema = yup.object({
-    fd_name: yup.string().required('FD Name is required')
+    fd_name: yup.string()
   });
 
   // Add form values

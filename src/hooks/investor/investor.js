@@ -42,33 +42,20 @@ export async function GetOneInvestor(values, setSearchData) {
     );
   }
 }
-export async function SaveInvestor(
-  values,
-  ProductTableDataRefetch,
-  clearFormValues,
-  checkedCumulative,
-  checkedNonCumulative,
-  selectedIssuerID
-) {
+export async function SaveInvestor(values, InvestorTableDataRefetch, clearFormValues) {
   console.log({
     ...values,
-    issuer_id: selectedIssuerID,
-    is_cumulative: toInteger(!checkedCumulative ? false : checkedCumulative),
-    is_non_cumulative: toInteger(!checkedNonCumulative ? false : checkedNonCumulative),
     user_id: 2,
     method_name: 'add'
   });
   try {
-    await axios.post('/product/saveproduct', {
+    await axios.post('/investor/create', {
       ...values,
-      issuer_id: selectedIssuerID,
-      is_cumulative: toInteger(!checkedCumulative ? false : checkedCumulative),
-      is_non_cumulative: toInteger(!checkedNonCumulative ? false : checkedNonCumulative),
       user_id: 2,
       method_name: 'add'
     });
     clearFormValues();
-    enqueueSnackbar('Product added', {
+    enqueueSnackbar('Investor added', {
       variant: 'success',
       autoHideDuration: 2000,
       anchorOrigin: {
@@ -76,7 +63,7 @@ export async function SaveInvestor(
         horizontal: 'right'
       }
     });
-    ProductTableDataRefetch();
+    InvestorTableDataRefetch();
   } catch (err) {
     enqueueSnackbar(err.message, {
       variant: 'success',
@@ -88,22 +75,13 @@ export async function SaveInvestor(
     });
   }
 }
-export async function EditInvestor(
-  values,
-  isFDActive,
-  ProductTableDataRefetch,
-  clearFormValues,
-  checkedCumulative,
-  checkedNonCumulative,
-  setActiveClose
-) {
+export async function EditInvestor(values, isInvestorActive, InvestorTableDataRefetch, clearFormValues, setActiveClose) {
+  console.log('hiting api');
   try {
-    await axios.post('/product/saveproduct', {
+    await axios.post('/investor/create', {
       ...values,
-      is_active: toInteger(isFDActive),
+      is_active: toInteger(isInvestorActive),
       method_name: 'update',
-      is_cumulative: toInteger(!checkedCumulative ? false : checkedCumulative),
-      is_non_cumulative: toInteger(!checkedNonCumulative ? false : checkedNonCumulative),
       user_id: 2
     });
     clearFormValues();
@@ -116,7 +94,7 @@ export async function EditInvestor(
         horizontal: 'right'
       }
     });
-    ProductTableDataRefetch();
+    InvestorTableDataRefetch();
   } catch (err) {
     enqueueSnackbar(err.message, {
       variant: 'error',
@@ -131,8 +109,9 @@ export async function EditInvestor(
 export async function DeleteOneInvestor(values) {
   try {
     console.log(values.osb_issuer_id);
-    await axios.post('/product/saveproduct', {
-      fd_id: values.fd_id,
+    await axios.post('/investor/create', {
+      investor_id: values?.investor_id,
+      user_id: 2,
       method_name: 'delete'
     });
     enqueueSnackbar('Product Deleted', {

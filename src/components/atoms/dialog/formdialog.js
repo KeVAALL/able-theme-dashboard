@@ -45,7 +45,6 @@ export function DialogForm({
   };
   // const [schemeFormValues, setSchemeFormValues] = useState(formAllSchemeValues);
   const [schemeFormValues, setSchemeFormValues] = useState();
-  const triggerRef = useRef(false);
 
   const validationSchema = yup.object({
     min_days: yup.number().required('Min Tenure is required'),
@@ -63,7 +62,10 @@ export function DialogForm({
     console.warn(schemeEditFormValues);
     console.warn(isEditingScheme);
 
-    if (schemeEditFormValues) {
+    if (isEditingScheme === false) {
+      clearFormValues();
+    }
+    if (schemeEditFormValues && isEditingScheme === true) {
       console.log('Here');
       setSchemeFormValues(schemeEditFormValues);
     }
@@ -108,7 +110,7 @@ export function DialogForm({
           validationSchema={validationSchema}
           onSubmit={async (values, { resetForm }) => {
             console.log(values);
-            // SaveInterestRate(values, fdId, selectedPayoutMethod, clearFormValues);
+            SaveInterestRate(values, fdId, selectedPayoutMethod, clearFormValues);
           }}
         >
           {({ values, errors, touched, handleChange, handleBlur, handleSubmit, resetForm }) => (
@@ -237,7 +239,7 @@ export function DialogForm({
                     />
                   </Grid>
                 </Grid>
-                <DialogActions sx={{ p: 2 }}>
+                <DialogActions>
                   <Button
                     color="secondary"
                     onClick={() => {

@@ -1,8 +1,9 @@
 import { useMemo, useState } from 'react';
 
 // material-ui
-import { Divider, Box, Card, Grid, CardContent, TableCell } from '@mui/material';
+import { Divider, Box, Card, Grid, CardContent, TableCell, Button } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
+import { Trash, Edit2, FilterSearch, DiscountShape, Additem } from 'iconsax-react';
 import { useQuery } from 'react-query';
 
 // project-imports
@@ -18,6 +19,7 @@ import CustomTextField, { CustomAutoComplete, CustomCheckbox } from 'utils/textf
 
 // assets
 import { GetInvestorData, GetOneInvestor, SaveInvestor, EditInvestor, DeleteOneInvestor } from 'hooks/investor/investor';
+import { display } from '@mui/system';
 
 function Investor() {
   // Main data
@@ -51,49 +53,45 @@ function Investor() {
   };
   // Search one item form fields
   const filterFormValues = {
-    investor_name: ''
+    search: ''
   };
   const formValueFields = [
     {
-      fieldName: 'investor_name',
-      label: 'Investor Name',
+      fieldName: 'search',
+      label: 'Global Search',
+      type: 'text'
+    }
+  ];
+  const filterValueFields = [
+    {
+      fieldName: 'search',
+      label: 'Global Search',
       type: 'text'
     }
   ];
   const filterValidationSchema = yup.object({
-    investor_name: yup.string().required('Name is required')
+    search: yup.string()
   });
 
-  // Add form values
   const formAllValues = {
-    fd_name: '',
-    fd_max_amount: '',
-    fd_min_amount: '',
-    min_tenure: '',
-    max_tenure: '',
-    logo_url: ''
+    investor_name: '',
+    pan_no: '',
+    mobile_no: '',
+    investor_type: ''
   };
   const [formValues, setFormValues] = useState(formAllValues);
   const validationSchema = yup.object({
-    fd_name: yup.string().required('FD Name is required'),
-    fd_max_amount: yup.number().required('Mini Amount is required'),
-    fd_min_amount: yup.number().required('Max Amount is required'),
-    min_tenure: yup.number().required('Minimum Tenure is required'),
-    max_tenure: yup.number().required('Max Tenure is required'),
-    logo_url: yup.string().required('Logo URL is required')
+    investor_name: yup.string().required('Investor Name is required'),
+    pan_no: yup.string().required('Pan number is required'),
+    mobile_no: yup.number().required('Mobile number is required'),
+    investor_type: yup.string().required('Investor type is required')
   });
   const clearFormValues = () => {
     setFormValues(formAllValues);
   };
   // Custom fields/ columns
   const theme = useTheme();
-  const ImageCell = ({ value }) => {
-    return (
-      <TableCell style={{ paddingLeft: '0px' }}>
-        <img src={value} alt="Custom" style={{ width: '90%', height: 60 }} />
-      </TableCell>
-    );
-  };
+
   const StatusCell = ({ value }) => {
     return value === 0 ? 'Not Active' : 'Active';
   };
@@ -104,8 +102,8 @@ function Investor() {
         accessor: 'investor_name'
       },
       {
-        Header: 'Email ID',
-        accessor: 'email_id'
+        Header: 'Pan Number',
+        accessor: 'pan_no'
       },
       {
         Header: 'Mobile Number',
@@ -148,18 +146,18 @@ function Investor() {
           validationSchema={validationSchema}
           onSubmit={async (values, { setSubmitting, resetForm }) => {
             if (isEditing === false) {
-              SaveProduct(values, ProductTableDataRefetch, clearFormValues, checkedCumulative, checkedNonCumulative);
+              SaveInvestor(values, InvestorTableDataRefetch, clearFormValues, checkedCumulative, checkedNonCumulative);
             }
             if (isEditing === true) {
               console.log('i am editing');
+
               console.log({ ...values, method_name: 'update' });
-              EditProduct(
+              EditInvestor(
                 values,
-                isFDActive,
-                ProductTableDataRefetch,
+                // isFDActive,
+                isInvestorActive,
+                InvestorTableDataRefetch,
                 clearFormValues,
-                checkedCumulative,
-                checkedNonCumulative,
                 setActiveClose
               );
             }
@@ -202,8 +200,8 @@ function Investor() {
                   <Grid container spacing={3}>
                     <Grid item xs={4}>
                       <CustomTextField
-                        label="FD Name"
-                        name="fd_name"
+                        label="Investor Name"
+                        name="investor_name"
                         values={values}
                         type="text"
                         onChange={handleChange}
@@ -214,8 +212,20 @@ function Investor() {
                     </Grid>
                     <Grid item xs={4}>
                       <CustomTextField
-                        label="Max Amount"
-                        name="fd_max_amount"
+                        label="Pan Number"
+                        name="pan_no"
+                        values={values}
+                        type="string"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        touched={touched}
+                        errors={errors}
+                      />
+                    </Grid>
+                    <Grid item xs={4}>
+                      <CustomTextField
+                        label="Mobile NUmber"
+                        name="mobile_no"
                         values={values}
                         type="number"
                         onChange={handleChange}
@@ -226,45 +236,8 @@ function Investor() {
                     </Grid>
                     <Grid item xs={4}>
                       <CustomTextField
-                        label="Min Amount"
-                        name="fd_min_amount"
-                        values={values}
-                        type="number"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        touched={touched}
-                        errors={errors}
-                      />
-                    </Grid>
-                    <Grid item xs={4}>
-                      <CustomTextField
-                        label="Minimum Tenure"
-                        name="min_tenure"
-                        values={values}
-                        type="number"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        touched={touched}
-                        errors={errors}
-                      />
-                    </Grid>
-                    <Grid item xs={4}>
-                      <CustomTextField
-                        label="Max Tenure"
-                        name="max_tenure"
-                        values={values}
-                        type="number"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        touched={touched}
-                        errors={errors}
-                      />
-                    </Grid>
-
-                    <Grid item xs={4}>
-                      <CustomTextField
-                        label="Logo URL"
-                        name="logo_url"
+                        label="Investor type"
+                        name="investor_type"
                         values={values}
                         type="text"
                         onChange={handleChange}
@@ -289,6 +262,117 @@ function Investor() {
           border
           sx={{ height: '100%', boxShadow: 1 }}
         >
+          {/* here i will add the filter */}
+          <Formik
+            initialValues={formValues}
+            validationSchema={validationSchema}
+            onSubmit={async (values, { setSubmitting, resetForm }) => {
+              getOneItem(values, setSearchData);
+              resetForm();
+            }}
+          >
+            {({ values, errors, touched, handleChange, handleBlur, handleSubmit, isSubmitting }) => (
+              <Box container direction="row" style={{ display: 'flex', width: '90%' }}>
+                <Box
+                  component="form"
+                  onSubmit={(event) => {
+                    event.preventDefault();
+                    handleSubmit();
+                  }}
+                  sx={{ width: '55%', paddingBottom: '5px', paddingLeft: '16px' }}
+                >
+                  <Box container direction="row" spacing={2} alignItems="center" sx={{ width: '100%' }} style={{ display: 'flex' }}>
+                    {formValueFields?.map((field, id) => {
+                      return (
+                        // this is for the left first
+                        <Grid item xs={4} key={id} style={{ width: '100%' }}>
+                          <CustomTextField
+                            label={field.label}
+                            name={field.fieldName}
+                            values={values}
+                            type={field.type}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            touched={touched}
+                            errors={errors}
+                          />
+                        </Grid>
+                      );
+                    })}
+                    {/* this is for the left button */}
+                    <Grid item xs={4} sx={{ marginLeft: '16px' }}>
+                      <Button variant="contained" color="success" type="submit" startIcon={<FilterSearch />} sx={{ justifySelf: 'center' }}>
+                        Search
+                      </Button>
+                    </Grid>
+                  </Box>
+                </Box>
+                <Box
+                  component="form"
+                  onSubmit={(event) => {
+                    event.preventDefault();
+                    handleSubmit();
+                  }}
+                  sx={{ width: '55%', paddingBottom: '5px', paddingLeft: '16px' }}
+                >
+                  <Box container direction="row" spacing={2} alignItems="center" sx={{ width: '100%' }} style={{ display: 'flex' }}>
+                    {formValueFields?.map((field, id) => {
+                      return (
+                        // this is for the left first
+                        // <Grid item xs={4} key={id} style={{ width: '100%' }}>
+                        //   <CustomTextField
+                        //     label={field.label}
+                        //     name={field.fieldName}
+                        //     values={values}
+                        //     type={field.type}
+                        //     onChange={handleChange}
+                        //     onBlur={handleBlur}
+                        //     touched={touched}
+                        //     errors={errors}
+                        //   />
+                        // </Grid>
+                        <>
+                          <Grid item xs={4} style={{ width: '100%' }}>
+                            <CustomAutoComplete
+                              options={[
+                                {
+                                  name: 'Issuer 1',
+                                  id: 1
+                                },
+                                {
+                                  name: 'Issuer 2',
+                                  id: 2
+                                },
+                                {
+                                  name: 'Issuer 3',
+                                  id: 3
+                                }
+                              ]}
+                              value={'asdfas'}
+                              handleChange={(event, newValue) => {
+                                // Update the Formik state with the selected option
+                                setFieldValue('selectedIssuerID', newValue);
+                              }}
+                              optionName="issuer_name"
+                              label="IFA"
+                            />
+                          </Grid>
+                        </>
+                      );
+                    })}
+                    {/* this is for the left button */}
+                    <Grid item xs={4} sx={{ marginLeft: '16px' }}>
+                      <Button variant="contained" color="success" type="submit" startIcon={<FilterSearch />} sx={{ justifySelf: 'center' }}>
+                        Search
+                      </Button>
+                    </Grid>
+                  </Box>
+                </Box>
+              </Box>
+            )}
+          </Formik>
+
+          {/* ------------- */}
           <MultiTable
             columns={columns}
             data={investorData}
