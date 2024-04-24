@@ -1,9 +1,9 @@
 import { useMemo, useState } from 'react';
 
 // material-ui
-import { Divider, Box, Card, Grid, CardContent, TableCell, Button } from '@mui/material';
+import { Divider, Box, Card, Grid, CardContent, TableCell, Button, Stack, CardHeader } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import { Trash, Edit2, FilterSearch, DiscountShape, Additem } from 'iconsax-react';
+import { Trash, Edit2, FilterSearch, DiscountShape, Additem, SearchNormal1 } from 'iconsax-react';
 import { useQuery } from 'react-query';
 
 // project-imports
@@ -20,6 +20,12 @@ import CustomTextField, { CustomAutoComplete, CustomCheckbox } from 'utils/textf
 // assets
 import { GetInvestorData, GetOneInvestor, SaveInvestor, EditInvestor, DeleteOneInvestor } from 'hooks/investor/investor';
 import { display } from '@mui/system';
+import AnimateButton from 'helpers/@extended/AnimateButton';
+
+const headerSX = {
+  p: 2.5,
+  '& .MuiCardHeader-action': { m: '0px auto', alignSelf: 'center' }
+};
 
 function Investor() {
   // Main data
@@ -266,108 +272,90 @@ function Investor() {
           <Formik
             initialValues={formValues}
             validationSchema={validationSchema}
-            onSubmit={async (values, { setSubmitting, resetForm }) => {
-              getOneItem(values, setSearchData);
-              resetForm();
+            onSubmit={async (values, { resetForm }) => {
+              const searchResult = await GetSchemeSearch(formValues.fd_id, selectedPayoutMethod);
+              if (searchResult) {
+                console.log(searchResult);
+                setSchemeData(searchResult);
+              }
             }}
           >
-            {({ values, errors, touched, handleChange, handleBlur, handleSubmit, isSubmitting }) => (
-              <Box container direction="row" style={{ display: 'flex', width: '90%' }}>
-                <Box
-                  component="form"
-                  onSubmit={(event) => {
-                    event.preventDefault();
-                    handleSubmit();
+            {({ values, errors, touched, handleChange, handleBlur, handleSubmit, resetForm }) => (
+              <Box
+                component="form"
+                onSubmit={(event) => {
+                  event.preventDefault();
+                  handleSubmit();
+                }}
+                sx={{ width: '100%' }}
+              >
+                {/* <Card
+                  sx={{
+                    position: 'relative',
+                    border: '1px solid',
+                    borderRadius: 1.5,
+                    borderColor: theme.palette.divider,
+                    overflow: 'visible'
                   }}
-                  sx={{ width: '55%', paddingBottom: '5px', paddingLeft: '16px' }}
-                >
-                  <Box container direction="row" spacing={2} alignItems="center" sx={{ width: '100%' }} style={{ display: 'flex' }}>
-                    {formValueFields?.map((field, id) => {
-                      return (
-                        // this is for the left first
-                        <Grid item xs={4} key={id} style={{ width: '100%' }}>
-                          <CustomTextField
-                            label={field.label}
-                            name={field.fieldName}
-                            values={values}
-                            type={field.type}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            touched={touched}
-                            errors={errors}
-                          />
-                        </Grid>
-                      );
-                    })}
-                    {/* this is for the left button */}
-                    <Grid item xs={4} sx={{ marginLeft: '16px' }}>
-                      <Button variant="contained" color="success" type="submit" startIcon={<FilterSearch />} sx={{ justifySelf: 'center' }}>
-                        Search
-                      </Button>
+                > */}
+                {/* <Stack direction="row" alignItems="center" justifyContent="space-between">
+                    <CardHeader sx={headerSX} titleTypographyProps={{ variant: 'subtitle1' }} title="Interest Rate" />
+                    <Stack direction="row" alignItems="center" spacing={1.5} paddingRight={2.5}>
+                      <Box>
+                        <AnimateButton>
+                          <Button
+                            variant="outlined"
+                            color="secondary"
+                            type="button"
+                            onClick={() => {
+                              isNotEditingInterestRate();
+                            }}
+                          >
+                            Cancel
+                          </Button>
+                        </AnimateButton>
+                      </Box>
+                    </Stack>
+                  </Stack> */}
+
+                {/* <Divider /> */}
+
+                <CardContent>
+                  <Grid container spacing={3}>
+                    <Grid item xs={3} style={{ paddingLeft: 0 }}>
+                      <CustomTextField
+                        label="FD Name"
+                        name="fd_name"
+                        values={values}
+                        type="text"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        touched={touched}
+                        errors={errors}
+                        disabled
+                        FormHelperTextProps={{
+                          style: {
+                            marginLeft: 0
+                          }
+                        }}
+                      />
                     </Grid>
-                  </Box>
-                </Box>
-                <Box
-                  component="form"
-                  onSubmit={(event) => {
-                    event.preventDefault();
-                    handleSubmit();
-                  }}
-                  sx={{ width: '55%', paddingBottom: '5px', paddingLeft: '16px' }}
-                >
-                  <Box container direction="row" spacing={2} alignItems="center" sx={{ width: '100%' }} style={{ display: 'flex' }}>
-                    {formValueFields?.map((field, id) => {
-                      return (
-                        // this is for the left first
-                        // <Grid item xs={4} key={id} style={{ width: '100%' }}>
-                        //   <CustomTextField
-                        //     label={field.label}
-                        //     name={field.fieldName}
-                        //     values={values}
-                        //     type={field.type}
-                        //     onChange={handleChange}
-                        //     onBlur={handleBlur}
-                        //     touched={touched}
-                        //     errors={errors}
-                        //   />
-                        // </Grid>
-                        <>
-                          <Grid item xs={4} style={{ width: '100%' }}>
-                            <CustomAutoComplete
-                              options={[
-                                {
-                                  name: 'Issuer 1',
-                                  id: 1
-                                },
-                                {
-                                  name: 'Issuer 2',
-                                  id: 2
-                                },
-                                {
-                                  name: 'Issuer 3',
-                                  id: 3
-                                }
-                              ]}
-                              value={'asdfas'}
-                              handleChange={(event, newValue) => {
-                                // Update the Formik state with the selected option
-                                setFieldValue('selectedIssuerID', newValue);
-                              }}
-                              optionName="issuer_name"
-                              label="IFA"
-                            />
-                          </Grid>
-                        </>
-                      );
-                    })}
-                    {/* this is for the left button */}
-                    <Grid item xs={4} sx={{ marginLeft: '16px' }}>
-                      <Button variant="contained" color="success" type="submit" startIcon={<FilterSearch />} sx={{ justifySelf: 'center' }}>
-                        Search
-                      </Button>
+                    <Grid item xs={2}>
+                      <Box>
+                        <AnimateButton>
+                          <Button fullWidth variant="contained" color="success" startIcon={<SearchNormal1 />} type="submit">
+                            Show
+                          </Button>
+                        </AnimateButton>
+                      </Box>
                     </Grid>
-                  </Box>
-                </Box>
+
+                    <Grid item xs={3}>
+                      <CustomAutoComplete options={[]} handleChange={() => {}} optionName="item_value" label="Payout Method" />
+                    </Grid>
+                  </Grid>
+                </CardContent>
+                {/* </Card> */}
               </Box>
             )}
           </Formik>

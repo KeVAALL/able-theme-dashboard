@@ -14,7 +14,6 @@ export async function GetPayoutMethod(fdId) {
   try {
     const response = await axios.post('product/getpayouts', {
       method_name: 'getpayouts',
-      //   fd_id: 1
       fd_id: fdId
     });
     console.log(response);
@@ -37,87 +36,56 @@ export async function GetSchemeSearch(fdId, selectedPayoutMethod) {
   }
 }
 
-export async function SaveInterestRate(
-  values,
-  fdId,
-  selectedPayoutMethod,
-  //   ProductTableDataRefetch,
-  clearFormValues
-) {
+export async function SaveInterestRate(values, fdId, selectedPayoutMethod, isActive, clearFormValues, handleOpenDialog, setSchemeData) {
   console.log({
     ...values,
     fd_id: fdId,
+    is_active: toInteger(isActive),
     fd_payout_method_id: selectedPayoutMethod,
     method_name: 'add'
   });
-  // try {
-  //   await axios.post('/product/savescheme', {
-  //     ...values,
-  //     fd_id: fdId,
-  //     fd_payout_method_id: selectedPayoutMethod,
-  //     method_name: 'add'
-  //   });
-  //   clearFormValues();
-  //   enqueueSnackbar('Product added', {
-  //     variant: 'success',
-  //     autoHideDuration: 2000,
-  //     anchorOrigin: {
-  //       vertical: 'top',
-  //       horizontal: 'right'
-  //     }
-  //   });
-  //   // ProductTableDataRefetch();
-  // } catch (err) {
-  //   enqueueSnackbar(err.message, {
-  //     variant: 'success',
-  //     autoHideDuration: 2000,
-  //     anchorOrigin: {
-  //       vertical: 'top',
-  //       horizontal: 'right'
-  //     }
-  //   });
-  // }
-}
-export async function GetOneInterestRate(values, setSearchData) {
   try {
-    const response = await axios.post('investor/getinvestor', {
-      method_name: 'getone',
-      ...values
-    });
-    setSearchData(response.data.data);
-  } catch (error) {
-    dispatch(
-      openSnackbar({
-        open: true,
-        anchorOrigin: { vertical: 'top', horizontal: 'right' },
-        message: error.message,
-        variant: 'alert',
-        alert: {
-          color: 'error'
-        }
-      })
-    );
-  }
-}
-export async function EditInterestRate(
-  values,
-  isFDActive,
-  ProductTableDataRefetch,
-  clearFormValues,
-  checkedCumulative,
-  checkedNonCumulative,
-  setActiveClose
-) {
-  try {
-    await axios.post('/product/saveproduct', {
+    await axios.post('/product/savescheme', {
       ...values,
-      is_active: toInteger(isFDActive),
-      method_name: 'update',
-      is_cumulative: toInteger(!checkedCumulative ? false : checkedCumulative),
-      is_non_cumulative: toInteger(!checkedNonCumulative ? false : checkedNonCumulative),
-      user_id: 2
+      fd_id: fdId,
+      is_active: toInteger(isActive),
+      fd_payout_method_id: selectedPayoutMethod,
+      method_name: 'add'
     });
     clearFormValues();
+    handleOpenDialog();
+    enqueueSnackbar('Product added', {
+      variant: 'success',
+      autoHideDuration: 2000,
+      anchorOrigin: {
+        vertical: 'top',
+        horizontal: 'right'
+      }
+    });
+    const schemeData = await GetSchemeSearch(fdId, selectedPayoutMethod);
+    setSchemeData(schemeData);
+  } catch (err) {
+    enqueueSnackbar(err.message, {
+      variant: 'success',
+      autoHideDuration: 2000,
+      anchorOrigin: {
+        vertical: 'top',
+        horizontal: 'right'
+      }
+    });
+  }
+}
+
+export async function EditInterestRate(values, activeButton, clearFormValues, handleOpenDialog, setSchemeData, setActiveClose) {
+  try {
+    await axios.post('/product/savescheme', {
+      ...values,
+      is_active: toInteger(activeButton),
+      scheme_master_id: values.scheme_master_id,
+      method_name: 'update'
+    });
+    clearFormValues();
+    handleOpenDialog();
     setActiveClose();
     enqueueSnackbar('Product Updated', {
       variant: 'success',
@@ -127,7 +95,11 @@ export async function EditInterestRate(
         horizontal: 'right'
       }
     });
-    ProductTableDataRefetch();
+
+    console.log(values.fd_id, values.fd_payout_method);
+    const schemeData = await GetSchemeSearch(values.fd_id, values.fd_payout_method_id);
+    console.log(schemeData);
+    setSchemeData(schemeData);
   } catch (err) {
     enqueueSnackbar(err.message, {
       variant: 'error',
@@ -139,11 +111,10 @@ export async function EditInterestRate(
     });
   }
 }
-export async function DeleteOneInterestRate(values) {
+export async function DeleteOneInterestRate(values, setSchemeData) {
   try {
-    console.log(values.osb_issuer_id);
-    await axios.post('/product/saveproduct', {
-      fd_id: values.fd_id,
+    await axios.post('/product/savescheme', {
+      scheme_master_id: values.scheme_master_id,
       method_name: 'delete'
     });
     enqueueSnackbar('Product Deleted', {
@@ -154,6 +125,11 @@ export async function DeleteOneInterestRate(values) {
         horizontal: 'right'
       }
     });
+
+    console.log(values.fd_id, values.fd_payout_method);
+    const schemeData = await GetSchemeSearch(values.fd_id, values.fd_payout_method_id);
+    console.log(schemeData);
+    setSchemeData(schemeData);
   } catch (err) {
     console.log(err);
   }

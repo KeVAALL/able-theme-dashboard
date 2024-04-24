@@ -22,6 +22,7 @@ import CustomTextField from 'utils/textfield';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import Loader from '../loader/Loader';
+import { SaveInterestRate, EditInterestRate } from 'hooks/interestRate/interestRate';
 
 export function DialogForm({
   openDialog,
@@ -29,11 +30,11 @@ export function DialogForm({
   schemeEditFormValues,
   fdId,
   selectedPayoutMethod,
-  SaveInterestRate,
   setIsActive,
   isActive,
   isEditingScheme,
-  setActiveClose
+  setActiveClose,
+  setSchemeData
 }) {
   const formAllSchemeValues = {
     min_days: '',
@@ -43,19 +44,20 @@ export function DialogForm({
     rate_of_interest_female: '',
     rate_of_interest_female_senior_citezen: ''
   };
-  // const [schemeFormValues, setSchemeFormValues] = useState(formAllSchemeValues);
   const [schemeFormValues, setSchemeFormValues] = useState();
+  const [activeButton, setActiveButton] = useState(false);
 
   const validationSchema = yup.object({
     min_days: yup.number().required('Min Tenure is required'),
     max_days: yup.number().required('Max Tenure is required'),
-    rate_of_interest_regular: yup.number().required('Rate is required'),
+    rate_of_interest_regular: yup.number().required('Rate is required').min(0),
     rate_of_interest_senior_citezen: yup.number().required('Rate is required'),
     rate_of_interest_female: yup.number().required('Rate is required'),
     rate_of_interest_female_senior_citezen: yup.number().required('Rate is required')
   });
   const clearFormValues = () => {
     setSchemeFormValues(formAllSchemeValues);
+    setActiveButton(false);
   };
 
   useEffect(() => {
@@ -67,6 +69,9 @@ export function DialogForm({
     }
     if (schemeEditFormValues && isEditingScheme === true) {
       console.log('Here');
+      // setIsActive(schemeEditFormValues.is_active);
+      console.log(schemeEditFormValues.is_active);
+      setActiveButton(schemeEditFormValues.is_active);
       setSchemeFormValues(schemeEditFormValues);
     }
   }, [schemeEditFormValues, isEditingScheme]);
@@ -92,9 +97,9 @@ export function DialogForm({
                 control={
                   <Switch
                     color="primary"
-                    checked={isActive}
+                    checked={activeButton}
                     onChange={() => {
-                      setIsActive(!isActive);
+                      setActiveButton(!activeButton);
                     }}
                   />
                 }
@@ -109,8 +114,14 @@ export function DialogForm({
           initialValues={schemeFormValues || formAllSchemeValues}
           validationSchema={validationSchema}
           onSubmit={async (values, { resetForm }) => {
+            console.log(isEditingScheme);
             console.log(values);
-            SaveInterestRate(values, fdId, selectedPayoutMethod, clearFormValues);
+            if (isEditingScheme) {
+              console.log(activeButton);
+              EditInterestRate(values, activeButton, clearFormValues, handleOpenDialog, setSchemeData, setActiveClose);
+            } else {
+              SaveInterestRate(values, fdId, selectedPayoutMethod, isActive, clearFormValues, handleOpenDialog, setSchemeData);
+            }
           }}
         >
           {({ values, errors, touched, handleChange, handleBlur, handleSubmit, resetForm }) => (
@@ -134,6 +145,7 @@ export function DialogForm({
                       onBlur={handleBlur}
                       touched={touched}
                       errors={errors}
+                      disabled={!activeButton ? false : true}
                       FormHelperTextProps={{
                         style: {
                           marginLeft: 0
@@ -151,6 +163,7 @@ export function DialogForm({
                       onBlur={handleBlur}
                       touched={touched}
                       errors={errors}
+                      disabled={!activeButton ? false : true}
                       FormHelperTextProps={{
                         style: {
                           marginLeft: 0
@@ -160,7 +173,7 @@ export function DialogForm({
                   </Grid>
                   <Grid item xs={6}>
                     <CustomTextField
-                      label="Regular ROI"
+                      label="Regular ROI %"
                       name="rate_of_interest_regular"
                       values={values}
                       type="number"
@@ -168,19 +181,17 @@ export function DialogForm({
                       onBlur={handleBlur}
                       touched={touched}
                       errors={errors}
+                      disabled={!activeButton ? false : true}
                       FormHelperTextProps={{
                         style: {
                           marginLeft: 0
                         }
                       }}
-                      InputProps={{
-                        startAdornment: <InputAdornment position="start">%</InputAdornment>
-                      }}
                     />
                   </Grid>
                   <Grid item xs={6}>
                     <CustomTextField
-                      label="Regular ROI"
+                      label="Regular ROI %"
                       name="rate_of_interest_senior_citezen"
                       values={values}
                       type="number"
@@ -188,19 +199,17 @@ export function DialogForm({
                       onBlur={handleBlur}
                       touched={touched}
                       errors={errors}
+                      disabled={!activeButton ? false : true}
                       FormHelperTextProps={{
                         style: {
                           marginLeft: 0
                         }
                       }}
-                      InputProps={{
-                        startAdornment: <InputAdornment position="start">%</InputAdornment>
-                      }}
                     />
                   </Grid>
                   <Grid item xs={6}>
                     <CustomTextField
-                      label="Regular ROI"
+                      label="Regular ROI %"
                       name="rate_of_interest_female"
                       values={values}
                       type="number"
@@ -208,19 +217,17 @@ export function DialogForm({
                       onBlur={handleBlur}
                       touched={touched}
                       errors={errors}
+                      disabled={!activeButton ? false : true}
                       FormHelperTextProps={{
                         style: {
                           marginLeft: 0
                         }
                       }}
-                      InputProps={{
-                        startAdornment: <InputAdornment position="start">%</InputAdornment>
-                      }}
                     />
                   </Grid>
                   <Grid item xs={6}>
                     <CustomTextField
-                      label="Regular ROI"
+                      label="Regular ROI %"
                       name="rate_of_interest_female_senior_citezen"
                       values={values}
                       type="number"
@@ -228,13 +235,11 @@ export function DialogForm({
                       onBlur={handleBlur}
                       touched={touched}
                       errors={errors}
+                      disabled={!activeButton ? false : true}
                       FormHelperTextProps={{
                         style: {
                           marginLeft: 0
                         }
-                      }}
-                      InputProps={{
-                        startAdornment: <InputAdornment position="start">%</InputAdornment>
                       }}
                     />
                   </Grid>
@@ -258,7 +263,7 @@ export function DialogForm({
                       // handleOpenDialog();
                     }}
                   >
-                    Add
+                    Save
                   </Button>
                 </DialogActions>
               </Box>

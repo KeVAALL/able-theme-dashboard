@@ -12,8 +12,6 @@ import Loader from 'components/atoms/loader/Loader';
 import CustomTextField, { CustomAutoComplete } from 'utils/textfield';
 // assets
 import {
-  GetInterestRateData,
-  GetOneInterestRate,
   SaveInterestRate,
   EditInterestRate,
   DeleteOneInterestRate,
@@ -22,6 +20,7 @@ import {
 } from 'hooks/interestRate/interestRate';
 import { DialogForm } from 'components/atoms/dialog/formdialog';
 import InterestRateTable from 'components/molecules/fixedDeposit/interestRateTable';
+import { toInteger } from 'lodash';
 
 const headerSX = {
   p: 2.5,
@@ -29,13 +28,6 @@ const headerSX = {
 };
 
 export default function InterestRate({ formValues, changeTableVisibility, isNotEditingInterestRate, isEditingInterestRate }) {
-  useEffect(() => {
-    console.log(formValues);
-    setEditing(formValues);
-    setTimeout(() => {
-      setLoading(false);
-    }, 200);
-  }, [formValues]);
   const [schemeData, setSchemeData] = useState([]);
   const [isSchemeActive, setSchemeActive] = useState();
   const handleIsSchemeActive = (initialValue) => {
@@ -46,16 +38,7 @@ export default function InterestRate({ formValues, changeTableVisibility, isNotE
   // Autocomplete field state
   const [selectedPayoutMethod, setSelectedPayoutMethod] = useState(null);
   const [payoutData, setPayoutData] = useState([]);
-  const { isPending, error, refetch } = useQuery({
-    queryKey: ['payoutData', formValues.fd_id],
-    refetchOnWindowFocus: false,
-    keepPreviousData: true,
-    queryFn: () => GetPayoutMethod(formValues.fd_id),
-    onSuccess: (data) => {
-      console.log(data);
-      setPayoutData(data);
-    }
-  });
+
   const handleOnIssuerChange = (event) => {
     payoutData.map((el) => {
       if (el.item_value === event.target.outerText) {
@@ -111,28 +94,51 @@ export default function InterestRate({ formValues, changeTableVisibility, isNotE
   const columns = useMemo(
     () => [
       {
-        Header: 'Tenure',
+        Header: 'Tenure (Days)',
         accessor: 'tenure'
       },
       {
-        Header: 'Normal Citizen',
+        Header: 'Normal Citizen (%)',
         accessor: 'rate_of_interest_regular'
       },
       {
-        Header: 'Senior Citizen',
+        Header: 'Senior Citizen (%)',
         accessor: 'rate_of_interest_senior_citezen'
       },
       {
-        Header: 'Female Citizen',
+        Header: 'Female Citizen (%)',
         accessor: 'rate_of_interest_female'
       },
       {
-        Header: 'Senior Female Citizen',
+        Header: 'Senior Female Citizen (%)',
         accessor: 'rate_of_interest_female_senior_citezen'
       }
     ],
     []
   );
+
+  const {
+    isPending,
+    error,
+    refetch: refetchPayoutData
+  } = useQuery({
+    queryKey: ['payoutData', formValues.fd_id],
+    refetchOnWindowFocus: false,
+    keepPreviousData: true,
+    queryFn: () => GetPayoutMethod(formValues.fd_id),
+    onSuccess: (data) => {
+      console.log(data);
+      setPayoutData(data);
+    }
+  });
+
+  useEffect(() => {
+    console.log(formValues);
+    setEditing(formValues);
+    setTimeout(() => {
+      setLoading(false);
+    }, 200);
+  }, [formValues]);
 
   if (loading) return <Loader />;
 
@@ -145,11 +151,11 @@ export default function InterestRate({ formValues, changeTableVisibility, isNotE
         fdId={formValues.fd_id}
         selectedPayoutMethod={selectedPayoutMethod}
         clearFormValues={clearFormValues}
-        SaveInterestRate={SaveInterestRate}
         setIsActive={handleIsSchemeActive}
         isActive={isSchemeActive}
         isEditingScheme={isEditingScheme}
         setActiveClose={setActiveClose}
+        setSchemeData={setSchemeData}
       />
       <Formik
         initialValues={IRformValues}
@@ -264,10 +270,10 @@ export default function InterestRate({ formValues, changeTableVisibility, isNotE
                       data={schemeData}
                       changeTableVisibility={changeTableVisibility}
                       schemeEditing={schemeEditing}
-                      getOneItem={GetOneInterestRate}
                       deleteOneItem={DeleteOneInterestRate}
                       setSearchData={setSearchData}
-                      //   tableDataRefetch={issuerTableDataRefetch}
+                      setSchemeData={setSchemeData}
+                      // tableDataRefetch={refetchPayoutData}
                       setActiveEditing={setActiveEditing}
                       showActionHeadButton={showActionHeadButton}
                       handleIROpenDialog={handleOpenDialog}

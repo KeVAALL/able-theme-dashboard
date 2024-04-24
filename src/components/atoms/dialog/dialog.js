@@ -1,10 +1,12 @@
 /* eslint-disable react/prop-types */
 import React, { useEffect } from 'react';
+import PropTypes from 'prop-types';
+
 import { Dialog, Box, DialogTitle, DialogContent, DialogContentText, DialogActions, Button } from '@mui/material';
 import { PopupTransition } from 'helpers/@extended/Transitions';
 
-export function DialogBox({ openDialog, handleOpenDialog, dataRefetch, item, deleteOneItem }) {
-  console.log(item.product_type_id);
+function DialogBox({ openDialog, handleOpenDialog, dataRefetch, item, deleteOneItem, setSchemeData }) {
+  console.log('open');
   return (
     <Dialog
       open={openDialog}
@@ -26,7 +28,12 @@ export function DialogBox({ openDialog, handleOpenDialog, dataRefetch, item, del
             variant="contained"
             color="error"
             onClick={() => {
-              deleteOneItem(item);
+              console.log(item);
+              if (setSchemeData) {
+                deleteOneItem(item, setSchemeData);
+              } else {
+                deleteOneItem(item);
+              }
               handleOpenDialog();
               setTimeout(() => {
                 dataRefetch();
@@ -40,3 +47,9 @@ export function DialogBox({ openDialog, handleOpenDialog, dataRefetch, item, del
     </Dialog>
   );
 }
+
+DialogBox.propTypes = {
+  setSchemeData: PropTypes.any
+};
+
+export default DialogBox;

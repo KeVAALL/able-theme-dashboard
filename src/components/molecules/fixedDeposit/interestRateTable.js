@@ -30,7 +30,7 @@ import {
 import { CSVExport, TablePagination, EmptyTable, HeaderSort } from 'helpers/third-party/ReactTable';
 import { useGlobalFilter } from 'react-table/dist/react-table.development';
 import { useSortBy } from 'react-table';
-import { DialogBox } from 'components/atoms/dialog/dialog';
+import DialogBox from 'components/atoms/dialog/dialog';
 import AnimateButton from 'helpers/@extended/AnimateButton';
 
 // ==============================|| REACT TABLE ||============================== //
@@ -47,6 +47,7 @@ function ReactTable({
   getOneItem,
   deleteOneItem,
   setSearchData,
+  setSchemeData,
   tableDataRefetch,
   setActiveEditing,
   handleIROpenDialog,
@@ -161,9 +162,10 @@ function ReactTable({
         <DialogBox
           openDialog={openDialog}
           handleOpenDialog={handleOpenDialog}
-          dataRefetch={tableDataRefetch}
+          dataRefetch={() => {}}
           item={item}
           deleteOneItem={deleteOneItem}
+          setSchemeData={setSchemeData}
         />
       )}
 
@@ -270,6 +272,7 @@ const InterestRateTable = ({
   getOneItem,
   deleteOneItem,
   setSearchData,
+  setSchemeData,
   tableDataRefetch,
   setActiveEditing,
   showActionHeadButton,
@@ -291,6 +294,7 @@ const InterestRateTable = ({
           getOneItem={getOneItem}
           deleteOneItem={deleteOneItem}
           setSearchData={setSearchData}
+          setSchemeData={setSchemeData}
           tableDataRefetch={tableDataRefetch}
           setActiveEditing={setActiveEditing}
           showActionHeadButton={showActionHeadButton}
@@ -314,6 +318,7 @@ InterestRateTable.propTypes = {
   getOneItem: PropTypes.any,
   deleteOneItem: PropTypes.any,
   setSearchData: PropTypes.any,
+  setSchemeData: PropTypes.any,
   tableDataRefetch: PropTypes.any,
   setActiveEditing: PropTypes.any,
   // Add new table for below

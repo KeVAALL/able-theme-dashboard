@@ -30,7 +30,7 @@ import {
 import { CSVExport, TablePagination, EmptyTable, HeaderSort } from 'helpers/third-party/ReactTable';
 import { useGlobalFilter } from 'react-table/dist/react-table.development';
 import { useSortBy } from 'react-table';
-import { DialogBox } from 'components/atoms/dialog/dialog';
+import DialogBox from 'components/atoms/dialog/dialog';
 import AnimateButton from 'helpers/@extended/AnimateButton';
 import './multiTable.css';
 
