@@ -17,6 +17,14 @@ import { SubmitButton } from 'components/atoms/button/button';
 import CustomTextField from 'utils/textfield';
 
 // assets
+import {
+  formAllValues,
+  validationSchema,
+  filterFormValues,
+  formValueFields,
+  filterValidationSchema,
+  tableColumns
+} from 'constant/issuerValidation';
 import { GetIssuerData, GetOneIssuer, SaveIssuer, EditIssuer, DeleteOneIssuer } from 'hooks/issuer/issuer';
 import { toInteger } from 'lodash';
 
@@ -50,76 +58,15 @@ function Issuer() {
   const setSearchData = (issuer) => {
     setIssuerData(issuer);
   };
-  // Search one item form fields
-  const filterFormValues = {
-    issuer_name: ''
-  };
-  const formValueFields = [
-    {
-      fieldName: 'issuer_name',
-      label: 'Issuer Name',
-      type: 'text'
-    }
-  ];
-  const filterValidationSchema = yup.object({
-    issuer_name: yup.string().required('Issuer Name is required')
-  });
-
-  // Add form Values
-  const formAllValues = {
-    issuer_gst_number: '',
-    issuer_name: '',
-    issuer_pan: '',
-    issuer_tollfree_number: '',
-    logo_url: ''
-  };
+  // Form State
   const [formValues, setFormValues] = useState(formAllValues);
-  const validationSchema = yup.object({
-    issuer_gst_number: yup.string().required('Issuer GST Number is required'),
-    issuer_name: yup.string().required('Issuer Name is required'),
-    issuer_pan: yup.string().required('Issuer PAN is required'),
-    issuer_tollfree_number: yup.string().required('Tollfree Number is required'),
-    logo_url: yup.string().required('Logo URL is required')
-  });
+  // Empty Form Fields
   const clearFormValues = () => {
     setFormValues(formAllValues);
   };
-  // Custom fields/ columns
+  // Custom Fields/ Table Columns
   const theme = useTheme();
-  // Custom cell component for rendering images
-  const ImageCell = ({ value }) => {
-    return (
-      <TableCell style={{ paddingLeft: '0px' }}>
-        <img src={value} alt="Custom" style={{ width: '90%', height: 60 }} />
-      </TableCell>
-    );
-  };
-  const StatusCell = ({ value }) => {
-    return value === 0 ? 'Not Active' : 'Active';
-  };
-  const columns = useMemo(
-    () => [
-      {
-        Header: 'Logo URL',
-        accessor: 'logo_url',
-        customCell: ImageCell
-      },
-      {
-        Header: 'Issuer Name',
-        accessor: 'issuer_name'
-      },
-      {
-        Header: 'Tollfree Number',
-        accessor: 'issuer_tollfree_number'
-      },
-      {
-        Header: 'Status',
-        accessor: 'is_active',
-        customCell: StatusCell
-      }
-    ],
-    []
-  );
+  const columns = useMemo(() => tableColumns, []);
 
   const {
     isPending,

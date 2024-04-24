@@ -1,0 +1,75 @@
+import { TableCell } from '@mui/material';
+import * as yup from 'yup';
+
+// Add form values
+const formAllValues = {
+  fd_name: '',
+  fd_max_amount: '',
+  fd_min_amount: '',
+  min_tenure: '',
+  max_tenure: '',
+  logo_url: ''
+};
+const validationSchema = yup.object({
+  fd_name: yup.string().required('FD Name is required'),
+  fd_max_amount: yup.number().required('Mini Amount is required'),
+  fd_min_amount: yup.number().required('Max Amount is required'),
+  min_tenure: yup.number().required('Minimum Tenure is required'),
+  max_tenure: yup.number().required('Max Tenure is required'),
+  logo_url: yup.string().required('Logo URL is required')
+});
+// Search Item form fields
+const filterFormValues = {
+  fd_name: ''
+};
+const formValueFields = [
+  {
+    fieldName: 'fd_name',
+    label: 'FD Name',
+    type: 'text'
+  }
+];
+const filterValidationSchema = yup.object({
+  fd_name: yup.string()
+});
+// Table Columns
+const ImageCell = ({ value }) => {
+  return (
+    <TableCell style={{ paddingLeft: '0px' }}>
+      <img src={value} alt="Custom" style={{ width: '90%', height: 60 }} />
+    </TableCell>
+  );
+};
+const StatusCell = ({ value }) => {
+  return value === 0 ? 'Not Active' : 'Active';
+};
+const tableColumns = [
+  {
+    Header: 'Logo URL',
+    accessor: 'logo_url',
+    customCell: ImageCell
+  },
+  {
+    Header: 'FD Name',
+    accessor: 'fd_name'
+  },
+  {
+    Header: 'Issuer Name',
+    accessor: 'issuer_name'
+  },
+  {
+    Header: 'Min Tenure',
+    accessor: 'min_tenure'
+  },
+  {
+    Header: 'Max Tenure',
+    accessor: 'max_tenure'
+  },
+  {
+    Header: 'Status',
+    accessor: 'is_active',
+    customCell: StatusCell
+  }
+];
+
+export { formAllValues, validationSchema, filterFormValues, formValueFields, filterValidationSchema, ImageCell, StatusCell, tableColumns };

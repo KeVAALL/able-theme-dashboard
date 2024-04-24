@@ -17,6 +17,14 @@ import { SubmitButton } from 'components/atoms/button/button';
 import CustomTextField, { CustomAutoComplete, CustomCheckbox } from 'utils/textfield';
 
 // assets
+import {
+  formAllValues,
+  validationSchema,
+  filterFormValues,
+  formValueFields,
+  filterValidationSchema,
+  tableColumns
+} from 'constant/fixDepositValidation';
 import { GetProductData, GetOneProduct, SaveProduct, EditProduct, DeleteOneProduct } from 'hooks/fixedDeposit/fixedDeposit';
 import { GetActiveIssuerData } from 'hooks/issuer/issuer';
 import InterestRate from '../../organisms/fixedDeposit/interestRate';
@@ -38,7 +46,6 @@ function FixDeposit() {
   const [selectedIssuerID, setSelectedIssuerID] = useState(null);
   const [isFDActive, setFDActive] = useState();
   const setEditing = (value) => {
-    console.log(value.is_cumulative, value.is_non_cumulative);
     setFormValues(value);
     setCheckedCumulative(Boolean(value.is_cumulative));
     setCheckedNonCumulative(Boolean(value.is_non_cumulative));
@@ -74,7 +81,6 @@ function FixDeposit() {
   const handleOnIssuerChange = (event) => {
     activeIssuers.map((el) => {
       if (el.issuer_name === event.target.outerText) {
-        console.log(el.issuer_id);
         setSelectedIssuerID(el.issuer_id);
       }
     });
@@ -83,87 +89,17 @@ function FixDeposit() {
   const setSearchData = (fixedDeposit) => {
     setProductData(fixedDeposit);
   };
-  // Search one item form fields
-  const filterFormValues = {
-    fd_name: ''
-  };
-  const formValueFields = [
-    {
-      fieldName: 'fd_name',
-      label: 'FD Name',
-      type: 'text'
-    }
-  ];
-  const filterValidationSchema = yup.object({
-    fd_name: yup.string()
-  });
-
-  // Add form values
-  const formAllValues = {
-    fd_name: '',
-    fd_max_amount: '',
-    fd_min_amount: '',
-    min_tenure: '',
-    max_tenure: '',
-    logo_url: ''
-  };
+  // Form State
   const [formValues, setFormValues] = useState(formAllValues);
-  const validationSchema = yup.object({
-    fd_name: yup.string().required('FD Name is required'),
-    fd_max_amount: yup.number().required('Mini Amount is required'),
-    fd_min_amount: yup.number().required('Max Amount is required'),
-    min_tenure: yup.number().required('Minimum Tenure is required'),
-    max_tenure: yup.number().required('Max Tenure is required'),
-    logo_url: yup.string().required('Logo URL is required')
-  });
+  // Empty Form Fields
   const clearFormValues = () => {
     setFormValues(formAllValues);
     setCheckedCumulative(false);
     setCheckedNonCumulative(false);
   };
-  // Custom fields/ columns
+  // Custom Fields/ Table Columns
   const theme = useTheme();
-  const ImageCell = ({ value }) => {
-    return (
-      <TableCell style={{ paddingLeft: '0px' }}>
-        <img src={value} alt="Custom" style={{ width: '90%', height: 60 }} />
-      </TableCell>
-    );
-  };
-  const StatusCell = ({ value }) => {
-    return value === 0 ? 'Not Active' : 'Active';
-  };
-  const columns = useMemo(
-    () => [
-      {
-        Header: 'Logo URL',
-        accessor: 'logo_url',
-        customCell: ImageCell
-      },
-      {
-        Header: 'FD Name',
-        accessor: 'fd_name'
-      },
-      {
-        Header: 'Issuer Name',
-        accessor: 'issuer_name'
-      },
-      {
-        Header: 'Min Tenure',
-        accessor: 'min_tenure'
-      },
-      {
-        Header: 'Max Tenure',
-        accessor: 'max_tenure'
-      },
-      {
-        Header: 'Status',
-        accessor: 'is_active',
-        customCell: StatusCell
-      }
-    ],
-    []
-  );
+  const columns = useMemo(() => tableColumns, []);
 
   const {
     isPending: isActiveIssuerPending,

@@ -18,6 +18,14 @@ import CustomTextField from 'utils/textfield';
 
 // assets
 import {
+  formAllValues,
+  validationSchema,
+  filterFormValues,
+  formValueFields,
+  filterValidationSchema,
+  tableColumns
+} from 'constant/productTypeValidation';
+import {
   GetProductTypeData,
   GetOneProductType,
   SaveProductType,
@@ -26,58 +34,39 @@ import {
 } from 'hooks/productType/productType';
 
 function ProductType() {
-  const [showTable, setShowTable] = useState(false);
-  const [isEditing, setIsEditing] = useState(false);
+  // Main data
   const [data, setData] = useState([]);
+  // Toggle Table and Form Visibility
+  const [showTable, setShowTable] = useState(false);
+  const changeTableVisibility = () => {
+    setShowTable(!showTable);
+  };
+  const [isEditing, setIsEditing] = useState(false);
   const theme = useTheme();
 
   // State Setting
   const setEditing = (value) => {
-    setIsEditing(!isEditing);
     setFormValues({ product_type_id: value.product_type_id, product_type: value.product_type });
   };
+  const setActiveEditing = () => {
+    setIsEditing(true);
+  };
+  const setActiveClose = () => {
+    setIsEditing(false);
+  };
+
+  // Search one item state
   const setSearchData = (product) => {
     setData(product);
   };
-  const changeTableVisibility = () => {
-    setShowTable(!showTable);
-  };
+  // Form State
+  const [formValues, setFormValues] = useState(formAllValues);
+  // Empty Form Fields
   const clearFormValues = () => {
     setFormValues(formAllValues);
   };
-
-  // Formik values
-  const filterFormValues = {
-    product_type: ''
-  };
-  const formValueFields = [
-    {
-      fieldName: 'product_type',
-      label: 'Product Type',
-      type: 'text'
-    }
-  ];
-  const filterValidationSchema = yup.object({
-    product_type: yup.string().required('Product Type is required')
-  });
-  const formAllValues = {
-    product_type: ''
-  };
-  const validationSchema = yup.object({
-    product_type: yup.string().required('Product Type is required')
-  });
-  const [formValues, setFormValues] = useState(formAllValues);
-
   // Table Columns
-  const columns = useMemo(
-    () => [
-      {
-        Header: 'Product Type',
-        accessor: 'product_type'
-      }
-    ],
-    []
-  );
+  const columns = useMemo(() => tableColumns, []);
 
   // Fetching Data using React Query
   const {
@@ -170,6 +159,7 @@ function ProductType() {
           title="Product Type Search"
           changeTableVisibility={changeTableVisibility}
           showButton
+          setActiveAdding={setActiveClose}
           border
           sx={{ height: '100%', boxShadow: 1 }}
         >
@@ -185,6 +175,7 @@ function ProductType() {
             deleteOneItem={DeleteOneProductType}
             setSearchData={setSearchData}
             tableDataRefetch={productTypeTableDataRefetch}
+            setActiveEditing={setActiveEditing}
           />
         </MainCard>
       )}
