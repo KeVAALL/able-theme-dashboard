@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Dialog,
   Box,
@@ -16,12 +16,14 @@ import {
   Switch,
   Typography
 } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
+// third-party
 import { PopupTransition } from 'helpers/@extended/Transitions';
-import CustomTextField from 'utils/textfield';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import Loader from '../loader/Loader';
+// assets
+import CustomTextField from 'utils/textfield';
+import { formAllSchemeValues, validationSchema } from 'constant/interestRateSchemeValidation';
 import { SaveInterestRate, EditInterestRate } from 'hooks/interestRate/interestRate';
 
 export function DialogForm({
@@ -36,25 +38,10 @@ export function DialogForm({
   setActiveClose,
   setSchemeData
 }) {
-  const formAllSchemeValues = {
-    min_days: '',
-    max_days: '',
-    rate_of_interest_regular: '',
-    rate_of_interest_senior_citezen: '',
-    rate_of_interest_female: '',
-    rate_of_interest_female_senior_citezen: ''
-  };
-  const [schemeFormValues, setSchemeFormValues] = useState();
+  // Active or not Button
   const [activeButton, setActiveButton] = useState(false);
-
-  const validationSchema = yup.object({
-    min_days: yup.number().required('Min Tenure is required'),
-    max_days: yup.number().required('Max Tenure is required'),
-    rate_of_interest_regular: yup.number().required('Rate is required').min(0),
-    rate_of_interest_senior_citezen: yup.number().required('Rate is required'),
-    rate_of_interest_female: yup.number().required('Rate is required'),
-    rate_of_interest_female_senior_citezen: yup.number().required('Rate is required')
-  });
+  // Form Data
+  const [schemeFormValues, setSchemeFormValues] = useState();
   const clearFormValues = () => {
     setSchemeFormValues(formAllSchemeValues);
     setActiveButton(false);
@@ -62,15 +49,11 @@ export function DialogForm({
 
   useEffect(() => {
     console.warn(schemeEditFormValues);
-    console.warn(isEditingScheme);
 
     if (isEditingScheme === false) {
       clearFormValues();
     }
     if (schemeEditFormValues && isEditingScheme === true) {
-      console.log('Here');
-      // setIsActive(schemeEditFormValues.is_active);
-      console.log(schemeEditFormValues.is_active);
       setActiveButton(schemeEditFormValues.is_active);
       setSchemeFormValues(schemeEditFormValues);
     }
@@ -81,9 +64,7 @@ export function DialogForm({
   return (
     <Dialog
       open={openDialog}
-      // open={true}
       TransitionComponent={PopupTransition}
-      // keepMounted
       onClose={handleOpenDialog}
       aria-describedby="alert-dialog-slide-description"
     >

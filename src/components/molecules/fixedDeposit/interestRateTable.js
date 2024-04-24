@@ -275,7 +275,6 @@ const InterestRateTable = ({
   setSchemeData,
   tableDataRefetch,
   setActiveEditing,
-  showActionHeadButton,
   handleIROpenDialog,
   isEditingInterestRateLogic
 }) => {
@@ -297,7 +296,6 @@ const InterestRateTable = ({
           setSchemeData={setSchemeData}
           tableDataRefetch={tableDataRefetch}
           setActiveEditing={setActiveEditing}
-          showActionHeadButton={showActionHeadButton}
           handleIROpenDialog={handleIROpenDialog}
           isEditingInterestRateLogic={isEditingInterestRateLogic}
         />
@@ -322,7 +320,6 @@ InterestRateTable.propTypes = {
   tableDataRefetch: PropTypes.any,
   setActiveEditing: PropTypes.any,
   // Add new table for below
-  showActionHeadButton: PropTypes.any,
   handleIROpenDialog: PropTypes.any,
   isEditingInterestRateLogic: PropTypes.any
 };

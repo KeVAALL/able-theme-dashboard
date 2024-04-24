@@ -2,22 +2,40 @@ import { TableCell } from '@mui/material';
 import * as yup from 'yup';
 
 // Add form values
+const amountSchema = yup.number().min(1, 'Amount must be greater than or equal to 1').required('Amount is required');
 const formAllValues = {
   fd_name: '',
-  fd_max_amount: '',
   fd_min_amount: '',
+  fd_max_amount: '',
   min_tenure: '',
   max_tenure: '',
   logo_url: ''
 };
-const validationSchema = yup.object({
-  fd_name: yup.string().required('FD Name is required'),
-  fd_max_amount: yup.number().required('Mini Amount is required'),
-  fd_min_amount: yup.number().required('Max Amount is required'),
-  min_tenure: yup.number().required('Minimum Tenure is required'),
-  max_tenure: yup.number().required('Max Tenure is required'),
-  logo_url: yup.string().required('Logo URL is required')
-});
+const validationSchema = yup.object().shape(
+  {
+    fd_name: yup.string().required('FD Name is required'),
+    fd_min_amount: amountSchema
+      .when('fd_max_amount', (fd_max_amount, schema) => {
+        return schema.test({
+          test: (fd_min_amount) => fd_min_amount <= fd_max_amount,
+          message: 'Minimum amount must be less than or equal to Maximum amount'
+        });
+      })
+      .required('Minimum Amount is required'),
+    fd_max_amount: amountSchema
+      .when('fd_min_amount', (fd_min_amount, schema) => {
+        return schema.test({
+          test: (fd_max_amount) => fd_max_amount >= fd_min_amount,
+          message: 'Maximum amount must be greater than or equal to Minimum amount'
+        });
+      })
+      .required('Maximum Amount is required'),
+    min_tenure: yup.number().required('Minimum Tenure is required'),
+    max_tenure: yup.number().required('Max Tenure is required'),
+    logo_url: yup.string().required('Logo URL is required')
+  },
+  ['fd_min_amount', 'fd_max_amount']
+);
 // Search Item form fields
 const filterFormValues = {
   fd_name: ''

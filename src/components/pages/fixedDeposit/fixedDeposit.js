@@ -215,19 +215,7 @@ function FixDeposit() {
                     </Grid>
                     <Grid item xs={4}>
                       <CustomTextField
-                        label="Max Amount"
-                        name="fd_max_amount"
-                        values={values}
-                        type="number"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        touched={touched}
-                        errors={errors}
-                      />
-                    </Grid>
-                    <Grid item xs={4}>
-                      <CustomTextField
-                        label="Min Amount"
+                        label="Min Amount (₹)"
                         name="fd_min_amount"
                         values={values}
                         type="number"
@@ -239,7 +227,19 @@ function FixDeposit() {
                     </Grid>
                     <Grid item xs={4}>
                       <CustomTextField
-                        label="Minimum Tenure"
+                        label="Max Amount (₹)"
+                        name="fd_max_amount"
+                        values={values}
+                        type="number"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        touched={touched}
+                        errors={errors}
+                      />
+                    </Grid>
+                    <Grid item xs={4}>
+                      <CustomTextField
+                        label="Minimum Tenure (Days)"
                         name="min_tenure"
                         values={values}
                         type="number"
@@ -251,7 +251,7 @@ function FixDeposit() {
                     </Grid>
                     <Grid item xs={4}>
                       <CustomTextField
-                        label="Max Tenure"
+                        label="Max Tenure (Days)"
                         name="max_tenure"
                         values={values}
                         type="number"

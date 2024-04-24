@@ -11,16 +11,10 @@ import { useQuery } from 'react-query';
 import Loader from 'components/atoms/loader/Loader';
 import CustomTextField, { CustomAutoComplete } from 'utils/textfield';
 // assets
-import {
-  SaveInterestRate,
-  EditInterestRate,
-  DeleteOneInterestRate,
-  GetPayoutMethod,
-  GetSchemeSearch
-} from 'hooks/interestRate/interestRate';
+import { formAllValues, validationSchema, tableColumns } from 'constant/interestRateValidation';
+import { DeleteOneInterestRate, GetPayoutMethod, GetSchemeSearch } from 'hooks/interestRate/interestRate';
 import { DialogForm } from 'components/atoms/dialog/formdialog';
 import InterestRateTable from 'components/molecules/fixedDeposit/interestRateTable';
-import { toInteger } from 'lodash';
 
 const headerSX = {
   p: 2.5,
@@ -28,7 +22,10 @@ const headerSX = {
 };
 
 export default function InterestRate({ formValues, changeTableVisibility, isNotEditingInterestRate, isEditingInterestRate }) {
+  // Main Data
   const [schemeData, setSchemeData] = useState([]);
+
+  // Active Button
   const [isSchemeActive, setSchemeActive] = useState();
   const handleIsSchemeActive = (initialValue) => {
     console.log(initialValue);
@@ -38,7 +35,6 @@ export default function InterestRate({ formValues, changeTableVisibility, isNotE
   // Autocomplete field state
   const [selectedPayoutMethod, setSelectedPayoutMethod] = useState(null);
   const [payoutData, setPayoutData] = useState([]);
-
   const handleOnIssuerChange = (event) => {
     payoutData.map((el) => {
       if (el.item_value === event.target.outerText) {
@@ -47,26 +43,18 @@ export default function InterestRate({ formValues, changeTableVisibility, isNotE
       }
     });
   };
-  // Search one item state
-  const setSearchData = (interestRate) => {
-    setIssuerData(interestRate);
-  };
-  const [showActionHeadButton, setShowActionHeadButton] = useState(true);
+
   const [openDialog, setOpenDialog] = useState(false);
   const handleOpenDialog = () => {
     setOpenDialog(!openDialog);
   };
 
-  // Add form Values
-  const formAllValues = {
-    fd_name: '',
-    issuer_name: ''
+  // Search one item state
+  const setSearchData = (interestRate) => {
+    setIssuerData(interestRate);
   };
+  // Form state
   const [IRformValues, setFormValues] = useState(formAllValues);
-  const validationSchema = yup.object({
-    fd_name: yup.string().required('FD Name is required'),
-    issuer_name: yup.string().required('Issuer Name is required')
-  });
   const clearFormValues = () => {
     setFormValues(formAllValues);
   };
@@ -91,31 +79,7 @@ export default function InterestRate({ formValues, changeTableVisibility, isNotE
   };
   // Custom fields/ columns
   const theme = useTheme();
-  const columns = useMemo(
-    () => [
-      {
-        Header: 'Tenure (Days)',
-        accessor: 'tenure'
-      },
-      {
-        Header: 'Normal Citizen (%)',
-        accessor: 'rate_of_interest_regular'
-      },
-      {
-        Header: 'Senior Citizen (%)',
-        accessor: 'rate_of_interest_senior_citezen'
-      },
-      {
-        Header: 'Female Citizen (%)',
-        accessor: 'rate_of_interest_female'
-      },
-      {
-        Header: 'Senior Female Citizen (%)',
-        accessor: 'rate_of_interest_female_senior_citezen'
-      }
-    ],
-    []
-  );
+  const columns = useMemo(() => tableColumns, []);
 
   const {
     isPending,
@@ -275,7 +239,6 @@ export default function InterestRate({ formValues, changeTableVisibility, isNotE
                       setSchemeData={setSchemeData}
                       // tableDataRefetch={refetchPayoutData}
                       setActiveEditing={setActiveEditing}
-                      showActionHeadButton={showActionHeadButton}
                       handleIROpenDialog={handleOpenDialog}
                     />
                     {/* New table for this */}
