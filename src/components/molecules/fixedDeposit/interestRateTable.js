@@ -12,8 +12,6 @@ import { Trash, Edit2, FilterSearch, DiscountShape, Additem } from 'iconsax-reac
 // third-party
 import { useTable, useFilters, usePagination } from 'react-table';
 import { Formik } from 'formik';
-import * as yup from 'yup';
-import axios from 'utils/axios';
 
 // project-imports
 import MainCard from 'components/organisms/mainCard/MainCard';
@@ -27,7 +25,7 @@ import {
   renderFilterTypes,
   filterGreaterThan
 } from 'utils/react-table';
-import { CSVExport, TablePagination, EmptyTable, HeaderSort } from 'helpers/third-party/ReactTable';
+import { CSVExport, TablePagination, EmptyTable, HeaderSort, HidingSelect } from 'helpers/third-party/ReactTable';
 import { useGlobalFilter } from 'react-table/dist/react-table.development';
 import { useSortBy } from 'react-table';
 import DialogBox from 'components/atoms/dialog/dialog';
@@ -51,11 +49,9 @@ function ReactTable({
   tableDataRefetch,
   setActiveEditing,
   handleIROpenDialog,
-  isEditingInterestRateLogic
+  isEditingInterestRateLogic,
+  VisibleColumn
 }) {
-  const filterTypes = useMemo(() => renderFilterTypes, []);
-  const defaultColumn = useMemo(() => ({ Filter: DefaultColumnFilter }), []);
-  const initialState = useMemo(() => ({ filters: [{ id: 'status', value: '' }] }), []);
   const {
     getTableProps,
     getTableBodyProps,
@@ -65,9 +61,9 @@ function ReactTable({
     prepareRow,
     gotoPage,
     setPageSize,
-    state: { pageIndex, pageSize, globalFilter },
-    preGlobalFilteredRows,
-    setGlobalFilter
+    setHiddenColumns,
+    allColumns,
+    state: { pageIndex, pageSize, hiddenColumns }
   } = useTable(
     {
       columns,
@@ -80,10 +76,11 @@ function ReactTable({
             id: 'userName',
             desc: false
           }
-        ]
-      },
-      defaultColumn,
-      filterTypes
+        ],
+        hiddenColumns: columns.filter((col) => VisibleColumn.includes(col.accessor)).map((col) => col.accessor)
+      }
+      // defaultColumn,
+      // filterTypes
     },
     useGlobalFilter,
     useFilters,
@@ -91,10 +88,6 @@ function ReactTable({
     usePagination
   );
   const sortingRow = rows.slice(0, 10);
-  const autocompleteData = [
-    { product_type_id: 1, product_type: 'Electronics', is_active: true, is_deleted: false },
-    { product_type_id: 2, product_type: 'Clothing', is_active: true, is_deleted: false }
-  ];
 
   // For Delete Item
   const [item, setItem] = useState();
@@ -103,8 +96,14 @@ function ReactTable({
   const handleOpenDialog = () => {
     setOpenDialog(!openDialog);
   };
-  // Custom fields/ columns
-  const theme = useTheme();
+  // For Column Hiding
+  let headers = [];
+  allColumns.map((item) => {
+    if (!hiddenColumns?.includes(item.id)) {
+      headers.push({ label: item.Header, key: item.id });
+    }
+    return item;
+  });
 
   return (
     <Stack>
@@ -156,6 +155,7 @@ function ReactTable({
           </Formik>
         )}
         <CSVExport data={rows.map((d) => d.original)} filename={'filtering-table.csv'} />
+        <HidingSelect hiddenColumns={hiddenColumns} setHiddenColumns={setHiddenColumns} allColumns={allColumns} />
       </Stack>
 
       {item && (
@@ -276,7 +276,8 @@ const InterestRateTable = ({
   tableDataRefetch,
   setActiveEditing,
   handleIROpenDialog,
-  isEditingInterestRateLogic
+  isEditingInterestRateLogic,
+  VisibleColumn
 }) => {
   return (
     <MainCard content={false} secondary={<CSVExport data={data} filename={'pagination-bottom-table.csv'} />}>
@@ -298,6 +299,7 @@ const InterestRateTable = ({
           setActiveEditing={setActiveEditing}
           handleIROpenDialog={handleIROpenDialog}
           isEditingInterestRateLogic={isEditingInterestRateLogic}
+          VisibleColumn={VisibleColumn}
         />
       </ScrollX>
     </MainCard>
@@ -321,7 +323,12 @@ InterestRateTable.propTypes = {
   setActiveEditing: PropTypes.any,
   // Add new table for below
   handleIROpenDialog: PropTypes.any,
-  isEditingInterestRateLogic: PropTypes.any
+  isEditingInterestRateLogic: PropTypes.any,
+  VisibleColumn: PropTypes.array
 };
 
 export default InterestRateTable;
+
+// const filterTypes = useMemo(() => renderFilterTypes, []);
+// const defaultColumn = useMemo(() => ({ Filter: DefaultColumnFilter }), []);
+// const initialState = useMemo(() => ({ filters: [{ id: 'status', value: '' }] }), []);

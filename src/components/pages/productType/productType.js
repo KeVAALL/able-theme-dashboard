@@ -23,7 +23,8 @@ import {
   filterFormValues,
   formValueFields,
   filterValidationSchema,
-  tableColumns
+  tableColumns,
+  VisibleColumn
 } from 'constant/productTypeValidation';
 import {
   GetProductTypeData,
@@ -176,6 +177,7 @@ function ProductType() {
             setSearchData={setSearchData}
             tableDataRefetch={productTypeTableDataRefetch}
             setActiveEditing={setActiveEditing}
+            VisibleColumn={VisibleColumn}
           />
         </MainCard>
       )}

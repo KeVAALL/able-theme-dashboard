@@ -23,7 +23,8 @@ import {
   filterFormValues,
   formValueFields,
   filterValidationSchema,
-  tableColumns
+  tableColumns,
+  VisibleColumn
 } from 'constant/fixDepositValidation';
 import { GetProductData, GetOneProduct, SaveProduct, EditProduct, DeleteOneProduct } from 'hooks/fixedDeposit/fixedDeposit';
 import { GetActiveIssuerData } from 'hooks/issuer/issuer';
@@ -330,6 +331,7 @@ function FixDeposit() {
             setActiveEditing={setActiveEditing}
             isEditingInterestRateButton={true}
             isEditingInterestRate={isEditingInterestRate}
+            VisibleColumn={VisibleColumn}
           />
         </MainCard>
       )}

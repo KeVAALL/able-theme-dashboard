@@ -31,6 +31,7 @@ const filterValidationSchema = yup.object({
   issuer_name: yup.string()
 });
 // Table Columns
+const VisibleColumn = [];
 const ImageCell = ({ value }) => {
   return (
     <TableCell style={{ paddingLeft: '0px' }}>
@@ -62,4 +63,14 @@ const tableColumns = [
   }
 ];
 
-export { formAllValues, validationSchema, filterFormValues, formValueFields, filterValidationSchema, ImageCell, StatusCell, tableColumns };
+export {
+  formAllValues,
+  validationSchema,
+  filterFormValues,
+  formValueFields,
+  filterValidationSchema,
+  ImageCell,
+  StatusCell,
+  tableColumns,
+  VisibleColumn
+};

@@ -22,6 +22,7 @@ const filterValidationSchema = yup.object({
   product_type: yup.string().required('Product Type is required')
 });
 // Table Columns
+const VisibleColumn = [];
 const tableColumns = [
   {
     Header: 'Product Type',
@@ -29,4 +30,4 @@ const tableColumns = [
   }
 ];
 
-export { formAllValues, validationSchema, filterFormValues, formValueFields, filterValidationSchema, tableColumns };
+export { formAllValues, validationSchema, filterFormValues, formValueFields, filterValidationSchema, tableColumns, VisibleColumn };

@@ -10,6 +10,7 @@ const validationSchema = yup.object({
   issuer_name: yup.string().required('Issuer Name is required')
 });
 // Table Columns
+const VisibleColumn = [];
 const tableColumns = [
   {
     Header: 'Tenure (Days)',
@@ -33,4 +34,4 @@ const tableColumns = [
   }
 ];
 
-export { formAllValues, validationSchema, tableColumns };
+export { formAllValues, validationSchema, tableColumns, VisibleColumn };

@@ -36,6 +36,7 @@ const filterValidationSchema = yup.object({
   search: yup.string()
 });
 // Table Columns
+const VisibleColumn = [];
 const StatusCell = ({ value }) => {
   return value === 0 ? 'Not Active' : 'Active';
 };
@@ -63,4 +64,13 @@ const tableColumns = [
   }
 ];
 
-export { formAllValues, validationSchema, filterFormValues, formValueFields, filterValidationSchema, StatusCell, tableColumns };
+export {
+  formAllValues,
+  validationSchema,
+  filterFormValues,
+  formValueFields,
+  filterValidationSchema,
+  StatusCell,
+  tableColumns,
+  VisibleColumn
+};

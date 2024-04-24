@@ -61,6 +61,7 @@ const ImageCell = ({ value }) => {
 const StatusCell = ({ value }) => {
   return value === 0 ? 'Not Active' : 'Active';
 };
+const VisibleColumn = [];
 const tableColumns = [
   {
     Header: 'Logo URL',
@@ -90,4 +91,14 @@ const tableColumns = [
   }
 ];
 
-export { formAllValues, validationSchema, filterFormValues, formValueFields, filterValidationSchema, ImageCell, StatusCell, tableColumns };
+export {
+  formAllValues,
+  validationSchema,
+  filterFormValues,
+  formValueFields,
+  filterValidationSchema,
+  ImageCell,
+  StatusCell,
+  tableColumns,
+  VisibleColumn
+};

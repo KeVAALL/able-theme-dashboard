@@ -24,7 +24,8 @@ import {
   filterFormValues,
   formValueFields,
   filterValidationSchema,
-  tableColumns
+  tableColumns,
+  VisibleColumn
 } from 'constant/investorValidation';
 import { GetInvestorData, GetOneInvestor, SaveInvestor, EditInvestor, DeleteOneInvestor } from 'hooks/investor/investor';
 import AnimateButton from 'helpers/@extended/AnimateButton';
@@ -320,6 +321,7 @@ function Investor() {
             setSearchData={setSearchData}
             tableDataRefetch={InvestorTableDataRefetch}
             setActiveEditing={setActiveEditing}
+            VisibleColumn={VisibleColumn}
           />
         </MainCard>
       )}

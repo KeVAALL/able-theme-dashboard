@@ -11,7 +11,7 @@ import { useQuery } from 'react-query';
 import Loader from 'components/atoms/loader/Loader';
 import CustomTextField, { CustomAutoComplete } from 'utils/textfield';
 // assets
-import { formAllValues, validationSchema, tableColumns } from 'constant/interestRateValidation';
+import { formAllValues, validationSchema, tableColumns, VisibleColumn } from 'constant/interestRateValidation';
 import { DeleteOneInterestRate, GetPayoutMethod, GetSchemeSearch } from 'hooks/interestRate/interestRate';
 import { DialogForm } from 'components/atoms/dialog/formdialog';
 import InterestRateTable from 'components/molecules/fixedDeposit/interestRateTable';
@@ -240,6 +240,7 @@ export default function InterestRate({ formValues, changeTableVisibility, isNotE
                       // tableDataRefetch={refetchPayoutData}
                       setActiveEditing={setActiveEditing}
                       handleIROpenDialog={handleOpenDialog}
+                      VisibleColumn={VisibleColumn}
                     />
                     {/* New table for this */}
                   </Grid>

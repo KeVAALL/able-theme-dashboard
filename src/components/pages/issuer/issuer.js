@@ -23,7 +23,8 @@ import {
   filterFormValues,
   formValueFields,
   filterValidationSchema,
-  tableColumns
+  tableColumns,
+  VisibleColumn
 } from 'constant/issuerValidation';
 import { GetIssuerData, GetOneIssuer, SaveIssuer, EditIssuer, DeleteOneIssuer } from 'hooks/issuer/issuer';
 import { toInteger } from 'lodash';
@@ -248,6 +249,7 @@ function Issuer() {
             setSearchData={setSearchData}
             tableDataRefetch={issuerTableDataRefetch}
             setActiveEditing={setActiveEditing}
+            VisibleColumn={VisibleColumn}
           />
         </MainCard>
       )}
