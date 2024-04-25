@@ -28,7 +28,7 @@ import { getEmptyImage } from 'react-dnd-html5-backend';
 import { useDrop, useDrag, useDragLayer } from 'react-dnd';
 
 // assets
-import { ArrowDown2, ArrowUp2, DocumentDownload, HambergerMenu, Maximize1 } from 'iconsax-react';
+import { ArrowUp, ArrowDown, ArrowDown2, ArrowUp2, ArrowUp3, ArrowDown3, DocumentDownload, HambergerMenu, Maximize1 } from 'iconsax-react';
 
 // project import
 import { ThemeMode } from 'config';
@@ -42,20 +42,22 @@ export const HeaderSort = ({ column, sort }) => {
     <Stack direction="row" spacing={1} alignItems="center">
       <Box sx={{ width: 'max-content' }}>{column.render('Header')}</Box>
       {!column.disableSortBy && (
-        <Stack sx={{ color: 'secondary.light' }} {...(sort && { ...column.getHeaderProps(column.getSortByToggleProps()) })}>
-          <ArrowUp2
-            size={16}
-            variant="Bold"
+        <Stack
+          sx={{ flexDirection: 'row', alignItems: 'center' }}
+          {...(sort && { ...column.getHeaderProps(column.getSortByToggleProps()) })}
+        >
+          <ArrowUp
+            size={20}
             style={{
               color: column.isSorted && !column.isSortedDesc ? theme.palette.secondary.main : 'inherit'
+              // color: column.isSorted && !column.isSortedDesc ? 'black' : 'black'
             }}
           />
-          <ArrowDown2
-            size={16}
-            variant="Bold"
+          <ArrowDown
+            size={20}
             style={{
-              marginTop: -8,
               color: column.isSortedDesc ? theme.palette.secondary.main : 'inherit'
+              // color: column.isSortedDesc ? 'black' : 'black'
             }}
           />
         </Stack>

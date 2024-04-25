@@ -31,11 +31,32 @@ const validationSchema = yup.object().shape(
         });
       })
       .required('Maximum Amount is required'),
-    min_tenure: yup.number().required('Minimum Tenure is required'),
-    max_tenure: yup.number().required('Max Tenure is required'),
+    min_tenure: yup
+      .number()
+      .min(1, 'Minimum tenure must be greater than or equal to 1')
+      .when('max_tenure', (max_tenure, schema) => {
+        return schema.test({
+          test: (min_tenure) => min_tenure <= max_tenure,
+          message: 'Minimum tenure must be less than or equal to Maximum tenure'
+        });
+      })
+      .required('Minimum Tenure is required'),
+    max_tenure: yup
+      .number()
+      .min(1, 'Maximum tenure must be greater than or equal to 1')
+      .when('min_tenure', (min_tenure, schema) => {
+        return schema.test({
+          test: (max_tenure) => max_tenure >= min_tenure,
+          message: 'Maximum tenure must be greater than or equal to Minimum tenure'
+        });
+      })
+      .required('Maximum Tenure is required'),
     logo_url: yup.string().required('Logo URL is required')
   },
-  ['fd_min_amount', 'fd_max_amount']
+  [
+    ['fd_min_amount', 'fd_max_amount'],
+    ['min_tenure', 'max_tenure']
+  ]
 );
 // Search Item form fields
 const filterFormValues = {

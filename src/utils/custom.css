@@ -17,3 +17,6 @@
 .common-autocomplete .MuiOutlinedInput-root {
   padding: 3.02px 9px !important;
 }
+#__checkbox span:first-of-type {
+  padding: 0 !important;
+}

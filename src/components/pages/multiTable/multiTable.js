@@ -229,7 +229,7 @@ function ReactTable({
                         </TableCell>
                       );
                     })}
-                    <TableCell sx={{ textAlign: { md: 'left', xs: 'center' } }}>
+                    <TableCell sx={{ textAlign: { md: 'right', xs: 'center' } }}>
                       <Grid container spacing={0.5} sx={{ display: 'flex', justifyContent: { md: 'flex-end', xs: 'center' } }}>
                         <Grid item md={4} xs={12}>
                           <Edit2

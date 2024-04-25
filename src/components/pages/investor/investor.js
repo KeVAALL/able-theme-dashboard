@@ -15,7 +15,7 @@ import { Formik } from 'formik';
 import * as yup from 'yup';
 import Loader from 'components/atoms/loader/Loader';
 import { SubmitButton } from 'components/atoms/button/button';
-import CustomTextField, { CustomAutoComplete, CustomCheckbox } from 'utils/textfield';
+import CustomTextField, { CustomAutoComplete } from 'utils/textfield';
 
 // assets
 import {
@@ -27,8 +27,9 @@ import {
   tableColumns,
   VisibleColumn
 } from 'constant/investorValidation';
-import { GetInvestorData, GetOneInvestor, SaveInvestor, EditInvestor, DeleteOneInvestor } from 'hooks/investor/investor';
+import { GetInvestorData, GetOneInvestor, SaveInvestor, EditInvestor, DeleteOneInvestor, GetIfa } from 'hooks/investor/investor';
 import AnimateButton from 'helpers/@extended/AnimateButton';
+import IconTabs from 'components/organisms/iconTabs';
 
 const headerSX = {
   p: 2.5,
@@ -38,6 +39,12 @@ const headerSX = {
 function Investor() {
   // Main data
   const [investorData, setInvestorData] = useState([]);
+  const [ifaData, setIfaData] = useState([]);
+  const genderData = [
+    { id: 1, gender_type: 'Male' },
+    { id: 2, gender_type: 'Female' },
+    { id: 3, gender_type: 'Other' }
+  ];
 
   // Toggle Table and Form Visibility
   const [showTable, setShowTable] = useState(false);
@@ -86,6 +93,20 @@ function Investor() {
     queryFn: GetInvestorData,
     onSuccess: (data) => {
       setInvestorData(data);
+    }
+  });
+  const {
+    isPending: ifaPending,
+    error: ifaError,
+    refetch: IfaTableDataRefetch
+  } = useQuery({
+    queryKey: ['ifaTableData'],
+    refetchOnWindowFocus: false,
+    keepPreviousData: true,
+    queryFn: GetIfa,
+    onSuccess: (data) => {
+      console.log(data);
+      setIfaData(data.data);
     }
   });
 
@@ -199,8 +220,27 @@ function Investor() {
                         errors={errors}
                       />
                     </Grid>
+                    <Grid item xs={4}>
+                      <CustomAutoComplete
+                        // options={[]}
+                        options={genderData}
+                        optionName="gender_type"
+                        // handleChange={() => {}}
+                        handleChange={(event) => {
+                          console.log(event.target.value);
+                        }}
+                        label="Gender"
+                      />
+                    </Grid>
                   </Grid>
                 </CardContent>
+
+                {/* Add the tab here */}
+                <Grid item xs={12} lg={6}>
+                  <Stack spacing={1}>
+                    <IconTabs />
+                  </Stack>
+                </Grid>
               </Card>
             </Box>
           )}
@@ -269,7 +309,7 @@ function Investor() {
 
                 <CardContent>
                   <Grid container spacing={3}>
-                    <Grid item xs={3} style={{ paddingLeft: 0 }}>
+                    <Grid item xs={3} style={{ paddingLeft: 0, paddingTop: 0 }}>
                       <CustomTextField
                         label="FD Name"
                         name="fd_name"
@@ -279,7 +319,6 @@ function Investor() {
                         onBlur={handleBlur}
                         touched={touched}
                         errors={errors}
-                        disabled
                         FormHelperTextProps={{
                           style: {
                             marginLeft: 0
@@ -287,7 +326,12 @@ function Investor() {
                         }}
                       />
                     </Grid>
-                    <Grid item xs={2}>
+
+                    <Grid item xs={3} style={{ paddingTop: 0 }}>
+                      <CustomAutoComplete options={ifaData} handleChange={() => {}} optionName="item_value" label="IFA" />
+                    </Grid>
+
+                    <Grid item xs={2} style={{ paddingTop: 0 }}>
                       <Box>
                         <AnimateButton>
                           <Button fullWidth variant="contained" color="success" startIcon={<SearchNormal1 />} type="submit">
@@ -295,10 +339,6 @@ function Investor() {
                           </Button>
                         </AnimateButton>
                       </Box>
-                    </Grid>
-
-                    <Grid item xs={3}>
-                      <CustomAutoComplete options={[]} handleChange={() => {}} optionName="item_value" label="Payout Method" />
                     </Grid>
                   </Grid>
                 </CardContent>

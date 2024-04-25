@@ -126,3 +126,14 @@ export async function DeleteOneInvestor(values) {
     console.log(err);
   }
 }
+//fetch the ifa
+export async function GetIfa() {
+  try {
+    const { data } = await axios.post('/ifa/getifa', {
+      method_name: 'getall'
+    });
+    return data;
+  } catch (err) {
+    console.log(err);
+  }
+}
