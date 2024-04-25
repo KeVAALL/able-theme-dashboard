@@ -7,7 +7,6 @@ export const CustomTextField = (props) => {
   // console.log(props.value, props.name);
   return (
     <TextField
-      //   variant="standard"
       fullWidth
       className="common-textfield"
       size="small"

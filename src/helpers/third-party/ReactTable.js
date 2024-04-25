@@ -385,7 +385,7 @@ export const HidingSelect = ({ hiddenColumns, setHiddenColumns, allColumns }) =>
   let visible = allColumns.filter((c) => !hiddenColumns.includes(c.id)).length;
 
   return (
-    <FormControl sx={{ width: 200 }}>
+    <FormControl sx={{}}>
       <Select
         id="column-hiding"
         multiple

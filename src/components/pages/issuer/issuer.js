@@ -135,7 +135,7 @@ function Issuer() {
 
                 <CardContent>
                   <Grid container spacing={3}>
-                    <Grid item xs={4}>
+                    <Grid item md={4} sm={6} xs={12}>
                       <CustomTextField
                         label="GST Number"
                         name="issuer_gst_number"
@@ -145,6 +145,7 @@ function Issuer() {
                         onBlur={handleBlur}
                         touched={touched}
                         errors={errors}
+                        fullWidth
                         FormHelperTextProps={{
                           style: {
                             marginLeft: 0
@@ -152,7 +153,7 @@ function Issuer() {
                         }}
                       />
                     </Grid>
-                    <Grid item xs={4}>
+                    <Grid item md={4} sm={6} xs={12}>
                       <CustomTextField
                         label="Issuer Name"
                         name="issuer_name"
@@ -162,6 +163,7 @@ function Issuer() {
                         onBlur={handleBlur}
                         touched={touched}
                         errors={errors}
+                        fullWidth
                         FormHelperTextProps={{
                           style: {
                             marginLeft: 0
@@ -169,7 +171,7 @@ function Issuer() {
                         }}
                       />
                     </Grid>
-                    <Grid item xs={4}>
+                    <Grid item md={4} sm={6} xs={12}>
                       <CustomTextField
                         label="Issuer PAN"
                         name="issuer_pan"
@@ -179,6 +181,7 @@ function Issuer() {
                         onBlur={handleBlur}
                         touched={touched}
                         errors={errors}
+                        fullWidth
                         FormHelperTextProps={{
                           style: {
                             marginLeft: 0
@@ -186,7 +189,7 @@ function Issuer() {
                         }}
                       />
                     </Grid>
-                    <Grid item xs={4}>
+                    <Grid item md={4} sm={6} xs={12}>
                       <CustomTextField
                         label="Issuer Tollfree Number"
                         name="issuer_tollfree_number"
@@ -196,6 +199,7 @@ function Issuer() {
                         onBlur={handleBlur}
                         touched={touched}
                         errors={errors}
+                        fullWidth
                         FormHelperTextProps={{
                           style: {
                             marginLeft: 0
@@ -203,7 +207,7 @@ function Issuer() {
                         }}
                       />
                     </Grid>
-                    <Grid item xs={4}>
+                    <Grid item md={4} sm={6} xs={12}>
                       <CustomTextField
                         label="Logo URL"
                         name="logo_url"
@@ -213,6 +217,7 @@ function Issuer() {
                         onBlur={handleBlur}
                         touched={touched}
                         errors={errors}
+                        fullWidth
                         FormHelperTextProps={{
                           style: {
                             marginLeft: 0

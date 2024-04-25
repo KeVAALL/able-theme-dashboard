@@ -92,6 +92,9 @@ function ReactTable({
     usePagination
   );
   const sortingRow = rows.slice(0, 10);
+  const theme = useTheme();
+  const mdUp = theme.breakpoints.up('md');
+  console.log(mdUp);
 
   // For Delete Item
   const [item, setItem] = useState();
@@ -110,59 +113,80 @@ function ReactTable({
   });
 
   return (
-    <Stack>
-      <Stack direction="row" spacing={2} alignItems="center" justifyContent="space-between" sx={{ padding: 2 }}>
-        {formValueFields?.length >= 1 && (
-          <Formik
-            initialValues={formValues}
-            validationSchema={validationSchema}
-            onSubmit={async (values, { setSubmitting, resetForm }) => {
-              getOneItem(values, setSearchData);
-              resetForm();
-            }}
-          >
-            {({ values, errors, touched, handleChange, handleBlur, handleSubmit, isSubmitting }) => (
-              <Box
-                component="form"
-                onSubmit={(event) => {
-                  event.preventDefault();
-                  handleSubmit();
-                }}
-                sx={{ width: '60%' }}
-              >
-                <Grid container direction="row" spacing={2} alignItems="center" sx={{ width: '100%' }}>
-                  {formValueFields?.map((field, id) => {
-                    return (
-                      <Grid item xs={4} key={id}>
-                        <CustomTextField
-                          label={field.label}
-                          name={field.fieldName}
-                          values={values}
-                          type={field.type}
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          touched={touched}
-                          errors={errors}
-                        />
-                      </Grid>
-                    );
-                  })}
+    <>
+      <Grid container alignItems="center" spacing={2} sx={{ padding: 2 }}>
+        <Grid item md={7} sm={7} xs={12}>
+          {formValueFields?.length >= 1 && (
+            <Formik
+              initialValues={formValues}
+              validationSchema={validationSchema}
+              onSubmit={async (values, { setSubmitting, resetForm }) => {
+                getOneItem(values, setSearchData);
+                resetForm();
+              }}
+            >
+              {({ values, errors, touched, handleChange, handleBlur, handleSubmit, isSubmitting }) => (
+                <Box
+                  component="form"
+                  onSubmit={(event) => {
+                    event.preventDefault();
+                    handleSubmit();
+                  }}
+                >
+                  <Grid container direction="row" spacing={1} alignItems="center">
+                    {formValueFields?.map((field, id) => {
+                      return (
+                        <Grid item md={4} sm={4} xs={6} key={id}>
+                          <CustomTextField
+                            label={field.label}
+                            name={field.fieldName}
+                            values={values}
+                            type={field.type}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            touched={touched}
+                            errors={errors}
+                          />
+                        </Grid>
+                      );
+                    })}
 
-                  <Grid item xs={4}>
-                    <Button variant="contained" color="success" type="submit" startIcon={<FilterSearch />} sx={{ justifySelf: 'center' }}>
-                      Search
-                    </Button>
+                    <Grid item md={4} sm={4} xs={6}>
+                      <Button
+                        // fullWidth={!mdUp}
+                        variant="contained"
+                        color="success"
+                        type="submit"
+                        startIcon={<FilterSearch />}
+                        sx={{
+                          justifySelf: 'center',
+                          width: !mdUp ? 'auto' : '100%' // Set width to 'auto' when screen size is medium or larger, otherwise '100%'
+                        }}
+                      >
+                        Search
+                      </Button>
+                    </Grid>
                   </Grid>
-                </Grid>
-              </Box>
-            )}
-          </Formik>
-        )}
-        <Stack direction="row" spacing={2} alignItems="center" sx={{ padding: 2 }}>
-          <CSVExport data={rows.map((d) => d.original)} filename={'filtering-table.csv'} headers={headers} />
-          <HidingSelect hiddenColumns={hiddenColumns} setHiddenColumns={setHiddenColumns} allColumns={allColumns} />
-        </Stack>
-      </Stack>
+                </Box>
+              )}
+            </Formik>
+          )}
+        </Grid>
+        <Grid item md={5} sm={5} xs={12} sx={{ display: 'flex', justifyContent: { sm: 'flex-end' } }}>
+          {/* <Stack direction="row" spacing={2} alignItems="center">
+            <CSVExport data={rows.map((d) => d.original)} filename={'filtering-table.csv'} headers={headers} />
+            <HidingSelect hiddenColumns={hiddenColumns} setHiddenColumns={setHiddenColumns} allColumns={allColumns} />
+          </Stack> */}
+          <Grid container spacing={2} sx={{ alignItems: 'center', justifyContent: 'flex-end' }}>
+            <Grid item md={7} xs={4} sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+              <CSVExport data={rows.map((d) => d.original)} filename={'filtering-table.csv'} headers={headers} />
+            </Grid>
+            <Grid item md={5} xs={8} sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+              <HidingSelect hiddenColumns={hiddenColumns} setHiddenColumns={setHiddenColumns} allColumns={allColumns} />
+            </Grid>
+          </Grid>
+        </Grid>
+      </Grid>
 
       {item && (
         <DialogBox
@@ -174,85 +198,90 @@ function ReactTable({
         />
       )}
 
-      <Table {...getTableProps()}>
-        <TableHead sx={{ borderTopWidth: top ? 2 : 1 }}>
-          {headerGroups.map((headerGroup) => (
-            <TableRow key={headerGroup} {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map((column) => (
-                <TableCell key={column} cell={column} {...column.getHeaderProps([{ className: column.className }])}>
-                  <HeaderSort column={column} sort />
+      <Box sx={{ width: '100%', overflowX: 'auto', display: 'block' }}>
+        <Table {...getTableProps()}>
+          <TableHead sx={{ borderTopWidth: top ? 2 : 1 }}>
+            {headerGroups.map((headerGroup) => (
+              <TableRow key={headerGroup} {...headerGroup.getHeaderGroupProps()}>
+                {headerGroup.headers.map((column) => (
+                  <TableCell key={column} cell={column} {...column.getHeaderProps([{ className: column.className }])}>
+                    <HeaderSort column={column} sort />
+                  </TableCell>
+                ))}
+                <TableCell width={150} sx={{ textAlign: 'right' }}>
+                  Actions
                 </TableCell>
-              ))}
-              <TableCell width={150} sx={{ textAlign: 'right' }}>
-                Actions
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableHead>
-        <TableBody {...getTableBodyProps()}>
-          {page.length > 0 && data.length > 0 ? (
-            // {data?.length > 0 ? (
-            page.map((row) => {
-              prepareRow(row);
-              return (
-                <TableRow key={row} {...row.getRowProps()}>
-                  {row.cells.map((cell) => {
-                    return (
-                      <TableCell key={cell} {...cell.getCellProps([{ className: cell.column.className }])}>
-                        {/* {cell.render('Cell')} */}
-                        {cell.column.customCell ? <cell.column.customCell value={cell.value} /> : cell.render('Cell')}
-                      </TableCell>
-                    );
-                  })}
-                  <TableCell sx={{ textAlign: 'right' }}>
-                    <Edit2
-                      size={22}
-                      style={{ marginRight: 14, cursor: 'pointer' }}
-                      onClick={() => {
-                        changeTableVisibility();
-                        setEditing(row.original);
-                        setActiveEditing();
-                      }}
-                    />
-
-                    {isEditingInterestRateButton && (
-                      <DiscountShape
+              </TableRow>
+            ))}
+          </TableHead>
+          <TableBody {...getTableBodyProps()}>
+            {page.length > 0 && data.length > 0 ? (
+              // {data?.length > 0 ? (
+              page.map((row) => {
+                prepareRow(row);
+                return (
+                  <TableRow key={row} {...row.getRowProps()}>
+                    {row.cells.map((cell) => {
+                      return (
+                        <TableCell key={cell} {...cell.getCellProps([{ className: cell.column.className }])}>
+                          {/* {cell.render('Cell')} */}
+                          {cell.column.customCell ? <cell.column.customCell value={cell.value} /> : cell.render('Cell')}
+                        </TableCell>
+                      );
+                    })}
+                    <TableCell sx={{ textAlign: 'right' }}>
+                      <Edit2
                         size={22}
                         style={{ marginRight: 14, cursor: 'pointer' }}
-                        onClick={async () => {
+                        onClick={() => {
+                          changeTableVisibility();
                           setEditing(row.original);
-                          isEditingInterestRate();
+                          setActiveEditing();
                         }}
                       />
-                    )}
 
-                    <Trash
-                      size={22}
-                      style={{ cursor: 'pointer' }}
-                      onClick={async () => {
-                        setItem(row.original);
-                        setTimeout(() => {
-                          handleOpenDialog();
-                        }, 200);
-                        console.log(row.original);
-                      }}
-                    />
-                  </TableCell>
-                </TableRow>
-              );
-            })
-          ) : (
-            <EmptyTable msg="No Data" colSpan={columns.length + 1} />
-          )}
+                      {isEditingInterestRateButton && (
+                        <DiscountShape
+                          size={22}
+                          style={{ marginRight: 14, cursor: 'pointer' }}
+                          onClick={async () => {
+                            setEditing(row.original);
+                            isEditingInterestRate();
+                          }}
+                        />
+                      )}
 
-          <TableRow>
-            <TableCell sx={{ p: 2 }} colSpan={7}>
-              <TablePagination gotoPage={gotoPage} rows={rows} setPageSize={setPageSize} pageIndex={pageIndex} pageSize={pageSize} />
-            </TableCell>
-          </TableRow>
-        </TableBody>
-      </Table>
-    </Stack>
+                      <Trash
+                        size={22}
+                        style={{ cursor: 'pointer' }}
+                        onClick={async () => {
+                          setItem(row.original);
+                          setTimeout(() => {
+                            handleOpenDialog();
+                          }, 200);
+                          console.log(row.original);
+                        }}
+                      />
+                    </TableCell>
+                  </TableRow>
+                );
+              })
+            ) : (
+              <EmptyTable msg="No Data" colSpan={columns.length + 1} />
+            )}
+
+            {/* <TableRow>
+              <TableCell sx={{ p: 2 }} colSpan={7}>
+                <TablePagination gotoPage={gotoPage} rows={rows} setPageSize={setPageSize} pageIndex={pageIndex} pageSize={pageSize} />
+              </TableCell>
+            </TableRow> */}
+          </TableBody>
+        </Table>
+      </Box>
+      <Box sx={{ p: 2, borderTop: '1px solid #dbe0e5a6' }}>
+        <TablePagination gotoPage={gotoPage} rows={rows} setPageSize={setPageSize} pageIndex={pageIndex} pageSize={pageSize} />
+      </Box>
+    </>
   );
 }
 
