@@ -99,7 +99,7 @@ export const TablePagination = ({ gotoPage, rows, setPageSize, pageSize, pageInd
   };
 
   return (
-    <Grid container alignItems="center" justifyContent="space-between" sx={{ width: 'auto' }}>
+    <Grid container sx={{ width: 'auto', alignItems: 'center', justifyContent: { sm: 'space-between', xs: 'center' } }}>
       <Grid item>
         <Stack direction="row" spacing={1} alignItems="center">
           <Stack direction="row" spacing={1} alignItems="center">

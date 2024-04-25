@@ -229,39 +229,47 @@ function ReactTable({
                         </TableCell>
                       );
                     })}
-                    <TableCell sx={{ textAlign: 'right' }}>
-                      <Edit2
-                        size={22}
-                        style={{ marginRight: 14, cursor: 'pointer' }}
-                        onClick={() => {
-                          changeTableVisibility();
-                          setEditing(row.original);
-                          setActiveEditing();
-                        }}
-                      />
+                    <TableCell sx={{ textAlign: { md: 'left', xs: 'center' } }}>
+                      <Grid container spacing={0.5} sx={{ display: 'flex', justifyContent: { md: 'flex-end', xs: 'center' } }}>
+                        <Grid item md={4} xs={12}>
+                          <Edit2
+                            size={22}
+                            style={{ cursor: 'pointer' }}
+                            onClick={() => {
+                              changeTableVisibility();
+                              setEditing(row.original);
+                              setActiveEditing();
+                            }}
+                          />
+                        </Grid>
 
-                      {isEditingInterestRateButton && (
-                        <DiscountShape
-                          size={22}
-                          style={{ marginRight: 14, cursor: 'pointer' }}
-                          onClick={async () => {
-                            setEditing(row.original);
-                            isEditingInterestRate();
-                          }}
-                        />
-                      )}
+                        {isEditingInterestRateButton && (
+                          <Grid item md={4} xs={12}>
+                            <DiscountShape
+                              size={22}
+                              style={{ cursor: 'pointer' }}
+                              onClick={async () => {
+                                setEditing(row.original);
+                                isEditingInterestRate();
+                              }}
+                            />
+                          </Grid>
+                        )}
 
-                      <Trash
-                        size={22}
-                        style={{ cursor: 'pointer' }}
-                        onClick={async () => {
-                          setItem(row.original);
-                          setTimeout(() => {
-                            handleOpenDialog();
-                          }, 200);
-                          console.log(row.original);
-                        }}
-                      />
+                        <Grid item md={4} xs={12}>
+                          <Trash
+                            size={22}
+                            style={{ cursor: 'pointer' }}
+                            onClick={async () => {
+                              setItem(row.original);
+                              setTimeout(() => {
+                                handleOpenDialog();
+                              }, 200);
+                              console.log(row.original);
+                            }}
+                          />
+                        </Grid>
+                      </Grid>
                     </TableCell>
                   </TableRow>
                 );
