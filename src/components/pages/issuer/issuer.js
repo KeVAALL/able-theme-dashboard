@@ -27,21 +27,22 @@ import {
   VisibleColumn
 } from 'constant/issuerValidation';
 import { GetIssuerData, GetOneIssuer, SaveIssuer, EditIssuer, DeleteOneIssuer } from 'hooks/issuer/issuer';
-import { toInteger } from 'lodash';
 
 function Issuer() {
-  // Main data
+  // Main data state to hold the list of issuers
   const [issuerData, setIssuerData] = useState([]);
+  // Editing States
+  const [isEditing, setIsEditing] = useState(false); // State to track if editing mode is active
+  const [isIssuerActive, setIssuerActive] = useState(); // State to track if the issuer is active or not active
+  // Form Visibility
+  const [showTable, setShowTable] = useState(false); // State to hold form input values
+  // Form State
+  const [formValues, setFormValues] = useState(formAllValues); // State to hold form input values
+  // Theme
+  const theme = useTheme();
 
-  // Toggle Table and Form Visibility
-  const [showTable, setShowTable] = useState(false);
-  const changeTableVisibility = () => {
-    setShowTable(!showTable);
-  };
-
-  // Edit Logic State
-  const [isEditing, setIsEditing] = useState(false);
-  const [isIssuerActive, setIssuerActive] = useState();
+  // Functions
+  // Editing States
   const setEditing = (value) => {
     setFormValues(value);
   };
@@ -54,21 +55,22 @@ function Issuer() {
   const handleIsIssuerActive = (initialValue) => {
     setIssuerActive(initialValue);
   };
-
-  // Search one item state
+  // Form Visibility
+  const changeTableVisibility = () => {
+    setShowTable(!showTable);
+  };
+  // Search Data
   const setSearchData = (issuer) => {
     setIssuerData(issuer);
   };
-  // Form State
-  const [formValues, setFormValues] = useState(formAllValues);
   // Empty Form Fields
   const clearFormValues = () => {
     setFormValues(formAllValues);
   };
-  // Custom Fields/ Table Columns
-  const theme = useTheme();
+  // Table Columns
   const columns = useMemo(() => tableColumns, []);
 
+  // Main data
   const {
     isPending,
     error,
@@ -96,7 +98,6 @@ function Issuer() {
               SaveIssuer(values, issuerTableDataRefetch, clearFormValues);
             }
             if (isEditing === true) {
-              console.log({ ...values, is_active: toInteger(isIssuerActive), method_name: 'update' });
               EditIssuer(values, isIssuerActive, issuerTableDataRefetch, clearFormValues, setActiveClose);
             }
             changeTableVisibility();

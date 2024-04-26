@@ -107,56 +107,67 @@ function ReactTable({
 
   return (
     <Stack>
-      <Stack direction="row" spacing={2} alignItems="center" justifyContent="space-between" sx={{ padding: 2 }}>
-        {formValueFields?.length >= 1 && (
-          <Formik
-            initialValues={formValues}
-            validationSchema={validationSchema}
-            onSubmit={async (values, { setSubmitting, resetForm }) => {
-              getOneItem(values, setSearchData);
-              resetForm();
-            }}
-          >
-            {({ values, errors, touched, handleChange, handleBlur, handleSubmit, isSubmitting }) => (
-              <Box
-                component="form"
-                onSubmit={(event) => {
-                  event.preventDefault();
-                  handleSubmit();
-                }}
-                sx={{ width: '60%' }}
-              >
-                <Grid container direction="row" spacing={2} alignItems="center" sx={{ width: '100%' }}>
-                  {formValueFields?.map((field, id) => {
-                    return (
-                      <Grid item xs={4} key={id}>
-                        <CustomTextField
-                          label={field.label}
-                          name={field.fieldName}
-                          values={values}
-                          type={field.type}
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          touched={touched}
-                          errors={errors}
-                        />
-                      </Grid>
-                    );
-                  })}
+      <Grid container spacing={2} alignItems="center" justifyContent="space-between" sx={{ padding: 2 }}>
+        <Grid item md={7} sm={7} xs={12}>
+          {formValueFields?.length >= 1 && (
+            <Formik
+              initialValues={formValues}
+              validationSchema={validationSchema}
+              onSubmit={async (values, { setSubmitting, resetForm }) => {
+                getOneItem(values, setSearchData);
+                resetForm();
+              }}
+            >
+              {({ values, errors, touched, handleChange, handleBlur, handleSubmit, isSubmitting }) => (
+                <Box
+                  component="form"
+                  onSubmit={(event) => {
+                    event.preventDefault();
+                    handleSubmit();
+                  }}
+                  sx={{ width: '60%' }}
+                >
+                  <Grid container direction="row" spacing={2} alignItems="center" sx={{ width: '100%' }}>
+                    {formValueFields?.map((field, id) => {
+                      return (
+                        <Grid item xs={4} key={id}>
+                          <CustomTextField
+                            label={field.label}
+                            name={field.fieldName}
+                            values={values}
+                            type={field.type}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            touched={touched}
+                            errors={errors}
+                          />
+                        </Grid>
+                      );
+                    })}
 
-                  <Grid item xs={4}>
-                    <Button variant="contained" color="success" type="submit" startIcon={<FilterSearch />} sx={{ justifySelf: 'center' }}>
-                      Search
-                    </Button>
+                    <Grid item xs={4}>
+                      <Button variant="contained" color="success" type="submit" startIcon={<FilterSearch />} sx={{ justifySelf: 'center' }}>
+                        Search
+                      </Button>
+                    </Grid>
                   </Grid>
-                </Grid>
-              </Box>
-            )}
-          </Formik>
-        )}
-        <CSVExport data={rows.map((d) => d.original)} filename={'filtering-table.csv'} />
-        <HidingSelect hiddenColumns={hiddenColumns} setHiddenColumns={setHiddenColumns} allColumns={allColumns} />
-      </Stack>
+                </Box>
+              )}
+            </Formik>
+          )}
+        </Grid>
+        <Grid item md={5} sm={5} xs={12} sx={{ display: 'flex', justifyContent: { sm: 'flex-end' } }}>
+          <Grid container spacing={4} sx={{ alignItems: 'center', justifyContent: 'flex-end' }}>
+            <Grid item md={11} xs={11} sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+              <HidingSelect hiddenColumns={hiddenColumns} setHiddenColumns={setHiddenColumns} allColumns={allColumns} />
+            </Grid>
+
+            <Grid item md={1} xs={1} sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+              <CSVExport data={rows.map((d) => d.original)} filename={'filtering-table.csv'} headers={headers} />
+            </Grid>
+          </Grid>
+        </Grid>
+      </Grid>
 
       {item && (
         <DialogBox

@@ -173,16 +173,13 @@ function ReactTable({
           )}
         </Grid>
         <Grid item md={5} sm={5} xs={12} sx={{ display: 'flex', justifyContent: { sm: 'flex-end' } }}>
-          {/* <Stack direction="row" spacing={2} alignItems="center">
-            <CSVExport data={rows.map((d) => d.original)} filename={'filtering-table.csv'} headers={headers} />
-            <HidingSelect hiddenColumns={hiddenColumns} setHiddenColumns={setHiddenColumns} allColumns={allColumns} />
-          </Stack> */}
-          <Grid container spacing={2} sx={{ alignItems: 'center', justifyContent: 'flex-end' }}>
-            <Grid item md={7} xs={4} sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-              <CSVExport data={rows.map((d) => d.original)} filename={'filtering-table.csv'} headers={headers} />
-            </Grid>
-            <Grid item md={5} xs={8} sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+          <Grid container spacing={4} sx={{ alignItems: 'center', justifyContent: 'flex-end' }}>
+            <Grid item md={11} xs={11} sx={{ display: 'flex', justifyContent: 'flex-end' }}>
               <HidingSelect hiddenColumns={hiddenColumns} setHiddenColumns={setHiddenColumns} allColumns={allColumns} />
+            </Grid>
+
+            <Grid item md={1} xs={1} sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+              <CSVExport data={rows.map((d) => d.original)} filename={'filtering-table.csv'} headers={headers} />
             </Grid>
           </Grid>
         </Grid>
@@ -277,12 +274,6 @@ function ReactTable({
             ) : (
               <EmptyTable msg="No Data" colSpan={columns.length + 1} />
             )}
-
-            {/* <TableRow>
-              <TableCell sx={{ p: 2 }} colSpan={7}>
-                <TablePagination gotoPage={gotoPage} rows={rows} setPageSize={setPageSize} pageIndex={pageIndex} pageSize={pageSize} />
-              </TableCell>
-            </TableRow> */}
           </TableBody>
         </Table>
       </Box>
@@ -370,3 +361,16 @@ export default MultiTable;
 //   { product_type_id: 1, product_type: 'Electronics', is_active: true, is_deleted: false },
 //   { product_type_id: 2, product_type: 'Clothing', is_active: true, is_deleted: false }
 // ];
+// {
+/* <Stack direction="row" spacing={2} alignItems="center">
+            <CSVExport data={rows.map((d) => d.original)} filename={'filtering-table.csv'} headers={headers} />
+            <HidingSelect hiddenColumns={hiddenColumns} setHiddenColumns={setHiddenColumns} allColumns={allColumns} />
+          </Stack> */
+// }
+// {
+/* <TableRow>
+              <TableCell sx={{ p: 2 }} colSpan={7}>
+                <TablePagination gotoPage={gotoPage} rows={rows} setPageSize={setPageSize} pageIndex={pageIndex} pageSize={pageSize} />
+              </TableCell>
+            </TableRow> */
+// }

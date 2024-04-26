@@ -172,7 +172,7 @@ export function DialogForm({
                   </Grid>
                   <Grid item xs={6}>
                     <CustomTextField
-                      label="Regular ROI %"
+                      label="Senior Citizen ROI %"
                       name="rate_of_interest_senior_citezen"
                       values={values}
                       type="number"
@@ -190,7 +190,7 @@ export function DialogForm({
                   </Grid>
                   <Grid item xs={6}>
                     <CustomTextField
-                      label="Regular ROI %"
+                      label="Female ROI %"
                       name="rate_of_interest_female"
                       values={values}
                       type="number"
@@ -208,7 +208,7 @@ export function DialogForm({
                   </Grid>
                   <Grid item xs={6}>
                     <CustomTextField
-                      label="Regular ROI %"
+                      label="Female Senior Citizen ROI %"
                       name="rate_of_interest_female_senior_citezen"
                       values={values}
                       type="number"

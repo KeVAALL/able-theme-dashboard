@@ -151,7 +151,7 @@ export default function InterestRate({ formValues, changeTableVisibility, isNotE
               }}
             >
               <Stack direction="row" alignItems="center" justifyContent="space-between">
-                <CardHeader sx={headerSX} titleTypographyProps={{ variant: 'subtitle1' }} title="Interest Rate" />
+                <CardHeader title="Schemes" sx={headerSX} titleTypographyProps={{ variant: 'subtitle1' }} />
                 <Stack direction="row" alignItems="center" spacing={1.5} paddingRight={2.5}>
                   <Box>
                     <AnimateButton>

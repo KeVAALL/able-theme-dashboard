@@ -309,7 +309,7 @@ function FixDeposit() {
       {/* {editingInterestRate && <InterestRate />} */}
       {!showTable && (
         <MainCard
-          title="Product"
+          title="Fixed Deposit"
           changeTableVisibility={changeTableVisibility}
           showButton
           setActiveAdding={setActiveClose}

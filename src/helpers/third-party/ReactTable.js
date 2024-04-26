@@ -74,7 +74,7 @@ HeaderSort.propTypes = {
 
 export const TablePagination = ({ gotoPage, rows, setPageSize, pageSize, pageIndex, initialPageSize }) => {
   const [open, setOpen] = useState(false);
-  let options = [5, 10, 25, 50, 100];
+  let options = [5, 10];
 
   if (initialPageSize) {
     options = [...options, initialPageSize]

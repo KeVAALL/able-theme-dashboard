@@ -13,7 +13,11 @@ const formAllValues = {
 const validationSchema = yup.object({
   issuer_gst_number: yup.string().required('Issuer GST Number is required'),
   issuer_name: yup.string().required('Issuer Name is required'),
-  issuer_pan: yup.string().required('Issuer PAN is required'),
+  issuer_pan: yup
+    .string()
+    .matches(/^([A-Z]){3}([P]){1}([A-Z]){1}([0-9]){4}([A-Z]){1}$/, 'Invalid PAN format')
+    .length(10, 'PAN must be exactly 10 characters')
+    .required('Issuer PAN is required'),
   issuer_tollfree_number: yup.string().required('Tollfree Number is required'),
   logo_url: yup.string().required('Logo URL is required')
 });
