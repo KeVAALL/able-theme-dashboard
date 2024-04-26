@@ -180,86 +180,89 @@ function ReactTable({
         />
       )}
 
-      <Table {...getTableProps()}>
-        <TableHead sx={{ borderTopWidth: top ? 2 : 1 }}>
-          {headerGroups.map((headerGroup) => (
-            <TableRow key={headerGroup} {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map((column) => (
-                <TableCell key={column} cell={column} {...column.getHeaderProps([{ className: column.className }])}>
-                  <HeaderSort column={column} sort />
-                </TableCell>
-              ))}
-
-              <TableCell width={150} sx={{ textAlign: 'right' }}>
-                <Box>
-                  <AnimateButton>
-                    <Button
-                      className="icon-only-button"
-                      variant="contained"
-                      color="success"
-                      startIcon={<Additem size={40} />}
-                      onClick={handleIROpenDialog}
-                    ></Button>
-                  </AnimateButton>
-                </Box>
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableHead>
-        <TableBody {...getTableBodyProps()}>
-          {page.length > 0 && data.length > 0 ? (
-            page.map((row) => {
-              prepareRow(row);
-              return (
-                <TableRow key={row} {...row.getRowProps()}>
-                  {row.cells.map((cell) => {
-                    return (
-                      <TableCell key={cell} {...cell.getCellProps([{ className: cell.column.className }])}>
-                        {/* {cell.render('Cell')} */}
-                        {cell.column.customCell ? <cell.column.customCell value={cell.value} /> : cell.render('Cell')}
-                      </TableCell>
-                    );
-                  })}
-                  <TableCell sx={{ textAlign: 'right' }}>
-                    <Edit2
-                      size={22}
-                      style={{ marginRight: 20, cursor: 'pointer' }}
-                      onClick={() => {
-                        console.log(row.original);
-                        schemeEditing(row.original);
-                        setActiveEditing();
-                        setTimeout(() => {
-                          handleIROpenDialog();
-                        }, 200);
-                      }}
-                    />
-
-                    <Trash
-                      size={22}
-                      style={{ cursor: 'pointer' }}
-                      onClick={async () => {
-                        setItem(row.original);
-                        setTimeout(() => {
-                          handleOpenDialog();
-                        }, 200);
-                        console.log(row.original);
-                      }}
-                    />
+      <Box sx={{ width: '100%', overflowX: 'auto', display: 'block' }}>
+        <Table {...getTableProps()}>
+          <TableHead sx={{ borderTopWidth: top ? 2 : 1 }}>
+            {headerGroups.map((headerGroup) => (
+              <TableRow key={headerGroup} {...headerGroup.getHeaderGroupProps()}>
+                {headerGroup.headers.map((column) => (
+                  <TableCell key={column} cell={column} {...column.getHeaderProps([{ className: column.className }])}>
+                    <HeaderSort column={column} sort />
                   </TableCell>
-                </TableRow>
-              );
-            })
-          ) : (
-            <EmptyTable msg="No Data" colSpan={columns.length + 1} />
-          )}
+                ))}
 
-          <TableRow>
-            <TableCell sx={{ p: 2 }} colSpan={7}>
-              <TablePagination gotoPage={gotoPage} rows={rows} setPageSize={setPageSize} pageIndex={pageIndex} pageSize={pageSize} />
-            </TableCell>
-          </TableRow>
-        </TableBody>
-      </Table>
+                <TableCell width={150} sx={{ textAlign: 'right' }}>
+                  <Box>
+                    <AnimateButton>
+                      <Button
+                        className="icon-only-button"
+                        variant="contained"
+                        color="success"
+                        startIcon={<Additem size={40} />}
+                        onClick={handleIROpenDialog}
+                      ></Button>
+                    </AnimateButton>
+                  </Box>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableHead>
+          <TableBody {...getTableBodyProps()}>
+            {page.length > 0 && data.length > 0 ? (
+              page.map((row) => {
+                prepareRow(row);
+                return (
+                  <TableRow key={row} {...row.getRowProps()}>
+                    {row.cells.map((cell) => {
+                      return (
+                        <TableCell key={cell} {...cell.getCellProps([{ className: cell.column.className }])}>
+                          {/* {cell.render('Cell')} */}
+                          {cell.column.customCell ? <cell.column.customCell value={cell.value} /> : cell.render('Cell')}
+                        </TableCell>
+                      );
+                    })}
+                    <TableCell sx={{ textAlign: 'right' }}>
+                      <Edit2
+                        size={22}
+                        style={{ marginRight: 20, cursor: 'pointer' }}
+                        onClick={() => {
+                          console.log(row.original);
+                          schemeEditing(row.original);
+                          setActiveEditing();
+                          setTimeout(() => {
+                            handleIROpenDialog();
+                          }, 200);
+                        }}
+                      />
+
+                      {Boolean(row.original.is_live) === true ? (
+                        <></>
+                      ) : (
+                        <Trash
+                          size={22}
+                          style={{ cursor: 'pointer' }}
+                          onClick={async () => {
+                            setItem(row.original);
+                            setTimeout(() => {
+                              handleOpenDialog();
+                            }, 200);
+                            console.log(row.original);
+                          }}
+                        />
+                      )}
+                    </TableCell>
+                  </TableRow>
+                );
+              })
+            ) : (
+              <EmptyTable msg="No Data" colSpan={columns.length + 1} />
+            )}
+          </TableBody>
+        </Table>
+      </Box>
+      <Box sx={{ p: 2, borderTop: '1px solid #dbe0e5a6' }}>
+        <TablePagination gotoPage={gotoPage} rows={rows} setPageSize={setPageSize} pageIndex={pageIndex} pageSize={pageSize} />
+      </Box>
     </Stack>
   );
 }

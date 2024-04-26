@@ -1,4 +1,5 @@
 import * as yup from 'yup';
+import { Chip } from '@mui/material';
 
 // Add form values
 const formAllValues = {
@@ -10,6 +11,17 @@ const validationSchema = yup.object({
   issuer_name: yup.string().required('Issuer Name is required')
 });
 // Table Columns
+const StatusCell = ({ value }) => {
+  // return value === 0 ? 'Not Active' : 'Active';
+  switch (value) {
+    case 0:
+      return <Chip color="error" label="Not Active" size="medium" variant="light" />;
+    case 1:
+      return <Chip color="success" label="Active" size="medium" variant="light" />;
+    default:
+      return <Chip color="info" label="None" size="medium" variant="light" />;
+  }
+};
 const VisibleColumn = [];
 const tableColumns = [
   {
@@ -31,6 +43,11 @@ const tableColumns = [
   {
     Header: 'Senior Female Citizen (%)',
     accessor: 'rate_of_interest_female_senior_citezen'
+  },
+  {
+    Header: 'Status',
+    accessor: 'is_active',
+    customCell: StatusCell
   }
 ];
 

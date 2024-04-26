@@ -76,11 +76,12 @@ export async function SaveInterestRate(values, fdId, selectedPayoutMethod, isAct
   }
 }
 
-export async function EditInterestRate(values, activeButton, clearFormValues, handleOpenDialog, setSchemeData, setActiveClose) {
+export async function EditInterestRate(values, activeButton, liveButton, clearFormValues, handleOpenDialog, setSchemeData, setActiveClose) {
   try {
     await axios.post('/product/savescheme', {
       ...values,
       is_active: toInteger(activeButton),
+      is_live: toInteger(liveButton),
       scheme_master_id: values.scheme_master_id,
       method_name: 'update'
     });

@@ -40,6 +40,7 @@ export function DialogForm({
 }) {
   // Active or not Button
   const [activeButton, setActiveButton] = useState(false);
+  const [liveButton, setLiveButton] = useState(false);
   // Form Data
   const [schemeFormValues, setSchemeFormValues] = useState();
   const clearFormValues = () => {
@@ -55,6 +56,7 @@ export function DialogForm({
     }
     if (schemeEditFormValues && isEditingScheme === true) {
       setActiveButton(schemeEditFormValues.is_active);
+      setLiveButton(schemeEditFormValues.is_live);
       setSchemeFormValues(schemeEditFormValues);
     }
   }, [schemeEditFormValues, isEditingScheme]);
@@ -72,23 +74,41 @@ export function DialogForm({
         <DialogTitle sx={{ p: 2 }}>
           <Stack sx={{ flexDirection: 'row', justifyContent: 'space-between' }}>
             <Typography>Add Tenure</Typography>
-            <Box>
-              <FormControlLabel
-                value="start"
-                control={
-                  <Switch
-                    color="primary"
-                    checked={activeButton}
-                    onChange={() => {
-                      setActiveButton(!activeButton);
-                    }}
-                  />
-                }
-                label="Active"
-                labelPlacement="start"
-                sx={{ mr: 1 }}
-              />
-            </Box>
+            <Stack flexDirection="row">
+              <Box>
+                <FormControlLabel
+                  value="start"
+                  control={
+                    <Switch
+                      color="primary"
+                      checked={activeButton}
+                      onChange={() => {
+                        setActiveButton(!activeButton);
+                      }}
+                    />
+                  }
+                  label="Active"
+                  labelPlacement="start"
+                />
+              </Box>
+              <Box>
+                <FormControlLabel
+                  value="live"
+                  control={
+                    <Switch
+                      color="primary"
+                      checked={liveButton}
+                      onChange={() => {
+                        setLiveButton(!liveButton);
+                      }}
+                    />
+                  }
+                  label="Live"
+                  labelPlacement="start"
+                  sx={{ mr: 1 }}
+                />
+              </Box>
+            </Stack>
           </Stack>
         </DialogTitle>
         <Formik
@@ -99,7 +119,7 @@ export function DialogForm({
             console.log(values);
             if (isEditingScheme) {
               console.log(activeButton);
-              EditInterestRate(values, activeButton, clearFormValues, handleOpenDialog, setSchemeData, setActiveClose);
+              EditInterestRate(values, activeButton, liveButton, clearFormValues, handleOpenDialog, setSchemeData, setActiveClose);
             } else {
               SaveInterestRate(values, fdId, selectedPayoutMethod, isActive, clearFormValues, handleOpenDialog, setSchemeData);
             }
