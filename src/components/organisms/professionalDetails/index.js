@@ -11,58 +11,35 @@ const ProfessionalDetails = () => {
 
   return (
     <>
-      {' '}
-      {/* this is for the intro */}
-      <Typography sx={{ color: '#5E718D' }} variant="p">
-        Enter your occupation, income and source of income
-      </Typography>
-      <Grid container spacing={2} sx={{ marginTop: '20px' }}>
-        <Grid item xs={12} sm={6} md={4} lg={4} style={{ display: 'grid', gap: '10px' }}>
-          <Typography sx={{ fontWeight: '600' }} variant="p">
-            Occupation
-          </Typography>
-
+      <Grid container spacing={2}>
+        <Grid item xs={12} sm={6} md={4} lg={4}>
           <CustomAutoComplete
-            // options={[]}
             options={autocompleteData}
             optionName="product_type"
-            // handleChange={() => {}}
             handleChange={(event) => {
               console.log(event.target.value);
             }}
-            label="Select your occupation"
+            label="Occupation"
           />
         </Grid>
-        <Grid item xs={12} sm={6} md={4} lg={4} style={{ display: 'grid', gap: '10px' }}>
-          <Typography sx={{ fontWeight: '600' }} variant="p">
-            Annual Income
-          </Typography>
-
+        <Grid item xs={12} sm={6} md={4} lg={4}>
           <CustomAutoComplete
-            // options={[]}
             options={autocompleteData}
             optionName="product_type"
-            // handleChange={() => {}}
             handleChange={(event) => {
               console.log(event.target.value);
             }}
-            label="Select your annual income"
+            label=" Annual Income"
           />
         </Grid>
-        <Grid item xs={12} sm={6} md={4} lg={4} style={{ display: 'grid', gap: '10px' }}>
-          <Typography sx={{ fontWeight: '600' }} variant="p">
-            Source of Income
-          </Typography>
-
+        <Grid item xs={12} sm={6} md={4} lg={4}>
           <CustomAutoComplete
-            // options={[]}
             options={autocompleteData}
             optionName="product_type"
-            // handleChange={() => {}}
             handleChange={(event) => {
               console.log(event.target.value);
             }}
-            label="Select your source of income"
+            label="Source of Income"
           />
         </Grid>
       </Grid>

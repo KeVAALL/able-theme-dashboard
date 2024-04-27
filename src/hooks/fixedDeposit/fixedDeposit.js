@@ -95,11 +95,22 @@ export async function EditProduct(
   clearFormValues,
   checkedCumulative,
   checkedNonCumulative,
+  selectedIssuerID,
   setActiveClose
 ) {
+  console.log({
+    ...values,
+    issuer_id: typeof selectedIssuerID === 'string' ? values.issuer_id : selectedIssuerID,
+    is_active: toInteger(isFDActive),
+    method_name: 'update',
+    is_cumulative: toInteger(!checkedCumulative ? false : checkedCumulative),
+    is_non_cumulative: toInteger(!checkedNonCumulative ? false : checkedNonCumulative),
+    user_id: 2
+  });
   try {
     await axios.post('/product/saveproduct', {
       ...values,
+      issuer_id: typeof selectedIssuerID === 'string' ? values.issuer_id : selectedIssuerID,
       is_active: toInteger(isFDActive),
       method_name: 'update',
       is_cumulative: toInteger(!checkedCumulative ? false : checkedCumulative),

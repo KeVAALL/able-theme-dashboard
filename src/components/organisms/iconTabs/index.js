@@ -1,20 +1,23 @@
+/* eslint-disable react/prop-types */
 import PropTypes from 'prop-types';
 import { useState } from 'react';
 
 // material-ui
-import { Box, Tab, Tabs, Typography } from '@mui/material';
+import { Box, Tab, Tabs, Divider } from '@mui/material';
 
 // project-imports
 import MainCard from 'components/molecules/mainCard';
 
 // assets
-import { Book, Briefcase, Home, Image, LocationTick, MedalStar, Personalcard, Profile, Profile2User, ProfileTick } from 'iconsax-react';
+import { Briefcase, LocationTick, MedalStar, Personalcard, ProfileTick } from 'iconsax-react';
 import PersonalInfo from '../personalInfo';
 import AddressDetails from '../addressDetails';
 import ProfessionalDetails from '../professionalDetails';
 import Nomination from '../nomination';
 import Declaration from '../declaration';
-import { borderRadius } from '@mui/system';
+
+// css
+import './index.css';
 
 // ==============================|| TAB PANEL ||============================== //
 
@@ -43,73 +46,94 @@ function a11yProps(index) {
 
 // ==============================|| TABS - ICON ||============================== //
 
-export default function IconTabs() {
+export default function IconTabs(props) {
   const [value, setValue] = useState(0);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
-  const iconTabCodeString = `// IconTabs.tsx
-<Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-  <Tab label="Profile" icon={<Profile />} iconPosition="start" {...a11yProps(0)} />
-  <Tab label="Followers" icon={<Book />} iconPosition="start" {...a11yProps(1)} />
-  <Tab label="Friends" icon={<Profile2User />} iconPosition="start" {...a11yProps(2)} />
-  <Tab label="Gallery" icon={<Image />} iconPosition="start" {...a11yProps(3)} />
-</Tabs>
-<TabPanel value={value} index={0}>
-  <Typography variant="h6">
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque non libero dignissim, viverra augue eu, semper ligula. Mauris
-    purus sem, sagittis eu mauris et, viverra lobortis urna.
-  </Typography>
-</TabPanel>
-<TabPanel value={value} index={1}>
-  <Typography variant="h6">
-    Suspendisse sed lectus ac nunc rhoncus scelerisque. Integer vitae fringilla leo. Aliquam tincidunt et turpis non mattis. Ut sed
-    semper orci, sed facilisis mauris. Suspendisse blandit velit sit amet velit porta aliquet.
-  </Typography>
-</TabPanel>
-<TabPanel value={value} index={2}>
-  <Typography variant="h6">
-    Nam egestas sollicitudin nisl, sit amet aliquam risus pharetra ac. Donec ac lacinia orci. Phasellus ut enim eu ligula placerat
-    cursus in nec est.
-  </Typography>
-</TabPanel>
-<TabPanel value={value} index={3}>
-  <Typography variant="h6">
-    Suspendisse sed lectus ac nunc rhoncus scelerisque. Integer vitae fringilla leo. Aliquam tincidunt et turpis non mattis. Ut sed
-    semper orci, sed facilisis mauris. Suspendisse blandit velit sit amet velit porta aliquet.
-  </Typography>
-</TabPanel>`;
+  const tabStyle = { borderTopLeftRadius: 0, borderTopRightRadius: 0, borderRadius: 1.5, overflow: 'visible' };
 
   return (
-    <MainCard codeString={iconTabCodeString} id="__main_card" sx={{ borderRadius: '0' }}>
-      <Box sx={{ width: '100%' }}>
-        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-          <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-            <Tab label="Personal Info" icon={<Personalcard />} iconPosition="start" {...a11yProps(0)} />
-            <Tab label="Address Details" icon={<LocationTick />} iconPosition="start" {...a11yProps(1)} />
-            <Tab label="Professional Details" icon={<Briefcase />} iconPosition="start" {...a11yProps(2)} />
-            <Tab label="Add Nomination" icon={<MedalStar />} iconPosition="start" {...a11yProps(3)} />
-            <Tab label="Declaration" icon={<ProfileTick />} iconPosition="start" {...a11yProps(3)} />
-          </Tabs>
-        </Box>
-        <TabPanel value={value} index={0}>
-          <PersonalInfo />
-        </TabPanel>
-        <TabPanel value={value} index={1}>
-          <AddressDetails />
-        </TabPanel>
-        <TabPanel value={value} index={2}>
-          <ProfessionalDetails />
-        </TabPanel>
-        <TabPanel value={value} index={3}>
-          <Nomination />
-        </TabPanel>
-        <TabPanel value={value} index={4}>
-          <Declaration />
-        </TabPanel>
+    <Box sx={{ width: '100%' }}>
+      <Divider />
+      <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+        <Tabs
+          className="tab_main"
+          variant="scrollable"
+          scrollButtons
+          allowScrollButtonsMobile
+          value={value}
+          onChange={handleChange}
+          aria-label="scrollable force tabs example"
+        >
+          <Tab label="Personal Info" icon={<Personalcard />} iconPosition="start" {...a11yProps(0)} />
+          <Tab label="Address Details" icon={<LocationTick />} iconPosition="start" {...a11yProps(1)} />
+          <Tab label="Professional Details" icon={<Briefcase />} iconPosition="start" {...a11yProps(2)} />
+          <Tab label="Add Nomination" icon={<MedalStar />} iconPosition="start" {...a11yProps(3)} />
+          <Tab label="Declaration" icon={<ProfileTick />} iconPosition="start" {...a11yProps(3)} />
+        </Tabs>
       </Box>
-    </MainCard>
+      <TabPanel className="panel" value={value} index={0}>
+        <MainCard sx={tabStyle}>
+          <PersonalInfo values={props.values} />
+        </MainCard>
+      </TabPanel>
+      <TabPanel className="panel" value={value} index={1}>
+        <MainCard sx={tabStyle}>
+          <AddressDetails />
+        </MainCard>
+      </TabPanel>
+      <TabPanel className="panel" value={value} index={2}>
+        <MainCard sx={tabStyle}>
+          <ProfessionalDetails />
+        </MainCard>
+      </TabPanel>
+      <TabPanel className="panel" value={value} index={3}>
+        <MainCard sx={tabStyle}>
+          <Nomination />
+        </MainCard>
+      </TabPanel>
+      <TabPanel className="panel" value={value} index={4}>
+        <MainCard sx={tabStyle}>
+          <Declaration />
+        </MainCard>
+      </TabPanel>
+    </Box>
   );
 }
+
+// <MainCard codeString={iconTabCodeString} id="__main_card" sx={{ borderRadius: '0' }}>
+// </MainCard>
+// const iconTabCodeString = `// IconTabs.tsx
+// <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
+//   <Tab label="Profile" icon={<Profile />} iconPosition="start" {...a11yProps(0)} />
+//   <Tab label="Followers" icon={<Book />} iconPosition="start" {...a11yProps(1)} />
+//   <Tab label="Friends" icon={<Profile2User />} iconPosition="start" {...a11yProps(2)} />
+//   <Tab label="Gallery" icon={<Image />} iconPosition="start" {...a11yProps(3)} />
+// </Tabs>
+// <TabPanel value={value} index={0}>
+//   <Typography variant="h6">
+//     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque non libero dignissim, viverra augue eu, semper ligula. Mauris
+//     purus sem, sagittis eu mauris et, viverra lobortis urna.
+//   </Typography>
+// </TabPanel>
+// <TabPanel value={value} index={1}>
+//   <Typography variant="h6">
+//     Suspendisse sed lectus ac nunc rhoncus scelerisque. Integer vitae fringilla leo. Aliquam tincidunt et turpis non mattis. Ut sed
+//     semper orci, sed facilisis mauris. Suspendisse blandit velit sit amet velit porta aliquet.
+//   </Typography>
+// </TabPanel>
+// <TabPanel value={value} index={2}>
+//   <Typography variant="h6">
+//     Nam egestas sollicitudin nisl, sit amet aliquam risus pharetra ac. Donec ac lacinia orci. Phasellus ut enim eu ligula placerat
+//     cursus in nec est.
+//   </Typography>
+// </TabPanel>
+// <TabPanel value={value} index={3}>
+//   <Typography variant="h6">
+//     Suspendisse sed lectus ac nunc rhoncus scelerisque. Integer vitae fringilla leo. Aliquam tincidunt et turpis non mattis. Ut sed
+//     semper orci, sed facilisis mauris. Suspendisse blandit velit sit amet velit porta aliquet.
+//   </Typography>
+// </TabPanel>`;

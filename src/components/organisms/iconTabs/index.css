@@ -1,0 +1,6 @@
+.panel > div {
+  padding-top: 0px !important;
+}
+.tab_main .MuiTabScrollButton-root {
+  width: 20px !important;
+}

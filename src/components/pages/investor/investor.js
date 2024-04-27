@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 
 // material-ui
-import { Divider, Box, Card, Grid, CardContent, TableCell, Button, Stack, CardHeader } from '@mui/material';
+import { Divider, Box, Card, Grid, CardContent, TableCell, Button, Stack, CardHeader, TextField } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { Trash, Edit2, FilterSearch, DiscountShape, Additem, SearchNormal1 } from 'iconsax-react';
 import { useQuery } from 'react-query';
@@ -15,7 +15,7 @@ import { Formik } from 'formik';
 import * as yup from 'yup';
 import Loader from 'components/atoms/loader/Loader';
 import { SubmitButton } from 'components/atoms/button/button';
-import CustomTextField, { CustomAutoComplete } from 'utils/textfield';
+import CustomTextField, { CustomAutoComplete, NestedCustomTextField } from 'utils/textfield';
 
 // assets
 import {
@@ -27,7 +27,15 @@ import {
   tableColumns,
   VisibleColumn
 } from 'constant/investorValidation';
-import { GetInvestorData, GetOneInvestor, SaveInvestor, EditInvestor, DeleteOneInvestor, GetIfa } from 'hooks/investor/investor';
+import {
+  GetInvestorData,
+  GetOneInvestor,
+  SaveInvestor,
+  EditInvestor,
+  DeleteOneInvestor,
+  GetEditOneInvestor,
+  GetIfa
+} from 'hooks/investor/investor';
 import AnimateButton from 'helpers/@extended/AnimateButton';
 import IconTabs from 'components/organisms/iconTabs';
 
@@ -40,6 +48,7 @@ function Investor() {
   // Main data
   const [investorData, setInvestorData] = useState([]);
   const [ifaData, setIfaData] = useState([]);
+  const [loading, setLoading] = useState(true);
   const genderData = [
     { id: 1, gender_type: 'Male' },
     { id: 2, gender_type: 'Female' },
@@ -56,6 +65,8 @@ function Investor() {
   const [isEditing, setIsEditing] = useState(false);
   const [isInvestorActive, setInvestorActive] = useState();
   const setEditing = (value) => {
+    console.log(value);
+
     setFormValues(value);
   };
   const setActiveEditing = () => {
@@ -93,6 +104,7 @@ function Investor() {
     queryFn: GetInvestorData,
     onSuccess: (data) => {
       setInvestorData(data);
+      setLoading(false);
     }
   });
   const {
@@ -110,7 +122,7 @@ function Investor() {
     }
   });
 
-  if (isPending) return <Loader />;
+  if (loading) return <Loader />;
 
   return (
     <>
@@ -173,10 +185,10 @@ function Investor() {
                 <CardContent>
                   <Grid container spacing={3}>
                     <Grid item xs={4}>
-                      <CustomTextField
+                      <NestedCustomTextField
                         label="Investor Name"
                         name="investor_name"
-                        values={values}
+                        values={values.investor}
                         type="text"
                         onChange={handleChange}
                         onBlur={handleBlur}
@@ -185,10 +197,10 @@ function Investor() {
                       />
                     </Grid>
                     <Grid item xs={4}>
-                      <CustomTextField
+                      <NestedCustomTextField
                         label="Pan Number"
                         name="pan_no"
-                        values={values}
+                        values={values.investor}
                         type="string"
                         onChange={handleChange}
                         onBlur={handleBlur}
@@ -197,10 +209,10 @@ function Investor() {
                       />
                     </Grid>
                     <Grid item xs={4}>
-                      <CustomTextField
-                        label="Mobile NUmber"
+                      <NestedCustomTextField
+                        label="Mobile Number"
                         name="mobile_no"
-                        values={values}
+                        values={values.investor}
                         type="number"
                         onChange={handleChange}
                         onBlur={handleBlur}
@@ -209,10 +221,10 @@ function Investor() {
                       />
                     </Grid>
                     <Grid item xs={4}>
-                      <CustomTextField
+                      <NestedCustomTextField
                         label="Investor type"
                         name="investor_type"
-                        values={values}
+                        values={values.investor}
                         type="text"
                         onChange={handleChange}
                         onBlur={handleBlur}
@@ -222,10 +234,8 @@ function Investor() {
                     </Grid>
                     <Grid item xs={4}>
                       <CustomAutoComplete
-                        // options={[]}
                         options={genderData}
                         optionName="gender_type"
-                        // handleChange={() => {}}
                         handleChange={(event) => {
                           console.log(event.target.value);
                         }}
@@ -237,9 +247,7 @@ function Investor() {
 
                 {/* Add the tab here */}
                 <Grid item xs={12} lg={6}>
-                  <Stack spacing={1}>
-                    <IconTabs />
-                  </Stack>
+                  <IconTabs values={values} />
                 </Grid>
               </Card>
             </Box>
@@ -257,8 +265,10 @@ function Investor() {
         >
           {/* here i will add the filter */}
           <Formik
-            initialValues={formValues}
-            validationSchema={validationSchema}
+            initialValues={{
+              fd_name: ''
+            }}
+            // validationSchema={formValueFields}
             onSubmit={async (values, { resetForm }) => {
               const searchResult = await GetSchemeSearch(formValues.fd_id, selectedPayoutMethod);
               if (searchResult) {
@@ -276,37 +286,6 @@ function Investor() {
                 }}
                 sx={{ width: '100%' }}
               >
-                {/* <Card
-                  sx={{
-                    position: 'relative',
-                    border: '1px solid',
-                    borderRadius: 1.5,
-                    borderColor: theme.palette.divider,
-                    overflow: 'visible'
-                  }}
-                > */}
-                {/* <Stack direction="row" alignItems="center" justifyContent="space-between">
-                    <CardHeader sx={headerSX} titleTypographyProps={{ variant: 'subtitle1' }} title="Interest Rate" />
-                    <Stack direction="row" alignItems="center" spacing={1.5} paddingRight={2.5}>
-                      <Box>
-                        <AnimateButton>
-                          <Button
-                            variant="outlined"
-                            color="secondary"
-                            type="button"
-                            onClick={() => {
-                              isNotEditingInterestRate();
-                            }}
-                          >
-                            Cancel
-                          </Button>
-                        </AnimateButton>
-                      </Box>
-                    </Stack>
-                  </Stack> */}
-
-                {/* <Divider /> */}
-
                 <CardContent>
                   <Grid container spacing={3}>
                     <Grid item xs={3} style={{ paddingLeft: 0, paddingTop: 0 }}>
@@ -342,7 +321,6 @@ function Investor() {
                     </Grid>
                   </Grid>
                 </CardContent>
-                {/* </Card> */}
               </Box>
             )}
           </Formik>
@@ -358,6 +336,7 @@ function Investor() {
             setEditing={setEditing}
             getOneItem={GetOneInvestor}
             deleteOneItem={DeleteOneInvestor}
+            getEditData={GetEditOneInvestor}
             setSearchData={setSearchData}
             tableDataRefetch={InvestorTableDataRefetch}
             setActiveEditing={setActiveEditing}
@@ -370,3 +349,40 @@ function Investor() {
 }
 
 export default Investor;
+
+{
+  /* <Card
+                  sx={{
+                    position: 'relative',
+                    border: '1px solid',
+                    borderRadius: 1.5,
+                    borderColor: theme.palette.divider,
+                    overflow: 'visible'
+                  }}
+                > */
+}
+{
+  /* <Stack direction="row" alignItems="center" justifyContent="space-between">
+                    <CardHeader sx={headerSX} titleTypographyProps={{ variant: 'subtitle1' }} title="Interest Rate" />
+                    <Stack direction="row" alignItems="center" spacing={1.5} paddingRight={2.5}>
+                      <Box>
+                        <AnimateButton>
+                          <Button
+                            variant="outlined"
+                            color="secondary"
+                            type="button"
+                            onClick={() => {
+                              isNotEditingInterestRate();
+                            }}
+                          >
+                            Cancel
+                          </Button>
+                        </AnimateButton>
+                      </Box>
+                    </Stack>
+                  </Stack> */
+}
+
+{
+  /* <Divider /> */
+}

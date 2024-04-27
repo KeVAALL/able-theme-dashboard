@@ -47,6 +47,7 @@ function FixDeposit() {
   const [selectedIssuerID, setSelectedIssuerID] = useState(null);
   const [isFDActive, setFDActive] = useState();
   const setEditing = (value) => {
+    console.log(value);
     setFormValues(value);
     setCheckedCumulative(Boolean(value.is_cumulative));
     setCheckedNonCumulative(Boolean(value.is_non_cumulative));
@@ -162,6 +163,7 @@ function FixDeposit() {
                 clearFormValues,
                 checkedCumulative,
                 checkedNonCumulative,
+                selectedIssuerID,
                 setActiveClose
               );
             }
@@ -293,7 +295,7 @@ function FixDeposit() {
                     <Grid item xs={4}>
                       <CustomAutoComplete
                         options={activeIssuers}
-                        value={selectedIssuerID}
+                        defaultValue={selectedIssuerID}
                         handleChange={handleOnIssuerChange}
                         optionName="issuer_name"
                         label="Issuers"

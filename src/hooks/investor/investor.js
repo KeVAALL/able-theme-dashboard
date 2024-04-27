@@ -24,7 +24,8 @@ export async function GetInvestorData() {
 export async function GetOneInvestor(values, setSearchData) {
   try {
     const response = await axios.post('investor/getinvestor', {
-      method_name: 'getone',
+      // method_name: 'getone',
+      method_name: 'getdetails',
       ...values
     });
     setSearchData(response.data.data);
@@ -104,6 +105,28 @@ export async function EditInvestor(values, isInvestorActive, InvestorTableDataRe
         horizontal: 'right'
       }
     });
+  }
+}
+export async function GetEditOneInvestor(setEditing) {
+  try {
+    const response = await axios.post('investor/getinvestor', {
+      method_name: 'getdetails',
+      investor_id: 99
+    });
+    setEditing(response.data.data);
+    return response.data.data;
+  } catch (error) {
+    dispatch(
+      openSnackbar({
+        open: true,
+        anchorOrigin: { vertical: 'top', horizontal: 'right' },
+        message: error.message,
+        variant: 'alert',
+        alert: {
+          color: 'error'
+        }
+      })
+    );
   }
 }
 export async function DeleteOneInvestor(values) {

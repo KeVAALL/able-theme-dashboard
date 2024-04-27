@@ -44,6 +44,7 @@ function ReactTable({
   schemeEditing,
   getOneItem,
   deleteOneItem,
+  getEditData,
   setSearchData,
   tableDataRefetch,
   setActiveEditing,
@@ -232,9 +233,18 @@ function ReactTable({
                           <Edit2
                             size={22}
                             style={{ cursor: 'pointer' }}
-                            onClick={() => {
-                              changeTableVisibility();
-                              setEditing(row.original);
+                            onClick={async () => {
+                              if (getEditData) {
+                                console.log('Big');
+                                const result = await getEditData(setEditing);
+                                changeTableVisibility();
+                                console.log(result);
+                              } else {
+                                console.log('Small');
+                                console.log(row.original);
+                                setEditing(row.original);
+                                changeTableVisibility();
+                              }
                               setActiveEditing();
                             }}
                           />
@@ -302,6 +312,7 @@ const MultiTable = ({
   schemeEditing,
   getOneItem,
   deleteOneItem,
+  getEditData,
   setSearchData,
   tableDataRefetch,
   setActiveEditing,
@@ -323,6 +334,7 @@ const MultiTable = ({
           schemeEditing={schemeEditing}
           getOneItem={getOneItem}
           deleteOneItem={deleteOneItem}
+          getEditData={getEditData}
           setSearchData={setSearchData}
           tableDataRefetch={tableDataRefetch}
           setActiveEditing={setActiveEditing}
@@ -346,6 +358,7 @@ MultiTable.propTypes = {
   schemeEditing: PropTypes.any,
   getOneItem: PropTypes.any,
   deleteOneItem: PropTypes.any,
+  getEditData: PropTypes.any,
   setSearchData: PropTypes.any,
   tableDataRefetch: PropTypes.any,
   setActiveEditing: PropTypes.any,

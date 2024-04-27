@@ -3,8 +3,43 @@ import { Autocomplete, Checkbox, FormControlLabel, TextField } from '@mui/materi
 import React from 'react';
 import './custom.css';
 
-export const CustomTextField = (props) => {
+export const NestedCustomTextField = (props) => {
   // console.log(props.value, props.name);
+  console.log(props.values);
+  // console.log(props.name);
+  // console.log(props.values[props.name]);
+  return (
+    <TextField
+      fullWidth
+      className="common-textfield"
+      size="small"
+      label={props.label}
+      name={props.name}
+      onChange={props.handleChange}
+      onBlur={props.handleBlur}
+      value={props.values[props.name]}
+      type={props.type}
+      multiline={props.multiline ? true : false}
+      autoComplete={!props.autocomplete ? 'off' : 'on'}
+      error={props.touched[props.name] && Boolean(props.errors[props.name])}
+      placeholder={props.touched[props.name] && props.errors[props.name]}
+      helperText={props.touched[props.name] && props.errors[props.name]}
+      FormHelperTextProps={{
+        style: {
+          marginLeft: 0
+        }
+      }}
+      {...props}
+      //   InputProps={{
+      //     disableUnderline: true, // <== added this
+      //     startAdornment: props.startAdornment && props.startAdornment
+      //     // step: "0.1",
+      //   }}
+    />
+  );
+};
+
+export const CustomTextField = (props) => {
   return (
     <TextField
       fullWidth
@@ -37,6 +72,7 @@ export const CustomTextField = (props) => {
 };
 
 export const CustomAutoComplete = (props) => {
+  console.log(props.defaultValue);
   return (
     <Autocomplete
       fullWidth
@@ -58,11 +94,13 @@ export const CustomAutoComplete = (props) => {
       }}
       id="basic-autocomplete-label"
       options={props.options}
-      // value={props.value}
+      // defaultValue={}
+      value={(props.defaultValue && props.options.find((el) => el[props.optionName] === props.defaultValue)) || props.options[0]}
       onChange={(e) => {
         console.log(e.target.outerText);
         props.handleChange(e);
       }}
+      // getOptionSelected
       getOptionLabel={(option) => option[props.optionName]} // Assuming 'product_type' is the label you want to display
       renderInput={(params) => <TextField {...params} label={props.label} />}
     />
