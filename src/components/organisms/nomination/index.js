@@ -5,7 +5,8 @@ import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 
-const Nomination = () => {
+const Nomination = (props) => {
+  console.log(props.values);
   const [showSecondNominiee, setShowSecondNominiee] = useState(false);
   const [value, setValue] = useState(new Date());
   const autocompleteData = [
@@ -28,8 +29,8 @@ const Nomination = () => {
             <Grid item xs={12} sm={6} md={6} style={{ display: 'grid', gap: '10px' }}>
               <CustomTextField
                 label="Full Name"
-                name="pan_no"
-                values={''}
+                name="full_name"
+                values={props.values.nominee[0]}
                 type="string"
                 onChange={() => {}}
                 onBlur={() => {}}
@@ -49,11 +50,11 @@ const Nomination = () => {
             </Grid>
             <Grid item xs={12} sm={6} md={6} style={{ display: 'grid', gap: '10px' }}>
               <Grid container spacing={1}>
-                <Grid item xs={6} sm={6} md={6} style={{ display: 'grid', gap: '10px' }}>
+                <Grid item xs={6} sm={6} md={12} style={{ display: 'grid', gap: '10px' }}>
                   <CustomTextField
                     label="PAN of Nominee"
-                    name="pan_no"
-                    values={''}
+                    name="pan"
+                    values={props.values.nominee[0]}
                     type="string"
                     onChange={() => {}}
                     onBlur={() => {}}
@@ -61,7 +62,7 @@ const Nomination = () => {
                     errors={() => {}}
                   />
                 </Grid>
-                <Grid item xs={6} sm={6} md={6} style={{ display: 'grid', gap: '10px' }}>
+                {/* <Grid item xs={6} sm={6} md={6} style={{ display: 'grid', gap: '10px' }}>
                   <CustomTextField
                     label="Percent Share (%)"
                     name="pan_no"
@@ -72,13 +73,13 @@ const Nomination = () => {
                     touched={() => {}}
                     errors={() => {}}
                   />
-                </Grid>
+                </Grid> */}
               </Grid>
             </Grid>
             <Grid item xs={12} sm={6} md={6} style={{ display: 'grid', gap: '10px' }}>
               <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <DesktopDatePicker
-                  label="Date Desktop"
+                  label="DOB"
                   inputFormat="dd/MM/yyyy"
                   value={value}
                   onChange={handleChange}

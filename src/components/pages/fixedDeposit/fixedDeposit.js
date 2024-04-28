@@ -297,6 +297,7 @@ function FixDeposit() {
                         options={activeIssuers}
                         defaultValue={selectedIssuerID}
                         handleChange={handleOnIssuerChange}
+                        // setSelected={setSelectedIssuerID}
                         optionName="issuer_name"
                         label="Issuers"
                       />

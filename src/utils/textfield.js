@@ -5,9 +5,11 @@ import './custom.css';
 
 export const NestedCustomTextField = (props) => {
   // console.log(props.value, props.name);
-  console.log(props.values);
+  // console.log(props.values);
   // console.log(props.name);
+  // console.log(props.errors);
   // console.log(props.values[props.name]);
+  console.log(props.touched);
   return (
     <TextField
       fullWidth
@@ -40,6 +42,9 @@ export const NestedCustomTextField = (props) => {
 };
 
 export const CustomTextField = (props) => {
+  // console.log(props.values);
+  // console.log(props.name);
+
   return (
     <TextField
       fullWidth
@@ -73,6 +78,15 @@ export const CustomTextField = (props) => {
 
 export const CustomAutoComplete = (props) => {
   console.log(props.defaultValue);
+
+  // const handleOptionChange = (event, optionName, setSelected) => {
+  //   props.options.forEach((el) => {
+  //     if (el[optionName] === event.target.outerText) {
+  //       setSelected(el.id);
+  //     }
+  //   });
+  // };
+
   return (
     <Autocomplete
       fullWidth
@@ -94,12 +108,12 @@ export const CustomAutoComplete = (props) => {
       }}
       id="basic-autocomplete-label"
       options={props.options}
-      // defaultValue={}
-      value={(props.defaultValue && props.options.find((el) => el[props.optionName] === props.defaultValue)) || props.options[0]}
+      // value={}
+      defaultValue={(props.defaultValue && props.options.find((el) => el[props.optionName] === props.defaultValue)) || props.options[0]}
       onChange={(e) => {
-        console.log(e.target.outerText);
         props.handleChange(e);
       }}
+      // onChange={(e) => handleOptionChange(e, props.optionName, props.setSelected)}
       // getOptionSelected
       getOptionLabel={(option) => option[props.optionName]} // Assuming 'product_type' is the label you want to display
       renderInput={(params) => <TextField {...params} label={props.label} />}

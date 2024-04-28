@@ -237,7 +237,9 @@ function ReactTable({
                               if (getEditData) {
                                 console.log('Big');
                                 const result = await getEditData(setEditing);
-                                changeTableVisibility();
+                                setTimeout(() => {
+                                  changeTableVisibility();
+                                }, 200);
                                 console.log(result);
                               } else {
                                 console.log('Small');

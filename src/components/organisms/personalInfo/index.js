@@ -6,18 +6,14 @@ import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 
-const CustomChip = () => {
-  const [personalTermCondition, setPersonalTermCondition] = useState(false);
+import { residency, marital_status } from 'constant/investorValidation';
+
+const CustomChip = (props) => {
+  console.log(props.values);
   // const [value, setValue] = useState(new Date('2014-08-18T21:11:54'));
   const [value, setValue] = useState(new Date());
-  const residency = [
-    { id: 1, status: 'Indian Resident' },
-    { id: 2, status: 'Non-Indian Resident (NRI)' }
-  ];
-  const marital_status = [
-    { id: 1, status: 'Indian Resident' },
-    { id: 2, status: 'Non-Indian Resident (NRI)' }
-  ];
+
+  // Autocomplete field state
 
   const handleChange = (newValue) => {
     setValue(newValue);
@@ -29,10 +25,10 @@ const CustomChip = () => {
         <Grid item xs={12} md={4}>
           <CustomAutoComplete
             options={residency}
+            defaultValue={props.selectedResidenceID}
+            handleChange={props.handleOnResidenceChange}
+            // setSelected={props.setSelectedResidenceID}
             optionName="status"
-            handleChange={(event) => {
-              console.log(event.target.value);
-            }}
             label="Resident Status"
           />
         </Grid>
@@ -40,10 +36,10 @@ const CustomChip = () => {
         <Grid item xs={12} md={4}>
           <CustomAutoComplete
             options={marital_status}
+            defaultValue={props.selectedMarital}
+            handleChange={props.handleOnMaritalChange}
+            // setSelected={props.setSelectedMarital}
             optionName="status"
-            handleChange={(event) => {
-              console.log(event.target.value);
-            }}
             label="Marital Status"
           />
         </Grid>

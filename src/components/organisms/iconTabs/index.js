@@ -77,22 +77,30 @@ export default function IconTabs(props) {
       </Box>
       <TabPanel className="panel" value={value} index={0}>
         <MainCard sx={tabStyle}>
-          <PersonalInfo values={props.values} />
+          <PersonalInfo
+            values={props.values}
+            selectedResidenceID={props.selectedResidenceID}
+            setSelectedResidenceID={props.setSelectedResidenceID}
+            handleOnResidenceChange={props.handleOnResidenceChange}
+            selectedMarital={props.selectedMarital}
+            setSelectedMarital={props.setSelectedMarital}
+            handleOnMaritalChange={props.handleOnMaritalChange}
+          />
         </MainCard>
       </TabPanel>
       <TabPanel className="panel" value={value} index={1}>
         <MainCard sx={tabStyle}>
-          <AddressDetails />
+          <AddressDetails values={props.values} />
         </MainCard>
       </TabPanel>
       <TabPanel className="panel" value={value} index={2}>
         <MainCard sx={tabStyle}>
-          <ProfessionalDetails />
+          <ProfessionalDetails selectedOccupation={props.selectedOccupation} handleOnOccupationChange={props.handleOnOccupationChange} />
         </MainCard>
       </TabPanel>
       <TabPanel className="panel" value={value} index={3}>
         <MainCard sx={tabStyle}>
-          <Nomination />
+          <Nomination values={props.values} />
         </MainCard>
       </TabPanel>
       <TabPanel className="panel" value={value} index={4}>

@@ -2,7 +2,8 @@ import { Checkbox, Chip, Grid, Typography } from '@mui/material';
 import React, { useState } from 'react';
 import CustomTextField from 'utils/textfield';
 
-const AddressDetails = () => {
+const AddressDetails = (props) => {
+  // is_permanent_address_correspond
   const [sameAddress, setSameAddress] = useState(false);
   const handleCheckboxChange = (event) => {
     setSameAddress(event.target.checked);
@@ -18,8 +19,8 @@ const AddressDetails = () => {
           <Grid item sm={6} xs={12} style={{ display: 'grid', gap: '8px' }}>
             <CustomTextField
               label="Address Line 1"
-              name="pan_no"
-              values={''}
+              name="address_line_1"
+              values={props.values.investor_address}
               type="string"
               onChange={() => {}}
               onBlur={() => {}}
@@ -30,8 +31,8 @@ const AddressDetails = () => {
           <Grid item sm={6} xs={12} style={{ display: 'grid', gap: '8px' }}>
             <CustomTextField
               label="Address Line 2"
-              name="pan_no"
-              values={''}
+              name="address_line_2"
+              values={props.values.investor_address}
               type="string"
               onChange={() => {}}
               onBlur={() => {}}
@@ -44,8 +45,8 @@ const AddressDetails = () => {
             <Grid item xs={6} sm={6} md={6} style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
               <CustomTextField
                 label="Pincode"
-                name="pan_no"
-                values={''}
+                name="pincode"
+                values={props.values.investor_address}
                 type="string"
                 onChange={() => {}}
                 onBlur={() => {}}
@@ -56,8 +57,8 @@ const AddressDetails = () => {
             <Grid item xs={6} sm={6} md={6} style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
               <CustomTextField
                 label="City"
-                name="pan_no"
-                values={''}
+                name="city"
+                values={props.values.investor_address}
                 type="string"
                 onChange={() => {}}
                 onBlur={() => {}}
@@ -70,8 +71,8 @@ const AddressDetails = () => {
             <Grid item xs={6} sm={6} md={6} style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
               <CustomTextField
                 label="Pincode"
-                name="pan_no"
-                values={''}
+                name="pincode"
+                values={props.values.investor_address}
                 type="string"
                 onChange={() => {}}
                 onBlur={() => {}}
@@ -82,8 +83,8 @@ const AddressDetails = () => {
             <Grid item xs={6} sm={6} md={6} style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
               <CustomTextField
                 label="City"
-                name="pan_no"
-                values={''}
+                name="city"
+                values={props.values.investor_address}
                 type="string"
                 onChange={() => {}}
                 onBlur={() => {}}
@@ -111,8 +112,8 @@ const AddressDetails = () => {
             <Grid item sm={6} xs={12} style={{ display: 'grid', gap: '8px' }}>
               <CustomTextField
                 label="Address Line 1"
-                name="pan_no"
-                values={''}
+                name="address_line_1"
+                values={props.values.correspondent_address}
                 type="string"
                 onChange={() => {}}
                 onBlur={() => {}}
@@ -123,8 +124,8 @@ const AddressDetails = () => {
             <Grid item sm={6} xs={12} style={{ display: 'grid', gap: '8px' }}>
               <CustomTextField
                 label="Address Line 2"
-                name="pan_no"
-                values={''}
+                name="address_line_2"
+                values={props.values.correspondent_address}
                 type="string"
                 onChange={() => {}}
                 onBlur={() => {}}
@@ -137,8 +138,8 @@ const AddressDetails = () => {
               <Grid item xs={6} sm={6} md={6} style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                 <CustomTextField
                   label="Pincode"
-                  name="pan_no"
-                  values={''}
+                  name="pincode"
+                  values={props.values.correspondent_address}
                   type="string"
                   onChange={() => {}}
                   onBlur={() => {}}
@@ -149,8 +150,8 @@ const AddressDetails = () => {
               <Grid item xs={6} sm={6} md={6} style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                 <CustomTextField
                   label="City"
-                  name="pan_no"
-                  values={''}
+                  name="city"
+                  values={props.values.correspondent_address}
                   type="string"
                   onChange={() => {}}
                   onBlur={() => {}}
@@ -163,8 +164,8 @@ const AddressDetails = () => {
               <Grid item xs={6} sm={6} md={6} style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                 <CustomTextField
                   label="Pincode"
-                  name="pan_no"
-                  values={''}
+                  name="pincode"
+                  values={props.values.correspondent_address}
                   type="string"
                   onChange={() => {}}
                   onBlur={() => {}}
@@ -175,8 +176,8 @@ const AddressDetails = () => {
               <Grid item xs={6} sm={6} md={6} style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                 <CustomTextField
                   label=" City"
-                  name="pan_no"
-                  values={''}
+                  name="city"
+                  values={props.values.correspondent_address}
                   type="string"
                   onChange={() => {}}
                   onBlur={() => {}}

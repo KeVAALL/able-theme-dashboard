@@ -25,7 +25,11 @@ import {
   formValueFields,
   filterValidationSchema,
   tableColumns,
-  VisibleColumn
+  VisibleColumn,
+  genderData,
+  residency,
+  marital_status,
+  occupation
 } from 'constant/investorValidation';
 import {
   GetInvestorData,
@@ -49,11 +53,41 @@ function Investor() {
   const [investorData, setInvestorData] = useState([]);
   const [ifaData, setIfaData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const genderData = [
-    { id: 1, gender_type: 'Male' },
-    { id: 2, gender_type: 'Female' },
-    { id: 3, gender_type: 'Other' }
-  ];
+
+  const [selectedGender, setSelectedGender] = useState(null);
+  const [selectedResidenceID, setSelectedResidenceID] = useState(null);
+  const [selectedMarital, setSelectedMarital] = useState(null);
+  const [selectedOccupation, setSelectedOccupation] = useState(null);
+  const [selectedIncomeSource, setSelectedIncomeSource] = useState(null);
+  const [selectedAnnualIncome, setSelectedAnnualIncome] = useState(null);
+  const handleOnGenderChange = (event) => {
+    residency.map((el) => {
+      if (el.gender === event.target.outerText) {
+        setSelectedGender(el.id);
+      }
+    });
+  };
+  const handleOnResidenceChange = (event) => {
+    residency.map((el) => {
+      if (el.status === event.target.outerText) {
+        setSelectedResidenceID(el.id);
+      }
+    });
+  };
+  const handleOnMaritalChange = (event) => {
+    marital_status.map((el) => {
+      if (el.status === event.target.outerText) {
+        setSelectedMarital(el.id);
+      }
+    });
+  };
+  const handleOnOccupationChange = (event) => {
+    occupation.map((el) => {
+      if (el.occupation_name === event.target.outerText) {
+        setSelectedOccupation(el.occupation_id);
+      }
+    });
+  };
 
   // Toggle Table and Form Visibility
   const [showTable, setShowTable] = useState(false);
@@ -68,6 +102,10 @@ function Investor() {
     console.log(value);
 
     setFormValues(value);
+    setSelectedGender(value.investor.gender);
+    setSelectedResidenceID(value.personal_info.is_indian_resident);
+    setSelectedMarital(value.personal_info.is_married);
+    setSelectedOccupation(value.professional_details.occupation_name);
   };
   const setActiveEditing = () => {
     setIsEditing(true);
@@ -192,8 +230,8 @@ function Investor() {
                         type="text"
                         onChange={handleChange}
                         onBlur={handleBlur}
-                        touched={touched}
-                        errors={errors}
+                        touched={touched.investor}
+                        errors={errors.investor}
                       />
                     </Grid>
                     <Grid item xs={4}>
@@ -204,8 +242,8 @@ function Investor() {
                         type="string"
                         onChange={handleChange}
                         onBlur={handleBlur}
-                        touched={touched}
-                        errors={errors}
+                        touched={touched.investor}
+                        errors={errors.investor}
                       />
                     </Grid>
                     <Grid item xs={4}>
@@ -216,8 +254,8 @@ function Investor() {
                         type="number"
                         onChange={handleChange}
                         onBlur={handleBlur}
-                        touched={touched}
-                        errors={errors}
+                        touched={touched.investor}
+                        errors={errors.investor}
                       />
                     </Grid>
                     <Grid item xs={4}>
@@ -228,17 +266,17 @@ function Investor() {
                         type="text"
                         onChange={handleChange}
                         onBlur={handleBlur}
-                        touched={touched}
-                        errors={errors}
+                        touched={touched.investor}
+                        errors={errors.investor}
                       />
                     </Grid>
                     <Grid item xs={4}>
                       <CustomAutoComplete
                         options={genderData}
-                        optionName="gender_type"
-                        handleChange={(event) => {
-                          console.log(event.target.value);
-                        }}
+                        defaultValue={selectedGender}
+                        handleChange={handleOnGenderChange}
+                        // setSelected={setSelectedGender}
+                        optionName="gender"
                         label="Gender"
                       />
                     </Grid>
@@ -247,7 +285,22 @@ function Investor() {
 
                 {/* Add the tab here */}
                 <Grid item xs={12} lg={6}>
-                  <IconTabs values={values} />
+                  <IconTabs
+                    values={values}
+                    handleChange={handleChange}
+                    handleBlur={handleBlur}
+                    touched={touched}
+                    error={error}
+                    selectedResidenceID={selectedResidenceID}
+                    setSelectedResidenceID={setSelectedResidenceID}
+                    handleOnResidenceChange={handleOnResidenceChange}
+                    selectedMarital={selectedMarital}
+                    setSelectedMarital={setSelectedMarital}
+                    handleOnMaritalChange={handleOnMaritalChange}
+                    selectedOccupation={selectedOccupation}
+                    setSelectedOccupation={setSelectedOccupation}
+                    handleOnOccupationChange={handleOnOccupationChange}
+                  />
                 </Grid>
               </Card>
             </Box>
