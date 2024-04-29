@@ -61,6 +61,23 @@ function Investor() {
   const [selectedOccupation, setSelectedOccupation] = useState(null);
   const [selectedAnnualIncome, setSelectedAnnualIncome] = useState(null);
   const [selectedIncomeSource, setSelectedIncomeSource] = useState(null);
+  const [selectedDeclaration, setSelectedDeclaration] = useState({
+    isPoliticallyExposed: true,
+    isRelativeToPoliticallyExposed: true,
+    isResidentOutsideIndia: false
+  });
+  const handleDeclarationClick = (value) => {
+    if (value === 'PoliticallyExposed') {
+      setSelectedDeclaration({ ...selectedDeclaration, isPoliticallyExposed: !selectedDeclaration.isPoliticallyExposed });
+    } else if (value === 'RelativeToPoliticallyExposed') {
+      setSelectedDeclaration({
+        ...selectedDeclaration,
+        isRelativeToPoliticallyExposed: !selectedDeclaration.isRelativeToPoliticallyExposed
+      });
+    } else if (value === 'ResidentOutsideIndia') {
+      setSelectedDeclaration({ ...selectedDeclaration, isResidentOutsideIndia: !selectedDeclaration.isResidentOutsideIndia });
+    }
+  };
 
   // Toggle Table and Form Visibility
   const [showTable, setShowTable] = useState(false);
@@ -81,6 +98,12 @@ function Investor() {
     setSelectedOccupation(value.professional_details.occupation_name);
     setSelectedAnnualIncome(value.professional_details.annual_income);
     setSelectedIncomeSource(value.professional_details.income_source);
+    console.log(Boolean(value.declaration.is_pep));
+    setSelectedDeclaration({
+      isPoliticallyExposed: Boolean(value.declaration.is_pep),
+      isRelativeToPoliticallyExposed: Boolean(value.declaration.is_rpep),
+      isResidentOutsideIndia: Boolean(value.declaration.is_foreign_tax_resident)
+    });
   };
   const setActiveEditing = () => {
     setIsEditing(true);
@@ -200,8 +223,8 @@ function Investor() {
                     <Grid item xs={4}>
                       <NestedCustomTextField
                         label="Investor Name"
-                        name="investor_name"
-                        values={values.investor}
+                        valueName="investor.investor_name"
+                        values={values.investor.investor_name}
                         type="text"
                         onChange={handleChange}
                         onBlur={handleBlur}
@@ -212,8 +235,8 @@ function Investor() {
                     <Grid item xs={4}>
                       <NestedCustomTextField
                         label="Pan Number"
-                        name="pan_no"
-                        values={values.investor}
+                        valueName="investor.pan_no"
+                        values={values.investor.pan_no}
                         type="string"
                         onChange={handleChange}
                         onBlur={handleBlur}
@@ -224,8 +247,8 @@ function Investor() {
                     <Grid item xs={4}>
                       <NestedCustomTextField
                         label="Mobile Number"
-                        name="mobile_no"
-                        values={values.investor}
+                        valueName="investor.mobile_no"
+                        values={values.investor.mobile_no}
                         type="number"
                         onChange={handleChange}
                         onBlur={handleBlur}
@@ -236,8 +259,8 @@ function Investor() {
                     <Grid item xs={4}>
                       <NestedCustomTextField
                         label="Investor type"
-                        name="investor_type"
-                        values={values.investor}
+                        valueName="investor.investor_type"
+                        values={values.investor.investor_type}
                         type="text"
                         onChange={handleChange}
                         onBlur={handleBlur}
@@ -263,7 +286,7 @@ function Investor() {
                     handleChange={handleChange}
                     handleBlur={handleBlur}
                     touched={touched}
-                    error={error}
+                    errors={errors}
                     selectedResidenceID={selectedResidenceID}
                     setSelectedResidenceID={setSelectedResidenceID}
                     selectedRelation={selectedRelation}
@@ -276,6 +299,8 @@ function Investor() {
                     setSelectedAnnualIncome={setSelectedAnnualIncome}
                     selectedIncomeSource={selectedIncomeSource}
                     setSelectedIncomeSource={setSelectedIncomeSource}
+                    selectedDeclaration={selectedDeclaration}
+                    handleDeclarationClick={handleDeclarationClick}
                   />
                 </Grid>
               </Card>

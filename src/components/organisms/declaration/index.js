@@ -1,23 +1,24 @@
+/* eslint-disable react/prop-types */
 import { Grid, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import React, { useState } from 'react';
 
 import Chip from '@mui/material/Chip';
-const Declaration = () => {
-  const [selected, setSelected] = useState({
-    isPoliticallyExposed: true,
-    isRelativeToPoliticallyExposed: true,
-    isResidentOutsideIndia: false
-  });
-  const handleClick = (value) => {
-    if (value === 'PoliticallyExposed') {
-      setSelected({ ...selected, isPoliticallyExposed: !selected.isPoliticallyExposed });
-    } else if (value === 'RelativeToPoliticallyExposed') {
-      setSelected({ ...selected, isRelativeToPoliticallyExposed: !selected.isRelativeToPoliticallyExposed });
-    } else if (value === 'ResidentOutsideIndia') {
-      setSelected({ ...selected, isResidentOutsideIndia: !selected.isResidentOutsideIndia });
-    }
-  };
+const Declaration = ({ selectedDeclaration, handleDeclarationClick }) => {
+  // const [selectedDeclaration, setSelectedDeclaration] = useState({
+  //   isPoliticallyExposed: true,
+  //   isRelativeToPoliticallyExposed: true,
+  //   isResidentOutsideIndia: false
+  // });
+  // const handleDeclarationClick = (value) => {
+  //   if (value === 'PoliticallyExposed') {
+  //     setSelectedDeclaration({ ...selected, isPoliticallyExposed: !selected.isPoliticallyExposed });
+  //   } else if (value === 'RelativeToPoliticallyExposed') {
+  //     setSelectedDeclaration({ ...selected, isRelativeToPoliticallyExposed: !selected.isRelativeToPoliticallyExposed });
+  //   } else if (value === 'ResidentOutsideIndia') {
+  //     setSelectedDeclaration({ ...selected, isResidentOutsideIndia: !selected.isResidentOutsideIndia });
+  //   }
+  // };
   return (
     <>
       <Grid id="__parent" container spacing={2}>
@@ -30,18 +31,18 @@ const Declaration = () => {
               <Chip
                 label="Yes"
                 color="success"
-                variant={!selected.isPoliticallyExposed ? '' : 'outlined'}
+                variant={selectedDeclaration.isPoliticallyExposed ? '' : 'outlined'}
                 style={{ cursor: 'pointer', borderRadius: '6px', width: '100%', paddingBlock: '18px', fontSize: '12px' }}
-                onClick={(e) => handleClick('PoliticallyExposed')}
+                onClick={(e) => handleDeclarationClick('PoliticallyExposed')}
               />
             </Grid>
             <Grid item lg={4} md={4} sm={4} xs={5}>
               <Chip
                 label="No"
                 color="success"
-                variant={selected.isPoliticallyExposed ? '' : 'outlined'}
+                variant={!selectedDeclaration.isPoliticallyExposed ? '' : 'outlined'}
                 style={{ cursor: 'pointer', borderRadius: '6px', width: '100%', paddingBlock: '18px', fontSize: '12px' }}
-                onClick={(e) => handleClick('PoliticallyExposed')}
+                onClick={(e) => handleDeclarationClick('PoliticallyExposed')}
               />
             </Grid>
           </Grid>
@@ -55,43 +56,43 @@ const Declaration = () => {
               <Chip
                 label="Yes"
                 color="success"
-                variant={!selected.isRelativeToPoliticallyExposed ? '' : 'outlined'}
+                variant={selectedDeclaration.isRelativeToPoliticallyExposed ? '' : 'outlined'}
                 style={{ cursor: 'pointer', borderRadius: '6px', width: '100%', paddingBlock: '18px', fontSize: '12px' }}
-                onClick={(e) => handleClick('RelativeToPoliticallyExposed')}
+                onClick={(e) => handleDeclarationClick('RelativeToPoliticallyExposed')}
               />
             </Grid>
             <Grid item lg={4} md={4} sm={4} xs={5}>
               <Chip
                 label="No"
                 color="success"
-                variant={selected.isRelativeToPoliticallyExposed ? '' : 'outlined'}
+                variant={!selectedDeclaration.isRelativeToPoliticallyExposed ? '' : 'outlined'}
                 style={{ cursor: 'pointer', borderRadius: '6px', width: '100%', paddingBlock: '18px', fontSize: '12px' }}
-                onClick={(e) => handleClick('RelativeToPoliticallyExposed')}
+                onClick={(e) => handleDeclarationClick('RelativeToPoliticallyExposed')}
               />
             </Grid>
           </Grid>
         </Grid>
         <Grid item xs={12} sm={6} md={4} lg={4} style={{ display: 'grid', gap: '10px' }}>
           <Typography sx={{ fontWeight: '600' }} variant="p">
-            Are you a citizen national or tax resident of any other country outside India?
+            A citizen national or tax resident of any other country outside India?
           </Typography>
           <Grid container spacing={2}>
             <Grid item lg={4} md={4} sm={4} xs={5}>
               <Chip
                 label="Yes"
                 color="success"
-                variant={!selected.isResidentOutsideIndia ? '' : 'outlined'}
+                variant={selectedDeclaration.isResidentOutsideIndia ? '' : 'outlined'}
                 style={{ cursor: 'pointer', borderRadius: '6px', width: '100%', paddingBlock: '18px', fontSize: '12px' }}
-                onClick={(e) => handleClick('ResidentOutsideIndia')}
+                onClick={(e) => handleDeclarationClick('ResidentOutsideIndia')}
               />
             </Grid>
             <Grid item lg={4} md={4} sm={4} xs={5}>
               <Chip
                 label="No"
                 color="success"
-                variant={selected.isResidentOutsideIndia ? '' : 'outlined'}
+                variant={!selectedDeclaration.isResidentOutsideIndia ? '' : 'outlined'}
                 style={{ cursor: 'pointer', borderRadius: '6px', width: '100%', paddingBlock: '18px', fontSize: '12px' }}
-                onClick={(e) => handleClick('ResidentOutsideIndia')}
+                onClick={(e) => handleDeclarationClick('ResidentOutsideIndia')}
               />
             </Grid>
           </Grid>

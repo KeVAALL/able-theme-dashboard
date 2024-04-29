@@ -151,9 +151,6 @@ const formAllValues = {
     address_line_2: '',
     pincode: '',
     city: ''
-    // state: '',
-    // country: '',
-    // address_type: ''
   },
   // Personal Details??
   // Nomination

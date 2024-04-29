@@ -1,31 +1,38 @@
 /* eslint-disable react/prop-types */
 import { Autocomplete, Checkbox, FormControlLabel, TextField } from '@mui/material';
+import { useFormikContext, getIn } from 'formik';
 import React from 'react';
 import './custom.css';
 
-export const NestedCustomTextField = (props) => {
-  // console.log(props.value, props.name);
-  // console.log(props.values);
-  // console.log(props.name);
-  // console.log(props.errors);
-  // console.log(props.values[props.name]);
-  console.log(props.touched);
+export const NestedCustomTextField = ({
+  label,
+  valueName,
+  handleChange,
+  handleBlur,
+  values,
+  type,
+  multiline,
+  autocomplete,
+  touched,
+  errors,
+  ...props
+}) => {
   return (
     <TextField
       fullWidth
       className="common-textfield"
       size="small"
-      label={props.label}
-      name={props.name}
-      onChange={props.handleChange}
-      onBlur={props.handleBlur}
-      value={props.values[props.name]}
-      type={props.type}
-      multiline={props.multiline ? true : false}
-      autoComplete={!props.autocomplete ? 'off' : 'on'}
-      error={props.touched[props.name] && Boolean(props.errors[props.name])}
-      placeholder={props.touched[props.name] && props.errors[props.name]}
-      helperText={props.touched[props.name] && props.errors[props.name]}
+      label={label}
+      name={valueName}
+      onChange={handleChange}
+      onBlur={handleBlur}
+      value={values}
+      type={type}
+      multiline={multiline ? true : false}
+      autoComplete={!autocomplete ? 'off' : 'on'}
+      placeholder={Boolean(getIn(touched, valueName) && getIn(errors, valueName))}
+      error={Boolean(getIn(touched, valueName) && getIn(errors, valueName))}
+      helperText={getIn(touched, valueName) && getIn(errors, valueName)}
       FormHelperTextProps={{
         style: {
           marginLeft: 0

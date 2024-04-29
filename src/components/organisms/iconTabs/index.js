@@ -9,7 +9,7 @@ import { Box, Tab, Tabs, Divider } from '@mui/material';
 import MainCard from 'components/molecules/mainCard';
 
 // assets
-import { Briefcase, LocationTick, MedalStar, Personalcard, ProfileTick } from 'iconsax-react';
+import { Briefcase, LocationTick, UserOctagon, Personalcard, ProfileTick } from 'iconsax-react';
 import PersonalInfo from '../personalInfo';
 import AddressDetails from '../addressDetails';
 import ProfessionalDetails from '../professionalDetails';
@@ -71,7 +71,7 @@ export default function IconTabs(props) {
           <Tab label="Personal Info" icon={<Personalcard />} iconPosition="start" {...a11yProps(0)} />
           <Tab label="Address Details" icon={<LocationTick />} iconPosition="start" {...a11yProps(1)} />
           <Tab label="Professional Details" icon={<Briefcase />} iconPosition="start" {...a11yProps(2)} />
-          <Tab label="Add Nomination" icon={<MedalStar />} iconPosition="start" {...a11yProps(3)} />
+          <Tab label="Add Nomination" icon={<UserOctagon />} iconPosition="start" {...a11yProps(3)} />
           <Tab label="Declaration" icon={<ProfileTick />} iconPosition="start" {...a11yProps(3)} />
         </Tabs>
       </Box>
@@ -82,7 +82,7 @@ export default function IconTabs(props) {
             handleChange={props.handleChange}
             handleBlur={props.handleBlur}
             touched={props.touched}
-            error={props.error}
+            errors={props.errors}
             selectedResidenceID={props.selectedResidenceID}
             setSelectedResidenceID={props.setSelectedResidenceID}
             selectedMarital={props.selectedMarital}
@@ -97,7 +97,7 @@ export default function IconTabs(props) {
             handleChange={props.handleChange}
             handleBlur={props.handleBlur}
             touched={props.touched}
-            error={props.error}
+            errors={props.errors}
           />
         </MainCard>
       </TabPanel>
@@ -120,7 +120,7 @@ export default function IconTabs(props) {
             handleChange={props.handleChange}
             handleBlur={props.handleBlur}
             touched={props.touched}
-            error={props.error}
+            errors={props.errors}
             selectedRelation={props.selectedRelation}
             setSelectedRelation={props.setSelectedRelation}
           />
@@ -128,7 +128,7 @@ export default function IconTabs(props) {
       </TabPanel>
       <TabPanel className="panel" value={tabValue} index={4}>
         <MainCard sx={tabStyle}>
-          <Declaration />
+          <Declaration selectedDeclaration={props.selectedDeclaration} handleDeclarationClick={props.handleDeclarationClick} />
         </MainCard>
       </TabPanel>
     </Box>

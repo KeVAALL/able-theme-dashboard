@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import { Checkbox, Chip, Grid, Typography } from '@mui/material';
 import React, { useState } from 'react';
-import CustomTextField from 'utils/textfield';
+import CustomTextField, { NestedCustomTextField } from 'utils/textfield';
 
 const AddressDetails = (props) => {
   // is_permanent_address_correspond
@@ -18,88 +18,61 @@ const AddressDetails = (props) => {
 
         <Grid container spacing={3}>
           <Grid item sm={6} xs={12} style={{ display: 'grid', gap: '8px' }}>
-            <CustomTextField
+            <NestedCustomTextField
               label="Address Line 1"
-              name="address_line_1"
-              values={props.values.investor_address}
+              valueName="investor_address.address_line_1"
+              values={props.values.investor_address.address_line_1}
               type="string"
-              onChange={() => {}}
-              onBlur={() => {}}
-              touched={() => {}}
-              errors={() => {}}
+              onChange={props.handleChange}
+              onBlur={props.handleBlur}
+              touched={props.touched}
+              errors={props.errors}
             />
           </Grid>
           <Grid item sm={6} xs={12} style={{ display: 'grid', gap: '8px' }}>
-            <CustomTextField
+            <NestedCustomTextField
               label="Address Line 2"
-              name="address_line_2"
-              values={props.values.investor_address}
+              valueName="investor_address.address_line_2"
+              values={props.values.investor_address.address_line_2}
               type="string"
-              onChange={() => {}}
-              onBlur={() => {}}
-              touched={() => {}}
-              errors={() => {}}
+              onChange={props.handleChange}
+              onBlur={props.handleBlur}
+              touched={props.touched}
+              errors={props.errors}
             />
           </Grid>
 
-          <Grid id="__pin-code_&_city" item sm={6} xs={12} container spacing={1} sx={{ rowGap: '80px' }}>
-            <Grid item xs={6} sm={6} md={6} style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-              <CustomTextField
-                label="Pincode"
-                name="pincode"
-                values={props.values.investor_address}
-                type="string"
-                onChange={() => {}}
-                onBlur={() => {}}
-                touched={() => {}}
-                errors={() => {}}
-              />
-            </Grid>
-            <Grid item xs={6} sm={6} md={6} style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-              <CustomTextField
-                label="City"
-                name="city"
-                values={props.values.investor_address}
-                type="string"
-                onChange={() => {}}
-                onBlur={() => {}}
-                touched={() => {}}
-                errors={() => {}}
-              />
-            </Grid>
+          <Grid item sm={6} xs={12} style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            <NestedCustomTextField
+              label="Pincode"
+              valueName="investor_address.pincode"
+              values={props.values.investor_address.pincode}
+              type="string"
+              onChange={props.handleChange}
+              onBlur={props.handleBlur}
+              touched={props.touched}
+              errors={props.errors}
+            />
           </Grid>
-          <Grid id="__pin-code_&_city" item sm={6} xs={12} container spacing={1} sx={{ rowGap: '80px' }}>
-            <Grid item xs={6} sm={6} md={6} style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-              <CustomTextField
-                label="Pincode"
-                name="pincode"
-                values={props.values.investor_address}
-                type="string"
-                onChange={() => {}}
-                onBlur={() => {}}
-                touched={() => {}}
-                errors={() => {}}
-              />
-            </Grid>
-            <Grid item xs={6} sm={6} md={6} style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-              <CustomTextField
-                label="City"
-                name="city"
-                values={props.values.investor_address}
-                type="string"
-                onChange={() => {}}
-                onBlur={() => {}}
-                touched={() => {}}
-                errors={() => {}}
-              />
-            </Grid>
+
+          <Grid item sm={6} xs={12} style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            <NestedCustomTextField
+              label="City"
+              valueName="investor_address.city"
+              values={props.values.investor_address.city}
+              type="string"
+              onChange={props.handleChange}
+              onBlur={props.handleBlur}
+              touched={props.touched}
+              errors={props.errors}
+            />
           </Grid>
         </Grid>
       </div>
       <div id="__checkbox" style={{ marginTop: '12px', display: 'flex', alignItems: 'flex-start', gap: '4px' }}>
         <Checkbox checked={sameAddress} onChange={handleCheckboxChange} inputProps={{ 'aria-label': 'Same address' }} />
         <Typography sx={{ color: '#5E718D', marginBottom: '20px' }} variant="p">
-          My Correspondent Address is same as my Permanent Address
+          Correspondent Address is same as Permanent Address
         </Typography>
       </div>
 
@@ -111,81 +84,54 @@ const AddressDetails = (props) => {
 
           <Grid container spacing={3}>
             <Grid item sm={6} xs={12} style={{ display: 'grid', gap: '8px' }}>
-              <CustomTextField
+              <NestedCustomTextField
                 label="Address Line 1"
-                name="address_line_1"
-                values={props.values.correspondent_address}
+                valueName="correspondent_address.address_line_1"
+                values={props.values.correspondent_address.address_line_1}
                 type="string"
                 onChange={props.handleChange}
-                onBlur={() => {}}
-                touched={() => {}}
-                errors={() => {}}
+                onBlur={props.handleBlur}
+                touched={props.touched}
+                errors={props.errors}
               />
             </Grid>
             <Grid item sm={6} xs={12} style={{ display: 'grid', gap: '8px' }}>
-              <CustomTextField
+              <NestedCustomTextField
                 label="Address Line 2"
-                name="address_line_2"
-                values={props.values.correspondent_address}
+                valueName="correspondent_address.address_line_2"
+                values={props.values.correspondent_address.address_line_2}
                 type="string"
                 onChange={props.handleChange}
-                onBlur={() => {}}
-                touched={() => {}}
-                errors={() => {}}
+                onBlur={props.handleBlur}
+                touched={props.touched}
+                errors={props.errors}
               />
             </Grid>
 
-            <Grid id="__pin-code_&_city" item sm={6} xs={12} container spacing={1} sx={{ rowGap: '80px' }}>
-              <Grid item xs={6} sm={6} md={6} style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                <CustomTextField
-                  label="Pincode"
-                  name="pincode"
-                  values={props.values.correspondent_address}
-                  type="string"
-                  onChange={props.handleChange}
-                  onBlur={() => {}}
-                  touched={() => {}}
-                  errors={() => {}}
-                />
-              </Grid>
-              <Grid item xs={6} sm={6} md={6} style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                <CustomTextField
-                  label="City"
-                  name="city"
-                  values={props.values.correspondent_address}
-                  type="string"
-                  onChange={props.handleChange}
-                  onBlur={() => {}}
-                  touched={() => {}}
-                  errors={() => {}}
-                />
-              </Grid>
+            <Grid item sm={6} xs={12} style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              <NestedCustomTextField
+                label="Pincode"
+                valueName="correspondent_address.pincode"
+                values={props.values.correspondent_address.pincode}
+                type="string"
+                onChange={props.handleChange}
+                onBlur={props.handleBlur}
+                touched={props.touched}
+                errors={props.errors}
+              />
             </Grid>
-            <Grid id="__pin-code_&_city" item sm={6} xs={12} container spacing={1} sx={{ rowGap: '80px' }}>
-              <Grid item xs={6} sm={6} md={6} style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                <CustomTextField
-                  label="Pincode"
-                  name="pincode"
-                  values={props.values.correspondent_address}
-                  type="string"
-                  onChange={props.handleChange}
-                  onBlur={() => {}}
-                  touched={() => {}}
-                  errors={() => {}}
-                />
-              </Grid>
-              <Grid item xs={6} sm={6} md={6} style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                <CustomTextField
-                  label=" City"
-                  name="city"
-                  values={props.values.correspondent_address}
-                  type="string"
-                  onChange={props.handleChange}
-                  onBlur={() => {}}
-                  touched={() => {}}
-                  errors={() => {}}
-                />
-              </Grid>
+
+            <Grid item sm={6} xs={12} style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              <NestedCustomTextField
+                label="City"
+                valueName="correspondent_address.city"
+                values={props.values.correspondent_address.city}
+                type="string"
+                onChange={props.handleChange}
+                onBlur={props.handleBlur}
+                touched={props.touched}
+                errors={props.errors}
+              />
             </Grid>
           </Grid>
         </div>
