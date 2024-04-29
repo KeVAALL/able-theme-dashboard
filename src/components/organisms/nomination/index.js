@@ -4,6 +4,7 @@ import CustomTextField, { CustomAutoComplete } from 'utils/textfield';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { relationship } from 'constant/investorValidation';
 
 const Nomination = (props) => {
   console.log(props.values);
@@ -30,7 +31,8 @@ const Nomination = (props) => {
               <CustomTextField
                 label="Full Name"
                 name="full_name"
-                values={props.values.nominee[0]}
+                // values={props.values.nominee[0]}
+                values={props.values.nominee}
                 type="string"
                 onChange={() => {}}
                 onBlur={() => {}}
@@ -40,11 +42,10 @@ const Nomination = (props) => {
             </Grid>
             <Grid item xs={12} sm={6} md={6} style={{ display: 'grid', gap: '10px' }}>
               <CustomAutoComplete
-                options={autocompleteData}
-                optionName="product_type"
-                handleChange={(event) => {
-                  console.log(event.target.value);
-                }}
+                options={relationship}
+                defaultValue={props.selectedRelation}
+                setSelected={props.setSelectedRelation}
+                optionName="relation_name"
                 label="Relationship with Investor"
               />
             </Grid>
@@ -54,7 +55,8 @@ const Nomination = (props) => {
                   <CustomTextField
                     label="PAN of Nominee"
                     name="pan"
-                    values={props.values.nominee[0]}
+                    values={props.values.nominee}
+                    // values={props.values.nominee[0]}
                     type="string"
                     onChange={() => {}}
                     onBlur={() => {}}
@@ -79,6 +81,7 @@ const Nomination = (props) => {
             <Grid item xs={12} sm={6} md={6} style={{ display: 'grid', gap: '10px' }}>
               <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <DesktopDatePicker
+                  className="calendar_main"
                   label="DOB"
                   inputFormat="dd/MM/yyyy"
                   value={value}

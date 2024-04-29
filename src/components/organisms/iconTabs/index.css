@@ -4,3 +4,6 @@
 .tab_main .MuiTabScrollButton-root {
   width: 20px !important;
 }
+.calendar_main input {
+  padding: 8.2px 0px 8.2px 14px !important;
+}

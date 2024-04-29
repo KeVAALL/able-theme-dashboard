@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React, { useState } from 'react';
 import { Checkbox, Grid, Typography, Stack, TextField } from '@mui/material';
 
@@ -26,8 +27,8 @@ const CustomChip = (props) => {
           <CustomAutoComplete
             options={residency}
             defaultValue={props.selectedResidenceID}
-            handleChange={props.handleOnResidenceChange}
-            // setSelected={props.setSelectedResidenceID}
+            // handleChange={props.handleOnResidenceChange}
+            setSelected={props.setSelectedResidenceID}
             optionName="status"
             label="Resident Status"
           />
@@ -37,8 +38,8 @@ const CustomChip = (props) => {
           <CustomAutoComplete
             options={marital_status}
             defaultValue={props.selectedMarital}
-            handleChange={props.handleOnMaritalChange}
-            // setSelected={props.setSelectedMarital}
+            // handleChange={props.handleOnMaritalChange}
+            setSelected={props.setSelectedMarital}
             optionName="status"
             label="Marital Status"
           />
@@ -59,6 +60,7 @@ const CustomChip = (props) => {
         >
           <LocalizationProvider dateAdapter={AdapterDateFns}>
             <DesktopDatePicker
+              className="calendar_main"
               label="Date Desktop"
               inputFormat="dd/MM/yyyy"
               value={value}

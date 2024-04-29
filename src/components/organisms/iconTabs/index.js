@@ -47,10 +47,10 @@ function a11yProps(index) {
 // ==============================|| TABS - ICON ||============================== //
 
 export default function IconTabs(props) {
-  const [value, setValue] = useState(0);
+  const [tabValue, setTabValue] = useState(0);
 
   const handleChange = (event, newValue) => {
-    setValue(newValue);
+    setTabValue(newValue);
   };
 
   const tabStyle = { borderTopLeftRadius: 0, borderTopRightRadius: 0, borderRadius: 1.5, overflow: 'visible' };
@@ -64,7 +64,7 @@ export default function IconTabs(props) {
           variant="scrollable"
           scrollButtons
           allowScrollButtonsMobile
-          value={value}
+          value={tabValue}
           onChange={handleChange}
           aria-label="scrollable force tabs example"
         >
@@ -75,35 +75,58 @@ export default function IconTabs(props) {
           <Tab label="Declaration" icon={<ProfileTick />} iconPosition="start" {...a11yProps(3)} />
         </Tabs>
       </Box>
-      <TabPanel className="panel" value={value} index={0}>
+      <TabPanel className="panel" value={tabValue} index={0}>
         <MainCard sx={tabStyle}>
           <PersonalInfo
             values={props.values}
+            handleChange={props.handleChange}
+            handleBlur={props.handleBlur}
+            touched={props.touched}
+            error={props.error}
             selectedResidenceID={props.selectedResidenceID}
             setSelectedResidenceID={props.setSelectedResidenceID}
-            handleOnResidenceChange={props.handleOnResidenceChange}
             selectedMarital={props.selectedMarital}
             setSelectedMarital={props.setSelectedMarital}
-            handleOnMaritalChange={props.handleOnMaritalChange}
           />
         </MainCard>
       </TabPanel>
-      <TabPanel className="panel" value={value} index={1}>
+      <TabPanel className="panel" value={tabValue} index={1}>
         <MainCard sx={tabStyle}>
-          <AddressDetails values={props.values} />
+          <AddressDetails
+            values={props.values}
+            handleChange={props.handleChange}
+            handleBlur={props.handleBlur}
+            touched={props.touched}
+            error={props.error}
+          />
         </MainCard>
       </TabPanel>
-      <TabPanel className="panel" value={value} index={2}>
+      <TabPanel className="panel" value={tabValue} index={2}>
         <MainCard sx={tabStyle}>
-          <ProfessionalDetails selectedOccupation={props.selectedOccupation} handleOnOccupationChange={props.handleOnOccupationChange} />
+          <ProfessionalDetails
+            selectedOccupation={props.selectedOccupation}
+            setSelectedOccupation={props.setSelectedOccupation}
+            selectedAnnualIncome={props.selectedAnnualIncome}
+            setSelectedAnnualIncome={props.setSelectedAnnualIncome}
+            selectedIncomeSource={props.selectedIncomeSource}
+            setSelectedIncomeSource={props.setSelectedIncomeSource}
+          />
         </MainCard>
       </TabPanel>
-      <TabPanel className="panel" value={value} index={3}>
+      <TabPanel className="panel" value={tabValue} index={3}>
         <MainCard sx={tabStyle}>
-          <Nomination values={props.values} />
+          <Nomination
+            values={props.values}
+            handleChange={props.handleChange}
+            handleBlur={props.handleBlur}
+            touched={props.touched}
+            error={props.error}
+            selectedRelation={props.selectedRelation}
+            setSelectedRelation={props.setSelectedRelation}
+          />
         </MainCard>
       </TabPanel>
-      <TabPanel className="panel" value={value} index={4}>
+      <TabPanel className="panel" value={tabValue} index={4}>
         <MainCard sx={tabStyle}>
           <Declaration />
         </MainCard>

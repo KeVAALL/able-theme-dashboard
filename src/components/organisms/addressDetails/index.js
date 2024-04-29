@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { Checkbox, Chip, Grid, Typography } from '@mui/material';
 import React, { useState } from 'react';
 import CustomTextField from 'utils/textfield';
@@ -115,7 +116,7 @@ const AddressDetails = (props) => {
                 name="address_line_1"
                 values={props.values.correspondent_address}
                 type="string"
-                onChange={() => {}}
+                onChange={props.handleChange}
                 onBlur={() => {}}
                 touched={() => {}}
                 errors={() => {}}
@@ -127,7 +128,7 @@ const AddressDetails = (props) => {
                 name="address_line_2"
                 values={props.values.correspondent_address}
                 type="string"
-                onChange={() => {}}
+                onChange={props.handleChange}
                 onBlur={() => {}}
                 touched={() => {}}
                 errors={() => {}}
@@ -141,7 +142,7 @@ const AddressDetails = (props) => {
                   name="pincode"
                   values={props.values.correspondent_address}
                   type="string"
-                  onChange={() => {}}
+                  onChange={props.handleChange}
                   onBlur={() => {}}
                   touched={() => {}}
                   errors={() => {}}
@@ -153,7 +154,7 @@ const AddressDetails = (props) => {
                   name="city"
                   values={props.values.correspondent_address}
                   type="string"
-                  onChange={() => {}}
+                  onChange={props.handleChange}
                   onBlur={() => {}}
                   touched={() => {}}
                   errors={() => {}}
@@ -167,7 +168,7 @@ const AddressDetails = (props) => {
                   name="pincode"
                   values={props.values.correspondent_address}
                   type="string"
-                  onChange={() => {}}
+                  onChange={props.handleChange}
                   onBlur={() => {}}
                   touched={() => {}}
                   errors={() => {}}
@@ -179,7 +180,7 @@ const AddressDetails = (props) => {
                   name="city"
                   values={props.values.correspondent_address}
                   type="string"
-                  onChange={() => {}}
+                  onChange={props.handleChange}
                   onBlur={() => {}}
                   touched={() => {}}
                   errors={() => {}}
