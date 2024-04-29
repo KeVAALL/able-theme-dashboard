@@ -7,6 +7,7 @@ import AuthGuard from 'utils/route-guard/AuthGuard';
 import Issuer from '../issuer/issuer';
 import FixDeposit from '../fixedDeposit/fixedDeposit';
 import Investor from '../investor/investor';
+import Investment from '../transaction/investment';
 
 // Product
 const Product = Loadable(lazy(() => import('components/pages/productType/productType')));
@@ -67,6 +68,17 @@ const MainRoutes = {
             }
           ]
         },
+        // =================
+        {
+          path: 'transaction',
+          children: [
+            {
+              path: 'investment',
+              element: <Investment />
+            }
+          ]
+        },
+        // =============
         {
           path: 'product',
           children: [

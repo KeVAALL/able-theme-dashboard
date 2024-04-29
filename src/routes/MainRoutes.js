@@ -41,7 +41,7 @@ const MaintenanceComingSoon = Loadable(lazy(() => import('pages/maintenance/comi
 const MaintenanceComingSoon2 = Loadable(lazy(() => import('pages/maintenance/coming-soon/coming-soon2')));
 
 // ==============================|| MAIN ROUTES ||============================== //
- 
+
 const MainRoutes = {
   path: '/',
   children: [

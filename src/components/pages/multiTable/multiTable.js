@@ -30,6 +30,7 @@ import { useGlobalFilter } from 'react-table/dist/react-table.development';
 import { useSortBy } from 'react-table';
 import DialogBox from 'components/atoms/dialog/dialog';
 import './multiTable.css';
+import { useLocation } from 'react-router';
 
 // ==============================|| REACT TABLE ||============================== //
 
@@ -101,6 +102,7 @@ function ReactTable({
   const [item, setItem] = useState();
   // For Dialog
   const [openDialog, setOpenDialog] = useState(false);
+  const location = useLocation();
   const handleOpenDialog = () => {
     setOpenDialog(!openDialog);
   };
@@ -112,7 +114,7 @@ function ReactTable({
     }
     return item;
   });
-
+  console.error('location', location.pathname === '/transaction/investment');
   return (
     <>
       <Grid container alignItems="center" spacing={2} sx={{ padding: 2 }}>
@@ -134,40 +136,42 @@ function ReactTable({
                     handleSubmit();
                   }}
                 >
-                  <Grid container direction="row" spacing={1} alignItems="center">
-                    {formValueFields?.map((field, id) => {
-                      return (
-                        <Grid item md={4} sm={4} xs={6} key={id}>
-                          <CustomTextField
-                            label={field.label}
-                            name={field.fieldName}
-                            values={values}
-                            type={field.type}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            touched={touched}
-                            errors={errors}
-                          />
-                        </Grid>
-                      );
-                    })}
+                  {location.pathname !== '/transaction/investment' && (
+                    <Grid container direction="row" spacing={1} alignItems="center">
+                      {formValueFields?.map((field, id) => {
+                        return (
+                          <Grid item md={4} sm={4} xs={6} key={id}>
+                            <CustomTextField
+                              label={field.label}
+                              name={field.fieldName}
+                              values={values}
+                              type={field.type}
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              touched={touched}
+                              errors={errors}
+                            />
+                          </Grid>
+                        );
+                      })}
 
-                    <Grid item md={4} sm={4} xs={6}>
-                      <Button
-                        // fullWidth={!mdUp}
-                        variant="contained"
-                        color="success"
-                        type="submit"
-                        startIcon={<FilterSearch />}
-                        sx={{
-                          justifySelf: 'center',
-                          width: !mdUp ? 'auto' : '100%' // Set width to 'auto' when screen size is medium or larger, otherwise '100%'
-                        }}
-                      >
-                        Search
-                      </Button>
+                      <Grid item md={4} sm={4} xs={6}>
+                        <Button
+                          // fullWidth={!mdUp}
+                          variant="contained"
+                          color="success"
+                          type="submit"
+                          startIcon={<FilterSearch />}
+                          sx={{
+                            justifySelf: 'center',
+                            width: !mdUp ? 'auto' : '100%' // Set width to 'auto' when screen size is medium or larger, otherwise '100%'
+                          }}
+                        >
+                          Search
+                        </Button>
+                      </Grid>
                     </Grid>
-                  </Grid>
+                  )}
                 </Box>
               )}
             </Formik>
