@@ -55,39 +55,12 @@ function Investor() {
   const [loading, setLoading] = useState(true);
 
   const [selectedGender, setSelectedGender] = useState(null);
+  const [selectedRelation, setSelectedRelation] = useState(null);
   const [selectedResidenceID, setSelectedResidenceID] = useState(null);
   const [selectedMarital, setSelectedMarital] = useState(null);
   const [selectedOccupation, setSelectedOccupation] = useState(null);
-  const [selectedIncomeSource, setSelectedIncomeSource] = useState(null);
   const [selectedAnnualIncome, setSelectedAnnualIncome] = useState(null);
-  const handleOnGenderChange = (event) => {
-    residency.map((el) => {
-      if (el.gender === event.target.outerText) {
-        setSelectedGender(el.id);
-      }
-    });
-  };
-  const handleOnResidenceChange = (event) => {
-    residency.map((el) => {
-      if (el.status === event.target.outerText) {
-        setSelectedResidenceID(el.id);
-      }
-    });
-  };
-  const handleOnMaritalChange = (event) => {
-    marital_status.map((el) => {
-      if (el.status === event.target.outerText) {
-        setSelectedMarital(el.id);
-      }
-    });
-  };
-  const handleOnOccupationChange = (event) => {
-    occupation.map((el) => {
-      if (el.occupation_name === event.target.outerText) {
-        setSelectedOccupation(el.occupation_id);
-      }
-    });
-  };
+  const [selectedIncomeSource, setSelectedIncomeSource] = useState(null);
 
   // Toggle Table and Form Visibility
   const [showTable, setShowTable] = useState(false);
@@ -106,6 +79,8 @@ function Investor() {
     setSelectedResidenceID(value.personal_info.is_indian_resident);
     setSelectedMarital(value.personal_info.is_married);
     setSelectedOccupation(value.professional_details.occupation_name);
+    setSelectedAnnualIncome(value.professional_details.annual_income);
+    setSelectedIncomeSource(value.professional_details.income_source);
   };
   const setActiveEditing = () => {
     setIsEditing(true);
@@ -230,8 +205,8 @@ function Investor() {
                         type="text"
                         onChange={handleChange}
                         onBlur={handleBlur}
-                        touched={touched.investor}
-                        errors={errors.investor}
+                        touched={touched}
+                        errors={errors}
                       />
                     </Grid>
                     <Grid item xs={4}>
@@ -242,8 +217,8 @@ function Investor() {
                         type="string"
                         onChange={handleChange}
                         onBlur={handleBlur}
-                        touched={touched.investor}
-                        errors={errors.investor}
+                        touched={touched}
+                        errors={errors}
                       />
                     </Grid>
                     <Grid item xs={4}>
@@ -254,8 +229,8 @@ function Investor() {
                         type="number"
                         onChange={handleChange}
                         onBlur={handleBlur}
-                        touched={touched.investor}
-                        errors={errors.investor}
+                        touched={touched}
+                        errors={errors}
                       />
                     </Grid>
                     <Grid item xs={4}>
@@ -266,16 +241,15 @@ function Investor() {
                         type="text"
                         onChange={handleChange}
                         onBlur={handleBlur}
-                        touched={touched.investor}
-                        errors={errors.investor}
+                        touched={touched}
+                        errors={errors}
                       />
                     </Grid>
                     <Grid item xs={4}>
                       <CustomAutoComplete
                         options={genderData}
                         defaultValue={selectedGender}
-                        handleChange={handleOnGenderChange}
-                        // setSelected={setSelectedGender}
+                        setSelected={setSelectedGender}
                         optionName="gender"
                         label="Gender"
                       />
@@ -283,7 +257,6 @@ function Investor() {
                   </Grid>
                 </CardContent>
 
-                {/* Add the tab here */}
                 <Grid item xs={12} lg={6}>
                   <IconTabs
                     values={values}
@@ -293,13 +266,16 @@ function Investor() {
                     error={error}
                     selectedResidenceID={selectedResidenceID}
                     setSelectedResidenceID={setSelectedResidenceID}
-                    handleOnResidenceChange={handleOnResidenceChange}
+                    selectedRelation={selectedRelation}
+                    setSelectedRelation={setSelectedRelation}
                     selectedMarital={selectedMarital}
                     setSelectedMarital={setSelectedMarital}
-                    handleOnMaritalChange={handleOnMaritalChange}
                     selectedOccupation={selectedOccupation}
                     setSelectedOccupation={setSelectedOccupation}
-                    handleOnOccupationChange={handleOnOccupationChange}
+                    selectedAnnualIncome={selectedAnnualIncome}
+                    setSelectedAnnualIncome={setSelectedAnnualIncome}
+                    selectedIncomeSource={selectedIncomeSource}
+                    setSelectedIncomeSource={setSelectedIncomeSource}
                   />
                 </Grid>
               </Card>
@@ -439,3 +415,32 @@ export default Investor;
 {
   /* <Divider /> */
 }
+
+// const handleOnGenderChange = (event) => {
+//   residency.map((el) => {
+//     if (el.gender === event.target.outerText) {
+//       setSelectedGender(el.id);
+//     }
+//   });
+// };
+// const handleOnResidenceChange = (event) => {
+//   residency.map((el) => {
+//     if (el.status === event.target.outerText) {
+//       setSelectedResidenceID(el.id);
+//     }
+//   });
+// };
+// const handleOnMaritalChange = (event) => {
+//   marital_status.map((el) => {
+//     if (el.status === event.target.outerText) {
+//       setSelectedMarital(el.id);
+//     }
+//   });
+// };
+// const handleOnOccupationChange = (event) => {
+//   occupation.map((el) => {
+//     if (el.occupation_name === event.target.outerText) {
+//       setSelectedOccupation(el.occupation_id);
+//     }
+//   });
+// };

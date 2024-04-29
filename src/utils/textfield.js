@@ -79,13 +79,13 @@ export const CustomTextField = (props) => {
 export const CustomAutoComplete = (props) => {
   console.log(props.defaultValue);
 
-  // const handleOptionChange = (event, optionName, setSelected) => {
-  //   props.options.forEach((el) => {
-  //     if (el[optionName] === event.target.outerText) {
-  //       setSelected(el.id);
-  //     }
-  //   });
-  // };
+  const handleOptionChange = (event, optionName, setSelected) => {
+    props.options.forEach((el) => {
+      if (el[optionName] === event.target.outerText) {
+        setSelected(el.id);
+      }
+    });
+  };
 
   return (
     <Autocomplete
@@ -110,10 +110,10 @@ export const CustomAutoComplete = (props) => {
       options={props.options}
       // value={}
       defaultValue={(props.defaultValue && props.options.find((el) => el[props.optionName] === props.defaultValue)) || props.options[0]}
-      onChange={(e) => {
-        props.handleChange(e);
-      }}
-      // onChange={(e) => handleOptionChange(e, props.optionName, props.setSelected)}
+      // onChange={(e) => {
+      //   props.handleChange(e);
+      // }}
+      onChange={(e) => handleOptionChange(e, props.optionName, props.setSelected)}
       // getOptionSelected
       getOptionLabel={(option) => option[props.optionName]} // Assuming 'product_type' is the label you want to display
       renderInput={(params) => <TextField {...params} label={props.label} />}

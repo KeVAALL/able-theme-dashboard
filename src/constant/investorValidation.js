@@ -114,6 +114,20 @@ const annual_income = [
     annual_income: '> 1 CR'
   }
 ];
+const relationship = [
+  {
+    id: 1,
+    relation_name: 'Mother'
+  },
+  {
+    id: 2,
+    relation_name: 'Father'
+  },
+  {
+    id: 3,
+    relation_name: 'Brother'
+  }
+];
 // Add form values
 const formAllValues = {
   investor: { investor_name: '', pan_no: '', mobile_no: '', investor_type: '' },
@@ -258,7 +272,10 @@ export {
   tableColumns,
   VisibleColumn,
   genderData,
+  relationship,
   residency,
   marital_status,
-  occupation
+  occupation,
+  annual_income,
+  income_source
 };

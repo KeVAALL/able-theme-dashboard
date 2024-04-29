@@ -81,10 +81,8 @@ export default function IconTabs(props) {
             values={props.values}
             selectedResidenceID={props.selectedResidenceID}
             setSelectedResidenceID={props.setSelectedResidenceID}
-            handleOnResidenceChange={props.handleOnResidenceChange}
             selectedMarital={props.selectedMarital}
             setSelectedMarital={props.setSelectedMarital}
-            handleOnMaritalChange={props.handleOnMaritalChange}
           />
         </MainCard>
       </TabPanel>
@@ -95,12 +93,19 @@ export default function IconTabs(props) {
       </TabPanel>
       <TabPanel className="panel" value={value} index={2}>
         <MainCard sx={tabStyle}>
-          <ProfessionalDetails selectedOccupation={props.selectedOccupation} handleOnOccupationChange={props.handleOnOccupationChange} />
+          <ProfessionalDetails
+            selectedOccupation={props.selectedOccupation}
+            setSelectedOccupation={props.setSelectedOccupation}
+            selectedAnnualIncome={props.selectedAnnualIncome}
+            setSelectedAnnualIncome={props.setSelectedAnnualIncome}
+            selectedIncomeSource={props.selectedIncomeSource}
+            setSelectedIncomeSource={props.setSelectedIncomeSource}
+          />
         </MainCard>
       </TabPanel>
       <TabPanel className="panel" value={value} index={3}>
         <MainCard sx={tabStyle}>
-          <Nomination values={props.values} />
+          <Nomination values={props.values} selectedRelation={props.selectedRelation} setSelectedRelation={props.setSelectedRelation} />
         </MainCard>
       </TabPanel>
       <TabPanel className="panel" value={value} index={4}>
