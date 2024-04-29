@@ -39,19 +39,11 @@ export const NestedCustomTextField = ({
         }
       }}
       {...props}
-      //   InputProps={{
-      //     disableUnderline: true, // <== added this
-      //     startAdornment: props.startAdornment && props.startAdornment
-      //     // step: "0.1",
-      //   }}
     />
   );
 };
 
 export const CustomTextField = (props) => {
-  // console.log(props.values);
-  // console.log(props.name);
-
   return (
     <TextField
       fullWidth
@@ -84,8 +76,6 @@ export const CustomTextField = (props) => {
 };
 
 export const CustomAutoComplete = (props) => {
-  console.log(props.defaultValue);
-
   const handleOptionChange = (event, optionName, setSelected) => {
     props.options.forEach((el) => {
       if (el[optionName] === event.target.outerText) {

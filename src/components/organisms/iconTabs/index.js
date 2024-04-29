@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 // material-ui
 import { Box, Tab, Tabs, Divider } from '@mui/material';
@@ -10,6 +10,7 @@ import MainCard from 'components/molecules/mainCard';
 
 // assets
 import { Briefcase, LocationTick, UserOctagon, Personalcard, ProfileTick } from 'iconsax-react';
+import CustomTooltip from 'helpers/@extended/Tooltip';
 import PersonalInfo from '../personalInfo';
 import AddressDetails from '../addressDetails';
 import ProfessionalDetails from '../professionalDetails';
@@ -53,6 +54,11 @@ export default function IconTabs(props) {
     setTabValue(newValue);
   };
 
+  useEffect(() => {
+    console.log(props.errors);
+    props.handleTabError(props.errors);
+  }, [props.errors]);
+
   const tabStyle = { borderTopLeftRadius: 0, borderTopRightRadius: 0, borderRadius: 1.5, overflow: 'visible' };
 
   return (
@@ -60,7 +66,8 @@ export default function IconTabs(props) {
       <Divider />
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Tabs
-          className="tab_main"
+          // className={`tab_main ${props.errorObject?.addressDetailsError ? 'indicator_main' : ''}`}
+          className={`tab_main`}
           variant="scrollable"
           scrollButtons
           allowScrollButtonsMobile
@@ -68,11 +75,19 @@ export default function IconTabs(props) {
           onChange={handleChange}
           aria-label="scrollable force tabs example"
         >
-          <Tab label="Personal Info" icon={<Personalcard />} iconPosition="start" {...a11yProps(0)} />
-          <Tab label="Address Details" icon={<LocationTick />} iconPosition="start" {...a11yProps(1)} />
-          <Tab label="Professional Details" icon={<Briefcase />} iconPosition="start" {...a11yProps(2)} />
-          <Tab label="Add Nomination" icon={<UserOctagon />} iconPosition="start" {...a11yProps(3)} />
-          <Tab label="Declaration" icon={<ProfileTick />} iconPosition="start" {...a11yProps(3)} />
+          <Tab className="tab_1" label="Personal Info" icon={<Personalcard />} iconPosition="start" {...a11yProps(0)} />
+          {/* <CustomTooltip title="Add" arrow color="#fff" bg="pink"> */}
+          <Tab
+            className={props.errorObject.addressDetailsError ? 'tab_2' : ''}
+            label="Address Details"
+            icon={<LocationTick />}
+            iconPosition="start"
+            {...a11yProps(1)}
+          />
+          {/* </CustomTooltip> */}
+          <Tab className="tab_3" label="Professional Details" icon={<Briefcase />} iconPosition="start" {...a11yProps(2)} />
+          <Tab className="tab_4" label="Add Nomination" icon={<UserOctagon />} iconPosition="start" {...a11yProps(3)} />
+          <Tab className="tab_5" label="Declaration" icon={<ProfileTick />} iconPosition="start" {...a11yProps(3)} />
         </Tabs>
       </Box>
       <TabPanel className="panel" value={tabValue} index={0}>
@@ -93,6 +108,9 @@ export default function IconTabs(props) {
       <TabPanel className="panel" value={tabValue} index={1}>
         <MainCard sx={tabStyle}>
           <AddressDetails
+            sameAddress={props.sameAddress}
+            handleCheckboxChange={props.handleCheckboxChange}
+            setFieldValue={props.setFieldValue}
             values={props.values}
             handleChange={props.handleChange}
             handleBlur={props.handleBlur}
@@ -123,6 +141,8 @@ export default function IconTabs(props) {
             errors={props.errors}
             selectedRelation={props.selectedRelation}
             setSelectedRelation={props.setSelectedRelation}
+            nomineeData={props.nomineeData}
+            handleNewNominee={props.handleNewNominee}
           />
         </MainCard>
       </TabPanel>

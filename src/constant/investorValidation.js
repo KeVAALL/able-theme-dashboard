@@ -130,13 +130,13 @@ const relationship = [
 ];
 // Add form values
 const formAllValues = {
-  investor: { investor_name: '', pan_no: '', mobile_no: '', investor_type: '' },
+  investor: { investor_name: '', pan_no: '', mobile_no: '', investor_type: '', is_permanent_address_correspond: 0 },
   // Personal Info
-  personal_info: {
-    is_indian_resident: '', // Resident Status
-    is_married: '', // Marital Status
-    birth_date: ''
-  },
+  // personal_info: {
+  //   is_indian_resident: '', // Resident Status
+  //   is_married: '', // Marital Status
+  //   birth_date: ''
+  // },
   // Investor Address
   investor_address: {
     address_line_1: '',
@@ -146,34 +146,35 @@ const formAllValues = {
     // is_permanent_address_correspond
   },
   correspondent_address: {
-    address_id: '',
+    // address_id: '',
     address_line_1: '',
     address_line_2: '',
     pincode: '',
     city: ''
-  },
+  }
   // Personal Details??
   // Nomination
-  nominee: {
-    full_name: '',
-    pan: '',
-    date_of_birth: '',
-    share_percent: ''
-    // relationship: '', ??
-  }
+  // nominee: {
+  //   full_name: '',
+  //   pan: '',
+  //   date_of_birth: '',
+  //   share_percent: ''
+  //   relationship: '', ??
+  // }
 };
 const validationSchema = yup.object().shape({
   investor: yup.object().shape({
     investor_name: yup.string().required('Investor Name is required'),
     pan_no: yup.string().required('Pan number is required'),
     mobile_no: yup.number().required('Mobile number is required'),
-    investor_type: yup.string().required('Investor type is required')
+    investor_type: yup.string().required('Investor type is required'),
+    is_permanent_address_correspond: yup.number()
   }),
-  personal_info: yup.object().shape({
-    is_indian_resident: yup.string(), // Resident Status
-    is_married: yup.string(), // Marital Status
-    birth_date: yup.date()
-  }),
+  // personal_info: yup.object().shape({
+  //   is_indian_resident: yup.string(), // Resident Status
+  //   is_married: yup.string(), // Marital Status
+  //   birth_date: yup.date()
+  // }),
   investor_address: yup.object().shape({
     address_line_1: yup.string().required('Address Line is required'),
     address_line_2: yup.string().required('Address Line 2 is required'),
@@ -182,22 +183,26 @@ const validationSchema = yup.object().shape({
     // is_permanent_address_correspond
   }),
   correspondent_address: yup.object().shape({
-    address_line_1: yup.string().required('Address Line is required'),
-    address_line_2: yup.string().required('Address Line 2 is required'),
-    pincode: yup.string().required('Pin Code is required'),
-    city: yup.string().required('City is required')
-  }),
-  professional_details: yup.object().shape({
-    annual_income: yup.number(),
-    income_source: yup.string(),
-    occupation_name: yup.string()
-  }),
-  nominee: yup.object().shape({
-    full_name: yup.string().required('Name is required'),
-    pan: yup.string().required('PAN is required'),
-    date_of_birth: yup.date(),
-    share_percent: yup.number()
+    // address_line_1: yup.string().required('Address Line is required'),
+    // address_line_2: yup.string().required('Address Line 2 is required'),
+    // pincode: yup.string().required('Pin Code is required'),
+    // city: yup.string().required('City is required')
+    address_line_1: yup.string(),
+    address_line_2: yup.string(),
+    pincode: yup.string(),
+    city: yup.string()
   })
+  // professional_details: yup.object().shape({
+  //   annual_income: yup.number(),
+  //   income_source: yup.string(),
+  //   occupation_name: yup.string()
+  // })
+  // nominee: yup.object().shape({
+  //   full_name: yup.string().required('Name is required'),
+  //   pan: yup.string().required('PAN is required'),
+  //   date_of_birth: yup.date(),
+  //   share_percent: yup.number()
+  // })
 });
 // Search Item form fields
 // const filterFormValues = {

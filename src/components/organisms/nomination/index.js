@@ -1,69 +1,300 @@
 /* eslint-disable react/prop-types */
 import React, { useState } from 'react';
-import { Box, Checkbox, Grid, Typography, Button } from '@mui/material';
+import { Box, Card, Checkbox, Grid, Typography, Button, CardContent, CardHeader, Stack, Divider } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 import CustomTextField, { CustomAutoComplete, NestedCustomTextField } from 'utils/textfield';
+import { Formik } from 'formik';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import MultiTable from 'components/pages/multiTable/multiTable';
+import MainCard from '../mainCard/MainCard';
+import AnimateButton from 'helpers/@extended/AnimateButton';
+import { Additem } from 'iconsax-react';
 import { relationship } from 'constant/investorValidation';
 
 const Nomination = (props) => {
-  console.log(props.values);
-  const [showSecondNominiee, setShowSecondNominiee] = useState(false);
-  const [value, setValue] = useState(new Date());
-  const autocompleteData = [
-    { product_type_id: 1, product_type: 'Electronics', is_active: true, is_deleted: false },
-    { product_type_id: 2, product_type: 'Clothing', is_active: true, is_deleted: false }
+  // theme
+  const theme = useTheme();
+  // Autocomplete
+  const [selectedRelation, setSelectedRelation] = useState(null);
+  // Toggle Table and Form Visibility
+  const [showTable, setShowTable] = useState(false);
+  const changeTableVisibility = () => {
+    setShowTable(!showTable);
+  };
+  const [isEditing, setIsEditing] = useState(false);
+  const setEditing = (value) => {
+    console.log(value);
+    setFormValues(value);
+    const relation = relationship.find((el) => el.id === value.relationship_id);
+    setSelectedRelation(relation.relation_name);
+  };
+  const setActiveEditing = () => {
+    setIsEditing(true);
+  };
+  const setActiveClose = () => {
+    setIsEditing(false);
+  };
+  // Form State
+  const formAllValues = { full_name: '', pan: '' };
+  const [formValues, setFormValues] = useState(formAllValues);
+  // Empty Form Fields
+  const clearFormValues = () => {
+    setFormValues(formAllValues);
+  };
+  // Date Picker
+  const [dateValue, setDateValue] = useState(new Date());
+  const handleDateChange = (newValue) => {
+    setDateValue(newValue);
+  };
+  // Table
+  const VisibleColumn = [];
+  const columns = [
+    {
+      Header: 'Name',
+      accessor: 'full_name'
+    },
+    {
+      Header: 'Pan Number',
+      accessor: 'pan'
+    },
+    {
+      Header: 'Relation',
+      // accessor: 'relation_name',
+      accessor: 'relationship_id',
+      customCell: ({ value }) => {
+        console.log(value);
+        return relationship.map((el) => {
+          if (el.id === value) {
+            console.log(el.relation_name);
+            return el.relation_name;
+          }
+        });
+      }
+    }
   ];
-  const handleChange = (newValue) => {
-    setValue(newValue);
+  const headerSX = {
+    p: 2.5,
+    '& .MuiCardHeader-action': { m: '0px auto', alignSelf: 'center' }
   };
 
   return (
     <>
       <>
-        <Box id="__first_nominee">
-          <Typography sx={{ color: '#21B546', marginBottom: '0px', display: 'block' }} variant="p">
-            First Nominee
-          </Typography>
+        {showTable && (
+          <Formik
+            initialValues={formValues}
+            // validationSchema={validationSchema}
+            onSubmit={async (values, { setSubmitting, resetForm }) => {
+              if (isEditing === false) {
+                console.log({ ...values, relation_name: selectedRelation });
+              }
+              if (isEditing === true) {
+                console.log({ ...values, method_name: 'update' });
+              }
+              // changeTableVisibility();
+            }}
+          >
+            {({ values, errors, touched, handleChange, handleBlur, handleSubmit, resetForm, isSubmitting }) => (
+              <Box
+                component="form"
+                onSubmit={(event) => {
+                  event.preventDefault();
+                  // handleSubmit();
+                }}
+                sx={{ width: '100%' }}
+              >
+                <Card
+                  sx={{
+                    position: 'relative',
+                    border: '1px solid',
+                    borderRadius: 1.5,
+                    borderColor: theme.palette.divider,
+                    overflow: 'visible'
+                  }}
+                >
+                  <Stack direction="row" alignItems="center" justifyContent="space-between">
+                    <CardHeader sx={headerSX} titleTypographyProps={{ variant: 'subtitle1' }} title="Add Nominee" />
+                    <Stack direction="row" alignItems="center" spacing={1.5} paddingRight={2.5}>
+                      <Box>
+                        <AnimateButton>
+                          <Button
+                            variant="contained"
+                            color="success"
+                            startIcon={<Additem />}
+                            onClick={() => {
+                              console.log({ ...values, relationship_id: selectedRelation, birth_date: `${dateValue}` });
+                              props.handleNewNominee({ ...values, relationship_id: selectedRelation, birth_date: `${dateValue}` });
+                              changeTableVisibility();
+                            }}
+                          >
+                            Submit
+                          </Button>
+                        </AnimateButton>
+                      </Box>
+                      <Box>
+                        <AnimateButton>
+                          <Button
+                            variant="outlined"
+                            color="secondary"
+                            type="button"
+                            onClick={() => {
+                              changeTableVisibility();
+                              if (setActiveClose) {
+                                setActiveClose();
+                              }
+                              clearFormValues();
+                            }}
+                          >
+                            Cancel
+                          </Button>
+                        </AnimateButton>
+                      </Box>
+                    </Stack>
+                  </Stack>
+                  <Divider />
+                  <CardContent>
+                    <Grid container spacing={3} sx={{ marginTop: '0px' }}>
+                      <Grid item xs={12} sm={6} md={6} style={{ display: 'grid', gap: '10px' }}>
+                        <CustomTextField
+                          label="Full Name"
+                          name="full_name"
+                          values={values}
+                          type="string"
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          touched={touched}
+                          errors={errors}
+                        />
+                      </Grid>
 
-          <Grid container spacing={2} sx={{ marginTop: '0px' }}>
-            <Grid item xs={12} sm={6} md={6} style={{ display: 'grid', gap: '10px' }}>
-              <NestedCustomTextField
-                label="Full Name"
-                valueName="nominee.full_name"
-                values={props.values.nominee.full_name}
-                type="string"
-                onChange={props.handleChange}
-                onBlur={props.handleBlur}
-                touched={props.touched}
-                errors={props.error}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6} md={6} style={{ display: 'grid', gap: '10px' }}>
-              <CustomAutoComplete
-                options={relationship}
-                defaultValue={props.selectedRelation}
-                setSelected={props.setSelectedRelation}
-                optionName="relation_name"
-                label="Relationship with Investor"
-              />
-            </Grid>
-            <Grid item xs={12} sm={6} md={6} style={{ display: 'grid', gap: '10px' }}>
-              <Grid container spacing={1}>
-                <Grid item xs={6} sm={6} md={12} style={{ display: 'grid', gap: '10px' }}>
-                  <NestedCustomTextField
-                    label="PAN of Nominee"
-                    valueName="nominee.pan"
-                    values={props.values.nominee.pan}
-                    type="string"
-                    onChange={props.handleChange}
-                    onBlur={props.handleBlur}
-                    touched={props.touched}
-                    errors={props.error}
-                  />
-                </Grid>
-                {/* <Grid item xs={6} sm={6} md={6} style={{ display: 'grid', gap: '10px' }}>
+                      <Grid item xs={12} sm={6} md={6} style={{ display: 'grid', gap: '10px' }}>
+                        <CustomTextField
+                          label="PAN of Nominee"
+                          name="pan"
+                          values={values}
+                          type="string"
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          touched={touched}
+                          errors={errors}
+                        />
+                      </Grid>
+                      <Grid item xs={12} sm={6} md={6} style={{ display: 'grid', gap: '10px' }}>
+                        <CustomAutoComplete
+                          options={relationship}
+                          defaultValue={selectedRelation}
+                          setSelected={setSelectedRelation}
+                          optionName="relation_name"
+                          label="Relationship with Investor"
+                        />
+                      </Grid>
+                      <Grid item xs={12} sm={6} md={6} style={{ display: 'grid', gap: '10px' }}>
+                        <LocalizationProvider dateAdapter={AdapterDateFns}>
+                          <DesktopDatePicker
+                            className="calendar_main"
+                            label="DOB"
+                            inputFormat="dd/MM/yyyy"
+                            value={dateValue}
+                            onChange={handleDateChange}
+                            renderInput={(params) => <CustomTextField {...params} />}
+                          />
+                        </LocalizationProvider>
+                      </Grid>
+                    </Grid>
+                  </CardContent>
+                </Card>
+              </Box>
+            )}
+          </Formik>
+        )}
+        {!showTable && (
+          <MainCard
+            title="Nominee"
+            changeTableVisibility={changeTableVisibility}
+            showButton
+            setActiveAdding={setActiveClose}
+            border
+            sx={{ height: '100%', boxShadow: 1 }}
+          >
+            <MultiTable
+              columns={columns}
+              data={props.nomineeData}
+              changeTableVisibility={changeTableVisibility}
+              setEditing={setEditing}
+              // getOneItem={GetOneProduct}
+              // deleteOneItem={DeleteOneProduct}
+              // setSearchData={setSearchData}
+              // tableDataRefetch={ProductTableDataRefetch}
+              setActiveEditing={setActiveEditing}
+              VisibleColumn={VisibleColumn}
+            />
+          </MainCard>
+        )}
+      </>
+    </>
+  );
+};
+
+export default Nomination;
+
+{
+  /* <Typography sx={{ color: '#21B546', marginBottom: '0px', display: 'block' }} variant="p">
+            First Nominee
+          </Typography> */
+}
+// <Grid item xs={12} sm={6} md={6} style={{ display: 'grid', gap: '10px' }}>
+//                         <NestedCustomTextField
+//                           label="Full Name"
+//                           valueName="nominee.full_name"
+//                           values={props.values.nominee.full_name}
+//                           type="string"
+//                           onChange={props.handleChange}
+//                           onBlur={props.handleBlur}
+//                           touched={props.touched}
+//                           errors={props.error}
+//                         />
+//                       </Grid>
+//                       <Grid item xs={12} sm={6} md={6} style={{ display: 'grid', gap: '10px' }}>
+//                         <CustomAutoComplete
+//                           options={relationship}
+//                           defaultValue={props.selectedRelation}
+//                           setSelected={props.setSelectedRelation}
+//                           optionName="relation_name"
+//                           label="Relationship with Investor"
+//                         />
+//                       </Grid>
+//                       <Grid item xs={12} sm={6} md={6} style={{ display: 'grid', gap: '10px' }}>
+//                         <Grid container spacing={1}>
+//                           <Grid item xs={6} sm={6} md={12} style={{ display: 'grid', gap: '10px' }}>
+//                             <NestedCustomTextField
+//                               label="PAN of Nominee"
+//                               valueName="nominee.pan"
+//                               values={props.values.nominee.pan}
+//                               type="string"
+//                               onChange={props.handleChange}
+//                               onBlur={props.handleBlur}
+//                               touched={props.touched}
+//                               errors={props.error}
+//                             />
+//                           </Grid>
+//                         </Grid>
+//                       </Grid>
+//                       <Grid item xs={12} sm={6} md={6} style={{ display: 'grid', gap: '10px' }}>
+//                         <LocalizationProvider dateAdapter={AdapterDateFns}>
+//                           <DesktopDatePicker
+//                             className="calendar_main"
+//                             label="DOB"
+//                             inputFormat="dd/MM/yyyy"
+//                             value={value}
+//                             onChange={handleChange}
+//                             renderInput={(params) => <CustomTextField {...params} />}
+//                           />
+//                         </LocalizationProvider>
+//                       </Grid>
+{
+  /* <Grid item xs={6} sm={6} md={6} style={{ display: 'grid', gap: '10px' }}>
                   <CustomTextField
                     label="Percent Share (%)"
                     name="pan_no"
@@ -74,30 +305,8 @@ const Nomination = (props) => {
                     touched={() => {}}
                     errors={() => {}}
                   />
-                </Grid> */}
-              </Grid>
-            </Grid>
-            <Grid item xs={12} sm={6} md={6} style={{ display: 'grid', gap: '10px' }}>
-              <LocalizationProvider dateAdapter={AdapterDateFns}>
-                <DesktopDatePicker
-                  className="calendar_main"
-                  label="DOB"
-                  inputFormat="dd/MM/yyyy"
-                  value={value}
-                  onChange={handleChange}
-                  renderInput={(params) => <CustomTextField {...params} />}
-                />
-              </LocalizationProvider>
-            </Grid>
-          </Grid>
-        </Box>
-      </>
-    </>
-  );
-};
-
-export default Nomination;
-
+                </Grid> */
+}
 {
   /* <div id="__checkbox" style={{ marginTop: '12px', display: 'flex', alignItems: 'flex-start', gap: '4px' }}>
           <Checkbox defaultChecked={false} />

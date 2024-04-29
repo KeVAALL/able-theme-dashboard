@@ -66,6 +66,32 @@ function Investor() {
     isRelativeToPoliticallyExposed: true,
     isResidentOutsideIndia: false
   });
+  // Address Details
+  const [sameAddress, setSameAddress] = useState(false);
+  const handleCheckboxChange = (event) => {
+    setSameAddress(event.target.checked);
+  };
+  // Nominee
+  const [nomineeData, setNomineeData] = useState([]);
+  const [errorObject, setErrorObject] = useState({
+    personalInfoError: false,
+    addressDetailsError: false,
+    professionalDetailsError: false,
+    nomineeError: false,
+    declarationError: false
+  });
+
+  // Toggle Table and Form Visibility
+  const [showTable, setShowTable] = useState(false);
+  const changeTableVisibility = () => {
+    setShowTable(!showTable);
+  };
+
+  const handleNewNominee = (value) => {
+    setNomineeData((prev) => {
+      return [...prev, value];
+    });
+  };
   const handleDeclarationClick = (value) => {
     if (value === 'PoliticallyExposed') {
       setSelectedDeclaration({ ...selectedDeclaration, isPoliticallyExposed: !selectedDeclaration.isPoliticallyExposed });
@@ -78,11 +104,13 @@ function Investor() {
       setSelectedDeclaration({ ...selectedDeclaration, isResidentOutsideIndia: !selectedDeclaration.isResidentOutsideIndia });
     }
   };
-
-  // Toggle Table and Form Visibility
-  const [showTable, setShowTable] = useState(false);
-  const changeTableVisibility = () => {
-    setShowTable(!showTable);
+  const handleTabError = (value) => {
+    console.log(value);
+    if (value.investor_address) {
+      setErrorObject({ ...errorObject, addressDetailsError: true });
+    } else {
+      setErrorObject({ ...errorObject, addressDetailsError: false });
+    }
   };
 
   // Edit Logic State
@@ -98,12 +126,12 @@ function Investor() {
     setSelectedOccupation(value.professional_details.occupation_name);
     setSelectedAnnualIncome(value.professional_details.annual_income);
     setSelectedIncomeSource(value.professional_details.income_source);
-    console.log(Boolean(value.declaration.is_pep));
     setSelectedDeclaration({
       isPoliticallyExposed: Boolean(value.declaration.is_pep),
       isRelativeToPoliticallyExposed: Boolean(value.declaration.is_rpep),
       isResidentOutsideIndia: Boolean(value.declaration.is_foreign_tax_resident)
     });
+    setNomineeData(value.nominee);
   };
   const setActiveEditing = () => {
     setIsEditing(true);
@@ -124,6 +152,18 @@ function Investor() {
   // Empty Form Fields
   const clearFormValues = () => {
     setFormValues(formAllValues);
+    setSelectedGender();
+    setSelectedResidenceID();
+    setSelectedMarital();
+    setSelectedOccupation();
+    setSelectedAnnualIncome();
+    setSelectedIncomeSource();
+    setSelectedDeclaration({
+      isPoliticallyExposed: false,
+      isRelativeToPoliticallyExposed: false,
+      isResidentOutsideIndia: false
+    });
+    setNomineeData([]);
   };
   // Custom fields/ Table Columns
   const theme = useTheme();
@@ -168,26 +208,27 @@ function Investor() {
           validationSchema={validationSchema}
           onSubmit={async (values, { setSubmitting, resetForm }) => {
             if (isEditing === false) {
-              SaveInvestor(values, InvestorTableDataRefetch, clearFormValues, checkedCumulative, checkedNonCumulative);
+              console.log(values);
+              // SaveInvestor(values, InvestorTableDataRefetch, clearFormValues, checkedCumulative, checkedNonCumulative);
             }
             if (isEditing === true) {
               console.log('i am editing');
 
               console.log({ ...values, method_name: 'update' });
-              EditInvestor(
-                values,
-                // isFDActive,
-                isInvestorActive,
-                InvestorTableDataRefetch,
-                clearFormValues,
-                setActiveClose
-              );
+              // EditInvestor(
+              //   values,
+              //   // isFDActive,
+              //   isInvestorActive,
+              //   InvestorTableDataRefetch,
+              //   clearFormValues,
+              //   setActiveClose
+              // );
             }
-
+            setErrorObject(errorObject);
             changeTableVisibility();
           }}
         >
-          {({ values, errors, touched, handleChange, handleBlur, handleSubmit, resetForm, isSubmitting }) => (
+          {({ values, errors, touched, handleChange, handleBlur, handleSubmit, setFieldValue, resetForm, isSubmitting }) => (
             <Box
               component="form"
               onSubmit={(event) => {
@@ -301,6 +342,13 @@ function Investor() {
                     setSelectedIncomeSource={setSelectedIncomeSource}
                     selectedDeclaration={selectedDeclaration}
                     handleDeclarationClick={handleDeclarationClick}
+                    nomineeData={nomineeData}
+                    handleNewNominee={handleNewNominee}
+                    errorObject={errorObject}
+                    handleTabError={handleTabError}
+                    sameAddress={sameAddress}
+                    handleCheckboxChange={handleCheckboxChange}
+                    setFieldValue={setFieldValue}
                   />
                 </Grid>
               </Card>

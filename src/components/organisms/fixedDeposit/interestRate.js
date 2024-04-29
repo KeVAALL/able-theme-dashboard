@@ -35,14 +35,14 @@ export default function InterestRate({ formValues, changeTableVisibility, isNotE
   // Autocomplete field state
   const [selectedPayoutMethod, setSelectedPayoutMethod] = useState(null);
   const [payoutData, setPayoutData] = useState([]);
-  const handleOnIssuerChange = (event) => {
-    payoutData.map((el) => {
-      if (el.item_value === event.target.outerText) {
-        console.log(el.item_id);
-        setSelectedPayoutMethod(el.item_id);
-      }
-    });
-  };
+  // const handleOnIssuerChange = (event) => {
+  //   payoutData.map((el) => {
+  //     if (el.item_value === event.target.outerText) {
+  //       console.log(el.item_id);
+  //       setSelectedPayoutMethod(el.item_id);
+  //     }
+  //   });
+  // };
 
   const [openDialog, setOpenDialog] = useState(false);
   const handleOpenDialog = () => {
@@ -213,7 +213,8 @@ export default function InterestRate({ formValues, changeTableVisibility, isNotE
                   <Grid item xs={3}>
                     <CustomAutoComplete
                       options={payoutData}
-                      handleChange={handleOnIssuerChange}
+                      defaultValue={selectedPayoutMethod}
+                      setSelected={setSelectedPayoutMethod}
                       optionName="item_value"
                       label="Payout Method"
                     />

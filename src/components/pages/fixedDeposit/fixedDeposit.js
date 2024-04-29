@@ -79,14 +79,7 @@ function FixDeposit() {
   const handleNonCumulativeChange = () => {
     setCheckedNonCumulative((prevChecked) => (!prevChecked ? 1 : 0));
   };
-  // Autocomplete field state
-  const handleOnIssuerChange = (event) => {
-    activeIssuers.map((el) => {
-      if (el.issuer_name === event.target.outerText) {
-        setSelectedIssuerID(el.issuer_id);
-      }
-    });
-  };
+
   // Search one item state
   const setSearchData = (fixedDeposit) => {
     setProductData(fixedDeposit);
@@ -167,7 +160,6 @@ function FixDeposit() {
                 setActiveClose
               );
             }
-
             changeTableVisibility();
           }}
         >

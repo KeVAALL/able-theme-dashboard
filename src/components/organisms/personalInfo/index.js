@@ -10,7 +10,7 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { residency, marital_status } from 'constant/investorValidation';
 
 const CustomChip = (props) => {
-  console.log(props.values);
+  // console.log(props.values);
   // const [value, setValue] = useState(new Date('2014-08-18T21:11:54'));
   const [value, setValue] = useState(new Date());
 

@@ -1,17 +1,15 @@
 /* eslint-disable react/prop-types */
-import { Checkbox, Chip, Grid, Typography } from '@mui/material';
+import { Checkbox, Chip, Grid, Typography, Box } from '@mui/material';
 import React, { useState } from 'react';
 import CustomTextField, { NestedCustomTextField } from 'utils/textfield';
 
 const AddressDetails = (props) => {
   // is_permanent_address_correspond
-  const [sameAddress, setSameAddress] = useState(false);
-  const handleCheckboxChange = (event) => {
-    setSameAddress(event.target.checked);
-  };
+  console.log(props.values.investor.is_permanent_address_correspond);
+
   return (
     <>
-      <div id="__permanent _address" style={{ marginBottom: '12px' }}>
+      <Box id="__permanent _address" style={{ marginBottom: '12px' }}>
         <Typography sx={{ color: '#21B546', marginBottom: '12px', display: 'block' }} variant="p">
           Permanent Address
         </Typography>
@@ -68,16 +66,27 @@ const AddressDetails = (props) => {
             />
           </Grid>
         </Grid>
-      </div>
-      <div id="__checkbox" style={{ marginTop: '12px', display: 'flex', alignItems: 'flex-start', gap: '4px' }}>
-        <Checkbox checked={sameAddress} onChange={handleCheckboxChange} inputProps={{ 'aria-label': 'Same address' }} />
+      </Box>
+      <Box id="__checkbox" style={{ marginTop: '12px', display: 'flex', alignItems: 'flex-start', gap: '4px' }}>
+        {/* <Checkbox checked={props.sameAddress} onChange={props.handleCheckboxChange} inputProps={{ 'aria-label': 'Same address' }} /> */}
+        <Checkbox
+          checked={props.values.investor.is_permanent_address_correspond}
+          // onChange={props.handleChange}
+          onChange={(e) => {
+            const newValue = e.target.checked ? 1 : 0;
+            props.setFieldValue('investor.is_permanent_address_correspond', newValue);
+          }}
+          name="investor.is_permanent_address_correspond"
+          id="investor.is_permanent_address_correspond"
+          inputProps={{ 'aria-label': 'Same address' }}
+        />
         <Typography sx={{ color: '#5E718D', marginBottom: '20px' }} variant="p">
           Correspondent Address is same as Permanent Address
         </Typography>
-      </div>
+      </Box>
 
-      {!sameAddress && (
-        <div id="__permanent _address" style={{ marginTop: '12px', marginBottom: '12px' }}>
+      {!props.values.investor.is_permanent_address_correspond && (
+        <Box id="__permanent _address" style={{ marginTop: '12px', marginBottom: '12px' }}>
           <Typography sx={{ color: '#21B546', marginBottom: '12px', display: 'block' }} variant="p">
             Correspondent Address
           </Typography>
@@ -89,6 +98,7 @@ const AddressDetails = (props) => {
                 valueName="correspondent_address.address_line_1"
                 values={props.values.correspondent_address.address_line_1}
                 type="string"
+                // required={!sameAddress}
                 onChange={props.handleChange}
                 onBlur={props.handleBlur}
                 touched={props.touched}
@@ -101,6 +111,7 @@ const AddressDetails = (props) => {
                 valueName="correspondent_address.address_line_2"
                 values={props.values.correspondent_address.address_line_2}
                 type="string"
+                // required={!sameAddress}
                 onChange={props.handleChange}
                 onBlur={props.handleBlur}
                 touched={props.touched}
@@ -114,6 +125,7 @@ const AddressDetails = (props) => {
                 valueName="correspondent_address.pincode"
                 values={props.values.correspondent_address.pincode}
                 type="string"
+                // required={!sameAddress}
                 onChange={props.handleChange}
                 onBlur={props.handleBlur}
                 touched={props.touched}
@@ -127,6 +139,7 @@ const AddressDetails = (props) => {
                 valueName="correspondent_address.city"
                 values={props.values.correspondent_address.city}
                 type="string"
+                // required={!sameAddress}
                 onChange={props.handleChange}
                 onBlur={props.handleBlur}
                 touched={props.touched}
@@ -134,7 +147,7 @@ const AddressDetails = (props) => {
               />
             </Grid>
           </Grid>
-        </div>
+        </Box>
       )}
     </>
   );

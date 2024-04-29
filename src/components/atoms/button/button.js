@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
 import React, { useEffect, useState } from 'react';
 import { Box, Button, Stack, CardHeader, FormControlLabel, Switch } from '@mui/material';
@@ -23,7 +24,6 @@ export const SubmitButton = ({
     if (setIsActive) {
       setIsActive(formValues.is_active);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formValues?.is_active]);
 
   return (
