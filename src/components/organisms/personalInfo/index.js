@@ -60,6 +60,7 @@ const CustomChip = (props) => {
         >
           <LocalizationProvider dateAdapter={AdapterDateFns}>
             <DesktopDatePicker
+              className="calendar_main"
               label="Date Desktop"
               inputFormat="dd/MM/yyyy"
               value={value}

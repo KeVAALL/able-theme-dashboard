@@ -31,7 +31,8 @@ const Nomination = (props) => {
               <CustomTextField
                 label="Full Name"
                 name="full_name"
-                values={props.values.nominee[0]}
+                // values={props.values.nominee[0]}
+                values={props.values.nominee}
                 type="string"
                 onChange={() => {}}
                 onBlur={() => {}}
@@ -54,7 +55,8 @@ const Nomination = (props) => {
                   <CustomTextField
                     label="PAN of Nominee"
                     name="pan"
-                    values={props.values.nominee[0]}
+                    values={props.values.nominee}
+                    // values={props.values.nominee[0]}
                     type="string"
                     onChange={() => {}}
                     onBlur={() => {}}
@@ -79,6 +81,7 @@ const Nomination = (props) => {
             <Grid item xs={12} sm={6} md={6} style={{ display: 'grid', gap: '10px' }}>
               <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <DesktopDatePicker
+                  className="calendar_main"
                   label="DOB"
                   inputFormat="dd/MM/yyyy"
                   value={value}

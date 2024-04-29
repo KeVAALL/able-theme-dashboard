@@ -296,8 +296,7 @@ function FixDeposit() {
                       <CustomAutoComplete
                         options={activeIssuers}
                         defaultValue={selectedIssuerID}
-                        handleChange={handleOnIssuerChange}
-                        // setSelected={setSelectedIssuerID}
+                        setSelected={setSelectedIssuerID}
                         optionName="issuer_name"
                         label="Issuers"
                       />
