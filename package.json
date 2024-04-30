@@ -1,7 +1,7 @@
 {
+  "homepage": "https://able-theme-dashboard-bilk.vercel.app/",
   "name": "able-pro-material-react",
   "version": "9.1.2",
-  "homepage": "https://able-theme-dashboard-bilk.vercel.app/",
   "private": true,
   "dependencies": {
     "@auth0/auth0-spa-js": "^2.0.5",
