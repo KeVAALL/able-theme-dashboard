@@ -2,7 +2,6 @@
   "name": "able-pro-material-react",
   "version": "9.1.2",
   "private": true,
-  "homepage": "/login",
   "dependencies": {
     "@auth0/auth0-spa-js": "^2.0.5",
     "@date-io/date-fns": "^2.16.0",

@@ -138,24 +138,6 @@ function Issuer() {
                   <Grid container spacing={3}>
                     <Grid item md={4} sm={6} xs={12}>
                       <CustomTextField
-                        label="GST Number"
-                        name="issuer_gst_number"
-                        values={values}
-                        type="text"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        touched={touched}
-                        errors={errors}
-                        fullWidth
-                        FormHelperTextProps={{
-                          style: {
-                            marginLeft: 0
-                          }
-                        }}
-                      />
-                    </Grid>
-                    <Grid item md={4} sm={6} xs={12}>
-                      <CustomTextField
                         label="Issuer Name"
                         name="issuer_name"
                         values={values}
@@ -172,6 +154,25 @@ function Issuer() {
                         }}
                       />
                     </Grid>
+                    <Grid item md={4} sm={6} xs={12}>
+                      <CustomTextField
+                        label="GST Number"
+                        name="issuer_gst_number"
+                        values={values}
+                        type="text"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        touched={touched}
+                        errors={errors}
+                        fullWidth
+                        FormHelperTextProps={{
+                          style: {
+                            marginLeft: 0
+                          }
+                        }}
+                      />
+                    </Grid>
+
                     <Grid item md={4} sm={6} xs={12}>
                       <CustomTextField
                         label="Issuer PAN"
