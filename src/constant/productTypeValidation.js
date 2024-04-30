@@ -19,7 +19,8 @@ const formValueFields = [
   }
 ];
 const filterValidationSchema = yup.object({
-  product_type: yup.string().required('Product Type is required')
+  // product_type: yup.string().required('Product Type is required')
+  product_type: yup.string()
 });
 // Table Columns
 const VisibleColumn = [];

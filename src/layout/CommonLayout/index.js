@@ -57,7 +57,7 @@ const CommonLayout = ({ layout = 'blank' }) => {
       )}
       {layout === 'component' && (
         <Suspense fallback={<Loader />}>
-          <Container maxWidth="xl" sx={{ px: { xs: 0, sm: 2 } }}>
+          <Container className="background_main" maxWidth="xl" sx={{ px: { xs: 0, sm: 2 } }}>
             <Header handleDrawerOpen={handleDrawerOpen} layout="component" />
             <Toolbar sx={{ mt: 2 }} />
             <ComponentLayout handleDrawerOpen={handleDrawerOpen} componentDrawerOpen={componentDrawerOpen} />

@@ -3,7 +3,7 @@ import { Grid, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import { annual_income, income_source, occupation } from 'constant/investorValidation';
 import React from 'react';
-import { CustomAutoComplete } from 'utils/textfield';
+import { CustomAutoComplete, FormikAutoComplete } from 'utils/textfield';
 
 const ProfessionalDetails = (props) => {
   const autocompleteData = [
@@ -15,17 +15,25 @@ const ProfessionalDetails = (props) => {
     <>
       <Grid container spacing={2}>
         <Grid item xs={12} sm={6} md={4} lg={4}>
-          <CustomAutoComplete
+          {/* <CustomAutoComplete
             options={occupation}
             defaultValue={props.selectedOccupation}
             // handleChange={props.handleOnOccupationChange}
             setSelected={props.setSelectedOccupation}
             optionName="occupation_name"
             label="Occupation"
+          /> */}
+          <FormikAutoComplete
+            options={occupation}
+            defaultValue={props.values.professional_details.occupation_id}
+            setFieldValue={props.setFieldValue}
+            formName="professional_details.occupation_id"
+            optionName="occupation_name"
+            label="Occupation"
           />
         </Grid>
         <Grid item xs={12} sm={6} md={4} lg={4}>
-          <CustomAutoComplete
+          {/* <CustomAutoComplete
             options={annual_income}
             defaultValue={props.selectedAnnualIncome}
             setSelected={props.setSelectedAnnualIncome}
@@ -34,16 +42,32 @@ const ProfessionalDetails = (props) => {
             // }}
             optionName="annual_income"
             label="Annual Income"
+          /> */}
+          <FormikAutoComplete
+            options={annual_income}
+            defaultValue={props.values.professional_details.annual_income_id}
+            setFieldValue={props.setFieldValue}
+            formName="professional_details.annual_income_id"
+            optionName="annual_income"
+            label="Annual Income"
           />
         </Grid>
         <Grid item xs={12} sm={6} md={4} lg={4}>
-          <CustomAutoComplete
+          {/* <CustomAutoComplete
             options={income_source}
             defaultValue={props.selectedIncomeSource}
             setSelected={props.setSelectedIncomeSource}
             // handleChange={(event) => {
             //   console.log(event.target.value);
             // }}
+            optionName="income_source"
+            label="Source of Income"
+          /> */}
+          <FormikAutoComplete
+            options={income_source}
+            defaultValue={props.values.professional_details.income_source_id}
+            setFieldValue={props.setFieldValue}
+            formName="professional_details.income_source_id"
             optionName="income_source"
             label="Source of Income"
           />

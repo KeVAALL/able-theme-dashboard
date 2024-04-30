@@ -94,6 +94,7 @@ export default function IconTabs(props) {
         <MainCard sx={tabStyle}>
           <PersonalInfo
             values={props.values}
+            setFieldValue={props.setFieldValue}
             handleChange={props.handleChange}
             handleBlur={props.handleBlur}
             touched={props.touched}
@@ -122,6 +123,8 @@ export default function IconTabs(props) {
       <TabPanel className="panel" value={tabValue} index={2}>
         <MainCard sx={tabStyle}>
           <ProfessionalDetails
+            values={props.values}
+            setFieldValue={props.setFieldValue}
             selectedOccupation={props.selectedOccupation}
             setSelectedOccupation={props.setSelectedOccupation}
             selectedAnnualIncome={props.selectedAnnualIncome}

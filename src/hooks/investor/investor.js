@@ -50,7 +50,7 @@ export async function SaveInvestor(values, InvestorTableDataRefetch, clearFormVa
     method_name: 'add'
   });
   try {
-    await axios.post('/investor/create', {
+    await axios.post('/investor/save', {
       ...values,
       user_id: 2,
       method_name: 'add'

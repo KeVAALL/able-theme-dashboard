@@ -5,20 +5,6 @@ import React, { useState } from 'react';
 
 import Chip from '@mui/material/Chip';
 const Declaration = ({ selectedDeclaration, handleDeclarationClick }) => {
-  // const [selectedDeclaration, setSelectedDeclaration] = useState({
-  //   isPoliticallyExposed: true,
-  //   isRelativeToPoliticallyExposed: true,
-  //   isResidentOutsideIndia: false
-  // });
-  // const handleDeclarationClick = (value) => {
-  //   if (value === 'PoliticallyExposed') {
-  //     setSelectedDeclaration({ ...selected, isPoliticallyExposed: !selected.isPoliticallyExposed });
-  //   } else if (value === 'RelativeToPoliticallyExposed') {
-  //     setSelectedDeclaration({ ...selected, isRelativeToPoliticallyExposed: !selected.isRelativeToPoliticallyExposed });
-  //   } else if (value === 'ResidentOutsideIndia') {
-  //     setSelectedDeclaration({ ...selected, isResidentOutsideIndia: !selected.isResidentOutsideIndia });
-  //   }
-  // };
   return (
     <>
       <Grid id="__parent" container spacing={2}>
@@ -103,3 +89,18 @@ const Declaration = ({ selectedDeclaration, handleDeclarationClick }) => {
 };
 
 export default Declaration;
+
+// const [selectedDeclaration, setSelectedDeclaration] = useState({
+//   isPoliticallyExposed: true,
+//   isRelativeToPoliticallyExposed: true,
+//   isResidentOutsideIndia: false
+// });
+// const handleDeclarationClick = (value) => {
+//   if (value === 'PoliticallyExposed') {
+//     setSelectedDeclaration({ ...selected, isPoliticallyExposed: !selected.isPoliticallyExposed });
+//   } else if (value === 'RelativeToPoliticallyExposed') {
+//     setSelectedDeclaration({ ...selected, isRelativeToPoliticallyExposed: !selected.isRelativeToPoliticallyExposed });
+//   } else if (value === 'ResidentOutsideIndia') {
+//     setSelectedDeclaration({ ...selected, isResidentOutsideIndia: !selected.isResidentOutsideIndia });
+//   }
+// };

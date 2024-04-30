@@ -4,6 +4,26 @@ import { useFormikContext, getIn } from 'formik';
 import React from 'react';
 import './custom.css';
 
+export const dateFormatter = (date) => {
+  // console.log(typeof date);
+  console.log(date);
+  // // Extract year, month, and day
+  // const year = date.getFullYear();
+  // const month = String(date.getMonth() + 1).padStart(2, '0'); // Month is zero-based
+  // const day = String(date.getDate()).padStart(2, '0');
+
+  // // Construct the date string in YYYY-MM-DD format
+  // const formattedDate = `${year}-${month}-${day}`;
+
+  // return formattedDate; // Output: "2024-04-02"
+  const datePart = date.split(' ').slice(0, 4).join(' ');
+
+  // Create a new Date object
+  const dateIs = new Date(datePart);
+
+  console.log(dateIs.toISOString().slice(0, 10));
+};
+
 export const NestedCustomTextField = ({
   label,
   valueName,
@@ -66,11 +86,6 @@ export const CustomTextField = (props) => {
         }
       }}
       {...props}
-      //   InputProps={{
-      //     disableUnderline: true, // <== added this
-      //     startAdornment: props.startAdornment && props.startAdornment
-      //     // step: "0.1",
-      //   }}
     />
   );
 };
@@ -107,10 +122,69 @@ export const CustomAutoComplete = (props) => {
       options={props.options}
       // value={}
       defaultValue={(props.defaultValue && props.options.find((el) => el[props.optionName] === props.defaultValue)) || props.options[0]}
+      // defaultValue={props.defaultValue && props.options.find((el) => el[props.optionName] === props.defaultValue)}
       // onChange={(e) => {
       //   props.handleChange(e);
       // }}
       onChange={(e) => handleOptionChange(e, props.optionName, props.setSelected)}
+      // getOptionSelected
+      getOptionLabel={(option) => option[props.optionName]} // Assuming 'product_type' is the label you want to display
+      renderInput={(params) => <TextField {...params} label={props.label} />}
+    />
+  );
+};
+export const FormikAutoComplete = (props) => {
+  console.log(props.defaultValue);
+
+  const handleOptionChange = (event, optionName, formName, setFieldValue) => {
+    props.options.forEach((el) => {
+      if (el[optionName] === event.target.outerText) {
+        // console.log(formName, el.id);
+        setFieldValue(formName, el.id);
+      }
+    });
+  };
+
+  return (
+    <Autocomplete
+      fullWidth
+      disablePortal
+      className="common-autocomplete"
+      componentsProps={{
+        popper: {
+          modifiers: [
+            {
+              name: 'flip',
+              enabled: false
+            },
+            {
+              name: 'preventOverflow',
+              enabled: false
+            }
+          ]
+        }
+      }}
+      id="basic-autocomplete-label"
+      options={props.options}
+      // value={}
+      // defaultValue={(props.defaultValue && props.options.find((el) => el[props.optionName] === props.defaultValue)) || props.options[0]}
+      // defaultValue={
+      //   (typeof props.defaultValue === 'string' && props.options.find((el) => el[props.optionName] === props.defaultValue)) ||
+      //   props.options.find((el) => el.id === props.defaultValue)
+      // }
+      defaultValue={
+        (typeof props.defaultValue === 'string' && props.options.find((el) => el[props.optionName] === props.defaultValue)) ||
+        (typeof props.defaultValue === 'number' && props.options.find((el) => el.id === props.defaultValue))
+      }
+      // defaultValue={
+      //   typeof props.defaultValue === 'number'
+      //     ? props.options.find((el) => el.id === props.defaultValue)
+      //     : props.options.find((el) => el[props.optionName] === props.defaultValue)
+      // }
+      // onChange={(e) => {
+      //   props.handleChange(e);
+      // }}
+      onChange={(e) => handleOptionChange(e, props.optionName, props.formName, props.setFieldValue)}
       // getOptionSelected
       getOptionLabel={(option) => option[props.optionName]} // Assuming 'product_type' is the label you want to display
       renderInput={(params) => <TextField {...params} label={props.label} />}
@@ -130,6 +204,8 @@ export const CustomCheckbox = (props) => {
   );
 };
 
+export default CustomTextField;
+
 {
   /* <TextField
                   variant="standard"
@@ -145,5 +221,8 @@ export const CustomCheckbox = (props) => {
                   helperText={touched.product_type_id && errors.product_type_id}
                 /> */
 }
-
-export default CustomTextField;
+//   InputProps={{
+//     disableUnderline: true, // <== added this
+//     startAdornment: props.startAdornment && props.startAdornment
+//     // step: "0.1",
+//   }}

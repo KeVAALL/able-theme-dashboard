@@ -6,7 +6,7 @@
 }
 .tab_main .tab_2 {
   color: red !important;
-  border-bottom: 2px solid red !important;
+  /* border-bottom: 2px solid red !important; */
   border-radius: 0 !important;
   margin-bottom: 0px !important;
 }

@@ -15,7 +15,7 @@ import { Formik } from 'formik';
 import * as yup from 'yup';
 import Loader from 'components/atoms/loader/Loader';
 import { SubmitButton } from 'components/atoms/button/button';
-import CustomTextField, { CustomAutoComplete, NestedCustomTextField } from 'utils/textfield';
+import CustomTextField, { CustomAutoComplete, FormikAutoComplete, NestedCustomTextField, dateFormatter } from 'utils/textfield';
 
 // assets
 import {
@@ -54,6 +54,7 @@ function Investor() {
   const [ifaData, setIfaData] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const [selectedIFA, setSelectedIFA] = useState(null);
   const [selectedGender, setSelectedGender] = useState(null);
   const [selectedRelation, setSelectedRelation] = useState(null);
   const [selectedResidenceID, setSelectedResidenceID] = useState(null);
@@ -64,7 +65,7 @@ function Investor() {
   const [selectedDeclaration, setSelectedDeclaration] = useState({
     isPoliticallyExposed: true,
     isRelativeToPoliticallyExposed: true,
-    isResidentOutsideIndia: false
+    isResidentOutsideIndia: true
   });
   // Address Details
   const [sameAddress, setSameAddress] = useState(false);
@@ -73,6 +74,7 @@ function Investor() {
   };
   // Nominee
   const [nomineeData, setNomineeData] = useState([]);
+  // Tabs Error
   const [errorObject, setErrorObject] = useState({
     personalInfoError: false,
     addressDetailsError: false,
@@ -86,12 +88,13 @@ function Investor() {
   const changeTableVisibility = () => {
     setShowTable(!showTable);
   };
-
+  // Nominee
   const handleNewNominee = (value) => {
     setNomineeData((prev) => {
       return [...prev, value];
     });
   };
+  // Declaration
   const handleDeclarationClick = (value) => {
     if (value === 'PoliticallyExposed') {
       setSelectedDeclaration({ ...selectedDeclaration, isPoliticallyExposed: !selectedDeclaration.isPoliticallyExposed });
@@ -104,6 +107,7 @@ function Investor() {
       setSelectedDeclaration({ ...selectedDeclaration, isResidentOutsideIndia: !selectedDeclaration.isResidentOutsideIndia });
     }
   };
+  // Tabs Error
   const handleTabError = (value) => {
     console.log(value);
     if (value.investor_address) {
@@ -208,8 +212,28 @@ function Investor() {
           validationSchema={validationSchema}
           onSubmit={async (values, { setSubmitting, resetForm }) => {
             if (isEditing === false) {
-              console.log(values);
-              // SaveInvestor(values, InvestorTableDataRefetch, clearFormValues, checkedCumulative, checkedNonCumulative);
+              console.log({
+                ...values,
+                investor: {
+                  ...values.investor,
+                  is_foreign_tax_resident: Boolean(selectedDeclaration.isResidentOutsideIndia),
+                  is_rpep: Boolean(selectedDeclaration.isRelativeToPoliticallyExposed),
+                  is_pep: Boolean(selectedDeclaration.isPoliticallyExposed)
+                },
+                nominee: nomineeData
+              });
+              const formValues = {
+                ...values,
+                investor: {
+                  ...values.investor,
+                  is_foreign_tax_resident: selectedDeclaration.isResidentOutsideIndia ? 1 : 0,
+                  is_rpep: selectedDeclaration.isRelativeToPoliticallyExposed ? 1 : 0,
+                  is_pep: selectedDeclaration.isPoliticallyExposed ? 1 : 0
+                  // birth_date: dateFormatter(values.investor.birth_date)
+                },
+                nominee: nomineeData
+              };
+              SaveInvestor(formValues, InvestorTableDataRefetch, clearFormValues);
             }
             if (isEditing === true) {
               console.log('i am editing');
@@ -290,7 +314,7 @@ function Investor() {
                         label="Mobile Number"
                         valueName="investor.mobile_no"
                         values={values.investor.mobile_no}
-                        type="number"
+                        type="string"
                         onChange={handleChange}
                         onBlur={handleBlur}
                         touched={touched}
@@ -310,12 +334,32 @@ function Investor() {
                       />
                     </Grid>
                     <Grid item xs={4}>
-                      <CustomAutoComplete
+                      {/* <CustomAutoComplete
                         options={genderData}
                         defaultValue={selectedGender}
                         setSelected={setSelectedGender}
                         optionName="gender"
                         label="Gender"
+                      /> */}
+                      <FormikAutoComplete
+                        options={genderData}
+                        defaultValue={values.investor.gender_id}
+                        setFieldValue={setFieldValue}
+                        formName="investor.gender_id"
+                        optionName="gender"
+                        label="Gender"
+                      />
+                    </Grid>
+                    <Grid item xs={4}>
+                      <NestedCustomTextField
+                        label="Place of birth"
+                        valueName="investor.place_of_birth"
+                        values={values.investor.place_of_birth}
+                        type="string"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        touched={touched}
+                        errors={errors}
                       />
                     </Grid>
                   </Grid>
@@ -409,7 +453,13 @@ function Investor() {
                     </Grid>
 
                     <Grid item xs={3} style={{ paddingTop: 0 }}>
-                      <CustomAutoComplete options={ifaData} handleChange={() => {}} optionName="item_value" label="IFA" />
+                      <CustomAutoComplete
+                        options={ifaData}
+                        defaultValue={selectedIFA}
+                        setSelected={setSelectedIFA}
+                        optionName="item_value"
+                        label="IFA"
+                      />
                     </Grid>
 
                     <Grid item xs={2} style={{ paddingTop: 0 }}>

@@ -91,6 +91,7 @@ function FixDeposit() {
     setFormValues(formAllValues);
     setCheckedCumulative(false);
     setCheckedNonCumulative(false);
+    setSelectedIssuerID();
   };
   // Custom Fields/ Table Columns
   const theme = useTheme();

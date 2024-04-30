@@ -2,8 +2,10 @@
 import React, { useState } from 'react';
 import { Box, Card, Checkbox, Grid, Typography, Button, CardContent, CardHeader, Stack, Divider } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import CustomTextField, { CustomAutoComplete, NestedCustomTextField } from 'utils/textfield';
+import CustomTextField, { CustomAutoComplete, NestedCustomTextField, dateFormatter } from 'utils/textfield';
 import { Formik } from 'formik';
+import * as yup from 'yup';
+
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
@@ -28,7 +30,11 @@ const Nomination = (props) => {
     console.log(value);
     setFormValues(value);
     const relation = relationship.find((el) => el.id === value.relationship_id);
-    setSelectedRelation(relation.relation_name);
+    if (relation.relation_name) {
+      setSelectedRelation(relation.relation_name);
+    } else {
+      selectedRelation(relation.relationship_id);
+    }
   };
   const setActiveEditing = () => {
     setIsEditing(true);
@@ -37,17 +43,38 @@ const Nomination = (props) => {
     setIsEditing(false);
   };
   // Form State
-  const formAllValues = { full_name: '', pan: '' };
+  const formAllValues = {
+    full_name: '',
+    pan: '',
+    // relationship_id: 0,
+    birth_date: new Date(),
+    address_line_1: '',
+    address_line_2: '',
+    pincode: '',
+    city: '',
+    state: ''
+  };
+  const validationSchema = yup.object().shape({
+    full_name: yup.string(),
+    pan: yup.string(),
+    // relationship_id: yup.string(),
+    birth_date: yup.date().required('Date of birth is required'),
+    address_line_1: yup.string(),
+    address_line_2: yup.string(),
+    pincode: yup.string(),
+    city: yup.string(),
+    state: yup.string()
+  });
   const [formValues, setFormValues] = useState(formAllValues);
   // Empty Form Fields
   const clearFormValues = () => {
     setFormValues(formAllValues);
   };
   // Date Picker
-  const [dateValue, setDateValue] = useState(new Date());
-  const handleDateChange = (newValue) => {
-    setDateValue(newValue);
-  };
+  // const [dateValue, setDateValue] = useState(new Date());
+  // const handleDateChange = (newValue) => {
+  //   setDateValue(newValue);
+  // };
   // Table
   const VisibleColumn = [];
   const columns = [
@@ -85,7 +112,7 @@ const Nomination = (props) => {
         {showTable && (
           <Formik
             initialValues={formValues}
-            // validationSchema={validationSchema}
+            validationSchema={validationSchema}
             onSubmit={async (values, { setSubmitting, resetForm }) => {
               if (isEditing === false) {
                 console.log({ ...values, relation_name: selectedRelation });
@@ -93,10 +120,9 @@ const Nomination = (props) => {
               if (isEditing === true) {
                 console.log({ ...values, method_name: 'update' });
               }
-              // changeTableVisibility();
             }}
           >
-            {({ values, errors, touched, handleChange, handleBlur, handleSubmit, resetForm, isSubmitting }) => (
+            {({ values, errors, touched, handleChange, handleBlur, setFieldValue, handleSubmit, resetForm, isSubmitting }) => (
               <Box
                 component="form"
                 onSubmit={(event) => {
@@ -124,8 +150,25 @@ const Nomination = (props) => {
                             color="success"
                             startIcon={<Additem />}
                             onClick={() => {
-                              console.log({ ...values, relationship_id: selectedRelation, birth_date: `${dateValue}` });
-                              props.handleNewNominee({ ...values, relationship_id: selectedRelation, birth_date: `${dateValue}` });
+                              console.log({
+                                ...values,
+                                relationship_id: selectedRelation
+                                // birth_date: `${dateValue}`
+                              });
+                              props.handleNewNominee({
+                                ...values,
+                                relationship_id: selectedRelation
+                                // relationship_id:
+                                //   typeof selectedRelation === 'string'
+                                //     ? relationship.find((el) => {
+                                //         if (el.relation_name === selectedRelation) {
+                                //           console.log(el);
+                                //           return el.id;
+                                //         }
+                                //       })
+                                //     : selectedRelation
+                                // birth_date: `${dateValue}`
+                              });
                               changeTableVisibility();
                             }}
                           >
@@ -196,11 +239,83 @@ const Nomination = (props) => {
                             className="calendar_main"
                             label="DOB"
                             inputFormat="dd/MM/yyyy"
-                            value={dateValue}
-                            onChange={handleDateChange}
+                            // value={dateValue}
+                            // onChange={handleDateChange}
+                            // onChange={handleChange}
+                            // onChange={(newValue) => {
+                            //   console.log(newValue);
+                            //   setDateValue('birth_date', newValue);
+                            // }}
+                            // Update birth_date value
+                            value={values?.birth_date}
+                            onChange={(newValue) => {
+                              console.log(newValue);
+                              // setFieldValue('birth_date', dateFormatter(newValue));
+                              setFieldValue('birth_date', newValue);
+                            }}
                             renderInput={(params) => <CustomTextField {...params} />}
                           />
                         </LocalizationProvider>
+                      </Grid>
+                      <Grid item xs={12} sm={6} md={6} style={{ display: 'grid', gap: '10px' }}>
+                        <CustomTextField
+                          label="Address Line 1"
+                          name="address_line_1"
+                          values={values}
+                          type="string"
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          touched={touched}
+                          errors={errors}
+                        />
+                      </Grid>
+                      <Grid item xs={12} sm={6} md={6} style={{ display: 'grid', gap: '10px' }}>
+                        <CustomTextField
+                          label="Address Line 2"
+                          name="address_line_2"
+                          values={values}
+                          type="string"
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          touched={touched}
+                          errors={errors}
+                        />
+                      </Grid>
+                      <Grid item xs={12} sm={4} md={4} style={{ display: 'grid', gap: '10px' }}>
+                        <CustomTextField
+                          label="Pin Code"
+                          name="pincode"
+                          values={values}
+                          type="string"
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          touched={touched}
+                          errors={errors}
+                        />
+                      </Grid>
+                      <Grid item xs={12} sm={4} md={4} style={{ display: 'grid', gap: '10px' }}>
+                        <CustomTextField
+                          label="City"
+                          name="city"
+                          values={values}
+                          type="string"
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          touched={touched}
+                          errors={errors}
+                        />
+                      </Grid>
+                      <Grid item xs={12} sm={4} md={4} style={{ display: 'grid', gap: '10px' }}>
+                        <CustomTextField
+                          label="State"
+                          name="state"
+                          values={values}
+                          type="string"
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          touched={touched}
+                          errors={errors}
+                        />
                       </Grid>
                     </Grid>
                   </CardContent>
@@ -229,6 +344,7 @@ const Nomination = (props) => {
               // tableDataRefetch={ProductTableDataRefetch}
               setActiveEditing={setActiveEditing}
               VisibleColumn={VisibleColumn}
+              doNotShowHeader={false}
             />
           </MainCard>
         )}

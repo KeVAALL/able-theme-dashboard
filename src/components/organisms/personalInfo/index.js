@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { Checkbox, Grid, Typography, Stack, TextField } from '@mui/material';
 
-import CustomTextField, { CustomAutoComplete } from 'utils/textfield';
+import CustomTextField, { CustomAutoComplete, FormikAutoComplete, dateFormatter } from 'utils/textfield';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
@@ -10,7 +10,7 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { residency, marital_status } from 'constant/investorValidation';
 
 const CustomChip = (props) => {
-  // console.log(props.values);
+  // console.log(props.values.investor.is_indian_resident);
   // const [value, setValue] = useState(new Date('2014-08-18T21:11:54'));
   const [value, setValue] = useState(new Date());
 
@@ -24,22 +24,38 @@ const CustomChip = (props) => {
     <>
       <Grid container spacing={2} id="grid_box" sx={{ marginBottom: '20px' }}>
         <Grid item xs={12} md={4}>
-          <CustomAutoComplete
+          {/* <CustomAutoComplete
             options={residency}
             defaultValue={props.selectedResidenceID}
             // handleChange={props.handleOnResidenceChange}
             setSelected={props.setSelectedResidenceID}
             optionName="status"
             label="Resident Status"
+          /> */}
+          <FormikAutoComplete
+            options={residency}
+            defaultValue={props.values.investor.is_indian_resident}
+            setFieldValue={props.setFieldValue}
+            formName="investor.is_indian_resident"
+            optionName="status"
+            label="Resident Status"
           />
         </Grid>
 
         <Grid item xs={12} md={4}>
-          <CustomAutoComplete
+          {/* <CustomAutoComplete
             options={marital_status}
             defaultValue={props.selectedMarital}
             // handleChange={props.handleOnMaritalChange}
             setSelected={props.setSelectedMarital}
+            optionName="status"
+            label="Marital Status"
+          /> */}
+          <FormikAutoComplete
+            options={marital_status}
+            defaultValue={props.values.investor.is_married}
+            setFieldValue={props.setFieldValue}
+            formName="investor.is_married"
             optionName="status"
             label="Marital Status"
           />
@@ -63,8 +79,12 @@ const CustomChip = (props) => {
               className="calendar_main"
               label="Date Desktop"
               inputFormat="dd/MM/yyyy"
-              value={value}
-              onChange={handleChange}
+              value={props.values?.investor.birth_date}
+              onChange={(newValue) => {
+                console.log(newValue);
+                // props.setFieldValue('investor.birth_date', dateFormatter(newValue));
+                props.setFieldValue('investor.birth_date', newValue);
+              }}
               renderInput={(params) => <CustomTextField {...params} />}
             />
           </LocalizationProvider>

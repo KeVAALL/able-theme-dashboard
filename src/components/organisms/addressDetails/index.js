@@ -5,7 +5,8 @@ import CustomTextField, { NestedCustomTextField } from 'utils/textfield';
 
 const AddressDetails = (props) => {
   // is_permanent_address_correspond
-  console.log(props.values.investor.is_permanent_address_correspond);
+  // console.log(props.values.investor.is_permanent_address_correspond);
+  console.log(props.values.is_permanent_address_correspond);
 
   return (
     <>
@@ -68,16 +69,19 @@ const AddressDetails = (props) => {
         </Grid>
       </Box>
       <Box id="__checkbox" style={{ marginTop: '12px', display: 'flex', alignItems: 'flex-start', gap: '4px' }}>
-        {/* <Checkbox checked={props.sameAddress} onChange={props.handleCheckboxChange} inputProps={{ 'aria-label': 'Same address' }} /> */}
         <Checkbox
-          checked={props.values.investor.is_permanent_address_correspond}
-          // onChange={props.handleChange}
+          checked={props.values.is_permanent_address_correspond}
           onChange={(e) => {
             const newValue = e.target.checked ? 1 : 0;
-            props.setFieldValue('investor.is_permanent_address_correspond', newValue);
+            // props.setFieldValue('investor.is_permanent_address_correspond', newValue);
+            props.setFieldValue('is_permanent_address_correspond', newValue);
           }}
-          name="investor.is_permanent_address_correspond"
-          id="investor.is_permanent_address_correspond"
+          name="is_permanent_address_correspond"
+          id="is_permanent_address_correspond"
+          // checked={props.values.investor.is_permanent_address_correspond}
+          // onChange={props.handleChange}
+          // name="investor.is_permanent_address_correspond"
+          // id="investor.is_permanent_address_correspond"
           inputProps={{ 'aria-label': 'Same address' }}
         />
         <Typography sx={{ color: '#5E718D', marginBottom: '20px' }} variant="p">
@@ -85,7 +89,8 @@ const AddressDetails = (props) => {
         </Typography>
       </Box>
 
-      {!props.values.investor.is_permanent_address_correspond && (
+      {/* {!props.values.investor.is_permanent_address_correspond && ( */}
+      {!props.values.is_permanent_address_correspond && (
         <Box id="__permanent _address" style={{ marginTop: '12px', marginBottom: '12px' }}>
           <Typography sx={{ color: '#21B546', marginBottom: '12px', display: 'block' }} variant="p">
             Correspondent Address
