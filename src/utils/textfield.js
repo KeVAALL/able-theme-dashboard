@@ -54,6 +54,7 @@ export const NestedCustomTextField = memo(
 );
 
 export const CustomTextField = memo((props) => {
+  console.log(props);
   return (
     <TextField
       fullWidth
@@ -75,6 +76,7 @@ export const CustomTextField = memo((props) => {
           marginLeft: 0
         }
       }}
+      endAdornment={props.endAdornment && props.endAdornment}
       {...props}
     />
   );
@@ -160,10 +162,6 @@ export const FormikAutoComplete = memo((props) => {
       id="basic-autocomplete-label"
       options={props.options}
       // defaultValue={(props.defaultValue && props.options.find((el) => el[props.optionName] === props.defaultValue)) || props.options[0]}
-      // defaultValue={
-      //   (typeof props.defaultValue === 'string' && props.options.find((el) => el[props.optionName] === props.defaultValue)) ||
-      //   props.options.find((el) => el.id === props.defaultValue)
-      // }
       defaultValue={
         (typeof props.defaultValue === 'string' && props.options.find((el) => el[props.optionName] === props.defaultValue)) ||
         (typeof props.defaultValue === 'number' && props.options.find((el) => el.id === props.defaultValue))

@@ -7,7 +7,7 @@ import { HomeTrendUp, Profile2User, ShoppingBag, Eye, EyeSlash } from 'iconsax-r
 
 import { FormattedMessage } from 'react-intl';
 // material-ui
-import { Button, Checkbox, FormHelperText, Grid, Link, InputAdornment, InputLabel, OutlinedInput, Stack } from '@mui/material';
+import { Button, Checkbox, FormHelperText, Grid, Link, InputAdornment, InputLabel, OutlinedInput, Stack, TextField } from '@mui/material';
 
 // third-party
 import * as Yup from 'yup';
@@ -37,7 +37,6 @@ const AuthLogin = ({ forgot }) => {
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
   };
-
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
@@ -143,10 +142,10 @@ const AuthLogin = ({ forgot }) => {
       >
         {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
           <form noValidate onSubmit={handleSubmit}>
-            <Grid container spacing={3.5}>
+            <Grid container spacing={2}>
               <Grid item xs={12}>
                 <CustomTextField
-                  label="Email Address"
+                  label="Email ID"
                   name="email_id"
                   values={values}
                   type="email"
@@ -167,29 +166,13 @@ const AuthLogin = ({ forgot }) => {
                   label="Password"
                   name="password"
                   values={values}
-                  type="text"
+                  type={showPassword ? 'text' : 'password'}
                   onChange={handleChange}
                   onBlur={handleBlur}
                   touched={touched}
                   errors={errors}
-                  FormHelperTextProps={{
-                    style: {
-                      marginLeft: 0
-                    }
-                  }}
-                />
-                {/* <Stack spacing={1}>
-                  <InputLabel htmlFor="password-login">Password</InputLabel>
-                  <OutlinedInput
-                    fullWidth
-                    error={Boolean(touched.password && errors.password)}
-                    // id="-password-login"
-                    type={showPassword ? 'text' : 'password'}
-                    value={values.password}
-                    name="password"
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    endAdornment={
+                  InputProps={{
+                    endAdornment: (
                       <InputAdornment position="end">
                         <IconButton
                           aria-label="toggle password visibility"
@@ -201,20 +184,14 @@ const AuthLogin = ({ forgot }) => {
                           {showPassword ? <Eye /> : <EyeSlash />}
                         </IconButton>
                       </InputAdornment>
-                    }
-                    placeholder="Enter password"
-                  />
-                  {touched.password && errors.password && (
-                    <FormHelperText error id="standard-weight-helper-text-password-login">
-                      {errors.password}
-                    </FormHelperText>
-                  )}
-                </Stack> */}
+                    )
+                  }}
+                />
               </Grid>
 
-              <Grid item xs={12} sx={{ mt: -1 }}>
+              {/* <Grid item xs={12} sx={{ mt: -1 }}>
                 <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2}>
-                  {/* <FormControlLabel
+                  <FormControlLabel
                     control={
                       <Checkbox
                         checked={checked}
@@ -225,13 +202,11 @@ const AuthLogin = ({ forgot }) => {
                       />
                     }
                     label={<Typography variant="h6">Keep me sign in</Typography>}
-                  /> */}
+                  />
 
-                  <Link variant="h6" component={RouterLink} to={isLoggedIn && forgot ? forgot : '/forgot-password'} color="text.primary">
-                    Forgot Password?
-                  </Link>
+                  
                 </Stack>
-              </Grid>
+              </Grid> */}
               {/* {errors.submit && (
                 <Grid item xs={12}>
                   <FormHelperText error>{errors.submit}</FormHelperText>
@@ -243,6 +218,12 @@ const AuthLogin = ({ forgot }) => {
                     Login
                   </Button>
                 </AnimateButton>
+              </Grid>
+
+              <Grid item xs={12}>
+                <Link variant="h6" component={RouterLink} to={isLoggedIn && forgot ? forgot : '/forgot-password'} color="text.primary">
+                  Forgot Password?
+                </Link>
               </Grid>
             </Grid>
           </form>

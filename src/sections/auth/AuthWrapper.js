@@ -19,7 +19,8 @@ const AuthWrapper = ({ children }) => (
       direction="column"
       justifyContent="center"
       sx={{
-        minHeight: '100vh'
+        minHeight: '100vh',
+        backgroundColor: '#068e4438'
       }}
     >
       <Grid item xs={12}>

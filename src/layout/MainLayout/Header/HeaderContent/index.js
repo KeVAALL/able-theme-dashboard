@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 
 // material-ui
-import { Box, useMediaQuery } from '@mui/material';
+import { Box, Stack, useMediaQuery } from '@mui/material';
 
 // project-imports
 import Search from './Search';
@@ -31,14 +31,16 @@ const HeaderContent = () => {
   return (
     <>
       {menuOrientation === MenuOrientation.HORIZONTAL && !downLG && <DrawerHeader open={true} />}
-      {!downLG && <Search />}
+      {/* {!downLG && <Search />} */}
       {/* {!downLG && megaMenu} */}
       {/* {!downLG && localization} */}
       {downLG && <Box sx={{ width: '100%', ml: 1 }} />}
 
-      <Notification />
-      {/* <Message /> */}
-      {!downLG && <Profile />}
+      <Stack flexDirection="row">
+        <Notification />
+        {/* <Message /> */}
+        {!downLG && <Profile />}
+      </Stack>
       {downLG && <MobileSection />}
     </>
   );
