@@ -13,7 +13,7 @@ import { AddCircle } from 'iconsax-react';
 
 // header style
 const headerSX = {
-  p: 2.5,
+  p: 2,
   '& .MuiCardHeader-action': { m: '0px auto', alignSelf: 'center' }
 };
 
@@ -112,7 +112,7 @@ const MainCard = forwardRef(
               action={secondary}
               subheader={subheader}
             />
-            <Box sx={{ px: 2.5 }}>
+            <Box sx={{ p: 2 }}>
               <AnimateButton>
                 <Button
                   variant="contained"

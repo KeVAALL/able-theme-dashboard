@@ -1,5 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
+import PropTypes from 'prop-types';
+
 import React, { useEffect, useState } from 'react';
 import { Box, Button, Stack, CardHeader, FormControlLabel, Switch } from '@mui/material';
 import AnimateButton from 'helpers/@extended/AnimateButton';
@@ -18,7 +20,9 @@ export const SubmitButton = ({
   formValues,
   setActiveClose,
   setIsActive,
-  isActive
+  isActive,
+  errors,
+  handleTabError
 }) => {
   useEffect(() => {
     if (setIsActive) {
@@ -55,7 +59,17 @@ export const SubmitButton = ({
 
         <Box>
           <AnimateButton>
-            <Button variant="contained" color="success" startIcon={<Additem />} type="submit">
+            <Button
+              // onSubmit={() => {
+              //   if (errors) {
+              //     handleTabError(errors);
+              //   }
+              // }}
+              variant="contained"
+              color="success"
+              startIcon={<Additem />}
+              type="submit"
+            >
               Submit
             </Button>
           </AnimateButton>
@@ -81,4 +95,9 @@ export const SubmitButton = ({
       </Stack>
     </Stack>
   );
+};
+
+SubmitButton.PropTypes = {
+  errors: PropTypes.any,
+  handleTabError: PropTypes.any
 };

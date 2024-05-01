@@ -331,7 +331,8 @@ const Nomination = (props) => {
             showButton
             setActiveAdding={setActiveClose}
             border
-            sx={{ height: '100%', boxShadow: 1 }}
+            contentSX={{ p: 0 }}
+            sx={{ height: '100%' }}
           >
             <MultiTable
               columns={columns}
@@ -344,7 +345,7 @@ const Nomination = (props) => {
               // tableDataRefetch={ProductTableDataRefetch}
               setActiveEditing={setActiveEditing}
               VisibleColumn={VisibleColumn}
-              doNotShowHeader={false}
+              doNotShowHeader={true}
             />
           </MainCard>
         )}

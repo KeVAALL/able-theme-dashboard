@@ -1,7 +1,13 @@
 /* eslint-disable react/prop-types */
 import { Grid, Typography } from '@mui/material';
 import { Box } from '@mui/system';
-import { annual_income, income_source, occupation } from 'constant/investorValidation';
+import {
+  // annual_income,
+  annual_income_data,
+  // income_source,
+  income_source_data,
+  occupation
+} from 'constant/investorValidation';
 import React from 'react';
 import { CustomAutoComplete, FormikAutoComplete } from 'utils/textfield';
 
@@ -44,7 +50,7 @@ const ProfessionalDetails = (props) => {
             label="Annual Income"
           /> */}
           <FormikAutoComplete
-            options={annual_income}
+            options={annual_income_data}
             defaultValue={props.values.professional_details.annual_income_id}
             setFieldValue={props.setFieldValue}
             formName="professional_details.annual_income_id"
@@ -64,7 +70,7 @@ const ProfessionalDetails = (props) => {
             label="Source of Income"
           /> */}
           <FormikAutoComplete
-            options={income_source}
+            options={income_source_data}
             defaultValue={props.values.professional_details.income_source_id}
             setFieldValue={props.setFieldValue}
             formName="professional_details.income_source_id"

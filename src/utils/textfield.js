@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import { Autocomplete, Checkbox, FormControlLabel, TextField } from '@mui/material';
-import { useFormikContext, getIn } from 'formik';
-import React from 'react';
+import { getIn, FastField } from 'formik';
+import React, { memo } from 'react';
 import './custom.css';
 
 export const dateFormatter = (date) => {
@@ -24,46 +24,36 @@ export const dateFormatter = (date) => {
   console.log(dateIs.toISOString().slice(0, 10));
 };
 
-export const NestedCustomTextField = ({
-  label,
-  valueName,
-  handleChange,
-  handleBlur,
-  values,
-  type,
-  multiline,
-  autocomplete,
-  touched,
-  errors,
-  ...props
-}) => {
-  return (
-    <TextField
-      fullWidth
-      className="common-textfield"
-      size="small"
-      label={label}
-      name={valueName}
-      onChange={handleChange}
-      onBlur={handleBlur}
-      value={values}
-      type={type}
-      multiline={multiline ? true : false}
-      autoComplete={!autocomplete ? 'off' : 'on'}
-      placeholder={Boolean(getIn(touched, valueName) && getIn(errors, valueName))}
-      error={Boolean(getIn(touched, valueName) && getIn(errors, valueName))}
-      helperText={getIn(touched, valueName) && getIn(errors, valueName)}
-      FormHelperTextProps={{
-        style: {
-          marginLeft: 0
-        }
-      }}
-      {...props}
-    />
-  );
-};
+export const NestedCustomTextField = memo(
+  ({ label, valueName, handleChange, handleBlur, values, type, multiline, autocomplete, touched, errors, ...props }) => {
+    return (
+      <TextField
+        fullWidth
+        className="common-textfield"
+        size="small"
+        label={label}
+        name={valueName}
+        onChange={handleChange}
+        onBlur={handleBlur}
+        value={values}
+        type={type}
+        multiline={multiline ? true : false}
+        autoComplete={!autocomplete ? 'off' : 'on'}
+        // placeholder={Boolean(getIn(touched, valueName) && getIn(errors, valueName))}
+        error={Boolean(getIn(touched, valueName) && getIn(errors, valueName))}
+        helperText={getIn(touched, valueName) && getIn(errors, valueName)}
+        FormHelperTextProps={{
+          style: {
+            marginLeft: 0
+          }
+        }}
+        {...props}
+      />
+    );
+  }
+);
 
-export const CustomTextField = (props) => {
+export const CustomTextField = memo((props) => {
   return (
     <TextField
       fullWidth
@@ -88,9 +78,10 @@ export const CustomTextField = (props) => {
       {...props}
     />
   );
-};
+});
 
-export const CustomAutoComplete = (props) => {
+export const CustomAutoComplete = memo((props) => {
+  console.log(props);
   const handleOptionChange = (event, optionName, setSelected) => {
     props.options.forEach((el) => {
       if (el[optionName] === event.target.outerText) {
@@ -132,15 +123,17 @@ export const CustomAutoComplete = (props) => {
       renderInput={(params) => <TextField {...params} label={props.label} />}
     />
   );
-};
-export const FormikAutoComplete = (props) => {
-  console.log(props.defaultValue);
+});
+export const FormikAutoComplete = memo((props) => {
+  console.log(props.formName, props.options, props.defaultValue);
+  const setFieldValue = props.setFieldValue;
 
   const handleOptionChange = (event, optionName, formName, setFieldValue) => {
-    props.options.forEach((el) => {
+    props.options.forEach(async (el) => {
+      console.log(props.options);
       if (el[optionName] === event.target.outerText) {
         // console.log(formName, el.id);
-        setFieldValue(formName, el.id);
+        await setFieldValue(formName, el.id);
       }
     });
   };
@@ -166,7 +159,6 @@ export const FormikAutoComplete = (props) => {
       }}
       id="basic-autocomplete-label"
       options={props.options}
-      // value={}
       // defaultValue={(props.defaultValue && props.options.find((el) => el[props.optionName] === props.defaultValue)) || props.options[0]}
       // defaultValue={
       //   (typeof props.defaultValue === 'string' && props.options.find((el) => el[props.optionName] === props.defaultValue)) ||
@@ -181,16 +173,13 @@ export const FormikAutoComplete = (props) => {
       //     ? props.options.find((el) => el.id === props.defaultValue)
       //     : props.options.find((el) => el[props.optionName] === props.defaultValue)
       // }
-      // onChange={(e) => {
-      //   props.handleChange(e);
-      // }}
-      onChange={(e) => handleOptionChange(e, props.optionName, props.formName, props.setFieldValue)}
+      onChange={(e) => handleOptionChange(e, props.optionName, props.formName, setFieldValue)}
       // getOptionSelected
       getOptionLabel={(option) => option[props.optionName]} // Assuming 'product_type' is the label you want to display
       renderInput={(params) => <TextField {...params} label={props.label} />}
     />
   );
-};
+});
 
 export const CustomCheckbox = (props) => {
   return (

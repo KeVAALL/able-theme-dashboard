@@ -56,7 +56,7 @@ export default function IconTabs(props) {
 
   useEffect(() => {
     console.log(props.errors);
-    props.handleTabError(props.errors);
+    //   props.handleTabError(props.errors);
   }, [props.errors]);
 
   const tabStyle = { borderTopLeftRadius: 0, borderTopRightRadius: 0, borderRadius: 1.5, overflow: 'visible' };

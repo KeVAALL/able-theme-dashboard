@@ -22,7 +22,8 @@ import {
   formAllValues,
   validationSchema,
   filterFormValues,
-  formValueFields,
+  // formValueFields,
+  filterValueFields,
   filterValidationSchema,
   tableColumns,
   VisibleColumn,
@@ -49,11 +50,19 @@ const headerSX = {
 };
 
 function Investor() {
-  // Main data
+  // Main data states
   const [investorData, setInvestorData] = useState([]);
   const [ifaData, setIfaData] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  // Edit Logic State
+  const [isEditing, setIsEditing] = useState(false);
+  const [isInvestorActive, setInvestorActive] = useState();
+
+  // Toggle Table and Form Visibility
+  const [showTable, setShowTable] = useState(false); // State to toggle visibility of the table form
+
+  // Selection states
   const [selectedIFA, setSelectedIFA] = useState(null);
   const [selectedGender, setSelectedGender] = useState(null);
   const [selectedRelation, setSelectedRelation] = useState(null);
@@ -67,13 +76,13 @@ function Investor() {
     isRelativeToPoliticallyExposed: true,
     isResidentOutsideIndia: true
   });
-  // Address Details
+
+  // Address Details Checkbox
   const [sameAddress, setSameAddress] = useState(false);
-  const handleCheckboxChange = (event) => {
-    setSameAddress(event.target.checked);
-  };
+
   // Nominee
   const [nomineeData, setNomineeData] = useState([]);
+
   // Tabs Error
   const [errorObject, setErrorObject] = useState({
     personalInfoError: false,
@@ -83,46 +92,14 @@ function Investor() {
     declarationError: false
   });
 
-  // Toggle Table and Form Visibility
-  const [showTable, setShowTable] = useState(false);
-  const changeTableVisibility = () => {
-    setShowTable(!showTable);
-  };
-  // Nominee
-  const handleNewNominee = (value) => {
-    setNomineeData((prev) => {
-      return [...prev, value];
-    });
-  };
-  // Declaration
-  const handleDeclarationClick = (value) => {
-    if (value === 'PoliticallyExposed') {
-      setSelectedDeclaration({ ...selectedDeclaration, isPoliticallyExposed: !selectedDeclaration.isPoliticallyExposed });
-    } else if (value === 'RelativeToPoliticallyExposed') {
-      setSelectedDeclaration({
-        ...selectedDeclaration,
-        isRelativeToPoliticallyExposed: !selectedDeclaration.isRelativeToPoliticallyExposed
-      });
-    } else if (value === 'ResidentOutsideIndia') {
-      setSelectedDeclaration({ ...selectedDeclaration, isResidentOutsideIndia: !selectedDeclaration.isResidentOutsideIndia });
-    }
-  };
-  // Tabs Error
-  const handleTabError = (value) => {
-    console.log(value);
-    if (value.investor_address) {
-      setErrorObject({ ...errorObject, addressDetailsError: true });
-    } else {
-      setErrorObject({ ...errorObject, addressDetailsError: false });
-    }
-  };
+  // Form State
+  const [formValues, setFormValues] = useState(formAllValues);
+  // Theme
+  const theme = useTheme();
 
-  // Edit Logic State
-  const [isEditing, setIsEditing] = useState(false);
-  const [isInvestorActive, setInvestorActive] = useState();
+  // Sets form values for editing
   const setEditing = (value) => {
     console.log(value);
-
     setFormValues(value);
     setSelectedGender(value.investor.gender);
     setSelectedResidenceID(value.personal_info.is_indian_resident);
@@ -147,12 +124,16 @@ function Investor() {
     setInvestorActive(initialValue);
   };
 
+  // Toggle Table and Form Visibility
+  const changeTableVisibility = () => {
+    setShowTable(!showTable);
+  };
+
   // Search one item state
   const setSearchData = (investor) => {
     setInvestorData(investor);
   };
-  // Form State
-  const [formValues, setFormValues] = useState(formAllValues);
+
   // Empty Form Fields
   const clearFormValues = () => {
     setFormValues(formAllValues);
@@ -169,10 +150,44 @@ function Investor() {
     });
     setNomineeData([]);
   };
+
+  // Nominee
+  const handleNewNominee = (value) => {
+    setNomineeData((prev) => {
+      return [...prev, value];
+    });
+  };
+  // Declaration
+  const handleDeclarationClick = (value) => {
+    if (value === 'PoliticallyExposed') {
+      setSelectedDeclaration({ ...selectedDeclaration, isPoliticallyExposed: !selectedDeclaration.isPoliticallyExposed });
+    } else if (value === 'RelativeToPoliticallyExposed') {
+      setSelectedDeclaration({
+        ...selectedDeclaration,
+        isRelativeToPoliticallyExposed: !selectedDeclaration.isRelativeToPoliticallyExposed
+      });
+    } else if (value === 'ResidentOutsideIndia') {
+      setSelectedDeclaration({ ...selectedDeclaration, isResidentOutsideIndia: !selectedDeclaration.isResidentOutsideIndia });
+    }
+  };
+  // Address Details Checkbox
+  const handleCheckboxChange = (event) => {
+    setSameAddress(event.target.checked);
+  };
+  // Tabs Error
+  const handleTabError = (value) => {
+    console.log(value);
+    if (value.investor_address) {
+      setErrorObject({ ...errorObject, addressDetailsError: true });
+    } else {
+      setErrorObject({ ...errorObject, addressDetailsError: false });
+    }
+  };
+
   // Custom fields/ Table Columns
-  const theme = useTheme();
   const columns = useMemo(() => tableColumns, []);
 
+  // Query for fetching investor data
   const {
     isPending,
     error,
@@ -187,6 +202,8 @@ function Investor() {
       setLoading(false);
     }
   });
+
+  // Query for fetching IFA data
   const {
     isPending: ifaPending,
     error: ifaError,
@@ -208,6 +225,7 @@ function Investor() {
     <>
       {showTable && (
         <Formik
+          validateOnBlur={false}
           initialValues={formValues}
           validationSchema={validationSchema}
           onSubmit={async (values, { setSubmitting, resetForm }) => {
@@ -229,7 +247,6 @@ function Investor() {
                   is_foreign_tax_resident: selectedDeclaration.isResidentOutsideIndia ? 1 : 0,
                   is_rpep: selectedDeclaration.isRelativeToPoliticallyExposed ? 1 : 0,
                   is_pep: selectedDeclaration.isPoliticallyExposed ? 1 : 0
-                  // birth_date: dateFormatter(values.investor.birth_date)
                 },
                 nominee: nomineeData
               };
@@ -256,6 +273,9 @@ function Investor() {
             <Box
               component="form"
               onSubmit={(event) => {
+                if (errors) {
+                  handleTabError(errors);
+                }
                 event.preventDefault();
                 handleSubmit();
               }}
@@ -279,6 +299,8 @@ function Investor() {
                   setActiveClose={setActiveClose}
                   setIsActive={handleIsInvestorActive}
                   isActive={isInvestorActive}
+                  errors={errors}
+                  handleTabError={handleTabError}
                 />
 
                 <Divider />
@@ -291,8 +313,8 @@ function Investor() {
                         valueName="investor.investor_name"
                         values={values.investor.investor_name}
                         type="text"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
+                        handleChange={handleChange}
+                        handleBlur={handleBlur}
                         touched={touched}
                         errors={errors}
                       />
@@ -303,8 +325,8 @@ function Investor() {
                         valueName="investor.pan_no"
                         values={values.investor.pan_no}
                         type="string"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
+                        handleChange={handleChange}
+                        handleBlur={handleBlur}
                         touched={touched}
                         errors={errors}
                       />
@@ -315,8 +337,8 @@ function Investor() {
                         valueName="investor.mobile_no"
                         values={values.investor.mobile_no}
                         type="string"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
+                        handleChange={handleChange}
+                        handleBlur={handleBlur}
                         touched={touched}
                         errors={errors}
                       />
@@ -327,8 +349,8 @@ function Investor() {
                         valueName="investor.investor_type"
                         values={values.investor.investor_type}
                         type="text"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
+                        handleChange={handleChange}
+                        handleBlur={handleBlur}
                         touched={touched}
                         errors={errors}
                       />
@@ -356,8 +378,8 @@ function Investor() {
                         valueName="investor.place_of_birth"
                         values={values.investor.place_of_birth}
                         type="string"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
+                        handleChange={handleChange}
+                        handleBlur={handleBlur}
                         touched={touched}
                         errors={errors}
                       />
@@ -372,6 +394,7 @@ function Investor() {
                     handleBlur={handleBlur}
                     touched={touched}
                     errors={errors}
+                    setFieldValue={setFieldValue}
                     selectedResidenceID={selectedResidenceID}
                     setSelectedResidenceID={setSelectedResidenceID}
                     selectedRelation={selectedRelation}
@@ -392,7 +415,6 @@ function Investor() {
                     handleTabError={handleTabError}
                     sameAddress={sameAddress}
                     handleCheckboxChange={handleCheckboxChange}
-                    setFieldValue={setFieldValue}
                   />
                 </Grid>
               </Card>
@@ -407,6 +429,7 @@ function Investor() {
           showButton
           setActiveAdding={setActiveClose}
           border
+          contentSX={{ p: 2 }}
           sx={{ height: '100%', boxShadow: 1 }}
         >
           {/* here i will add the filter */}
@@ -482,7 +505,7 @@ function Investor() {
             columns={columns}
             data={investorData}
             formValues={filterFormValues}
-            formValueFields={formValueFields}
+            formValueFields={filterValueFields}
             validationSchema={filterValidationSchema}
             changeTableVisibility={changeTableVisibility}
             setEditing={setEditing}

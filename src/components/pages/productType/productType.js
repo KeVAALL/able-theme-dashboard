@@ -35,55 +35,65 @@ import {
 } from 'hooks/productType/productType';
 
 function ProductType() {
-  // Main data
+  // Main data state to hold the list of products
   const [data, setData] = useState([]);
   // Toggle Table and Form Visibility
-  const [showTable, setShowTable] = useState(false);
-  const changeTableVisibility = () => {
-    setShowTable(!showTable);
-  };
-  const [isEditing, setIsEditing] = useState(false);
+  const [showTable, setShowTable] = useState(false); // State to toggle visibility of the table form
+  // Editing States
+  const [isEditing, setIsEditing] = useState(false); // State to track if editing mode is active
+  // Form State
+  const [formValues, setFormValues] = useState(formAllValues); // State to hold form input values
+
+  // Theme
   const theme = useTheme();
 
   // State Setting
+  // Sets form values for editing
   const setEditing = (value) => {
     setFormValues({ product_type_id: value.product_type_id, product_type: value.product_type });
   };
+
+  // Activates editing mode
   const setActiveEditing = () => {
     setIsEditing(true);
   };
+  // Deactivates editing mode
   const setActiveClose = () => {
     setIsEditing(false);
   };
-
+  // Form Visibility
+  const changeTableVisibility = () => {
+    setShowTable(!showTable);
+  };
   // Search one item state
   const setSearchData = (product) => {
+    // Function to set search result
     setData(product);
   };
-  // Form State
-  const [formValues, setFormValues] = useState(formAllValues);
   // Empty Form Fields
   const clearFormValues = () => {
+    // Function to clear form values
     setFormValues(formAllValues);
   };
+
   // Table Columns
   const columns = useMemo(() => tableColumns, []);
 
-  // Fetching Data using React Query
+  // Fetching Data using React Query // Main data
   const {
-    isPending,
-    error,
-    refetch: productTypeTableDataRefetch
+    isPending, // Flag indicating if query is pending
+    error, // Error object if query fails
+    refetch: productTypeTableDataRefetch // Function to refetch product type data
   } = useQuery({
-    queryKey: ['productTypeTableData'],
-    queryFn: GetProductTypeData,
-    refetchOnWindowFocus: false,
-    keepPreviousData: true,
+    queryKey: ['productTypeTableData'], // Unique key for the query
+    queryFn: GetProductTypeData, // Function to fetch product type data
+    refetchOnWindowFocus: false, // Disable refetch on window focus
+    keepPreviousData: true, // Keep previous data when refetching
     onSuccess: (data) => {
       if (!data) {
         setData([]);
       }
-      setData(data);
+      setData(data); // Update data with fetched data
     }
   });
 
@@ -162,6 +172,7 @@ function ProductType() {
           showButton
           setActiveAdding={setActiveClose}
           border
+          contentSX={{ p: 2 }}
           sx={{ height: '100%', boxShadow: 1 }}
         >
           <MultiTable
@@ -186,15 +197,3 @@ function ProductType() {
 }
 
 export default ProductType;
-
-// import { CustomAutoComplete } from 'utils/textfield'
-// const autocompleteData = [
-//   { product_type_id: 1, product_type: 'Electronics', is_active: true, is_deleted: false },
-//   { product_type_id: 2, product_type: 'Clothing', is_active: true, is_deleted: false }
-// ];
-{
-  /*  <Grid item xs={4}>
-          <CustomAutoComplete options={autocompleteData} optionName="product_type" label="Label" />
-      </Grid> 
-  */
-}

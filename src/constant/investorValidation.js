@@ -66,7 +66,7 @@ const occupation = [
     occupation_name: 'Agriculture'
   }
 ];
-const income_source = [
+const income_source_data = [
   {
     id: 1,
     income_source: 'Salary'
@@ -84,7 +84,7 @@ const income_source = [
     income_source: 'Rental Income'
   }
 ];
-const annual_income = [
+const annual_income_data = [
   {
     id: 1,
     annual_income: 'BELOW 1 LAC'
@@ -140,12 +140,11 @@ const formAllValues = {
     pan_no: '',
     mobile_no: '',
     investor_type: '',
-    gender_id: 0,
+    gender_id: 1,
     birth_date: new Date(),
     place_of_birth: '',
     is_married: 0,
     is_indian_resident: 0
-    // is_permanent_address_correspond: 0
   },
   // Investor Address
   investor_address: {
@@ -161,9 +160,9 @@ const formAllValues = {
     city: ''
   },
   professional_details: {
-    occupation_id: 0,
-    annual_income_id: 0,
-    income_source_id: 0
+    occupation_id: 1,
+    annual_income_id: 1,
+    income_source_id: 1
   }
 };
 const validationSchema = yup.object().shape({
@@ -207,12 +206,12 @@ const validationSchema = yup.object().shape({
       then: () => yup.string().required('City is required'),
       otherwise: () => yup.string().optional()
     })
+  }),
+  professional_details: yup.object().shape({
+    occupation_id: yup.number(),
+    annual_income_id: yup.number(),
+    income_source_id: yup.number()
   })
-  // professional_details: {
-  //   occupation_id: yup.number(),
-  //   annual_income_id: yup.number(),
-  //   income_source_id: yup.number()
-  // }
   // personal_info: yup.object().shape({
   //   is_indian_resident: yup.string(), // Resident Status
   //   is_married: yup.string(), // Marital Status
@@ -231,28 +230,28 @@ const validationSchema = yup.object().shape({
   // })
 });
 // Search Item form fields
-// const filterFormValues = {
-//   search: ''
-// };
 const filterFormValues = {
-  investor_id: ''
+  search: ''
 };
-const formValueFields = [
-  {
-    fieldName: 'investor_id',
-    label: 'Investor',
-    type: 'number'
-  }
-];
-// const filterValueFields = [
+// const filterFormValues = {
+//   investor_id: ''
+// };
+// const formValueFields = [
 //   {
 //     fieldName: 'investor_id',
 //     label: 'Investor',
 //     type: 'number'
 //   }
 // ];
+const filterValueFields = [
+  {
+    fieldName: 'search',
+    label: 'Search',
+    type: 'string'
+  }
+];
 const filterValidationSchema = yup.object({
-  investor_id: yup.number()
+  search: yup.string()
 });
 // Table Columns
 const VisibleColumn = [];
@@ -294,7 +293,8 @@ export {
   formAllValues,
   validationSchema,
   filterFormValues,
-  formValueFields,
+  // formValueFields,
+  filterValueFields,
   filterValidationSchema,
   StatusCell,
   tableColumns,
@@ -304,8 +304,8 @@ export {
   residency,
   marital_status,
   occupation,
-  annual_income,
-  income_source
+  annual_income_data,
+  income_source_data
 };
 
 // formAllValues = [

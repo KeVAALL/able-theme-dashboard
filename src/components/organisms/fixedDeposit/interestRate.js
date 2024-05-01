@@ -172,7 +172,7 @@ export default function InterestRate({ formValues, changeTableVisibility, isNotE
 
               <Divider />
 
-              <CardContent>
+              <CardContent sx={{ p: 2 }}>
                 <Grid container spacing={3}>
                   <Grid item xs={3}>
                     <CustomTextField

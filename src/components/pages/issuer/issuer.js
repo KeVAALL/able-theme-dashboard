@@ -46,9 +46,11 @@ function Issuer() {
   const setEditing = (value) => {
     setFormValues(value);
   };
+  // Activates editing mode
   const setActiveEditing = () => {
     setIsEditing(true);
   };
+  // Deactivates editing mode
   const setActiveClose = () => {
     setIsEditing(false);
   };
@@ -70,18 +72,18 @@ function Issuer() {
   // Table Columns
   const columns = useMemo(() => tableColumns, []);
 
-  // Main data
+  // Query for fetching issuer data // Main Data
   const {
-    isPending,
-    error,
-    refetch: issuerTableDataRefetch
+    isPending, // Flag indicating if query is pending
+    error, // Error object if query fails
+    refetch: issuerTableDataRefetch // Function to refetch issuer data
   } = useQuery({
-    queryKey: ['issuerTableData'],
-    refetchOnWindowFocus: false,
-    keepPreviousData: true,
-    queryFn: GetIssuerData,
+    queryKey: ['issuerTableData'], // Unique key for the query
+    refetchOnWindowFocus: false, // Disable refetch on window focus
+    keepPreviousData: true, // Keep previous data when refetching
+    queryFn: GetIssuerData, // Function to fetch issuer data
     onSuccess: (data) => {
-      setIssuerData(data);
+      setIssuerData(data); // Update issuer data on successful query
     }
   });
 
@@ -241,6 +243,7 @@ function Issuer() {
           showButton
           setActiveAdding={setActiveClose}
           border
+          contentSX={{ p: 2 }}
           sx={{ height: '100%', boxShadow: 1 }}
         >
           <MultiTable

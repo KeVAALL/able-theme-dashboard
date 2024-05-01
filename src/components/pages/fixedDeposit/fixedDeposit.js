@@ -31,97 +31,120 @@ import { GetActiveIssuerData } from 'hooks/issuer/issuer';
 import InterestRate from '../../organisms/fixedDeposit/interestRate';
 
 function FixDeposit() {
-  // Main data
+  // Main data state to hold the list of products
   const [productData, setProductData] = useState([]);
 
-  // Toggle Table and Form Visibility
-  const [showTable, setShowTable] = useState(false);
-  const changeTableVisibility = () => {
-    setShowTable(!showTable);
-  };
-
   // Edit Logic State
-  const [isEditing, setIsEditing] = useState(false);
-  const [editingInterestRate, setEditingInterestRate] = useState(false);
-  const [activeIssuers, setActiveIssuers] = useState([]);
-  const [selectedIssuerID, setSelectedIssuerID] = useState(null);
-  const [isFDActive, setFDActive] = useState();
+  const [isEditing, setIsEditing] = useState(false); // State to track if editing mode is active
+  const [editingInterestRate, setEditingInterestRate] = useState(false); // State to track if editing interest rate is active
+  const [activeIssuers, setActiveIssuers] = useState([]); // State to hold active issuers
+  const [selectedIssuerID, setSelectedIssuerID] = useState(null); // State to hold selected issuer ID
+  const [isFDActive, setFDActive] = useState(); // State to track if fixed deposit is active
+
+  // Toggle Table and Form Visibility
+  const [showTable, setShowTable] = useState(false); // State to toggle visibility of the table form
+
+  // Select field states
+  const [checkedCumulative, setCheckedCumulative] = useState(false); // State for cumulative checkbox
+  const [checkedNonCumulative, setCheckedNonCumulative] = useState(false); // State for non-cumulative checkbox
+
+  // Form State
+  const [formValues, setFormValues] = useState(formAllValues); // State to hold form input values
+  // Theme
+  const theme = useTheme();
+
+  // Sets form values for editing
   const setEditing = (value) => {
-    console.log(value);
     setFormValues(value);
     setCheckedCumulative(Boolean(value.is_cumulative));
     setCheckedNonCumulative(Boolean(value.is_non_cumulative));
     setSelectedIssuerID(value.issuer_name);
   };
+  // Activates editing mode
   const setActiveEditing = () => {
     setIsEditing(true);
   };
+  // Deactivates editing mode
   const setActiveClose = () => {
     setIsEditing(false);
   };
+  // Sets whether fixed deposit is active
   const handleIsFDActive = (initialValue) => {
     setFDActive(initialValue);
   };
+
+  // Sets editing interest rate to true
   const isEditingInterestRate = () => {
     setEditingInterestRate(true);
   };
+  // Sets editing interest rate to false
   const isNotEditingInterestRate = () => {
     setEditingInterestRate(false);
   };
 
-  // Select field state
-  const [checkedCumulative, setCheckedCumulative] = useState(false);
-  const [checkedNonCumulative, setCheckedNonCumulative] = useState(false);
-  // Toggle checked state between 0 and 1 when clicked
+  // Toggle checked state between 0 and 1 when clicked for cumulative checkbox
   const handleCumulativeChange = () => {
     setCheckedCumulative((prevChecked) => (!prevChecked ? 1 : 0)); // Toggle between 0 and 1
   };
+  // Toggle checked state between 0 and 1 when clicked for non-cumulative checkbox
   const handleNonCumulativeChange = () => {
     setCheckedNonCumulative((prevChecked) => (!prevChecked ? 1 : 0));
   };
 
   // Search one item state
   const setSearchData = (fixedDeposit) => {
+    // Function to set search results for a single product
     setProductData(fixedDeposit);
   };
-  // Form State
-  const [formValues, setFormValues] = useState(formAllValues);
+
+  // Form Visibility
+  const changeTableVisibility = () => {
+    // Function to toggle table visibility
+    setShowTable(!showTable);
+  };
   // Empty Form Fields
   const clearFormValues = () => {
+    // Function to clear form values
     setFormValues(formAllValues);
     setCheckedCumulative(false);
     setCheckedNonCumulative(false);
     setSelectedIssuerID();
   };
-  // Custom Fields/ Table Columns
-  const theme = useTheme();
-  const columns = useMemo(() => tableColumns, []);
 
+  // Custom Fields/ Table Columns
+  const columns = useMemo(() => tableColumns, []); // Memoized table columns for performance
+
+  // Fetching Data using React Query
+  // Query for fetching active issuer data
   const {
     isPending: isActiveIssuerPending,
     error: activeIssuerError,
     refetch
   } = useQuery({
-    queryKey: ['activeIssuerData'],
-    refetchOnWindowFocus: false,
-    keepPreviousData: true,
-    queryFn: GetActiveIssuerData,
+    queryKey: ['activeIssuerData'], // Unique key for the query
+    refetchOnWindowFocus: false, // Disable refetch on window focus
+    keepPreviousData: true, // Keep previous data when refetching
+    queryFn: GetActiveIssuerData, // Function to fetch active issuer data
     onSuccess: (data) => {
+      // Callback function on successful query
       console.log(data);
-      setActiveIssuers(data);
+      setActiveIssuers(data); // Update active issuers with fetched data
     }
   });
+
+  // Query for fetching product data
   const {
     isPending,
     error,
     refetch: ProductTableDataRefetch
   } = useQuery({
-    queryKey: ['productTableData'],
-    refetchOnWindowFocus: false,
-    keepPreviousData: true,
-    queryFn: GetProductData,
+    queryKey: ['productTableData'], // Unique key for the query
+    refetchOnWindowFocus: false, // Disable refetch on window focus
+    keepPreviousData: true, // Keep previous data when refetching
+    queryFn: GetProductData, // Function to fetch product data
     onSuccess: (data) => {
-      setProductData(data);
+      // Callback function on successful query
+      setProductData(data); // Update product data with fetched data
     }
   });
 
@@ -309,6 +332,7 @@ function FixDeposit() {
           showButton
           setActiveAdding={setActiveClose}
           border
+          contentSX={{ p: 2 }}
           sx={{ height: '100%', boxShadow: 1 }}
         >
           <MultiTable

@@ -24,8 +24,8 @@ export async function GetInvestorData() {
 export async function GetOneInvestor(values, setSearchData) {
   try {
     const response = await axios.post('investor/getinvestor', {
-      // method_name: 'getone',
-      method_name: 'getdetails',
+      method_name: 'getone',
+      // method_name: 'getdetails',
       ...values
     });
     setSearchData(response.data.data);

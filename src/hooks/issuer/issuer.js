@@ -122,7 +122,7 @@ export async function EditIssuer(values, isIssuerActive, issuerTableDataRefetch,
 export async function DeleteOneIssuer(values) {
   try {
     await axios.post('/issuer/saveissuer', {
-      issuer_id: values.issuer_id,
+      id: values.id,
       user_id: 2,
       method_name: 'delete'
     });

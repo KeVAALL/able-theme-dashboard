@@ -30,6 +30,7 @@ import { useGlobalFilter } from 'react-table/dist/react-table.development';
 import { useSortBy } from 'react-table';
 import DialogBox from 'components/atoms/dialog/dialog';
 import AnimateButton from 'helpers/@extended/AnimateButton';
+import { borderRadius } from '@mui/system';
 
 // ==============================|| REACT TABLE ||============================== //
 
@@ -294,7 +295,7 @@ const InterestRateTable = ({
   VisibleColumn
 }) => {
   return (
-    <MainCard content={false} secondary={<CSVExport data={data} filename={'pagination-bottom-table.csv'} />}>
+    <MainCard sx={{ borderRadius: 0 }} content={false} secondary={<CSVExport data={data} filename={'pagination-bottom-table.csv'} />}>
       <ScrollX>
         <ReactTable
           columns={columns}

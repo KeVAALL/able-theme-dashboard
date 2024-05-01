@@ -50,7 +50,8 @@ function ReactTable({
   setActiveEditing,
   isEditingInterestRateButton,
   isEditingInterestRate,
-  VisibleColumn
+  VisibleColumn,
+  doNotShowHeader
 }) {
   // const filterTypes = useMemo(() => renderFilterTypes, []);
   // const defaultColumn = useMemo(() => ({ Filter: DefaultColumnFilter }), []);
@@ -115,76 +116,80 @@ function ReactTable({
 
   return (
     <>
-      <Grid container alignItems="center" spacing={2} sx={{ padding: 2 }}>
-        <Grid item md={7} sm={7} xs={12}>
-          {formValueFields?.length >= 1 && (
-            <Formik
-              initialValues={formValues}
-              validationSchema={validationSchema}
-              onSubmit={async (values, { setSubmitting, resetForm }) => {
-                getOneItem(values, setSearchData);
-                resetForm();
-              }}
-            >
-              {({ values, errors, touched, handleChange, handleBlur, handleSubmit, isSubmitting }) => (
-                <Box
-                  component="form"
-                  onSubmit={(event) => {
-                    event.preventDefault();
-                    handleSubmit();
-                  }}
-                >
-                  <Grid container direction="row" spacing={1} alignItems="center">
-                    {formValueFields?.map((field, id) => {
-                      return (
-                        <Grid item md={4} sm={4} xs={6} key={id}>
-                          <CustomTextField
-                            label={field.label}
-                            name={field.fieldName}
-                            values={values}
-                            type={field.type}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            touched={touched}
-                            errors={errors}
-                          />
-                        </Grid>
-                      );
-                    })}
+      {!doNotShowHeader ? (
+        <Grid container alignItems="center" spacing={2} sx={{ padding: 2 }}>
+          <Grid item md={7} sm={7} xs={12}>
+            {formValueFields?.length >= 1 && (
+              <Formik
+                initialValues={formValues}
+                validationSchema={validationSchema}
+                onSubmit={async (values, { setSubmitting, resetForm }) => {
+                  getOneItem(values, setSearchData);
+                  resetForm();
+                }}
+              >
+                {({ values, errors, touched, handleChange, handleBlur, handleSubmit, isSubmitting }) => (
+                  <Box
+                    component="form"
+                    onSubmit={(event) => {
+                      event.preventDefault();
+                      handleSubmit();
+                    }}
+                  >
+                    <Grid container direction="row" spacing={1} alignItems="center">
+                      {formValueFields?.map((field, id) => {
+                        return (
+                          <Grid item md={4} sm={4} xs={6} key={id}>
+                            <CustomTextField
+                              label={field.label}
+                              name={field.fieldName}
+                              values={values}
+                              type={field.type}
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              touched={touched}
+                              errors={errors}
+                            />
+                          </Grid>
+                        );
+                      })}
 
-                    <Grid item md={4} sm={4} xs={6}>
-                      <Button
-                        // fullWidth={!mdUp}
-                        variant="contained"
-                        color="success"
-                        type="submit"
-                        startIcon={<FilterSearch />}
-                        sx={{
-                          justifySelf: 'center',
-                          width: !mdUp ? 'auto' : '100%' // Set width to 'auto' when screen size is medium or larger, otherwise '100%'
-                        }}
-                      >
-                        Search
-                      </Button>
+                      <Grid item md={4} sm={4} xs={6}>
+                        <Button
+                          // fullWidth={!mdUp}
+                          variant="contained"
+                          color="success"
+                          type="submit"
+                          startIcon={<FilterSearch />}
+                          sx={{
+                            justifySelf: 'center',
+                            width: !mdUp ? 'auto' : '100%' // Set width to 'auto' when screen size is medium or larger, otherwise '100%'
+                          }}
+                        >
+                          Search
+                        </Button>
+                      </Grid>
                     </Grid>
-                  </Grid>
-                </Box>
-              )}
-            </Formik>
-          )}
-        </Grid>
-        <Grid item md={5} sm={5} xs={12} sx={{ display: 'flex', justifyContent: { sm: 'flex-end' } }}>
-          <Grid container spacing={4} sx={{ alignItems: 'center', justifyContent: 'flex-end' }}>
-            <Grid item md={11} xs={11} sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-              <HidingSelect hiddenColumns={hiddenColumns} setHiddenColumns={setHiddenColumns} allColumns={allColumns} />
-            </Grid>
+                  </Box>
+                )}
+              </Formik>
+            )}
+          </Grid>
+          <Grid item md={5} sm={5} xs={12} sx={{ display: 'flex', justifyContent: { sm: 'flex-end' } }}>
+            <Grid container spacing={4} sx={{ alignItems: 'center', justifyContent: 'flex-end' }}>
+              <Grid item md={11} xs={11} sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+                <HidingSelect hiddenColumns={hiddenColumns} setHiddenColumns={setHiddenColumns} allColumns={allColumns} />
+              </Grid>
 
-            <Grid item md={1} xs={1} sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-              <CSVExport data={rows.map((d) => d.original)} filename={'filtering-table.csv'} headers={headers} />
+              <Grid item md={1} xs={1} sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+                <CSVExport data={rows.map((d) => d.original)} filename={'filtering-table.csv'} headers={headers} />
+              </Grid>
             </Grid>
           </Grid>
         </Grid>
-      </Grid>
+      ) : (
+        <></>
+      )}
 
       {item && (
         <DialogBox
@@ -320,10 +325,11 @@ const MultiTable = ({
   setActiveEditing,
   isEditingInterestRateButton,
   isEditingInterestRate,
-  VisibleColumn
+  VisibleColumn,
+  doNotShowHeader
 }) => {
   return (
-    <MainCard content={false} secondary={<CSVExport data={data} filename={'pagination-bottom-table.csv'} />}>
+    <MainCard sx={{ borderRadius: 0 }} content={false} secondary={<CSVExport data={data} filename={'pagination-bottom-table.csv'} />}>
       <ScrollX>
         <ReactTable
           columns={columns}
@@ -343,6 +349,7 @@ const MultiTable = ({
           isEditingInterestRateButton={isEditingInterestRateButton}
           isEditingInterestRate={isEditingInterestRate}
           VisibleColumn={VisibleColumn}
+          doNotShowHeader={doNotShowHeader}
         />
       </ScrollX>
     </MainCard>
@@ -367,7 +374,8 @@ MultiTable.propTypes = {
   // Add new table for below
   isEditingInterestRateButton: PropTypes.any,
   isEditingInterestRate: PropTypes.any,
-  VisibleColumn: PropTypes.any
+  VisibleColumn: PropTypes.any,
+  doNotShowHeader: PropTypes.any
 };
 
 export default MultiTable;

@@ -22,8 +22,8 @@ const AddressDetails = (props) => {
               valueName="investor_address.address_line_1"
               values={props.values.investor_address.address_line_1}
               type="string"
-              onChange={props.handleChange}
-              onBlur={props.handleBlur}
+              handleChange={props.handleChange}
+              handleBlur={props.handleBlur}
               touched={props.touched}
               errors={props.errors}
             />
@@ -34,8 +34,8 @@ const AddressDetails = (props) => {
               valueName="investor_address.address_line_2"
               values={props.values.investor_address.address_line_2}
               type="string"
-              onChange={props.handleChange}
-              onBlur={props.handleBlur}
+              handleChange={props.handleChange}
+              handleBlur={props.handleBlur}
               touched={props.touched}
               errors={props.errors}
             />
@@ -47,8 +47,8 @@ const AddressDetails = (props) => {
               valueName="investor_address.pincode"
               values={props.values.investor_address.pincode}
               type="string"
-              onChange={props.handleChange}
-              onBlur={props.handleBlur}
+              handleChange={props.handleChange}
+              handleBlur={props.handleBlur}
               touched={props.touched}
               errors={props.errors}
             />
@@ -60,8 +60,8 @@ const AddressDetails = (props) => {
               valueName="investor_address.city"
               values={props.values.investor_address.city}
               type="string"
-              onChange={props.handleChange}
-              onBlur={props.handleBlur}
+              handleChange={props.handleChange}
+              handleBlur={props.handleBlur}
               touched={props.touched}
               errors={props.errors}
             />
@@ -71,10 +71,10 @@ const AddressDetails = (props) => {
       <Box id="__checkbox" style={{ marginTop: '12px', display: 'flex', alignItems: 'flex-start', gap: '4px' }}>
         <Checkbox
           checked={props.values.is_permanent_address_correspond}
-          onChange={(e) => {
+          onChange={async (e) => {
             const newValue = e.target.checked ? 1 : 0;
             // props.setFieldValue('investor.is_permanent_address_correspond', newValue);
-            props.setFieldValue('is_permanent_address_correspond', newValue);
+            await props.setFieldValue('is_permanent_address_correspond', newValue);
           }}
           name="is_permanent_address_correspond"
           id="is_permanent_address_correspond"
@@ -82,7 +82,7 @@ const AddressDetails = (props) => {
           // onChange={props.handleChange}
           // name="investor.is_permanent_address_correspond"
           // id="investor.is_permanent_address_correspond"
-          inputProps={{ 'aria-label': 'Same address' }}
+          // inputProps={{ 'aria-label': 'Same address' }}
         />
         <Typography sx={{ color: '#5E718D', marginBottom: '20px' }} variant="p">
           Correspondent Address is same as Permanent Address
@@ -104,8 +104,8 @@ const AddressDetails = (props) => {
                 values={props.values.correspondent_address.address_line_1}
                 type="string"
                 // required={!sameAddress}
-                onChange={props.handleChange}
-                onBlur={props.handleBlur}
+                handleChange={props.handleChange}
+                handleBlur={props.handleBlur}
                 touched={props.touched}
                 errors={props.errors}
               />
@@ -117,8 +117,8 @@ const AddressDetails = (props) => {
                 values={props.values.correspondent_address.address_line_2}
                 type="string"
                 // required={!sameAddress}
-                onChange={props.handleChange}
-                onBlur={props.handleBlur}
+                handleChange={props.handleChange}
+                handleBlur={props.handleBlur}
                 touched={props.touched}
                 errors={props.errors}
               />
@@ -131,8 +131,8 @@ const AddressDetails = (props) => {
                 values={props.values.correspondent_address.pincode}
                 type="string"
                 // required={!sameAddress}
-                onChange={props.handleChange}
-                onBlur={props.handleBlur}
+                handleChange={props.handleChange}
+                handleBlur={props.handleBlur}
                 touched={props.touched}
                 errors={props.errors}
               />
@@ -145,8 +145,8 @@ const AddressDetails = (props) => {
                 values={props.values.correspondent_address.city}
                 type="string"
                 // required={!sameAddress}
-                onChange={props.handleChange}
-                onBlur={props.handleBlur}
+                handleChange={props.handleChange}
+                handleBlur={props.handleBlur}
                 touched={props.touched}
                 errors={props.errors}
               />
