@@ -47,12 +47,12 @@ export async function SaveProduct(
   ProductTableDataRefetch,
   clearFormValues,
   checkedCumulative,
-  checkedNonCumulative,
-  selectedIssuerID
+  checkedNonCumulative
+  // selectedIssuerID
 ) {
   console.log({
     ...values,
-    issuer_id: selectedIssuerID,
+    // issuer_id: selectedIssuerID,
     is_cumulative: toInteger(!checkedCumulative ? false : checkedCumulative),
     is_non_cumulative: toInteger(!checkedNonCumulative ? false : checkedNonCumulative),
     user_id: 2,
@@ -61,7 +61,7 @@ export async function SaveProduct(
   try {
     await axios.post('/product/saveproduct', {
       ...values,
-      issuer_id: selectedIssuerID,
+      // issuer_id: selectedIssuerID,
       is_cumulative: toInteger(!checkedCumulative ? false : checkedCumulative),
       is_non_cumulative: toInteger(!checkedNonCumulative ? false : checkedNonCumulative),
       user_id: 2,

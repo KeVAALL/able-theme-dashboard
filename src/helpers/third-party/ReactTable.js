@@ -47,14 +47,14 @@ export const HeaderSort = ({ column, sort }) => {
           {...(sort && { ...column.getHeaderProps(column.getSortByToggleProps()) })}
         >
           <ArrowUp
-            size={20}
+            size={16}
             style={{
               color: column.isSorted && !column.isSortedDesc ? theme.palette.secondary.main : 'inherit'
               // color: column.isSorted && !column.isSortedDesc ? 'black' : 'black'
             }}
           />
           <ArrowDown
-            size={20}
+            size={16}
             style={{
               color: column.isSortedDesc ? theme.palette.secondary.main : 'inherit'
               // color: column.isSortedDesc ? 'black' : 'black'

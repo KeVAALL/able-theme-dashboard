@@ -14,7 +14,7 @@ import * as yup from 'yup';
 import { useQuery } from 'react-query';
 import Loader from 'components/atoms/loader/Loader';
 import { SubmitButton } from 'components/atoms/button/button';
-import CustomTextField, { CustomAutoComplete, CustomCheckbox } from 'utils/textfield';
+import CustomTextField, { CustomAutoComplete, CustomCheckbox, FormikAutoComplete } from 'utils/textfield';
 
 // assets
 import {
@@ -168,7 +168,14 @@ function FixDeposit() {
           validationSchema={validationSchema}
           onSubmit={async (values, { setSubmitting, resetForm }) => {
             if (isEditing === false) {
-              SaveProduct(values, ProductTableDataRefetch, clearFormValues, checkedCumulative, checkedNonCumulative, selectedIssuerID);
+              SaveProduct(
+                values,
+                ProductTableDataRefetch,
+                clearFormValues,
+                checkedCumulative,
+                checkedNonCumulative
+                // selectedIssuerID
+              );
             }
             if (isEditing === true) {
               console.log('i am editing');
@@ -187,7 +194,7 @@ function FixDeposit() {
             changeTableVisibility();
           }}
         >
-          {({ values, errors, touched, handleChange, handleBlur, handleSubmit, resetForm, isSubmitting }) => (
+          {({ values, errors, touched, handleChange, handleBlur, handleSubmit, setFieldValue, resetForm, isSubmitting }) => (
             <Box
               component="form"
               onSubmit={(event) => {
@@ -309,10 +316,19 @@ function FixDeposit() {
                       />
                     </Grid>
                     <Grid item xs={4}>
-                      <CustomAutoComplete
+                      {/* <CustomAutoComplete
                         options={activeIssuers}
                         defaultValue={selectedIssuerID}
                         setSelected={setSelectedIssuerID}
+                        optionName="issuer_name"
+                        label="Issuers"
+                      /> */}
+                      <FormikAutoComplete
+                        options={activeIssuers}
+                        defaultValue={values.issuer_id}
+                        idName="issuer_id"
+                        setFieldValue={setFieldValue}
+                        formName="issuer_id"
                         optionName="issuer_name"
                         label="Issuers"
                       />

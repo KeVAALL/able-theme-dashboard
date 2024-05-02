@@ -157,13 +157,13 @@ const ProfilePage = () => {
                           </Stack>
                         </Stack>
                       </Grid>
-                      <Grid item>
+                      {/* <Grid item>
                         <Tooltip title="Logout">
                           <IconButton size="large" color="error" sx={{ p: 1 }} onClick={handleLogout}>
                             <Logout variant="Bulk" />
                           </IconButton>
                         </Tooltip>
-                      </Grid>
+                      </Grid> */}
                     </Grid>
                   </CardContent>
                   {/* sx={{ borderBottom: 1, borderColor: 'divider' }} */}

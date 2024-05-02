@@ -66,8 +66,6 @@ function Investor() {
   const [selectedIFA, setSelectedIFA] = useState(null);
   const [selectedGender, setSelectedGender] = useState(null);
   const [selectedRelation, setSelectedRelation] = useState(null);
-  const [selectedResidenceID, setSelectedResidenceID] = useState(null);
-  const [selectedMarital, setSelectedMarital] = useState(null);
   const [selectedOccupation, setSelectedOccupation] = useState(null);
   const [selectedAnnualIncome, setSelectedAnnualIncome] = useState(null);
   const [selectedIncomeSource, setSelectedIncomeSource] = useState(null);
@@ -102,8 +100,6 @@ function Investor() {
     console.log(value);
     setFormValues(value);
     setSelectedGender(value.investor.gender);
-    setSelectedResidenceID(value.personal_info.is_indian_resident);
-    setSelectedMarital(value.personal_info.is_married);
     setSelectedOccupation(value.professional_details.occupation_name);
     setSelectedAnnualIncome(value.professional_details.annual_income);
     setSelectedIncomeSource(value.professional_details.income_source);
@@ -138,8 +134,6 @@ function Investor() {
   const clearFormValues = () => {
     setFormValues(formAllValues);
     setSelectedGender();
-    setSelectedResidenceID();
-    setSelectedMarital();
     setSelectedOccupation();
     setSelectedAnnualIncome();
     setSelectedIncomeSource();
@@ -151,6 +145,18 @@ function Investor() {
     setNomineeData([]);
   };
 
+  // Gender Validation
+  const genderValidate = (value) => {
+    if (typeof value === 'string') {
+      genderData.find((el) => {
+        if (el.gender === value) {
+          return el.id;
+        }
+      });
+    } else {
+      return value;
+    }
+  };
   // Nominee
   const handleNewNominee = (value) => {
     setNomineeData((prev) => {
@@ -244,6 +250,7 @@ function Investor() {
                 ...values,
                 investor: {
                   ...values.investor,
+                  gender: genderValidate(selectedGender),
                   is_foreign_tax_resident: selectedDeclaration.isResidentOutsideIndia ? 1 : 0,
                   is_rpep: selectedDeclaration.isRelativeToPoliticallyExposed ? 1 : 0,
                   is_pep: selectedDeclaration.isPoliticallyExposed ? 1 : 0
@@ -256,14 +263,25 @@ function Investor() {
               console.log('i am editing');
 
               console.log({ ...values, method_name: 'update' });
-              // EditInvestor(
-              //   values,
-              //   // isFDActive,
-              //   isInvestorActive,
-              //   InvestorTableDataRefetch,
-              //   clearFormValues,
-              //   setActiveClose
-              // );
+              const formValues = {
+                ...values,
+                investor: {
+                  ...values.investor,
+                  gender: genderValidate(selectedGender),
+                  is_foreign_tax_resident: selectedDeclaration.isResidentOutsideIndia ? 1 : 0,
+                  is_rpep: selectedDeclaration.isRelativeToPoliticallyExposed ? 1 : 0,
+                  is_pep: selectedDeclaration.isPoliticallyExposed ? 1 : 0
+                },
+                nominee: nomineeData
+              };
+              EditInvestor(
+                formValues,
+                // isFDActive,
+                // isInvestorActive,
+                InvestorTableDataRefetch,
+                clearFormValues,
+                setActiveClose
+              );
             }
             setErrorObject(errorObject);
             changeTableVisibility();
@@ -356,21 +374,22 @@ function Investor() {
                       />
                     </Grid>
                     <Grid item xs={4}>
-                      {/* <CustomAutoComplete
+                      {/* Using Normal Autocomplete because of API issues */}
+                      <CustomAutoComplete
                         options={genderData}
                         defaultValue={selectedGender}
                         setSelected={setSelectedGender}
                         optionName="gender"
                         label="Gender"
-                      /> */}
-                      <FormikAutoComplete
+                      />
+                      {/* <FormikAutoComplete
                         options={genderData}
                         defaultValue={values.investor.gender_id}
                         setFieldValue={setFieldValue}
                         formName="investor.gender_id"
                         optionName="gender"
                         label="Gender"
-                      />
+                      /> */}
                     </Grid>
                     <Grid item xs={4}>
                       <NestedCustomTextField
@@ -395,12 +414,8 @@ function Investor() {
                     touched={touched}
                     errors={errors}
                     setFieldValue={setFieldValue}
-                    selectedResidenceID={selectedResidenceID}
-                    setSelectedResidenceID={setSelectedResidenceID}
                     selectedRelation={selectedRelation}
                     setSelectedRelation={setSelectedRelation}
-                    selectedMarital={selectedMarital}
-                    setSelectedMarital={setSelectedMarital}
                     selectedOccupation={selectedOccupation}
                     setSelectedOccupation={setSelectedOccupation}
                     selectedAnnualIncome={selectedAnnualIncome}

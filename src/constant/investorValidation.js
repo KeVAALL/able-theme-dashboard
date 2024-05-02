@@ -140,7 +140,7 @@ const formAllValues = {
     pan_no: '',
     mobile_no: '',
     investor_type: '',
-    gender_id: 1,
+    // gender_id: 1,
     birth_date: new Date(),
     place_of_birth: '',
     is_married: 0,
@@ -173,7 +173,7 @@ const validationSchema = yup.object().shape({
     // mobile_no: yup.number().required('Mobile number is required'),
     mobile_no: yup.string().required('Mobile number is required'),
     investor_type: yup.string().required('Investor type is required'),
-    gender_id: yup.number(),
+    // gender_id: yup.number(),
     birth_date: yup.date(),
     place_of_birth: yup.string().required('Place of Birth is required'),
     is_married: yup.number(),
@@ -258,7 +258,7 @@ const VisibleColumn = [];
 const StatusCell = ({ value }) => {
   switch (value) {
     case 0:
-      return <Chip color="error" label="Not Active" size="medium" variant="light" />;
+      return <Chip color="error" label="Inactive" size="medium" variant="light" />;
     case 1:
       return <Chip color="success" label="Active" size="medium" variant="light" />;
     default:

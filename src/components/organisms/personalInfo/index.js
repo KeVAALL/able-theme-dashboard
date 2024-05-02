@@ -24,14 +24,6 @@ const CustomChip = (props) => {
     <>
       <Grid container spacing={2} id="grid_box" sx={{ marginBottom: '20px' }}>
         <Grid item xs={12} md={4}>
-          {/* <CustomAutoComplete
-            options={residency}
-            defaultValue={props.selectedResidenceID}
-            // handleChange={props.handleOnResidenceChange}
-            setSelected={props.setSelectedResidenceID}
-            optionName="status"
-            label="Resident Status"
-          /> */}
           <FormikAutoComplete
             options={residency}
             defaultValue={props.values.investor.is_indian_resident}
@@ -43,14 +35,6 @@ const CustomChip = (props) => {
         </Grid>
 
         <Grid item xs={12} md={4}>
-          {/* <CustomAutoComplete
-            options={marital_status}
-            defaultValue={props.selectedMarital}
-            // handleChange={props.handleOnMaritalChange}
-            setSelected={props.setSelectedMarital}
-            optionName="status"
-            label="Marital Status"
-          /> */}
           <FormikAutoComplete
             options={marital_status}
             defaultValue={props.values.investor.is_married}

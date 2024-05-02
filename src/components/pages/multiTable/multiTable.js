@@ -125,7 +125,7 @@ function ReactTable({
                 validationSchema={validationSchema}
                 onSubmit={async (values, { setSubmitting, resetForm }) => {
                   getOneItem(values, setSearchData);
-                  resetForm();
+                  // resetForm();
                 }}
               >
                 {({ values, errors, touched, handleChange, handleBlur, handleSubmit, isSubmitting }) => (
@@ -139,7 +139,7 @@ function ReactTable({
                     <Grid container direction="row" spacing={1} alignItems="center">
                       {formValueFields?.map((field, id) => {
                         return (
-                          <Grid item md={4} sm={4} xs={6} key={id}>
+                          <Grid item md={3} sm={3} xs={6} key={id}>
                             <CustomTextField
                               label={field.label}
                               name={field.fieldName}
@@ -154,7 +154,7 @@ function ReactTable({
                         );
                       })}
 
-                      <Grid item md={4} sm={4} xs={6}>
+                      <Grid item md={3} sm={3} xs={6}>
                         <Button
                           // fullWidth={!mdUp}
                           variant="contained"
@@ -232,59 +232,61 @@ function ReactTable({
                         </TableCell>
                       );
                     })}
-                    <TableCell sx={{ textAlign: { md: 'right', xs: 'center' } }}>
-                      <Grid container spacing={0.5} sx={{ display: 'flex', justifyContent: { md: 'flex-end', xs: 'center' } }}>
-                        <Grid item md={4} xs={12}>
-                          <Edit2
-                            size={22}
-                            style={{ cursor: 'pointer' }}
-                            onClick={async () => {
-                              if (getEditData) {
-                                console.log('Big');
-                                const result = await getEditData(setEditing);
-                                setTimeout(() => {
-                                  changeTableVisibility();
-                                }, 500);
-                                console.log(result);
-                              } else {
-                                console.log('Small');
-                                console.log(row.original);
-                                setEditing(row.original);
-                                changeTableVisibility();
-                              }
-                              setActiveEditing();
-                            }}
-                          />
-                        </Grid>
-
-                        {isEditingInterestRateButton && (
+                    {headers.length !== 0 && (
+                      <TableCell sx={{ textAlign: { md: 'right', xs: 'center' } }}>
+                        <Grid container spacing={0.5} sx={{ display: 'flex', justifyContent: { md: 'flex-end', xs: 'center' } }}>
                           <Grid item md={4} xs={12}>
-                            <DiscountShape
+                            <Edit2
                               size={22}
                               style={{ cursor: 'pointer' }}
                               onClick={async () => {
-                                setEditing(row.original);
-                                isEditingInterestRate();
+                                if (getEditData) {
+                                  console.log('Big');
+                                  const result = await getEditData(setEditing);
+                                  setTimeout(() => {
+                                    changeTableVisibility();
+                                  }, 500);
+                                  console.log(result);
+                                } else {
+                                  console.log('Small');
+                                  console.log(row.original);
+                                  setEditing(row.original);
+                                  changeTableVisibility();
+                                }
+                                setActiveEditing();
                               }}
                             />
                           </Grid>
-                        )}
 
-                        <Grid item md={4} xs={12}>
-                          <Trash
-                            size={22}
-                            style={{ cursor: 'pointer' }}
-                            onClick={async () => {
-                              setItem(row.original);
-                              setTimeout(() => {
-                                handleOpenDialog();
-                              }, 200);
-                              console.log(row.original);
-                            }}
-                          />
+                          {isEditingInterestRateButton && (
+                            <Grid item md={4} xs={12}>
+                              <DiscountShape
+                                size={22}
+                                style={{ cursor: 'pointer' }}
+                                onClick={async () => {
+                                  setEditing(row.original);
+                                  isEditingInterestRate();
+                                }}
+                              />
+                            </Grid>
+                          )}
+
+                          <Grid item md={4} xs={12}>
+                            <Trash
+                              size={22}
+                              style={{ cursor: 'pointer' }}
+                              onClick={async () => {
+                                setItem(row.original);
+                                setTimeout(() => {
+                                  handleOpenDialog();
+                                }, 200);
+                                console.log(row.original);
+                              }}
+                            />
+                          </Grid>
                         </Grid>
-                      </Grid>
-                    </TableCell>
+                      </TableCell>
+                    )}
                   </TableRow>
                 );
               })

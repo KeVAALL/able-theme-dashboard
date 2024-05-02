@@ -1,8 +1,8 @@
 /* eslint-disable react/prop-types */
 import React, { useState } from 'react';
-import { Box, Card, Checkbox, Grid, Typography, Button, CardContent, CardHeader, Stack, Divider } from '@mui/material';
+import { Box, Card, Grid, Button, CardContent, CardHeader, Stack, Divider } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import CustomTextField, { CustomAutoComplete, NestedCustomTextField, dateFormatter } from 'utils/textfield';
+import CustomTextField, { FormikAutoComplete, dateFormatter } from 'utils/textfield';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 
@@ -18,8 +18,6 @@ import { relationship } from 'constant/investorValidation';
 const Nomination = (props) => {
   // theme
   const theme = useTheme();
-  // Autocomplete
-  const [selectedRelation, setSelectedRelation] = useState(null);
   // Toggle Table and Form Visibility
   const [showTable, setShowTable] = useState(false);
   const changeTableVisibility = () => {
@@ -29,12 +27,6 @@ const Nomination = (props) => {
   const setEditing = (value) => {
     console.log(value);
     setFormValues(value);
-    const relation = relationship.find((el) => el.id === value.relationship_id);
-    if (relation.relation_name) {
-      setSelectedRelation(relation.relation_name);
-    } else {
-      selectedRelation(relation.relationship_id);
-    }
   };
   const setActiveEditing = () => {
     setIsEditing(true);
@@ -46,7 +38,7 @@ const Nomination = (props) => {
   const formAllValues = {
     full_name: '',
     pan: '',
-    // relationship_id: 0,
+    relationship_id: 1,
     birth_date: new Date(),
     address_line_1: '',
     address_line_2: '',
@@ -57,7 +49,7 @@ const Nomination = (props) => {
   const validationSchema = yup.object().shape({
     full_name: yup.string(),
     pan: yup.string(),
-    // relationship_id: yup.string(),
+    relationship_id: yup.number(),
     birth_date: yup.date().required('Date of birth is required'),
     address_line_1: yup.string(),
     address_line_2: yup.string(),
@@ -70,11 +62,7 @@ const Nomination = (props) => {
   const clearFormValues = () => {
     setFormValues(formAllValues);
   };
-  // Date Picker
-  // const [dateValue, setDateValue] = useState(new Date());
-  // const handleDateChange = (newValue) => {
-  //   setDateValue(newValue);
-  // };
+
   // Table
   const VisibleColumn = [];
   const columns = [
@@ -88,7 +76,6 @@ const Nomination = (props) => {
     },
     {
       Header: 'Relation',
-      // accessor: 'relation_name',
       accessor: 'relationship_id',
       customCell: ({ value }) => {
         console.log(value);
@@ -127,7 +114,6 @@ const Nomination = (props) => {
                 component="form"
                 onSubmit={(event) => {
                   event.preventDefault();
-                  // handleSubmit();
                 }}
                 sx={{ width: '100%' }}
               >
@@ -151,23 +137,10 @@ const Nomination = (props) => {
                             startIcon={<Additem />}
                             onClick={() => {
                               console.log({
-                                ...values,
-                                relationship_id: selectedRelation
-                                // birth_date: `${dateValue}`
+                                ...values
                               });
                               props.handleNewNominee({
-                                ...values,
-                                relationship_id: selectedRelation
-                                // relationship_id:
-                                //   typeof selectedRelation === 'string'
-                                //     ? relationship.find((el) => {
-                                //         if (el.relation_name === selectedRelation) {
-                                //           console.log(el);
-                                //           return el.id;
-                                //         }
-                                //       })
-                                //     : selectedRelation
-                                // birth_date: `${dateValue}`
+                                ...values
                               });
                               changeTableVisibility();
                             }}
@@ -225,10 +198,11 @@ const Nomination = (props) => {
                         />
                       </Grid>
                       <Grid item xs={12} sm={6} md={6} style={{ display: 'grid', gap: '10px' }}>
-                        <CustomAutoComplete
+                        <FormikAutoComplete
                           options={relationship}
-                          defaultValue={selectedRelation}
-                          setSelected={setSelectedRelation}
+                          defaultValue={values.relationship_id}
+                          setFieldValue={setFieldValue}
+                          formName="relationship_id"
                           optionName="relation_name"
                           label="Relationship with Investor"
                         />
@@ -239,14 +213,7 @@ const Nomination = (props) => {
                             className="calendar_main"
                             label="DOB"
                             inputFormat="dd/MM/yyyy"
-                            // value={dateValue}
                             // onChange={handleDateChange}
-                            // onChange={handleChange}
-                            // onChange={(newValue) => {
-                            //   console.log(newValue);
-                            //   setDateValue('birth_date', newValue);
-                            // }}
-                            // Update birth_date value
                             value={values?.birth_date}
                             onChange={(newValue) => {
                               console.log(newValue);
@@ -356,6 +323,17 @@ const Nomination = (props) => {
 
 export default Nomination;
 
+// Date Picker
+// const [dateValue, setDateValue] = useState(new Date());
+// const handleDateChange = (newValue) => {
+//   setDateValue(newValue);
+// };
+// const relation = relationship.find((el) => el.id === value.relationship_id);
+// if (relation.relation_name) {
+//   setSelectedRelation(relation.relation_name);
+// } else {
+//   selectedRelation(relation.relationship_id);
+// }
 {
   /* <Typography sx={{ color: '#21B546', marginBottom: '0px', display: 'block' }} variant="p">
             First Nominee

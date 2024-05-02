@@ -4,11 +4,13 @@ import { Chip } from '@mui/material';
 // Add form values
 const formAllValues = {
   fd_name: '',
-  issuer_name: ''
+  issuer_name: '',
+  fd_payout_method_id: 'C'
 };
 const validationSchema = yup.object({
   fd_name: yup.string().required('FD Name is required'),
-  issuer_name: yup.string().required('Issuer Name is required')
+  issuer_name: yup.string().required('Issuer Name is required'),
+  fd_payout_method_id: yup.string()
 });
 // Table Columns
 const StatusCell = ({ value }) => {

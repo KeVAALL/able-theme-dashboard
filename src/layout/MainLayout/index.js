@@ -48,7 +48,7 @@ const MainLayout = () => {
       {!isHorizontal ? <Drawer /> : <HorizontalBar />}
       {/* {<HorizontalBar />} */}
 
-      <Box component="main" sx={{ width: `calc(100% - ${DRAWER_WIDTH}px)`, flexGrow: 1, p: { xs: 2, md: 3 } }}>
+      <Box component="main" sx={{ width: `calc(100% - ${DRAWER_WIDTH}px)`, flexGrow: 1, py: { xs: 2, md: 3 }, px: { xs: 0 } }}>
         <Toolbar sx={{ mt: isHorizontal ? 8 : 'inherit', mb: isHorizontal ? 2 : 'inherit' }} />
         <Container
           maxWidth={container ? 'xl' : false}

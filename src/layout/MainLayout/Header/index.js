@@ -37,7 +37,8 @@ const Header = () => {
 
   // common header
   const mainHeader = (
-    <Toolbar sx={{ px: { xs: 2, sm: 4.5, lg: 8 }, display: 'flex', justifyContent: 'space-between' }}>
+    // <Toolbar sx={{ px: { xs: 2, sm: 4.5, lg: 8 }, display: 'flex', justifyContent: 'space-between' }}>
+    <Toolbar sx={{ pl: { xs: 2, md: 5 }, pr: { xs: 2, md: 4 }, display: 'flex', justifyContent: 'space-between' }}>
       {!isHorizontal ? (
         <IconButton
           aria-label="open drawer"
@@ -46,7 +47,7 @@ const Header = () => {
           color="secondary"
           variant="light"
           size="large"
-          sx={{ color: 'secondary.main', bgcolor: drawerOpen ? iconBackColorOpen : 'eaeced', ml: { xs: 0, lg: -2 }, p: 1 }}
+          sx={{ color: 'secondary.main', bgcolor: drawerOpen ? iconBackColorOpen : '#eaeced', ml: { xs: 0, lg: -2 }, p: 1 }}
         >
           <HambergerMenu />
         </IconButton>

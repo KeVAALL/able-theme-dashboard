@@ -76,7 +76,13 @@ export async function SaveInvestor(values, InvestorTableDataRefetch, clearFormVa
     });
   }
 }
-export async function EditInvestor(values, isInvestorActive, InvestorTableDataRefetch, clearFormValues, setActiveClose) {
+export async function EditInvestor(
+  values,
+  // isInvestorActive,
+  InvestorTableDataRefetch,
+  clearFormValues,
+  setActiveClose
+) {
   console.log('hiting api');
   try {
     await axios.post('/investor/create', {

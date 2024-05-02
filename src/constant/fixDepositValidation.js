@@ -10,7 +10,8 @@ const formAllValues = {
   fd_max_amount: '',
   min_tenure: '',
   max_tenure: '',
-  logo_url: ''
+  logo_url: '',
+  issuer_id: 0
 };
 const validationSchema = yup.object().shape(
   {
@@ -51,7 +52,8 @@ const validationSchema = yup.object().shape(
         });
       })
       .required('Maximum Tenure is required'),
-    logo_url: yup.string().required('Logo URL is required')
+    logo_url: yup.string().required('Logo URL is required'),
+    issuer_id: yup.number()
   },
   [
     ['fd_min_amount', 'fd_max_amount'],
@@ -84,7 +86,7 @@ const StatusCell = ({ value }) => {
   // return value === 0 ? 'Not Active' : 'Active';
   switch (value) {
     case 0:
-      return <Chip color="error" label="Not Active" size="medium" variant="light" />;
+      return <Chip color="error" label="Inactive" size="medium" variant="light" />;
     case 1:
       return <Chip color="success" label="Active" size="medium" variant="light" />;
     default:

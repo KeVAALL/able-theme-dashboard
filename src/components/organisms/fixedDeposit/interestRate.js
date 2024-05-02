@@ -9,7 +9,7 @@ import { Formik } from 'formik';
 import * as yup from 'yup';
 import { useQuery } from 'react-query';
 import Loader from 'components/atoms/loader/Loader';
-import CustomTextField, { CustomAutoComplete } from 'utils/textfield';
+import CustomTextField, { CustomAutoComplete, FormikAutoComplete } from 'utils/textfield';
 // assets
 import { formAllValues, validationSchema, tableColumns, VisibleColumn } from 'constant/interestRateValidation';
 import { DeleteOneInterestRate, GetPayoutMethod, GetSchemeSearch } from 'hooks/interestRate/interestRate';
@@ -33,16 +33,21 @@ export default function InterestRate({ formValues, changeTableVisibility, isNotE
   };
 
   // Autocomplete field state
-  const [selectedPayoutMethod, setSelectedPayoutMethod] = useState(null);
+  const [selectedPayoutMethod, setSelectedPayoutMethod] = useState('C');
   const [payoutData, setPayoutData] = useState([]);
-  // const handleOnIssuerChange = (event) => {
-  //   payoutData.map((el) => {
-  //     if (el.item_value === event.target.outerText) {
-  //       console.log(el.item_id);
-  //       setSelectedPayoutMethod(el.item_id);
-  //     }
-  //   });
-  // };
+  // Gender Validation
+  const payoutValidate = (value) => {
+    if (typeof value === 'string') {
+      console.log('string');
+      payoutData.find((el) => {
+        if (el.item_value === value) {
+          return el.id;
+        }
+      });
+    } else {
+      return value;
+    }
+  };
 
   const [openDialog, setOpenDialog] = useState(false);
   const handleOpenDialog = () => {
@@ -125,6 +130,7 @@ export default function InterestRate({ formValues, changeTableVisibility, isNotE
         initialValues={IRformValues}
         validationSchema={validationSchema}
         onSubmit={async (values, { resetForm }) => {
+          console.log(payoutValidate(selectedPayoutMethod));
           const searchResult = await GetSchemeSearch(formValues.fd_id, selectedPayoutMethod);
           if (searchResult) {
             console.log(searchResult);
@@ -132,7 +138,7 @@ export default function InterestRate({ formValues, changeTableVisibility, isNotE
           }
         }}
       >
-        {({ values, errors, touched, handleChange, handleBlur, handleSubmit, resetForm }) => (
+        {({ values, errors, touched, handleChange, handleBlur, setFieldValue, handleSubmit, resetForm }) => (
           <Box
             component="form"
             onSubmit={(event) => {
