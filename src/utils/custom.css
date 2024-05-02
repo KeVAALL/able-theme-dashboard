@@ -7,6 +7,7 @@
 .common-textfield .Mui-disabled {
   -webkit-text-fill-color: #768087 !important;
 }
+
 .common-multi_select .MuiSelect-select {
   padding: 6.6px 9px !important;
 }
@@ -22,4 +23,8 @@
 }
 #__checkbox span:first-of-type {
   padding: 0 !important;
+}
+
+#column-hiding {
+  padding: 8px 32px 8px 12px !important;
 }

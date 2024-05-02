@@ -14,8 +14,19 @@ export async function GetIssuerData() {
     });
     console.log(response);
     return response.data.data;
-  } catch (err) {
-    return err;
+  } catch (error) {
+    dispatch(
+      openSnackbar({
+        open: true,
+        anchorOrigin: { vertical: 'top', horizontal: 'right' },
+        message: error.message,
+        variant: 'alert',
+        alert: {
+          color: 'error'
+        }
+      })
+    );
+    return [];
   }
 }
 export async function GetActiveIssuerData() {

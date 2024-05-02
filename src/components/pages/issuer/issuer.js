@@ -83,6 +83,7 @@ function Issuer() {
     keepPreviousData: true, // Keep previous data when refetching
     queryFn: GetIssuerData, // Function to fetch issuer data
     onSuccess: (data) => {
+      console.log(data);
       setIssuerData(data); // Update issuer data on successful query
     }
   });
@@ -105,7 +106,7 @@ function Issuer() {
             changeTableVisibility();
           }}
         >
-          {({ values, errors, touched, handleChange, handleBlur, handleSubmit, resetForm, isSubmitting }) => (
+          {({ values, errors, touched, handleChange, handleBlur, handleSubmit, setFieldValue, resetForm, isSubmitting }) => (
             <Box
               component="form"
               onSubmit={(event) => {
@@ -144,7 +145,8 @@ function Issuer() {
                         name="issuer_name"
                         values={values}
                         type="text"
-                        onChange={handleChange}
+                        regType="string"
+                        setFieldValue={setFieldValue}
                         onBlur={handleBlur}
                         touched={touched}
                         errors={errors}
@@ -162,7 +164,8 @@ function Issuer() {
                         name="issuer_gst_number"
                         values={values}
                         type="text"
-                        onChange={handleChange}
+                        regType="noSpecial"
+                        setFieldValue={setFieldValue}
                         onBlur={handleBlur}
                         touched={touched}
                         errors={errors}
@@ -181,7 +184,8 @@ function Issuer() {
                         name="issuer_pan"
                         values={values}
                         type="text"
-                        onChange={handleChange}
+                        regType="noSpecial"
+                        setFieldValue={setFieldValue}
                         onBlur={handleBlur}
                         touched={touched}
                         errors={errors}
@@ -199,7 +203,16 @@ function Issuer() {
                         name="issuer_tollfree_number"
                         values={values}
                         type="text"
-                        onChange={handleChange}
+                        regType="number"
+                        setFieldValue={setFieldValue}
+                        // onChange={(e) => {
+                        //   e.preventDefault();
+                        //   const { value } = e.target;
+                        //   const regex = /^\d+$/;
+                        //   if (!value || regex.test(value.toString())) {
+                        //     setFieldValue('issuer_tollfree_number', value);
+                        //   }
+                        // }}
                         onBlur={handleBlur}
                         touched={touched}
                         errors={errors}

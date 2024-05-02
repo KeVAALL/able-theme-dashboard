@@ -12,8 +12,19 @@ export async function GetProductTypeData() {
       method_name: 'getall'
     });
     return response.data.data;
-  } catch (err) {
-    return err;
+  } catch (error) {
+    dispatch(
+      openSnackbar({
+        open: true,
+        anchorOrigin: { vertical: 'top', horizontal: 'right' },
+        message: error,
+        variant: 'alert',
+        alert: {
+          color: 'error'
+        }
+      })
+    );
+    return [];
   }
 }
 export async function GetOneProductType(values, setSearchData) {

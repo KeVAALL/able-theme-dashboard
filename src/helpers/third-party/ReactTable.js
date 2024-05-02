@@ -29,6 +29,7 @@ import { useDrop, useDrag, useDragLayer } from 'react-dnd';
 
 // assets
 import { ArrowUp, ArrowDown, ArrowDown2, ArrowUp2, ArrowUp3, ArrowDown3, DocumentDownload, HambergerMenu, Maximize1 } from 'iconsax-react';
+import '../../utils/custom.css';
 
 // project import
 import { ThemeMode } from 'config';

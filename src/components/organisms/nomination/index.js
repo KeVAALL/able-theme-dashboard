@@ -214,7 +214,7 @@ const Nomination = (props) => {
                             label="DOB"
                             inputFormat="dd/MM/yyyy"
                             // onChange={handleDateChange}
-                            value={values?.birth_date}
+                            value={values?.birth_date && new Date(values?.birth_date)}
                             onChange={(newValue) => {
                               console.log(newValue);
                               // setFieldValue('birth_date', dateFormatter(newValue));

@@ -77,13 +77,16 @@ function ReactTable({
       initialState: {
         pageIndex: 0,
         pageSize: 10,
-        sortBy: [
-          {
-            id: 'userName',
-            desc: false
-          }
-        ],
-        hiddenColumns: columns?.filter((col) => VisibleColumn.includes(col.accessor))?.map((col) => col.accessor)
+        sortBy: useMemo(
+          () => [
+            {
+              id: 'userName',
+              desc: false
+            }
+          ],
+          []
+        ),
+        hiddenColumns: columns?.filter((col) => VisibleColumn?.includes(col.accessor)).map((col) => col.accessor)
       }
       // defaultColumn,
       // filterTypes
@@ -235,7 +238,7 @@ function ReactTable({
             ))}
           </TableHead>
           <TableBody {...getTableBodyProps()}>
-            {page?.length > 0 && data?.length > 0 ? (
+            {page?.length > 0 ? (
               // {data?.length > 0 ? (
               page?.map((row) => {
                 prepareRow(row);
@@ -258,14 +261,11 @@ function ReactTable({
                               style={{ cursor: 'pointer' }}
                               onClick={async () => {
                                 if (getEditData) {
-                                  console.log(row.original);
                                   const result = await getEditData(setEditing, row.original.investor_id);
                                   setTimeout(() => {
                                     changeTableVisibility();
                                   }, 500);
-                                  console.log(result);
                                 } else {
-                                  console.log('Small');
                                   console.log(row.original);
                                   setEditing(row.original);
                                   changeTableVisibility();
@@ -322,7 +322,7 @@ function ReactTable({
 
 ReactTable.propTypes = {
   columns: PropTypes.array,
-  data: PropTypes.array
+  data: PropTypes.any
 };
 
 // ==============================|| REACT TABLE - PAGINATION - FILTERING ||============================== //
@@ -352,7 +352,7 @@ const MultiTable = ({
       <ScrollX>
         <ReactTable
           columns={columns}
-          data={data}
+          data={data ? data : []}
           formValues={formValues}
           formValueFields={formValueFields}
           validationSchema={validationSchema}
@@ -377,7 +377,7 @@ const MultiTable = ({
 
 MultiTable.propTypes = {
   columns: PropTypes.array,
-  data: PropTypes.array,
+  data: PropTypes.any,
   formValues: PropTypes.object,
   formValueFields: PropTypes.any,
   validationSchema: PropTypes.any,

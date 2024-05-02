@@ -15,6 +15,7 @@ import * as yup from 'yup';
 import Loader from 'components/atoms/loader/Loader';
 import { SubmitButton } from 'components/atoms/button/button';
 import CustomTextField from 'utils/textfield';
+import { openSnackbar } from 'redux/reducers/snackbar';
 
 // assets
 import {
@@ -33,6 +34,7 @@ import {
   EditProductType,
   DeleteOneProductType
 } from 'hooks/productType/productType';
+import { dispatch } from '../../../redux';
 
 function ProductType() {
   // Main data state to hold the list of products
