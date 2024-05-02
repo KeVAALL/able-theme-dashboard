@@ -97,6 +97,7 @@ const NavCollapse = ({ menu, level, parentId, setSelectedItems, selectedItems, s
   const handleHover = (event) => {
     setAnchorEl(event?.currentTarget);
     if (!drawerOpen) {
+      console.log(menu);
       setSelected(menu.id);
     }
   };

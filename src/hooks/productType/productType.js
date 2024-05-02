@@ -8,7 +8,7 @@ import { openSnackbar } from 'redux/reducers/snackbar';
 
 export async function GetProductTypeData() {
   try {
-    const response = await axios.post('/product/getproduct_type', {
+    const response = await axios.post('/product/producttype', {
       method_name: 'getall'
     });
     return response.data.data;
@@ -18,7 +18,7 @@ export async function GetProductTypeData() {
 }
 export async function GetOneProductType(values, setSearchData) {
   try {
-    const response = await axios.post('/product/getproduct_type', {
+    const response = await axios.post('/product/producttype', {
       method_name: 'getone',
       ...values
     });
@@ -39,7 +39,7 @@ export async function GetOneProductType(values, setSearchData) {
 }
 export async function SaveProductType(values, productTypeTableDataRefetch, clearFormValues) {
   try {
-    const response = await axios.post('/product/saveproduct_type', { ...values, method_name: 'add' });
+    const response = await axios.post('/product/producttype', { ...values, method_name: 'add' });
     console.log(response);
     clearFormValues();
     enqueueSnackbar('Product type added', {
@@ -64,7 +64,7 @@ export async function SaveProductType(values, productTypeTableDataRefetch, clear
 }
 export async function EditProductType(values, productTypeTableDataRefetch, clearFormValues, setIsEditing) {
   try {
-    const response = await axios.post('/product/saveproduct_type', { ...values, method_name: 'update' });
+    const response = await axios.post('/product/producttype', { ...values, method_name: 'update' });
     console.log(response);
     clearFormValues();
     setIsEditing(false);
@@ -91,7 +91,7 @@ export async function EditProductType(values, productTypeTableDataRefetch, clear
 export async function DeleteOneProductType(values) {
   console.log(values.product_type_id);
   try {
-    await axios.post('/product/saveproduct_type', {
+    await axios.post('/product/producttype', {
       product_type_id: values.product_type_id,
       method_name: 'delete'
     });

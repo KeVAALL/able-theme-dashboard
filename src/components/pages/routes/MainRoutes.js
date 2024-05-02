@@ -41,9 +41,9 @@ const MainRoutes = {
     {
       path: '/',
       element: (
-        // <AuthGuard>
-        // </AuthGuard>
-        <MainLayout />
+        <AuthGuard>
+          <MainLayout />
+        </AuthGuard>
       ),
       children: [
         {

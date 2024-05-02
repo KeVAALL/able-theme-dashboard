@@ -9,21 +9,26 @@ import useAuth from 'hooks/useAuth';
 // ==============================|| AUTH GUARD ||============================== //
 
 const AuthGuard = ({ children }) => {
-  const { isLoggedIn, state } = useAuth();
+  const { isLoggedIn } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
 
   useEffect(() => {
-    // if (!isLoggedIn) {
-    //   navigate('login', {
-    //     state: {
-    //       from: location.pathname
-    //     },
-    //     replace: true
-    //   });
-    // }
-    navigate('login');
-  }, [isLoggedIn, navigate, location, state]);
+    if (!isLoggedIn) {
+      navigate('login', {
+        state: {
+          from: location.pathname
+        },
+        replace: true
+      });
+    }
+    // navigate('login');
+  }, [
+    isLoggedIn,
+    navigate,
+    location
+    // state
+  ]);
 
   return children;
 };

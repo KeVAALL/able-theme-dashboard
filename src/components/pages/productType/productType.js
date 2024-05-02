@@ -90,9 +90,6 @@ function ProductType() {
     refetchOnWindowFocus: false, // Disable refetch on window focus
     keepPreviousData: true, // Keep previous data when refetching
     onSuccess: (data) => {
-      if (!data) {
-        setData([]);
-      }
       setData(data); // Update data with fetched data
     }
   });

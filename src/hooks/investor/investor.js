@@ -113,12 +113,14 @@ export async function EditInvestor(
     });
   }
 }
-export async function GetEditOneInvestor(setEditing) {
+export async function GetEditOneInvestor(setEditing, investor_id) {
   try {
     const response = await axios.post('investor/getinvestor', {
       method_name: 'getdetails',
-      investor_id: 99
+      investor_id: investor_id
+      // investor_id: 99
     });
+    console.log(response.data.data);
     setEditing(response.data.data);
     return response.data.data;
   } catch (error) {

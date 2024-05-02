@@ -33,7 +33,11 @@ const formValueFields = [
   }
 ];
 const filterValidationSchema = yup.object({
-  issuer_name: yup.string()
+  issuer_name: yup
+    .string()
+    .trim()
+    .required('First Name is required')
+    .matches(/\S+/, 'First Name cannot be empty or contain only whitespace')
 });
 // Table Columns
 const VisibleColumn = [];

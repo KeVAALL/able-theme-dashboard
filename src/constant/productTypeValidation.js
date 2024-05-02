@@ -20,7 +20,11 @@ const formValueFields = [
 ];
 const filterValidationSchema = yup.object({
   // product_type: yup.string().required('Product Type is required')
-  product_type: yup.string()
+  product_type: yup
+    .string()
+    .trim()
+    .required('Product Type is required')
+    .matches(/\S+/, 'Product Type cannot be empty or contain only whitespace')
 });
 // Table Columns
 const VisibleColumn = [];

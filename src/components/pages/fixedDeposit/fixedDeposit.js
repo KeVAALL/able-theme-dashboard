@@ -1,7 +1,22 @@
 import { useMemo, useState } from 'react';
 
 // material-ui
-import { Divider, Box, Card, Grid, CardContent, TableCell } from '@mui/material';
+
+import {
+  Divider,
+  Box,
+  Card,
+  Grid,
+  CardContent,
+  TableCell,
+  Chip,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  OutlinedInput,
+  Select,
+  TextField
+} from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 
 // project-imports
@@ -15,6 +30,7 @@ import { useQuery } from 'react-query';
 import Loader from 'components/atoms/loader/Loader';
 import { SubmitButton } from 'components/atoms/button/button';
 import CustomTextField, { CustomAutoComplete, CustomCheckbox, FormikAutoComplete } from 'utils/textfield';
+import '../../../utils/custom.css';
 
 // assets
 import {
@@ -40,6 +56,66 @@ function FixDeposit() {
   const [activeIssuers, setActiveIssuers] = useState([]); // State to hold active issuers
   const [selectedIssuerID, setSelectedIssuerID] = useState(null); // State to hold selected issuer ID
   const [isFDActive, setFDActive] = useState(); // State to track if fixed deposit is active
+
+  // Multi-select
+  const tags = [
+    { fd_tag_id: 'T001', fd_tag_name: 'High Returns' },
+    { fd_tag_id: 'T002', fd_tag_name: 'Tax Saver' },
+    { fd_tag_id: 'T003', fd_tag_name: 'Long Term Fund' },
+    { fd_tag_id: 'T004', fd_tag_name: 'Popular' }
+  ];
+  const [fdTag, setFdTag] = useState([
+    { fd_tag_id: 'T001', fd_tag_name: 'High Returns' },
+    { fd_tag_id: 'T002', fd_tag_name: 'Tax Saver' }
+  ]);
+  const ITEM_HEIGHT = 48;
+  const ITEM_PADDING_TOP = 8;
+  const MenuProps = {
+    PaperProps: {
+      style: {
+        maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+        width: 250
+      }
+    }
+  };
+  function getStyles(name, personName, theme) {
+    return {
+      fontWeight: personName.indexOf(name) === -1 ? theme.typography.fontWeightRegular : theme.typography.fontWeightMedium
+    };
+  }
+  const handleTagChange = (event) => {
+    const {
+      target: { value }
+    } = event;
+    console.log(value);
+    setFdTag(
+      // On autofill we get a the stringified value.
+      typeof value === 'string' ? value.split(',') : value
+    );
+    // Filter out duplicate tag objects
+    // const uniqueValues = value.filter((tag, index, self) => {
+    //   return index === self.findIndex((t) => t.fd_tag_id === tag.fd_tag_id && t.fd_tag_name === tag.fd_tag_name);
+    // });
+
+    // setFdTag(uniqueValues);
+    // Check if the clicked value is already selected
+    // Check if the clicked value is already selected
+    // console.log(value);
+    // const isSelected = fdTag.some((tag) => {
+    //   console.log(tag);
+    //   return tag.fd_tag_id === value.fd_tag_id;
+    // });
+    // console.log(isSelected);
+
+    // if (isSelected) {
+    //   // If already selected, remove it from fdTag
+    //   setFdTag(fdTag.filter((tag) => tag.fd_tag_id !== value.fd_tag_id));
+    // } else {
+    //   // If not selected, add it to fdTag
+    //   // setFdTag([...fdTag, value]);
+    //   setFdTag(value);
+    // }
+  };
 
   // Toggle Table and Form Visibility
   const [showTable, setShowTable] = useState(false); // State to toggle visibility of the table form
@@ -332,6 +408,32 @@ function FixDeposit() {
                         optionName="issuer_name"
                         label="Issuers"
                       />
+                    </Grid>
+                    <Grid item xs={4}>
+                      <Select
+                        fullWidth
+                        className="common-multi_select"
+                        labelId="demo-multiple-chip-label"
+                        id="demo-multiple-chip"
+                        multiple
+                        value={fdTag}
+                        onChange={handleTagChange}
+                        input={<OutlinedInput id="select-multiple-chip" placeholder="Chip" />}
+                        renderValue={(selected) => (
+                          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                            {selected?.map((value) => (
+                              <Chip key={value.fd_tag_id} label={value.fd_tag_name} variant="light" color="primary" size="small" />
+                            ))}
+                          </Box>
+                        )}
+                        MenuProps={MenuProps}
+                      >
+                        {tags.map((name) => (
+                          <MenuItem key={name.fd_tag_id} value={name} style={getStyles(name, fdTag, theme)}>
+                            {name.fd_tag_name}
+                          </MenuItem>
+                        ))}
+                      </Select>
                     </Grid>
                   </Grid>
                 </CardContent>

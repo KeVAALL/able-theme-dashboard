@@ -7,6 +7,9 @@
 .common-textfield .Mui-disabled {
   -webkit-text-fill-color: #768087 !important;
 }
+.common-multi_select .MuiSelect-select {
+  padding: 6.6px 9px !important;
+}
 
 .common-autocomplete .MuiFormLabel-root {
   top: -3px !important;

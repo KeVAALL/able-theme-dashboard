@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import PropTypes from 'prop-types';
-import { Autocomplete, Checkbox, FormControlLabel, TextField } from '@mui/material';
+import { Autocomplete, Checkbox, FormControlLabel, TextField, Box, Typography } from '@mui/material';
 import { getIn, FastField } from 'formik';
 import React, { memo } from 'react';
 import './custom.css';
@@ -57,29 +57,32 @@ export const NestedCustomTextField = memo(
 export const CustomTextField = memo((props) => {
   // console.log(props);
   return (
-    <TextField
-      fullWidth
-      className="common-textfield"
-      size="small"
-      label={props.label}
-      name={props.name}
-      onChange={props.handleChange}
-      onBlur={props.handleBlur}
-      value={props.values[props.name]}
-      type={props.type}
-      multiline={props.multiline ? true : false}
-      autoComplete={!props.autocomplete ? 'off' : 'on'}
-      error={props.touched[props.name] && Boolean(props.errors[props.name])}
-      placeholder={props.touched[props.name] && props.errors[props.name]}
-      helperText={props.touched[props.name] && props.errors[props.name]}
-      FormHelperTextProps={{
-        style: {
-          marginLeft: 0
-        }
-      }}
-      endAdornment={props.endAdornment && props.endAdornment}
-      {...props}
-    />
+    <Box>
+      <TextField
+        fullWidth
+        className="common-textfield"
+        size="small"
+        label={props.label}
+        name={props.name}
+        onChange={props.handleChange}
+        onBlur={props.handleBlur}
+        value={props.values[props.name]}
+        type={props.type}
+        multiline={props.multiline ? true : false}
+        autoComplete={!props.autocomplete ? 'off' : 'on'}
+        error={props.touched[props.name] && Boolean(props.errors[props.name])}
+        placeholder={props.touched[props.name] && props.errors[props.name]}
+        helperText={props.touched[props.name] && props.errors[props.name]}
+        FormHelperTextProps={{
+          style: {
+            marginLeft: 0
+          }
+        }}
+        endAdornment={props.endAdornment && props.endAdornment}
+        {...props}
+      />
+      {/* {props.errors[props.name] && props.touched[props.name] && <Typography className="error">{props.errors[props.name]}</Typography>} */}
+    </Box>
   );
 });
 

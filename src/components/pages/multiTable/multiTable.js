@@ -83,7 +83,7 @@ function ReactTable({
             desc: false
           }
         ],
-        hiddenColumns: columns.filter((col) => VisibleColumn.includes(col.accessor)).map((col) => col.accessor)
+        hiddenColumns: columns?.filter((col) => VisibleColumn.includes(col.accessor))?.map((col) => col.accessor)
       }
       // defaultColumn,
       // filterTypes
@@ -107,7 +107,7 @@ function ReactTable({
   };
   // For Column Hiding
   let headers = [];
-  allColumns.map((item) => {
+  allColumns?.map((item) => {
     if (!hiddenColumns?.includes(item.id)) {
       headers.push({ label: item.Header, key: item.id });
     }
@@ -137,7 +137,7 @@ function ReactTable({
                     }}
                   >
                     <Grid container direction="row" spacing={1} alignItems="center">
-                      {formValueFields?.map((field, id) => {
+                      {/* {formValueFields?.map((field, id) => {
                         return (
                           <Grid item md={3} sm={3} xs={6} key={id}>
                             <CustomTextField
@@ -152,11 +152,22 @@ function ReactTable({
                             />
                           </Grid>
                         );
-                      })}
+                      })} */}
+                      <Grid item md={3} sm={3} xs={6} sx={{ height: '60px' }}>
+                        <CustomTextField
+                          label={formValueFields[0].label}
+                          name={formValueFields[0].fieldName}
+                          values={values}
+                          type={formValueFields[0].type}
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          touched={touched}
+                          errors={errors}
+                        />
+                      </Grid>
 
-                      <Grid item md={3} sm={3} xs={6}>
+                      <Grid item md={3} sm={3} xs={6} sx={{ height: '60px' }}>
                         <Button
-                          // fullWidth={!mdUp}
                           variant="contained"
                           color="success"
                           type="submit"
@@ -175,14 +186,20 @@ function ReactTable({
               </Formik>
             )}
           </Grid>
-          <Grid item md={5} sm={5} xs={12} sx={{ display: 'flex', justifyContent: { sm: 'flex-end' } }}>
+          <Grid
+            item
+            md={5}
+            sm={5}
+            xs={12}
+            sx={{ display: 'flex', justifyContent: { sm: 'flex-end' }, alignItems: 'center', height: '60px' }}
+          >
             <Grid container spacing={4} sx={{ alignItems: 'center', justifyContent: 'flex-end' }}>
-              <Grid item md={11} xs={11} sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+              <Grid item md={11} xs={11} sx={{ display: 'flex', justifyContent: 'flex-end', paddingTop: '20px !important' }}>
                 <HidingSelect hiddenColumns={hiddenColumns} setHiddenColumns={setHiddenColumns} allColumns={allColumns} />
               </Grid>
 
-              <Grid item md={1} xs={1} sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-                <CSVExport data={rows.map((d) => d.original)} filename={'filtering-table.csv'} headers={headers} />
+              <Grid item md={1} xs={1} sx={{ display: 'flex', justifyContent: 'flex-end', paddingTop: '20px !important' }}>
+                <CSVExport data={rows?.map((d) => d.original)} filename={'filtering-table.csv'} headers={headers} />
               </Grid>
             </Grid>
           </Grid>
@@ -204,9 +221,9 @@ function ReactTable({
       <Box sx={{ width: '100%', overflowX: 'auto', display: 'block' }}>
         <Table {...getTableProps()}>
           <TableHead sx={{ borderTopWidth: top ? 2 : 1 }}>
-            {headerGroups.map((headerGroup) => (
+            {headerGroups?.map((headerGroup) => (
               <TableRow key={headerGroup} {...headerGroup.getHeaderGroupProps()}>
-                {headerGroup.headers.map((column) => (
+                {headerGroup.headers?.map((column) => (
                   <TableCell key={column} cell={column} {...column.getHeaderProps([{ className: column.className }])}>
                     <HeaderSort column={column} sort />
                   </TableCell>
@@ -218,13 +235,13 @@ function ReactTable({
             ))}
           </TableHead>
           <TableBody {...getTableBodyProps()}>
-            {page.length > 0 && data.length > 0 ? (
+            {page?.length > 0 && data?.length > 0 ? (
               // {data?.length > 0 ? (
-              page.map((row) => {
+              page?.map((row) => {
                 prepareRow(row);
                 return (
                   <TableRow key={row} {...row.getRowProps()}>
-                    {row.cells.map((cell) => {
+                    {row.cells?.map((cell) => {
                       return (
                         <TableCell key={cell} {...cell.getCellProps([{ className: cell.column.className }])}>
                           {/* {cell.render('Cell')} */}
@@ -232,7 +249,7 @@ function ReactTable({
                         </TableCell>
                       );
                     })}
-                    {headers.length !== 0 && (
+                    {headers?.length !== 0 && (
                       <TableCell sx={{ textAlign: { md: 'right', xs: 'center' } }}>
                         <Grid container spacing={0.5} sx={{ display: 'flex', justifyContent: { md: 'flex-end', xs: 'center' } }}>
                           <Grid item md={4} xs={12}>
@@ -241,8 +258,8 @@ function ReactTable({
                               style={{ cursor: 'pointer' }}
                               onClick={async () => {
                                 if (getEditData) {
-                                  console.log('Big');
-                                  const result = await getEditData(setEditing);
+                                  console.log(row.original);
+                                  const result = await getEditData(setEditing, row.original.investor_id);
                                   setTimeout(() => {
                                     changeTableVisibility();
                                   }, 500);

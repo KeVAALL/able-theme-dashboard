@@ -30,7 +30,8 @@ import {
   genderData,
   residency,
   marital_status,
-  occupation
+  occupation,
+  investorType
 } from 'constant/investorValidation';
 import {
   GetInvestorData,
@@ -362,7 +363,7 @@ function Investor() {
                       />
                     </Grid>
                     <Grid item xs={4}>
-                      <NestedCustomTextField
+                      {/* <NestedCustomTextField
                         label="Investor type"
                         valueName="investor.investor_type"
                         values={values.investor.investor_type}
@@ -371,6 +372,14 @@ function Investor() {
                         handleBlur={handleBlur}
                         touched={touched}
                         errors={errors}
+                      /> */}
+                      <FormikAutoComplete
+                        options={investorType}
+                        defaultValue={values.investor.investor_type_id}
+                        setFieldValue={setFieldValue}
+                        formName="investor.investor_type_id"
+                        optionName="investor"
+                        label="Investor Type"
                       />
                     </Grid>
                     <Grid item xs={4}>

@@ -92,7 +92,7 @@ const AuthLogin = ({ forgot }) => {
           submit: null
         }}
         validationSchema={Yup.object().shape({
-          email_id: Yup.string().required('Email is required'),
+          email_id: Yup.string().trim().email('Invalid email').required('Email is required'),
           password: Yup.string().required('Password is required')
         })}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
@@ -142,7 +142,7 @@ const AuthLogin = ({ forgot }) => {
       >
         {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
           <form noValidate onSubmit={handleSubmit}>
-            <Grid container spacing={2}>
+            <Grid container spacing={3}>
               <Grid item xs={12}>
                 <CustomTextField
                   label="Email ID"

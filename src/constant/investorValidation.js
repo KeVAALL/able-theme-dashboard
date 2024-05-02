@@ -8,6 +8,10 @@ const genderData = [
   { id: 2, gender: 'Female' },
   { id: 3, gender: 'Other' }
 ];
+const investorType = [
+  { id: 1, investor: 'Senior Citizen' },
+  { id: 2, investor: 'Normal Citizen' }
+];
 const residency = [
   { id: 0, status: 'Non-Indian Resident' },
   { id: 1, status: 'Indian Resident' }
@@ -139,7 +143,7 @@ const formAllValues = {
     investor_name: '',
     pan_no: '',
     mobile_no: '',
-    investor_type: '',
+    investor_type_id: 1,
     // gender_id: 1,
     birth_date: new Date(),
     place_of_birth: '',
@@ -172,7 +176,7 @@ const validationSchema = yup.object().shape({
     pan_no: yup.string().required('Pan number is required'),
     // mobile_no: yup.number().required('Mobile number is required'),
     mobile_no: yup.string().required('Mobile number is required'),
-    investor_type: yup.string().required('Investor type is required'),
+    investor_type_id: yup.number().required('Investor type is required'),
     // gender_id: yup.number(),
     birth_date: yup.date(),
     place_of_birth: yup.string().required('Place of Birth is required'),
@@ -300,6 +304,7 @@ export {
   tableColumns,
   VisibleColumn,
   genderData,
+  investorType,
   relationship,
   residency,
   marital_status,
