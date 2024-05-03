@@ -15,7 +15,6 @@ export async function GetProductData() {
     const response = await axios.post('product/getproduct', {
       method_name: 'getall'
     });
-    console.log(response);
     return response.data.data;
   } catch (err) {
     return err;
@@ -42,12 +41,33 @@ export async function GetOneProduct(values, setSearchData) {
     );
   }
 }
+export async function GetFDTags() {
+  try {
+    const response = await axios.post('product/getproduct', {
+      method_name: 'getalltags'
+    });
+    return response.data.data;
+  } catch (error) {
+    dispatch(
+      openSnackbar({
+        open: true,
+        anchorOrigin: { vertical: 'top', horizontal: 'right' },
+        message: error.message,
+        variant: 'alert',
+        alert: {
+          color: 'error'
+        }
+      })
+    );
+  }
+}
 export async function SaveProduct(
   values,
   ProductTableDataRefetch,
   clearFormValues,
   checkedCumulative,
-  checkedNonCumulative
+  checkedNonCumulative,
+  tagIds
   // selectedIssuerID
 ) {
   console.log({
@@ -55,6 +75,7 @@ export async function SaveProduct(
     // issuer_id: selectedIssuerID,
     is_cumulative: toInteger(!checkedCumulative ? false : checkedCumulative),
     is_non_cumulative: toInteger(!checkedNonCumulative ? false : checkedNonCumulative),
+    tag_id: tagIds,
     user_id: 2,
     method_name: 'add'
   });
@@ -64,6 +85,7 @@ export async function SaveProduct(
       // issuer_id: selectedIssuerID,
       is_cumulative: toInteger(!checkedCumulative ? false : checkedCumulative),
       is_non_cumulative: toInteger(!checkedNonCumulative ? false : checkedNonCumulative),
+      tag_id: tagIds,
       user_id: 2,
       method_name: 'add'
     });
@@ -95,6 +117,7 @@ export async function EditProduct(
   clearFormValues,
   checkedCumulative,
   checkedNonCumulative,
+  tagIds,
   selectedIssuerID,
   setActiveClose
 ) {
@@ -104,6 +127,7 @@ export async function EditProduct(
     is_active: toInteger(isFDActive),
     is_cumulative: toInteger(!checkedCumulative ? false : checkedCumulative),
     is_non_cumulative: toInteger(!checkedNonCumulative ? false : checkedNonCumulative),
+    fd_tags: tagIds,
     user_id: 2,
     method_name: 'update'
   });

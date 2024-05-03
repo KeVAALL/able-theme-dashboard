@@ -251,7 +251,8 @@ const filterValueFields = [
   {
     fieldName: 'search',
     label: 'Search',
-    type: 'string'
+    type: 'string',
+    regType: 'string'
   }
 ];
 const filterValidationSchema = yup.object({

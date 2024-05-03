@@ -131,7 +131,7 @@ function ReactTable({
                   // resetForm();
                 }}
               >
-                {({ values, errors, touched, handleChange, handleBlur, handleSubmit, isSubmitting }) => (
+                {({ values, errors, touched, handleChange, handleBlur, handleSubmit, setFieldValue, isSubmitting }) => (
                   <Box
                     component="form"
                     onSubmit={(event) => {
@@ -162,10 +162,27 @@ function ReactTable({
                           name={formValueFields[0].fieldName}
                           values={values}
                           type={formValueFields[0].type}
-                          onChange={handleChange}
+                          // onChange={handleChange}
+                          onChange={(e) => {
+                            const strings = /^[a-zA-Z][a-zA-Z\s]*$/;
+                            const specials = /^[a-zA-Z0-9.]*$/;
+                            const numbers = /^\d+$/;
+                            e.preventDefault();
+                            const { value } = e.target;
+                            const regex =
+                              formValueFields[0].regType === 'string'
+                                ? strings
+                                : formValueFields[0].regType === 'noSpecial'
+                                ? specials
+                                : numbers;
+                            if (!value || regex.test(value.toString())) {
+                              setFieldValue(formValueFields[0].fieldName, value);
+                            }
+                          }}
                           onBlur={handleBlur}
                           touched={touched}
                           errors={errors}
+                          inputProps={{ maxLength: 25 }}
                         />
                       </Grid>
 
@@ -194,14 +211,47 @@ function ReactTable({
             md={5}
             sm={5}
             xs={12}
-            sx={{ display: 'flex', justifyContent: { sm: 'flex-end' }, alignItems: 'center', height: '60px' }}
+            sx={{
+              display: 'flex',
+              justifyContent: { sm: 'flex-end' },
+              alignItems: 'center',
+              height: '60px',
+              paddingTop: { lg: '16px !important', sm: '0px !important' }
+            }}
           >
             <Grid container spacing={4} sx={{ alignItems: 'center', justifyContent: 'flex-end' }}>
-              <Grid item md={11} xs={11} sx={{ display: 'flex', justifyContent: 'flex-end', paddingTop: '20px !important' }}>
+              <Grid
+                item
+                md={11}
+                xs={10}
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'flex-end',
+                  paddingTop: {
+                    lg: '20px !important',
+                    sm: '32px !important',
+                    xs: '8px !important'
+                  }
+                }}
+              >
                 <HidingSelect hiddenColumns={hiddenColumns} setHiddenColumns={setHiddenColumns} allColumns={allColumns} />
               </Grid>
 
-              <Grid item md={1} xs={1} sx={{ display: 'flex', justifyContent: 'flex-end', paddingTop: '20px !important' }}>
+              <Grid
+                item
+                md={1}
+                xs={2}
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'flex-end',
+                  paddingTop: {
+                    lg: '20px !important',
+                    sm: '32px !important',
+                    xs: '8px !important'
+                    // sm: '0px !important'
+                  }
+                }}
+              >
                 <CSVExport data={rows?.map((d) => d.original)} filename={'filtering-table.csv'} headers={headers} />
               </Grid>
             </Grid>

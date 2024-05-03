@@ -54,7 +54,7 @@ function Investor() {
   // Main data states
   const [investorData, setInvestorData] = useState([]);
   const [ifaData, setIfaData] = useState([]);
-  const [loading, setLoading] = useState(true);
+  // const [loading, setLoading] = useState(true);
 
   // Edit Logic State
   const [isEditing, setIsEditing] = useState(false);
@@ -206,7 +206,7 @@ function Investor() {
     queryFn: GetInvestorData,
     onSuccess: (data) => {
       setInvestorData(data);
-      setLoading(false);
+      // setLoading(false);
     }
   });
 
@@ -221,12 +221,11 @@ function Investor() {
     keepPreviousData: true,
     queryFn: GetIfa,
     onSuccess: (data) => {
-      console.log(data);
       setIfaData(data.data);
     }
   });
 
-  if (loading) return <Loader />;
+  if (isPending) return <Loader />;
 
   return (
     <>
@@ -251,7 +250,7 @@ function Investor() {
                 ...values,
                 investor: {
                   ...values.investor,
-                  gender: genderValidate(selectedGender),
+                  gender_id: genderValidate(selectedGender),
                   is_foreign_tax_resident: selectedDeclaration.isResidentOutsideIndia ? 1 : 0,
                   is_rpep: selectedDeclaration.isRelativeToPoliticallyExposed ? 1 : 0,
                   is_pep: selectedDeclaration.isPoliticallyExposed ? 1 : 0

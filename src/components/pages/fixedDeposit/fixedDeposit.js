@@ -1,22 +1,8 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 // material-ui
 
-import {
-  Divider,
-  Box,
-  Card,
-  Grid,
-  CardContent,
-  TableCell,
-  Chip,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  OutlinedInput,
-  Select,
-  TextField
-} from '@mui/material';
+import { Divider, Box, Card, Grid, CardContent } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 
 // project-imports
@@ -25,8 +11,8 @@ import MultiTable from '../multiTable/multiTable';
 
 // third-party
 import { Formik } from 'formik';
-import * as yup from 'yup';
 import { useQuery } from 'react-query';
+import Select from 'react-select';
 import Loader from 'components/atoms/loader/Loader';
 import { SubmitButton } from 'components/atoms/button/button';
 import CustomTextField, { CustomAutoComplete, CustomCheckbox, FormikAutoComplete } from 'utils/textfield';
@@ -42,7 +28,7 @@ import {
   tableColumns,
   VisibleColumn
 } from 'constant/fixDepositValidation';
-import { GetProductData, GetOneProduct, SaveProduct, EditProduct, DeleteOneProduct } from 'hooks/fixedDeposit/fixedDeposit';
+import { GetProductData, GetOneProduct, SaveProduct, EditProduct, DeleteOneProduct, GetFDTags } from 'hooks/fixedDeposit/fixedDeposit';
 import { GetActiveIssuerData } from 'hooks/issuer/issuer';
 import InterestRate from '../../organisms/fixedDeposit/interestRate';
 
@@ -58,64 +44,16 @@ function FixDeposit() {
   const [isFDActive, setFDActive] = useState(); // State to track if fixed deposit is active
 
   // Multi-select
-  const tags = [
-    { fd_tag_id: 'T001', fd_tag_name: 'High Returns' },
-    { fd_tag_id: 'T002', fd_tag_name: 'Tax Saver' },
-    { fd_tag_id: 'T003', fd_tag_name: 'Long Term Fund' },
-    { fd_tag_id: 'T004', fd_tag_name: 'Popular' }
-  ];
-  const [fdTag, setFdTag] = useState([
-    { fd_tag_id: 'T001', fd_tag_name: 'High Returns' },
-    { fd_tag_id: 'T002', fd_tag_name: 'Tax Saver' }
-  ]);
-  const ITEM_HEIGHT = 48;
-  const ITEM_PADDING_TOP = 8;
-  const MenuProps = {
-    PaperProps: {
-      style: {
-        maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-        width: 250
-      }
-    }
-  };
-  function getStyles(name, personName, theme) {
-    return {
-      fontWeight: personName.indexOf(name) === -1 ? theme.typography.fontWeightRegular : theme.typography.fontWeightMedium
-    };
-  }
-  const handleTagChange = (event) => {
-    const {
-      target: { value }
-    } = event;
-    console.log(value);
-    setFdTag(
-      // On autofill we get a the stringified value.
-      typeof value === 'string' ? value.split(',') : value
-    );
-    // Filter out duplicate tag objects
-    // const uniqueValues = value.filter((tag, index, self) => {
-    //   return index === self.findIndex((t) => t.fd_tag_id === tag.fd_tag_id && t.fd_tag_name === tag.fd_tag_name);
-    // });
+  const [fdTag, setFdTag] = useState([]);
+  const [selected, setSelected] = useState([]);
+  // const handleTagChange = (event) => {
+  //   const {
+  //     target: { value }
+  //   } = event;
+  //   console.log(value);
+  //   setSelected(value);
 
-    // setFdTag(uniqueValues);
-    // Check if the clicked value is already selected
-    // Check if the clicked value is already selected
-    // console.log(value);
-    // const isSelected = fdTag.some((tag) => {
-    //   console.log(tag);
-    //   return tag.fd_tag_id === value.fd_tag_id;
-    // });
-    // console.log(isSelected);
-
-    // if (isSelected) {
-    //   // If already selected, remove it from fdTag
-    //   setFdTag(fdTag.filter((tag) => tag.fd_tag_id !== value.fd_tag_id));
-    // } else {
-    //   // If not selected, add it to fdTag
-    //   // setFdTag([...fdTag, value]);
-    //   setFdTag(value);
-    // }
-  };
+  // };
 
   // Toggle Table and Form Visibility
   const [showTable, setShowTable] = useState(false); // State to toggle visibility of the table form
@@ -135,6 +73,7 @@ function FixDeposit() {
     setCheckedCumulative(Boolean(value.is_cumulative));
     setCheckedNonCumulative(Boolean(value.is_non_cumulative));
     setSelectedIssuerID(value.issuer_name);
+    setSelected(value.fd_tags);
   };
   // Activates editing mode
   const setActiveEditing = () => {
@@ -223,6 +162,21 @@ function FixDeposit() {
       setProductData(data); // Update product data with fetched data
     }
   });
+  // Query for fetching tags
+  const { isPending: tagsPending, error: tagsError } = useQuery({
+    queryKey: ['tagData'], // Unique key for the query
+    refetchOnWindowFocus: false, // Disable refetch on window focus
+    keepPreviousData: true, // Keep previous data when refetching
+    queryFn: GetFDTags, // Function to fetch product data
+    onSuccess: (data) => {
+      // Callback function on successful query
+      setFdTag(data); // Update product data with fetched data
+    }
+  });
+
+  useEffect(() => {
+    console.log(selected);
+  }, [selected]);
 
   if (isPending) return <Loader />;
 
@@ -244,18 +198,24 @@ function FixDeposit() {
           validationSchema={validationSchema}
           onSubmit={async (values, { setSubmitting, resetForm }) => {
             if (isEditing === false) {
+              const tagIds = selected.map((id) => {
+                return id.value;
+              });
               SaveProduct(
                 values,
                 ProductTableDataRefetch,
                 clearFormValues,
                 checkedCumulative,
-                checkedNonCumulative
+                checkedNonCumulative,
+                tagIds
                 // selectedIssuerID
               );
             }
             if (isEditing === true) {
               console.log('i am editing');
-              console.log({ ...values, method_name: 'update' });
+              const tagIds = selected.map((id) => {
+                return id.value;
+              });
               EditProduct(
                 values,
                 isFDActive,
@@ -263,6 +223,7 @@ function FixDeposit() {
                 clearFormValues,
                 checkedCumulative,
                 checkedNonCumulative,
+                tagIds,
                 selectedIssuerID,
                 setActiveClose
               );
@@ -410,7 +371,7 @@ function FixDeposit() {
                       />
                     </Grid>
                     <Grid item xs={4}>
-                      <Select
+                      {/* <Select
                         fullWidth
                         className="common-multi_select"
                         labelId="demo-multiple-chip-label"
@@ -433,7 +394,18 @@ function FixDeposit() {
                             {name.fd_tag_name}
                           </MenuItem>
                         ))}
-                      </Select>
+                      </Select> */}
+                      <Select
+                        className="multi_select"
+                        isMulti
+                        name="tags"
+                        options={fdTag}
+                        onChange={(e) => {
+                          console.log(e);
+                          setSelected(e);
+                        }}
+                        value={selected}
+                      />
                     </Grid>
                   </Grid>
                 </CardContent>

@@ -15,7 +15,8 @@ const formValueFields = [
   {
     fieldName: 'product_type',
     label: 'Product Type',
-    type: 'text'
+    type: 'text',
+    regType: 'noSpecial'
   }
 ];
 const filterValidationSchema = yup.object({
@@ -23,7 +24,7 @@ const filterValidationSchema = yup.object({
   product_type: yup
     .string()
     .trim()
-    .required('Product Type is required')
+    .required('Please remove spaces')
     .matches(/\S+/, 'Product Type cannot be empty or contain only whitespace')
 });
 // Table Columns
