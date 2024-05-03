@@ -139,6 +139,7 @@ export async function EditProduct(
       method_name: 'update',
       is_cumulative: toInteger(!checkedCumulative ? false : checkedCumulative),
       is_non_cumulative: toInteger(!checkedNonCumulative ? false : checkedNonCumulative),
+      tag_id: tagIds,
       user_id: 2
     });
     clearFormValues();
