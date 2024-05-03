@@ -10,25 +10,19 @@ const formAllValues = {
   issuer_tollfree_number: '',
   logo_url: ''
 };
+// .matches(/^\s*\S[\s\S]*$/, 'Remove Spaces')
 const digitsOnly = (value) => /^\d+$/.test(value);
 const validationSchema = yup.object({
   issuer_gst_number: yup
     .string()
-    .matches(/^\s*\S[\s\S]*$/, 'Remove Spaces')
     .matches(/\d{2}[A-Z]{5}\d{4}[A-Z]{1}[A-Z\d]{1}[Z]{1}[A-Z\d]{1}/, 'Invalid GST')
-    .max(15, 'PAN must be exactly 15 characters')
     .required('Issuer GST Number is required'),
-  issuer_name: yup
-    .string()
-    .matches(/^\s*\S[\s\S]*$/, 'Remove Spaces')
-    .required('Issuer Name is required'),
+  issuer_name: yup.string().required('Issuer Name is required'),
   issuer_pan: yup
     .string()
-    .matches(/^\s*\S[\s\S]*$/, 'Remove Spaces')
     .matches(/^([A-Z]){3}([P]){1}([A-Z]){1}([0-9]){4}([A-Z]){1}$/, 'Invalid PAN format')
-    .max(10, 'PAN must be exactly 10 characters')
     .required('Issuer PAN is required'),
-  issuer_tollfree_number: yup.string().required('Tollfree Number is required'),
+  issuer_tollfree_number: yup.string().min(11, 'Must be at least 11 digits').required('Tollfree Number is required'),
   logo_url: yup
     .string()
     .matches(/^\s*\S[\s\S]*$/, 'Remove Spaces')
@@ -43,15 +37,12 @@ const formValueFields = [
     fieldName: 'issuer_name',
     label: 'Issuer Name',
     placeholder: 'Please enter Issuer name',
-    type: 'text'
+    type: 'text',
+    regType: 'string'
   }
 ];
 const filterValidationSchema = yup.object({
-  issuer_name: yup
-    .string()
-    .trim()
-    .required('First Name is required')
-    .matches(/\S+/, 'First Name cannot be empty or contain only whitespace')
+  issuer_name: yup.string().trim().matches(/\S+/, 'Remove Spaces').required('Issuer Name is required')
 });
 // Table Columns
 const VisibleColumn = [];

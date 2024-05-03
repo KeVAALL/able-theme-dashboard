@@ -56,7 +56,9 @@ export const NestedCustomTextField = memo(
 
 export const CustomTextField = memo((props) => {
   // console.log(props);
+  const strings = /^[a-zA-Z][a-zA-Z\s]*$/;
   const specials = /^[a-zA-Z0-9.]*$/;
+  const numbers = /^\d+$/;
   return (
     <Box>
       <TextField
@@ -69,7 +71,7 @@ export const CustomTextField = memo((props) => {
         onChange={(e) => {
           e.preventDefault();
           const { value } = e.target;
-          const regex = props.regType === 'string' ? /^[a-zA-Z][a-zA-Z\s]*$/ : props.regType === 'noSpecial' ? specials : /^\d+$/;
+          const regex = props.regType === 'string' ? strings : props.regType === 'noSpecial' ? specials : numbers;
           if (!value || regex.test(value.toString())) {
             props.setFieldValue(props.name, value);
           }

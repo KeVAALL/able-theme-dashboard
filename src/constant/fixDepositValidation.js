@@ -69,7 +69,8 @@ const formValueFields = [
     fieldName: 'fd_name',
     label: 'FD Name',
     type: 'text',
-    placeholder: 'Please enter FD Name'
+    placeholder: 'Please enter FD Name',
+    regType: 'string'
   }
 ];
 const filterValidationSchema = yup.object({

@@ -16,7 +16,8 @@ const formValueFields = [
     fieldName: 'product_type',
     label: 'Product Type',
     placeholder: 'Please enter Product Type',
-    type: 'text'
+    type: 'text',
+    regType: 'noSpecial'
   }
 ];
 const filterValidationSchema = yup.object({

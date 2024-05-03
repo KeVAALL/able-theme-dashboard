@@ -176,6 +176,7 @@ function Issuer() {
                             marginLeft: 0
                           }
                         }}
+                        inputProps={{ maxLength: 15 }}
                       />
                     </Grid>
 
@@ -197,6 +198,7 @@ function Issuer() {
                             marginLeft: 0
                           }
                         }}
+                        inputProps={{ maxLength: 10 }}
                       />
                     </Grid>
                     <Grid item md={4} sm={6} xs={12}>
