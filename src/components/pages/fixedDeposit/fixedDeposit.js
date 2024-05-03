@@ -268,6 +268,7 @@ function FixDeposit() {
                       <CustomTextField
                         label="FD Name"
                         name="fd_name"
+                        placeholder={'please enter FD Name'}
                         values={values}
                         type="text"
                         onChange={handleChange}
