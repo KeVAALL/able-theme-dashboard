@@ -3,17 +3,20 @@ import React, { useState } from 'react';
 import { Box, Card, Grid, Button, CardContent, CardHeader, Stack, Divider } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import CustomTextField, { FormikAutoComplete, dateFormatter } from 'utils/textfield';
-import { Formik } from 'formik';
-import * as yup from 'yup';
-
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import MultiTable from 'components/pages/multiTable/multiTable';
-import MainCard from '../mainCard/MainCard';
+
+// project-imports
 import AnimateButton from 'helpers/@extended/AnimateButton';
-import { Additem } from 'iconsax-react';
+import MultiTable from 'components/pages/multiTable/multiTable';
 import { relationship } from 'constant/investorValidation';
+import MainCard from '../mainCard/MainCard';
+
+// third-party
+import { Formik } from 'formik';
+import * as yup from 'yup';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { Additem } from 'iconsax-react';
 
 const Nomination = (props) => {
   // theme
@@ -47,14 +50,14 @@ const Nomination = (props) => {
     state: ''
   };
   const validationSchema = yup.object().shape({
-    full_name: yup.string(),
+    full_name: yup.string().required('Name is Required'),
     pan: yup.string().matches(/^([A-Z]){3}([P]){1}([A-Z]){1}([0-9]){4}([A-Z]){1}$/, 'Invalid PAN format'),
     relationship_id: yup.number(),
     birth_date: yup.date().required('Date of birth is required'),
-    address_line_1: yup.string(),
-    address_line_2: yup.string(),
-    pincode: yup.string(),
-    city: yup.string(),
+    address_line_1: yup.string().required('Address is Required'),
+    address_line_2: yup.string().required('Address is Required'),
+    pincode: yup.string().required('Pin Code is Required'),
+    city: yup.string().required('City is Required'),
     state: yup.string()
   });
   const [formValues, setFormValues] = useState(formAllValues);

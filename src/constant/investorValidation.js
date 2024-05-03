@@ -177,10 +177,8 @@ const validationSchema = yup.object().shape({
       .string()
       .matches(/^([a-zA-Z]){5}([0-9]){4}([a-zA-Z]){1}?$/, 'Invalid PAN format')
       .required('Pan number is required'),
-    // mobile_no: yup.number().required('Mobile number is required'),
     mobile_no: yup.string().required('Mobile number is required'),
     investor_type_id: yup.number().required('Investor type is required'),
-    // gender_id: yup.number(),
     birth_date: yup.date(),
     place_of_birth: yup.string().required('Place of Birth is required'),
     is_married: yup.number(),
@@ -219,22 +217,6 @@ const validationSchema = yup.object().shape({
     annual_income_id: yup.number(),
     income_source_id: yup.number()
   })
-  // personal_info: yup.object().shape({
-  //   is_indian_resident: yup.string(), // Resident Status
-  //   is_married: yup.string(), // Marital Status
-  //   birth_date: yup.date()
-  // }),
-  // professional_details: yup.object().shape({
-  //   annual_income: yup.number(),
-  //   income_source: yup.string(),
-  //   occupation_name: yup.string()
-  // })
-  // nominee: yup.object().shape({
-  //   full_name: yup.string().required('Name is required'),
-  //   pan: yup.string().required('PAN is required'),
-  //   date_of_birth: yup.date(),
-  //   share_percent: yup.number()
-  // })
 });
 // Search Item form fields
 const filterFormValues = {
@@ -301,7 +283,6 @@ export {
   formAllValues,
   validationSchema,
   filterFormValues,
-  // formValueFields,
   filterValueFields,
   filterValidationSchema,
   StatusCell,
@@ -316,28 +297,3 @@ export {
   annual_income_data,
   income_source_data
 };
-
-// formAllValues = [
-// is_married: null,
-// is_indian_resident: null
-
-// Personal Info
-// personal_info: {
-//   is_indian_resident: '', // Resident Status
-//   is_married: '', // Marital Status
-//   birth_date: ''
-// },
-// Personal Details??
-// Nomination
-// nominee: {
-//   full_name: '',
-//   pan: '',
-//   date_of_birth: '',
-//   share_percent: ''
-//   relationship: '', ??
-// }
-// ]
-// address_line_1: yup.string().required('Address Line is required'),
-// address_line_2: yup.string().required('Address Line 2 is required'),
-// pincode: yup.string().required('Pin Code is required'),
-// city: yup.string().required('City is required')

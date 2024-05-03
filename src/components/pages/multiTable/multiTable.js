@@ -16,15 +16,6 @@ import { Formik } from 'formik';
 // project-imports
 import MainCard from 'components/organisms/mainCard/MainCard';
 import ScrollX from 'components/organisms/scrollX/ScrollX';
-import {
-  GlobalFilter,
-  DefaultColumnFilter,
-  SelectColumnFilter,
-  SliderColumnFilter,
-  NumberRangeColumnFilter,
-  renderFilterTypes,
-  filterGreaterThan
-} from 'utils/react-table';
 import { CSVExport, TablePagination, EmptyTable, HeaderSort, HidingSelect } from 'helpers/third-party/ReactTable';
 import { useGlobalFilter } from 'react-table/dist/react-table.development';
 import { useSortBy } from 'react-table';
@@ -163,7 +154,6 @@ function ReactTable({
                           placeholder={formValueFields[0].placeholder}
                           values={values}
                           type={formValueFields[0].type}
-                          // onChange={handleChange}
                           onChange={(e) => {
                             const strings = /^[a-zA-Z][a-zA-Z\s]*$/;
                             const specials = /^[a-zA-Z0-9.]*$/;
@@ -317,7 +307,6 @@ function ReactTable({
                                     changeTableVisibility();
                                   }, 500);
                                 } else {
-                                  console.log(row.original);
                                   setEditing(row.original);
                                   changeTableVisibility();
                                 }
@@ -348,7 +337,6 @@ function ReactTable({
                                 setTimeout(() => {
                                   handleOpenDialog();
                                 }, 200);
-                                console.log(row.original);
                               }}
                             />
                           </Grid>

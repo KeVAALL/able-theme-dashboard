@@ -101,9 +101,6 @@ function Investor() {
     console.log(value);
     setFormValues(value);
     setSelectedGender(value.investor.gender);
-    setSelectedOccupation(value.professional_details.occupation_name);
-    setSelectedAnnualIncome(value.professional_details.annual_income);
-    setSelectedIncomeSource(value.professional_details.income_source);
     setSelectedDeclaration({
       isPoliticallyExposed: Boolean(value.declaration.is_pep),
       isRelativeToPoliticallyExposed: Boolean(value.declaration.is_rpep),
@@ -135,9 +132,6 @@ function Investor() {
   const clearFormValues = () => {
     setFormValues(formAllValues);
     setSelectedGender();
-    setSelectedOccupation();
-    setSelectedAnnualIncome();
-    setSelectedIncomeSource();
     setSelectedDeclaration({
       isPoliticallyExposed: false,
       isRelativeToPoliticallyExposed: false,
@@ -332,7 +326,8 @@ function Investor() {
                         placeholder="Please enter your Investor Name"
                         values={values.investor.investor_name}
                         type="text"
-                        handleChange={handleChange}
+                        regType="string"
+                        setFieldValue={setFieldValue}
                         handleBlur={handleBlur}
                         touched={touched}
                         errors={errors}
@@ -397,14 +392,6 @@ function Investor() {
                         optionName="gender"
                         label="Gender"
                       />
-                      {/* <FormikAutoComplete
-                        options={genderData}
-                        defaultValue={values.investor.gender_id}
-                        setFieldValue={setFieldValue}
-                        formName="investor.gender_id"
-                        optionName="gender"
-                        label="Gender"
-                      /> */}
                     </Grid>
                     <Grid item xs={4}>
                       <NestedCustomTextField
@@ -431,14 +418,8 @@ function Investor() {
                     touched={touched}
                     errors={errors}
                     setFieldValue={setFieldValue}
-                    selectedRelation={selectedRelation}
-                    setSelectedRelation={setSelectedRelation}
-                    selectedOccupation={selectedOccupation}
-                    setSelectedOccupation={setSelectedOccupation}
-                    selectedAnnualIncome={selectedAnnualIncome}
-                    setSelectedAnnualIncome={setSelectedAnnualIncome}
-                    selectedIncomeSource={selectedIncomeSource}
-                    setSelectedIncomeSource={setSelectedIncomeSource}
+                    // selectedRelation={selectedRelation}
+                    // setSelectedRelation={setSelectedRelation}
                     selectedDeclaration={selectedDeclaration}
                     handleDeclarationClick={handleDeclarationClick}
                     nomineeData={nomineeData}

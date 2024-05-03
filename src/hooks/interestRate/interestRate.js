@@ -16,7 +16,6 @@ export async function GetPayoutMethod(fdId) {
       method_name: 'getpayouts',
       fd_id: fdId
     });
-    console.log(response);
     return response.data.data;
   } catch (err) {
     return err;
@@ -29,7 +28,6 @@ export async function GetSchemeSearch(fdId, selectedPayoutMethod) {
       fd_id: fdId,
       fd_payout_method_id: selectedPayoutMethod
     });
-    console.log(response);
     return response.data.data;
   } catch (err) {
     return err;
@@ -37,13 +35,6 @@ export async function GetSchemeSearch(fdId, selectedPayoutMethod) {
 }
 
 export async function SaveInterestRate(values, fdId, selectedPayoutMethod, isActive, clearFormValues, handleOpenDialog, setSchemeData) {
-  console.log({
-    ...values,
-    fd_id: fdId,
-    is_active: toInteger(isActive),
-    fd_payout_method_id: selectedPayoutMethod,
-    method_name: 'add'
-  });
   try {
     await axios.post('/product/savescheme', {
       ...values,
@@ -97,9 +88,7 @@ export async function EditInterestRate(values, activeButton, liveButton, clearFo
       }
     });
 
-    console.log(values.fd_id, values.fd_payout_method);
     const schemeData = await GetSchemeSearch(values.fd_id, values.fd_payout_method_id);
-    console.log(schemeData);
     setSchemeData(schemeData);
   } catch (err) {
     enqueueSnackbar(err.message, {
@@ -127,9 +116,7 @@ export async function DeleteOneInterestRate(values, setSchemeData) {
       }
     });
 
-    console.log(values.fd_id, values.fd_payout_method);
     const schemeData = await GetSchemeSearch(values.fd_id, values.fd_payout_method_id);
-    console.log(schemeData);
     setSchemeData(schemeData);
   } catch (err) {
     console.log(err);

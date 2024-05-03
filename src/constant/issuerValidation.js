@@ -10,7 +10,6 @@ const formAllValues = {
   issuer_tollfree_number: '',
   logo_url: ''
 };
-// .matches(/^\s*\S[\s\S]*$/, 'Remove Spaces')
 const digitsOnly = (value) => /^\d+$/.test(value);
 const validationSchema = yup.object({
   issuer_gst_number: yup

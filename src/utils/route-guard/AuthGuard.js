@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-// import { useSelector } from '../../redux';
 
 // project-imports
 import useAuth from 'hooks/useAuth';
@@ -22,13 +21,7 @@ const AuthGuard = ({ children }) => {
         replace: true
       });
     }
-    // navigate('login');
-  }, [
-    isLoggedIn,
-    navigate,
-    location
-    // state
-  ]);
+  }, [isLoggedIn, navigate, location]);
 
   return children;
 };

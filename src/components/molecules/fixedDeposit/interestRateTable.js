@@ -1,36 +1,25 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import PropTypes from 'prop-types';
-import { useState, useEffect, useMemo } from 'react';
+import { useState } from 'react';
 
 // material-ui
 import { Box, Stack, Table, TableBody, TableCell, TableHead, TableRow, Button, Grid } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
 import CustomTextField from 'utils/textfield';
 import { Trash, Edit2, FilterSearch, DiscountShape, Additem } from 'iconsax-react';
 
 // third-party
 import { useTable, useFilters, usePagination } from 'react-table';
 import { Formik } from 'formik';
+import { CSVExport, TablePagination, EmptyTable, HeaderSort, HidingSelect } from 'helpers/third-party/ReactTable';
+import { useGlobalFilter } from 'react-table/dist/react-table.development';
+import { useSortBy } from 'react-table';
 
 // project-imports
 import MainCard from 'components/organisms/mainCard/MainCard';
 import ScrollX from 'components/organisms/scrollX/ScrollX';
-import {
-  GlobalFilter,
-  DefaultColumnFilter,
-  SelectColumnFilter,
-  SliderColumnFilter,
-  NumberRangeColumnFilter,
-  renderFilterTypes,
-  filterGreaterThan
-} from 'utils/react-table';
-import { CSVExport, TablePagination, EmptyTable, HeaderSort, HidingSelect } from 'helpers/third-party/ReactTable';
-import { useGlobalFilter } from 'react-table/dist/react-table.development';
-import { useSortBy } from 'react-table';
 import DialogBox from 'components/atoms/dialog/dialog';
 import AnimateButton from 'helpers/@extended/AnimateButton';
-import { borderRadius } from '@mui/system';
 
 // ==============================|| REACT TABLE ||============================== //
 

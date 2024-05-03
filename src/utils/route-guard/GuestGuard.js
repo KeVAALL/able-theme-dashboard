@@ -14,7 +14,6 @@ const GuestGuard = ({ children }) => {
   const location = useLocation();
 
   useEffect(() => {
-    // console.log(isLoggedIn, location.pathname);
     if (isLoggedIn) {
       navigate(location?.state?.from ? location?.state?.from : APP_DEFAULT_PATH, {
         state: {

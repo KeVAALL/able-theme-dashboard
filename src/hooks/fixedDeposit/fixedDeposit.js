@@ -20,6 +20,7 @@ export async function GetProductData() {
     return err;
   }
 }
+
 export async function GetOneProduct(values, setSearchData) {
   try {
     const response = await axios.post('product/getproduct', {
@@ -41,6 +42,7 @@ export async function GetOneProduct(values, setSearchData) {
     );
   }
 }
+
 export async function GetFDTags() {
   try {
     const response = await axios.post('product/getproduct', {
@@ -61,6 +63,7 @@ export async function GetFDTags() {
     );
   }
 }
+
 export async function SaveProduct(
   values,
   ProductTableDataRefetch,
@@ -70,15 +73,6 @@ export async function SaveProduct(
   tagIds
   // selectedIssuerID
 ) {
-  console.log({
-    ...values,
-    // issuer_id: selectedIssuerID,
-    is_cumulative: toInteger(!checkedCumulative ? false : checkedCumulative),
-    is_non_cumulative: toInteger(!checkedNonCumulative ? false : checkedNonCumulative),
-    tag_id: tagIds,
-    user_id: 2,
-    method_name: 'add'
-  });
   try {
     await axios.post('/product/saveproduct', {
       ...values,
@@ -110,6 +104,7 @@ export async function SaveProduct(
     });
   }
 }
+
 export async function EditProduct(
   values,
   isFDActive,
@@ -121,16 +116,6 @@ export async function EditProduct(
   selectedIssuerID,
   setActiveClose
 ) {
-  console.log({
-    ...values,
-    issuer_id: typeof selectedIssuerID === 'string' ? values.issuer_id : selectedIssuerID,
-    is_active: toInteger(isFDActive),
-    is_cumulative: toInteger(!checkedCumulative ? false : checkedCumulative),
-    is_non_cumulative: toInteger(!checkedNonCumulative ? false : checkedNonCumulative),
-    fd_tags: tagIds,
-    user_id: 2,
-    method_name: 'update'
-  });
   try {
     await axios.post('/product/saveproduct', {
       ...values,

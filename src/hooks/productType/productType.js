@@ -100,7 +100,6 @@ export async function EditProductType(values, productTypeTableDataRefetch, clear
   }
 }
 export async function DeleteOneProductType(values) {
-  console.log(values.product_type_id);
   try {
     await axios.post('/product/producttype', {
       product_type_id: values.product_type_id,

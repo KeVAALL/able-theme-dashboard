@@ -22,51 +22,26 @@ const headerSX = {
 };
 
 export default function InterestRate({ formValues, changeTableVisibility, isNotEditingInterestRate, isEditingInterestRate }) {
-  // Main Data
+  // Main Data state
   const [schemeData, setSchemeData] = useState([]);
-
-  // Active Button
-  const [isSchemeActive, setSchemeActive] = useState();
-  const handleIsSchemeActive = (initialValue) => {
-    console.log(initialValue);
-    setSchemeActive(initialValue);
-  };
-
-  // Autocomplete field state
-  const [selectedPayoutMethod, setSelectedPayoutMethod] = useState('C');
-  const [payoutData, setPayoutData] = useState([]);
-  // Gender Validation
-  const payoutValidate = (value) => {
-    if (typeof value === 'string') {
-      console.log('string');
-      payoutData.find((el) => {
-        if (el.item_value === value) {
-          return el.id;
-        }
-      });
-    } else {
-      return value;
-    }
-  };
-
-  const [openDialog, setOpenDialog] = useState(false);
-  const handleOpenDialog = () => {
-    setOpenDialog(!openDialog);
-  };
-
-  // Search one item state
-  const setSearchData = (interestRate) => {
-    setIssuerData(interestRate);
-  };
-  // Form state
-  const [IRformValues, setFormValues] = useState(formAllValues);
-  const clearFormValues = () => {
-    setFormValues(formAllValues);
-  };
   // Edit Logic State
   const [loading, setLoading] = useState(true);
   const [isEditingScheme, setIsEditingScheme] = useState(false);
   const [schemeFormValues, setSchemeFormValues] = useState();
+
+  // Dialog state
+  const [openDialog, setOpenDialog] = useState(false);
+
+  // Autocomplete field state
+  const [selectedPayoutMethod, setSelectedPayoutMethod] = useState('C');
+  const [payoutData, setPayoutData] = useState([]);
+
+  // Form state
+  const [IRformValues, setFormValues] = useState(formAllValues);
+  // Theme
+  const theme = useTheme();
+
+  // Sets form values for editing
   const setEditing = (value) => {
     setFormValues({
       fd_name: value.fd_name,
@@ -82,10 +57,46 @@ export default function InterestRate({ formValues, changeTableVisibility, isNotE
   const setActiveClose = () => {
     setIsEditingScheme(false);
   };
+
+  // Active Button state
+  const [isSchemeActive, setSchemeActive] = useState();
+  const handleIsSchemeActive = (initialValue) => {
+    console.log(initialValue);
+    setSchemeActive(initialValue);
+  };
+
+  // Payout Validation
+  const payoutValidate = (value) => {
+    if (typeof value === 'string') {
+      console.log('string');
+      payoutData.find((el) => {
+        if (el.item_value === value) {
+          return el.id;
+        }
+      });
+    } else {
+      return value;
+    }
+  };
+
+  // Dialog state
+  const handleOpenDialog = () => {
+    setOpenDialog(!openDialog);
+  };
+
+  // Search one item state
+  const setSearchData = (interestRate) => {
+    setIssuerData(interestRate);
+  };
+
+  const clearFormValues = () => {
+    setFormValues(formAllValues);
+  };
+
   // Custom fields/ columns
-  const theme = useTheme();
   const columns = useMemo(() => tableColumns, []);
 
+  // Query for fetching payout data
   const {
     isPending,
     error,
@@ -96,19 +107,19 @@ export default function InterestRate({ formValues, changeTableVisibility, isNotE
     keepPreviousData: true,
     queryFn: () => GetPayoutMethod(formValues.fd_id),
     onSuccess: (data) => {
-      console.log(data);
       setPayoutData(data);
     }
   });
 
+  // Effect for setting editing state and loading state
   useEffect(() => {
-    console.log(formValues);
     setEditing(formValues);
     setTimeout(() => {
       setLoading(false);
     }, 200);
   }, [formValues]);
 
+  // Render Loader if data is loading
   if (loading) return <Loader />;
 
   return (

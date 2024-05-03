@@ -12,7 +12,6 @@ export async function GetIssuerData() {
     const response = await axios.post('/issuer/getissuer', {
       method_name: 'getall'
     });
-    console.log(response);
     return response.data.data;
   } catch (error) {
     dispatch(
@@ -34,7 +33,6 @@ export async function GetActiveIssuerData() {
     const response = await axios.post('/issuer/getissuer', {
       method_name: 'getall_isactive'
     });
-    console.log(response);
     return response.data.data;
   } catch (err) {
     return err;

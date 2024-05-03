@@ -44,11 +44,6 @@ export async function GetOneInvestor(values, setSearchData) {
   }
 }
 export async function SaveInvestor(values, InvestorTableDataRefetch, clearFormValues) {
-  console.log({
-    ...values,
-    user_id: 2,
-    method_name: 'add'
-  });
   try {
     await axios.post('/investor/save', {
       ...values,
@@ -83,7 +78,6 @@ export async function EditInvestor(
   clearFormValues,
   setActiveClose
 ) {
-  console.log('hiting api');
   try {
     await axios.post('/investor/create', {
       ...values,
@@ -118,7 +112,6 @@ export async function GetEditOneInvestor(setEditing, investor_id) {
     const response = await axios.post('investor/getinvestor', {
       method_name: 'getdetails',
       investor_id: investor_id
-      // investor_id: 99
     });
     console.log(response.data.data);
     setEditing(response.data.data);

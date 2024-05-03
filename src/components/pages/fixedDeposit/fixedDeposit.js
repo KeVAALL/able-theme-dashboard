@@ -15,7 +15,7 @@ import { useQuery } from 'react-query';
 import Select from 'react-select';
 import Loader from 'components/atoms/loader/Loader';
 import { SubmitButton } from 'components/atoms/button/button';
-import CustomTextField, { CustomAutoComplete, CustomCheckbox, FormikAutoComplete } from 'utils/textfield';
+import CustomTextField, { CustomCheckbox, FormikAutoComplete } from 'utils/textfield';
 import '../../../utils/custom.css';
 
 // assets
@@ -46,14 +46,6 @@ function FixDeposit() {
   // Multi-select
   const [fdTag, setFdTag] = useState([]);
   const [selected, setSelected] = useState([]);
-  // const handleTagChange = (event) => {
-  //   const {
-  //     target: { value }
-  //   } = event;
-  //   console.log(value);
-  //   setSelected(value);
-
-  // };
 
   // Toggle Table and Form Visibility
   const [showTable, setShowTable] = useState(false); // State to toggle visibility of the table form
@@ -174,9 +166,9 @@ function FixDeposit() {
     }
   });
 
-  useEffect(() => {
-    console.log(selected);
-  }, [selected]);
+  // useEffect(() => {
+  //   console.log(selected);
+  // }, [selected]);
 
   if (isPending) return <Loader />;
 

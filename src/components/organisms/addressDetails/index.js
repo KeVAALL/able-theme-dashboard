@@ -1,11 +1,9 @@
 /* eslint-disable react/prop-types */
-import { Checkbox, Chip, Grid, Typography, Box } from '@mui/material';
-import React, { useState } from 'react';
-import CustomTextField, { NestedCustomTextField } from 'utils/textfield';
+import { Checkbox, Grid, Typography, Box } from '@mui/material';
+import React from 'react';
+import { NestedCustomTextField } from 'utils/textfield';
 
 const AddressDetails = (props) => {
-  // is_permanent_address_correspond
-  // console.log(props.values.investor.is_permanent_address_correspond);
   console.log(props.values.is_permanent_address_correspond);
 
   return (
@@ -77,14 +75,10 @@ const AddressDetails = (props) => {
           checked={props.values.is_permanent_address_correspond}
           onChange={async (e) => {
             const newValue = e.target.checked ? 1 : 0;
-            // props.setFieldValue('investor.is_permanent_address_correspond', newValue);
             await props.setFieldValue('is_permanent_address_correspond', newValue);
           }}
           name="is_permanent_address_correspond"
           id="is_permanent_address_correspond"
-          // checked={props.values.investor.is_permanent_address_correspond}
-          // onChange={props.handleChange}
-          // inputProps={{ 'aria-label': 'Same address' }}
         />
         <Typography sx={{ color: '#5E718D', marginBottom: '20px' }} variant="p">
           Correspondent Address is same as Permanent Address

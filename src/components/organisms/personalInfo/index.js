@@ -1,25 +1,15 @@
 /* eslint-disable react/prop-types */
 import React, { useState } from 'react';
-import { Checkbox, Grid, Typography, Stack, TextField } from '@mui/material';
+import { Grid } from '@mui/material';
 
-import CustomTextField, { CustomAutoComplete, FormikAutoComplete, dateFormatter } from 'utils/textfield';
+// project-imports
+import CustomTextField, { FormikAutoComplete } from 'utils/textfield';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-
 import { residency, marital_status } from 'constant/investorValidation';
 
 const CustomChip = (props) => {
-  // console.log(props.values.investor.is_indian_resident);
-  // const [value, setValue] = useState(new Date('2014-08-18T21:11:54'));
-  const [value, setValue] = useState(new Date());
-
-  // Autocomplete field state
-
-  const handleChange = (newValue) => {
-    setValue(newValue);
-  };
-
   return (
     <>
       <Grid container spacing={2} id="grid_box" sx={{ marginBottom: '20px' }}>

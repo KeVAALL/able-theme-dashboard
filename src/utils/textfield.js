@@ -1,29 +1,9 @@
 /* eslint-disable react/prop-types */
 import PropTypes from 'prop-types';
-import { Autocomplete, Checkbox, FormControlLabel, TextField, Box, Typography } from '@mui/material';
-import { getIn, FastField } from 'formik';
+import { Autocomplete, Checkbox, FormControlLabel, TextField, Box } from '@mui/material';
+import { getIn } from 'formik';
 import React, { memo } from 'react';
 import './custom.css';
-
-export const dateFormatter = (date) => {
-  // console.log(typeof date);
-  console.log(date);
-  // // Extract year, month, and day
-  // const year = date.getFullYear();
-  // const month = String(date.getMonth() + 1).padStart(2, '0'); // Month is zero-based
-  // const day = String(date.getDate()).padStart(2, '0');
-
-  // // Construct the date string in YYYY-MM-DD format
-  // const formattedDate = `${year}-${month}-${day}`;
-
-  // return formattedDate; // Output: "2024-04-02"
-  const datePart = date.split(' ').slice(0, 4).join(' ');
-
-  // Create a new Date object
-  const dateIs = new Date(datePart);
-
-  console.log(dateIs.toISOString().slice(0, 10));
-};
 
 export const NestedCustomTextField = memo(
   ({
@@ -80,7 +60,6 @@ export const NestedCustomTextField = memo(
 );
 
 export const CustomTextField = memo((props) => {
-  // console.log(props);
   const strings = /^[a-zA-Z][a-zA-Z\s]*$/;
   const specials = /^[a-zA-Z0-9.]*$/;
   const numbers = /^\d+$/;
@@ -92,7 +71,6 @@ export const CustomTextField = memo((props) => {
         size="small"
         label={props.label}
         name={props.name}
-        // onChange={props.handleChange}
         onChange={(e) => {
           e.preventDefault();
           const { value } = e.target;
@@ -117,7 +95,6 @@ export const CustomTextField = memo((props) => {
         endAdornment={props.endAdornment && props.endAdornment}
         {...props}
       />
-      {/* {props.errors[props.name] && props.touched[props.name] && <Typography className="error">{props.errors[props.name]}</Typography>} */}
     </Box>
   );
 });

@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 
 // material-ui
-import { Divider, Box, Card, Grid, CardContent, TableCell } from '@mui/material';
+import { Divider, Box, Card, Grid, CardContent } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { useQuery } from 'react-query';
 
@@ -11,7 +11,6 @@ import MultiTable from '../multiTable/multiTable';
 
 // third-party
 import { Formik } from 'formik';
-import * as yup from 'yup';
 import Loader from 'components/atoms/loader/Loader';
 import { SubmitButton } from 'components/atoms/button/button';
 import CustomTextField from 'utils/textfield';

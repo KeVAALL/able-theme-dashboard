@@ -10,7 +10,6 @@ import MainCard from 'components/molecules/mainCard';
 
 // assets
 import { Briefcase, LocationTick, UserOctagon, Personalcard, ProfileTick } from 'iconsax-react';
-import CustomTooltip from 'helpers/@extended/Tooltip';
 import PersonalInfo from '../personalInfo';
 import AddressDetails from '../addressDetails';
 import ProfessionalDetails from '../professionalDetails';
@@ -56,7 +55,6 @@ export default function IconTabs(props) {
 
   useEffect(() => {
     console.log(props.errors);
-    //   props.handleTabError(props.errors);
   }, [props.errors]);
 
   const tabStyle = { borderTopLeftRadius: 0, borderTopRightRadius: 0, borderRadius: 1.5, overflow: 'visible' };
@@ -94,9 +92,9 @@ export default function IconTabs(props) {
         <MainCard sx={tabStyle}>
           <PersonalInfo
             values={props.values}
-            setFieldValue={props.setFieldValue}
             handleChange={props.handleChange}
             handleBlur={props.handleBlur}
+            setFieldValue={props.setFieldValue}
             touched={props.touched}
             errors={props.errors}
             selectedResidenceID={props.selectedResidenceID}
@@ -109,29 +107,20 @@ export default function IconTabs(props) {
       <TabPanel className="panel" value={tabValue} index={1}>
         <MainCard sx={tabStyle}>
           <AddressDetails
-            sameAddress={props.sameAddress}
-            setFieldValue={props.setFieldValue}
-            handleCheckboxChange={props.handleCheckboxChange}
             values={props.values}
             handleChange={props.handleChange}
             handleBlur={props.handleBlur}
             touched={props.touched}
             errors={props.errors}
+            sameAddress={props.sameAddress}
+            setFieldValue={props.setFieldValue}
+            handleCheckboxChange={props.handleCheckboxChange}
           />
         </MainCard>
       </TabPanel>
       <TabPanel className="panel" value={tabValue} index={2}>
         <MainCard sx={tabStyle}>
-          <ProfessionalDetails
-            values={props.values}
-            setFieldValue={props.setFieldValue}
-            selectedOccupation={props.selectedOccupation}
-            setSelectedOccupation={props.setSelectedOccupation}
-            selectedAnnualIncome={props.selectedAnnualIncome}
-            setSelectedAnnualIncome={props.setSelectedAnnualIncome}
-            selectedIncomeSource={props.selectedIncomeSource}
-            setSelectedIncomeSource={props.setSelectedIncomeSource}
-          />
+          <ProfessionalDetails values={props.values} setFieldValue={props.setFieldValue} />
         </MainCard>
       </TabPanel>
       <TabPanel className="panel" value={tabValue} index={3}>
@@ -142,8 +131,8 @@ export default function IconTabs(props) {
             handleBlur={props.handleBlur}
             touched={props.touched}
             errors={props.errors}
-            selectedRelation={props.selectedRelation}
-            setSelectedRelation={props.setSelectedRelation}
+            // selectedRelation={props.selectedRelation}
+            // setSelectedRelation={props.setSelectedRelation}
             nomineeData={props.nomineeData}
             handleNewNominee={props.handleNewNominee}
           />
@@ -157,37 +146,3 @@ export default function IconTabs(props) {
     </Box>
   );
 }
-
-// <MainCard codeString={iconTabCodeString} id="__main_card" sx={{ borderRadius: '0' }}>
-// </MainCard>
-// const iconTabCodeString = `// IconTabs.tsx
-// <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-//   <Tab label="Profile" icon={<Profile />} iconPosition="start" {...a11yProps(0)} />
-//   <Tab label="Followers" icon={<Book />} iconPosition="start" {...a11yProps(1)} />
-//   <Tab label="Friends" icon={<Profile2User />} iconPosition="start" {...a11yProps(2)} />
-//   <Tab label="Gallery" icon={<Image />} iconPosition="start" {...a11yProps(3)} />
-// </Tabs>
-// <TabPanel value={value} index={0}>
-//   <Typography variant="h6">
-//     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque non libero dignissim, viverra augue eu, semper ligula. Mauris
-//     purus sem, sagittis eu mauris et, viverra lobortis urna.
-//   </Typography>
-// </TabPanel>
-// <TabPanel value={value} index={1}>
-//   <Typography variant="h6">
-//     Suspendisse sed lectus ac nunc rhoncus scelerisque. Integer vitae fringilla leo. Aliquam tincidunt et turpis non mattis. Ut sed
-//     semper orci, sed facilisis mauris. Suspendisse blandit velit sit amet velit porta aliquet.
-//   </Typography>
-// </TabPanel>
-// <TabPanel value={value} index={2}>
-//   <Typography variant="h6">
-//     Nam egestas sollicitudin nisl, sit amet aliquam risus pharetra ac. Donec ac lacinia orci. Phasellus ut enim eu ligula placerat
-//     cursus in nec est.
-//   </Typography>
-// </TabPanel>
-// <TabPanel value={value} index={3}>
-//   <Typography variant="h6">
-//     Suspendisse sed lectus ac nunc rhoncus scelerisque. Integer vitae fringilla leo. Aliquam tincidunt et turpis non mattis. Ut sed
-//     semper orci, sed facilisis mauris. Suspendisse blandit velit sit amet velit porta aliquet.
-//   </Typography>
-// </TabPanel>`;
