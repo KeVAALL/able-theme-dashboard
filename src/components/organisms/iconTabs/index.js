@@ -55,6 +55,7 @@ export default function IconTabs(props) {
 
   useEffect(() => {
     console.log(props.errors);
+    props.handleTabError(props.errors);
   }, [props.errors]);
 
   const tabStyle = { borderTopLeftRadius: 0, borderTopRightRadius: 0, borderRadius: 1.5, overflow: 'visible' };
@@ -104,7 +105,7 @@ export default function IconTabs(props) {
           />
         </MainCard>
       </TabPanel>
-      <TabPanel className="panel" value={tabValue} index={1}>
+      <TabPanel className={`panel`} value={tabValue} index={1}>
         <MainCard sx={tabStyle}>
           <AddressDetails
             values={props.values}

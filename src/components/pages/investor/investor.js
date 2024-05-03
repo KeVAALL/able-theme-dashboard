@@ -95,6 +95,7 @@ function Investor() {
   const [formValues, setFormValues] = useState(formAllValues);
   // Theme
   const theme = useTheme();
+  const mdUp = theme.breakpoints.up('md');
 
   // Sets form values for editing
   const setEditing = (value) => {
@@ -448,7 +449,8 @@ function Investor() {
           {/* here i will add the filter */}
           <Formik
             initialValues={{
-              fd_name: ''
+              fd_name: '',
+              search: ''
             }}
             // validationSchema={formValueFields}
             onSubmit={async (values, { resetForm }) => {
@@ -468,8 +470,8 @@ function Investor() {
                 }}
                 sx={{ width: '100%' }}
               >
-                <CardContent>
-                  <Grid container spacing={3}>
+                <CardContent sx={{ paddingLeft: '16px !important' }}>
+                  <Grid container spacing={2}>
                     <Grid item xs={3} style={{ paddingLeft: 0, paddingTop: 0 }}>
                       <CustomTextField
                         label="FD Name"
@@ -498,7 +500,40 @@ function Investor() {
                       />
                     </Grid>
 
-                    <Grid item xs={2} style={{ paddingTop: 0 }}>
+                    <Grid item xs={3} style={{ paddingTop: 0 }}>
+                      <CustomTextField
+                        label="Search"
+                        name="search"
+                        values={values}
+                        type="text"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        touched={touched}
+                        errors={errors}
+                        FormHelperTextProps={{
+                          style: {
+                            marginLeft: 0
+                          }
+                        }}
+                      />
+                    </Grid>
+
+                    <Grid item xs={1.5} style={{ paddingTop: 0 }}>
+                      <Button
+                        variant="contained"
+                        color="success"
+                        type="submit"
+                        startIcon={<FilterSearch />}
+                        sx={{
+                          justifySelf: 'center',
+                          width: !mdUp ? 'auto' : '100%' // Set width to 'auto' when screen size is medium or larger, otherwise '100%'
+                        }}
+                      >
+                        Search
+                      </Button>
+                    </Grid>
+
+                    {/* <Grid item xs={2} style={{ paddingTop: 0 }}>
                       <Box>
                         <AnimateButton>
                           <Button fullWidth variant="contained" color="success" startIcon={<SearchNormal1 />} type="submit">
@@ -506,7 +541,7 @@ function Investor() {
                           </Button>
                         </AnimateButton>
                       </Box>
-                    </Grid>
+                    </Grid> */}
                   </Grid>
                 </CardContent>
               </Box>

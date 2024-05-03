@@ -131,23 +131,39 @@ function ReactTable({
                     }}
                   >
                     <Grid container direction="row" spacing={1} alignItems="center">
-                      {/* {formValueFields?.map((field, id) => {
+                      {formValueFields?.map((field, id) => {
                         return (
-                          <Grid item md={3} sm={3} xs={6} key={id}>
+                          <Grid item md={3} sm={3} xs={6} key={id} sx={{ paddingTop: '0px !important', height: '45px' }}>
                             <CustomTextField
                               label={field.label}
                               name={field.fieldName}
                               values={values}
                               type={field.type}
-                              onChange={handleChange}
+                              // onChange={handleChange}
+                              onChange={(e) => {
+                                const strings = /^[a-zA-Z][a-zA-Z\s]*$/;
+                                const specials = /^[a-zA-Z0-9.]*$/;
+                                const numbers = /^\d+$/;
+                                e.preventDefault();
+                                const { value } = e.target;
+                                const regex =
+                                  formValueFields.regType === 'string'
+                                    ? strings
+                                    : formValueFields.regType === 'noSpecial'
+                                    ? specials
+                                    : numbers;
+                                if (!value || regex.test(value.toString())) {
+                                  setFieldValue(formValueFields.fieldName, value);
+                                }
+                              }}
                               onBlur={handleBlur}
                               touched={touched}
                               errors={errors}
                             />
                           </Grid>
                         );
-                      })} */}
-                      <Grid item md={3} sm={3} xs={6} sx={{ height: '60px' }}>
+                      })}
+                      {/* <Grid item md={3} sm={3} xs={6} sx={{ height: '60px' }}>
                         <CustomTextField
                           label={formValueFields[0].label}
                           name={formValueFields[0].fieldName}
@@ -175,22 +191,24 @@ function ReactTable({
                           errors={errors}
                           inputProps={{ maxLength: 25 }}
                         />
-                      </Grid>
+                      </Grid> */}
 
-                      <Grid item md={3} sm={3} xs={6} sx={{ height: '60px' }}>
-                        <Button
-                          variant="contained"
-                          color="success"
-                          type="submit"
-                          startIcon={<FilterSearch />}
-                          sx={{
-                            justifySelf: 'center',
-                            width: !mdUp ? 'auto' : '100%' // Set width to 'auto' when screen size is medium or larger, otherwise '100%'
-                          }}
-                        >
-                          Search
-                        </Button>
-                      </Grid>
+                      {formValueFields && (
+                        <Grid item md={3} sm={3} xs={6} sx={{ height: '60px' }}>
+                          <Button
+                            variant="contained"
+                            color="success"
+                            type="submit"
+                            startIcon={<FilterSearch />}
+                            sx={{
+                              justifySelf: 'center',
+                              width: !mdUp ? 'auto' : '100%' // Set width to 'auto' when screen size is medium or larger, otherwise '100%'
+                            }}
+                          >
+                            Search
+                          </Button>
+                        </Grid>
+                      )}
                     </Grid>
                   </Box>
                 )}

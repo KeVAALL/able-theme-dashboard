@@ -233,12 +233,12 @@ const filterFormValues = {
 //   }
 // ];
 const filterValueFields = [
-  {
-    fieldName: 'search',
-    label: 'Search',
-    type: 'string',
-    regType: 'string'
-  }
+  // {
+  //   fieldName: 'search',
+  //   label: 'Search',
+  //   type: 'string',
+  //   regType: 'string'
+  // }
 ];
 const filterValidationSchema = yup.object({
   search: yup.string()
