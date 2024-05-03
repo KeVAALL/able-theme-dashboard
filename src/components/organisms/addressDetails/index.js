@@ -20,6 +20,7 @@ const AddressDetails = (props) => {
             <NestedCustomTextField
               label="Address Line 1"
               valueName="investor_address.address_line_1"
+              placeholder="Please enter your Address Line 1"
               values={props.values.investor_address.address_line_1}
               type="string"
               handleChange={props.handleChange}
@@ -32,6 +33,7 @@ const AddressDetails = (props) => {
             <NestedCustomTextField
               label="Address Line 2"
               valueName="investor_address.address_line_2"
+              placeholder="Please enter your Address Line 2"
               values={props.values.investor_address.address_line_2}
               type="string"
               handleChange={props.handleChange}
@@ -45,6 +47,7 @@ const AddressDetails = (props) => {
             <NestedCustomTextField
               label="Pincode"
               valueName="investor_address.pincode"
+              placeholder="Please enter your Pin Code"
               values={props.values.investor_address.pincode}
               type="string"
               handleChange={props.handleChange}
@@ -58,6 +61,7 @@ const AddressDetails = (props) => {
             <NestedCustomTextField
               label="City"
               valueName="investor_address.city"
+              placeholder="Please enter your City"
               values={props.values.investor_address.city}
               type="string"
               handleChange={props.handleChange}
@@ -80,8 +84,6 @@ const AddressDetails = (props) => {
           id="is_permanent_address_correspond"
           // checked={props.values.investor.is_permanent_address_correspond}
           // onChange={props.handleChange}
-          // name="investor.is_permanent_address_correspond"
-          // id="investor.is_permanent_address_correspond"
           // inputProps={{ 'aria-label': 'Same address' }}
         />
         <Typography sx={{ color: '#5E718D', marginBottom: '20px' }} variant="p">
@@ -101,6 +103,7 @@ const AddressDetails = (props) => {
               <NestedCustomTextField
                 label="Address Line 1"
                 valueName="correspondent_address.address_line_1"
+                placeholder="Please enter your Address Line 1"
                 values={props.values.correspondent_address.address_line_1}
                 type="string"
                 // required={!sameAddress}
@@ -114,6 +117,7 @@ const AddressDetails = (props) => {
               <NestedCustomTextField
                 label="Address Line 2"
                 valueName="correspondent_address.address_line_2"
+                placeholder="Please enter your Address Line 2"
                 values={props.values.correspondent_address.address_line_2}
                 type="string"
                 // required={!sameAddress}
@@ -128,6 +132,7 @@ const AddressDetails = (props) => {
               <NestedCustomTextField
                 label="Pincode"
                 valueName="correspondent_address.pincode"
+                placeholder="Please enter your Pin Code"
                 values={props.values.correspondent_address.pincode}
                 type="string"
                 // required={!sameAddress}
@@ -142,6 +147,7 @@ const AddressDetails = (props) => {
               <NestedCustomTextField
                 label="City"
                 valueName="correspondent_address.city"
+                placeholder="Please enter your City"
                 values={props.values.correspondent_address.city}
                 type="string"
                 // required={!sameAddress}

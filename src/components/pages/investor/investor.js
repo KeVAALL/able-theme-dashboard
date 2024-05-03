@@ -329,6 +329,7 @@ function Investor() {
                       <NestedCustomTextField
                         label="Investor Name"
                         valueName="investor.investor_name"
+                        placeholder="Please enter your Investor Name"
                         values={values.investor.investor_name}
                         type="text"
                         handleChange={handleChange}
@@ -341,24 +342,30 @@ function Investor() {
                       <NestedCustomTextField
                         label="Pan Number"
                         valueName="investor.pan_no"
+                        placeholder="Please enter your PAN Number"
                         values={values.investor.pan_no}
                         type="string"
-                        handleChange={handleChange}
+                        regType="noSpecial"
+                        setFieldValue={setFieldValue}
                         handleBlur={handleBlur}
                         touched={touched}
                         errors={errors}
+                        inputProps={{ maxLength: 10 }}
                       />
                     </Grid>
                     <Grid item xs={4}>
                       <NestedCustomTextField
                         label="Mobile Number"
                         valueName="investor.mobile_no"
+                        placeholder="Please enter your Mobile Number"
                         values={values.investor.mobile_no}
                         type="string"
-                        handleChange={handleChange}
+                        regType="number"
+                        setFieldValue={setFieldValue}
                         handleBlur={handleBlur}
                         touched={touched}
                         errors={errors}
+                        inputProps={{ maxLength: 10 }}
                       />
                     </Grid>
                     <Grid item xs={4}>
@@ -403,9 +410,11 @@ function Investor() {
                       <NestedCustomTextField
                         label="Place of birth"
                         valueName="investor.place_of_birth"
+                        placeholder="Please enter your Place of Birth"
                         values={values.investor.place_of_birth}
                         type="string"
-                        handleChange={handleChange}
+                        regType="string"
+                        setFieldValue={setFieldValue}
                         handleBlur={handleBlur}
                         touched={touched}
                         errors={errors}

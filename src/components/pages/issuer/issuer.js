@@ -189,6 +189,15 @@ function Issuer() {
                         type="text"
                         regType="noSpecial"
                         setFieldValue={setFieldValue}
+                        // onChange={(e) => {
+                        //   const panReg = /^([a-zA-Z]){5}([0-9]){4}([a-zA-Z]){1}?$/;
+                        //   e.preventDefault();
+                        //   const { value } = e.target;
+                        //   const panRegex = RegExp(regEx.panRegex);
+                        //   if (panRegex.test(value)) {
+                        //     console.log(panReg.test(value));
+                        //   }
+                        // }}
                         onBlur={handleBlur}
                         touched={touched}
                         errors={errors}

@@ -26,7 +26,32 @@ export const dateFormatter = (date) => {
 };
 
 export const NestedCustomTextField = memo(
-  ({ label, valueName, handleChange, handleBlur, values, type, multiline, autocomplete, touched, errors, ...props }) => {
+  ({
+    label,
+    valueName,
+    handleChange,
+    handleBlur,
+    setFieldValue,
+    regType,
+    values,
+    type,
+    multiline,
+    autocomplete,
+    touched,
+    errors,
+    ...props
+  }) => {
+    const regexCheck = (e) => {
+      e.preventDefault();
+      const { value } = e.target;
+      const regex = regType === 'string' ? strings : regType === 'noSpecial' ? specials : numbers;
+      if (!value || regex.test(value.toString())) {
+        setFieldValue(valueName, value);
+      }
+    };
+    const strings = /^[a-zA-Z][a-zA-Z\s]*$/;
+    const specials = /^[a-zA-Z0-9.]*$/;
+    const numbers = /^\d+$/;
     return (
       <TextField
         fullWidth
@@ -34,7 +59,7 @@ export const NestedCustomTextField = memo(
         size="small"
         label={label}
         name={valueName}
-        onChange={handleChange}
+        onChange={handleChange ? handleChange : regexCheck}
         onBlur={handleBlur}
         value={values}
         type={type}

@@ -173,7 +173,10 @@ const validationSchema = yup.object().shape({
   is_permanent_address_correspond: yup.number(),
   investor: yup.object().shape({
     investor_name: yup.string().required('Investor Name is required'),
-    pan_no: yup.string().required('Pan number is required'),
+    pan_no: yup
+      .string()
+      .matches(/^([a-zA-Z]){5}([0-9]){4}([a-zA-Z]){1}?$/, 'Invalid PAN format')
+      .required('Pan number is required'),
     // mobile_no: yup.number().required('Mobile number is required'),
     mobile_no: yup.string().required('Mobile number is required'),
     investor_type_id: yup.number().required('Investor type is required'),

@@ -136,10 +136,11 @@ export function DialogForm({
                 sx={{ width: '100%' }}
               >
                 <Grid container spacing={3}>
-                  <Grid item xs={6}>
+                  <Grid item md={6} xs={12}>
                     <CustomTextField
                       label="Min Tenure"
                       name="min_days"
+                      placeholder="Please enter your Minimum Tenure"
                       values={values}
                       type="number"
                       onChange={handleChange}
@@ -154,10 +155,11 @@ export function DialogForm({
                       }}
                     />
                   </Grid>
-                  <Grid item xs={6}>
+                  <Grid item md={6} xs={12}>
                     <CustomTextField
                       label="Max Tenure"
                       name="max_days"
+                      placeholder="Please enter your Maximum Tenure"
                       values={values}
                       type="number"
                       onChange={handleChange}
@@ -172,10 +174,11 @@ export function DialogForm({
                       }}
                     />
                   </Grid>
-                  <Grid item xs={6}>
+                  <Grid item md={6} xs={12}>
                     <CustomTextField
                       label="Regular ROI %"
                       name="rate_of_interest_regular"
+                      placeholder="Please enter Regular Rate of Interest"
                       values={values}
                       type="number"
                       onChange={handleChange}
@@ -190,10 +193,11 @@ export function DialogForm({
                       }}
                     />
                   </Grid>
-                  <Grid item xs={6}>
+                  <Grid item md={6} xs={12}>
                     <CustomTextField
                       label="Senior Citizen ROI %"
                       name="rate_of_interest_senior_citezen"
+                      placeholder="Please enter Rate of Interest for Senior Citizen"
                       values={values}
                       type="number"
                       onChange={handleChange}
@@ -208,10 +212,11 @@ export function DialogForm({
                       }}
                     />
                   </Grid>
-                  <Grid item xs={6}>
+                  <Grid item md={6} xs={12}>
                     <CustomTextField
                       label="Female ROI %"
                       name="rate_of_interest_female"
+                      placeholder="Please enter Rate of Interest for Female"
                       values={values}
                       type="number"
                       onChange={handleChange}
@@ -226,10 +231,11 @@ export function DialogForm({
                       }}
                     />
                   </Grid>
-                  <Grid item xs={6}>
+                  <Grid item md={6} xs={12}>
                     <CustomTextField
                       label="Female Senior Citizen ROI %"
                       name="rate_of_interest_female_senior_citezen"
+                      placeholder="Please enter Rate of Interest for Female Senior Citizen"
                       values={values}
                       type="number"
                       onChange={handleChange}

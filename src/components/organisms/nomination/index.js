@@ -48,7 +48,7 @@ const Nomination = (props) => {
   };
   const validationSchema = yup.object().shape({
     full_name: yup.string(),
-    pan: yup.string(),
+    pan: yup.string().matches(/^([A-Z]){3}([P]){1}([A-Z]){1}([0-9]){4}([A-Z]){1}$/, 'Invalid PAN format'),
     relationship_id: yup.number(),
     birth_date: yup.date().required('Date of birth is required'),
     address_line_1: yup.string(),
@@ -176,9 +176,11 @@ const Nomination = (props) => {
                         <CustomTextField
                           label="Full Name"
                           name="full_name"
+                          placeholder="Please enter your Name"
                           values={values}
                           type="string"
-                          onChange={handleChange}
+                          regType="string"
+                          setFieldValue={setFieldValue}
                           onBlur={handleBlur}
                           touched={touched}
                           errors={errors}
@@ -189,9 +191,11 @@ const Nomination = (props) => {
                         <CustomTextField
                           label="PAN of Nominee"
                           name="pan"
+                          placeholder="Please enter your PAN"
                           values={values}
                           type="string"
-                          onChange={handleChange}
+                          regType="noSpecial"
+                          setFieldValue={setFieldValue}
                           onBlur={handleBlur}
                           touched={touched}
                           errors={errors}
@@ -213,7 +217,6 @@ const Nomination = (props) => {
                             className="calendar_main"
                             label="DOB"
                             inputFormat="dd/MM/yyyy"
-                            // onChange={handleDateChange}
                             value={values?.birth_date && new Date(values?.birth_date)}
                             onChange={(newValue) => {
                               console.log(newValue);
@@ -228,6 +231,7 @@ const Nomination = (props) => {
                         <CustomTextField
                           label="Address Line 1"
                           name="address_line_1"
+                          placeholder="Please enter your Address Line 1"
                           values={values}
                           type="string"
                           onChange={handleChange}
@@ -240,6 +244,7 @@ const Nomination = (props) => {
                         <CustomTextField
                           label="Address Line 2"
                           name="address_line_2"
+                          placeholder="Please enter your Address Line 2"
                           values={values}
                           type="string"
                           onChange={handleChange}
@@ -252,6 +257,7 @@ const Nomination = (props) => {
                         <CustomTextField
                           label="Pin Code"
                           name="pincode"
+                          placeholder="Please enter your Pin Code"
                           values={values}
                           type="string"
                           onChange={handleChange}
@@ -264,6 +270,7 @@ const Nomination = (props) => {
                         <CustomTextField
                           label="City"
                           name="city"
+                          placeholder="Please enter your City"
                           values={values}
                           type="string"
                           onChange={handleChange}
@@ -276,6 +283,7 @@ const Nomination = (props) => {
                         <CustomTextField
                           label="State"
                           name="state"
+                          placeholder="Please enter your State"
                           values={values}
                           type="string"
                           onChange={handleChange}
