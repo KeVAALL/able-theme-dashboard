@@ -144,6 +144,7 @@ function ProductType() {
                       <CustomTextField
                         label="Product Type"
                         name="product_type"
+                        placeholder={'Please enter Product Type'}
                         values={values}
                         type="text"
                         onChange={handleChange}

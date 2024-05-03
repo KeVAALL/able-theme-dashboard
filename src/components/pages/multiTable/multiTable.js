@@ -160,6 +160,7 @@ function ReactTable({
                         <CustomTextField
                           label={formValueFields[0].label}
                           name={formValueFields[0].fieldName}
+                          placeholder={formValueFields[0].placeholder}
                           values={values}
                           type={formValueFields[0].type}
                           onChange={handleChange}

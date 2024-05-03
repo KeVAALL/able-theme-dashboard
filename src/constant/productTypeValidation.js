@@ -5,7 +5,7 @@ const formAllValues = {
   product_type: ''
 };
 const validationSchema = yup.object({
-  product_type: yup.string().required('Product Type is required')
+  product_type: yup.string().required('Required')
 });
 // Search Item form fields
 const filterFormValues = {
@@ -15,16 +15,13 @@ const formValueFields = [
   {
     fieldName: 'product_type',
     label: 'Product Type',
+    placeholder: 'Please enter Product Type',
     type: 'text'
   }
 ];
 const filterValidationSchema = yup.object({
   // product_type: yup.string().required('Product Type is required')
-  product_type: yup
-    .string()
-    .trim()
-    .required('Product Type is required')
-    .matches(/\S+/, 'Product Type cannot be empty or contain only whitespace')
+  product_type: yup.string().trim().required('Required').matches(/\S+/, 'Product Type cannot be empty or contain only whitespace')
 });
 // Table Columns
 const VisibleColumn = [];

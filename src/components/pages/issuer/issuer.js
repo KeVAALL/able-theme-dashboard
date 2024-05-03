@@ -162,6 +162,7 @@ function Issuer() {
                       <CustomTextField
                         label="GST Number"
                         name="issuer_gst_number"
+                        placeholder={'Please enter GST Number'}
                         values={values}
                         type="text"
                         regType="noSpecial"
@@ -182,6 +183,7 @@ function Issuer() {
                       <CustomTextField
                         label="Issuer PAN"
                         name="issuer_pan"
+                        placeholder={'Please enter PAN'}
                         values={values}
                         type="text"
                         regType="noSpecial"
@@ -201,6 +203,7 @@ function Issuer() {
                       <CustomTextField
                         label="Issuer Tollfree Number"
                         name="issuer_tollfree_number"
+                        placeholder={'Please enter Toll-free Number'}
                         values={values}
                         type="text"
                         regType="number"
@@ -222,14 +225,17 @@ function Issuer() {
                             marginLeft: 0
                           }
                         }}
+                        inputProps={{ maxLength: 15 }}
                       />
                     </Grid>
                     <Grid item md={4} sm={6} xs={12}>
                       <CustomTextField
                         label="Logo URL"
                         name="logo_url"
+                        placeholder={'Please enter logo url'}
                         values={values}
                         type="text"
+                        regType="url"
                         onChange={handleChange}
                         onBlur={handleBlur}
                         touched={touched}
@@ -251,7 +257,7 @@ function Issuer() {
       )}
       {!showTable && (
         <MainCard
-          title="Issuer"
+          title="Issuer Name Search"
           changeTableVisibility={changeTableVisibility}
           showButton
           setActiveAdding={setActiveClose}

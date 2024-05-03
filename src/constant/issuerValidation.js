@@ -42,6 +42,7 @@ const formValueFields = [
   {
     fieldName: 'issuer_name',
     label: 'Issuer Name',
+    placeholder: 'Please enter Issuer name',
     type: 'text'
   }
 ];

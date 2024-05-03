@@ -319,6 +319,7 @@ function FixDeposit() {
                       <CustomTextField
                         label="Min Amount (₹)"
                         name="fd_min_amount"
+                        placeholder={'Please enter Minimum Amount'}
                         values={values}
                         type="number"
                         onChange={handleChange}
@@ -331,6 +332,7 @@ function FixDeposit() {
                       <CustomTextField
                         label="Max Amount (₹)"
                         name="fd_max_amount"
+                        placeholder={'Please enter Maximum Amount'}
                         values={values}
                         type="number"
                         onChange={handleChange}
@@ -343,6 +345,7 @@ function FixDeposit() {
                       <CustomTextField
                         label="Minimum Tenure (Days)"
                         name="min_tenure"
+                        placeholder={'Please enter Minimum Tenure'}
                         values={values}
                         type="number"
                         onChange={handleChange}
@@ -355,6 +358,7 @@ function FixDeposit() {
                       <CustomTextField
                         label="Max Tenure (Days)"
                         name="max_tenure"
+                        placeholder={'Please enter Maximum Tenure'}
                         values={values}
                         type="number"
                         onChange={handleChange}
@@ -383,6 +387,7 @@ function FixDeposit() {
                       <CustomTextField
                         label="Logo URL"
                         name="logo_url"
+                        placeholder={'Please enter Logo Url'}
                         values={values}
                         type="text"
                         onChange={handleChange}
@@ -445,7 +450,7 @@ function FixDeposit() {
       {/* {editingInterestRate && <InterestRate />} */}
       {!showTable && (
         <MainCard
-          title="Fixed Deposit"
+          title="Fixed Deposit Search"
           changeTableVisibility={changeTableVisibility}
           showButton
           setActiveAdding={setActiveClose}

@@ -105,7 +105,7 @@ const AuthForgotPassword = () => {
                 </Grid>
               )}
               <Grid item xs={12} sx={{ mb: -2 }}>
-                <Typography variant="caption">Do not forgot to check SPAM box.</Typography>
+                <Typography variant="body1">Do not forgot to check SPAM box.</Typography>
               </Grid>
               <Grid item xs={12}>
                 <AnimateButton>
