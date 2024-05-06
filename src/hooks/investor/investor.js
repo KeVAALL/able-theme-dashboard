@@ -49,7 +49,7 @@ export async function GetOneInvestor(values, setSearchData) {
 }
 export async function SaveInvestor(values, InvestorTableDataRefetch, clearFormValues) {
   try {
-    const response = await axios.post('/investor/save', {
+    await axios.post('/investor/save', {
       ...values,
       user_id: 2,
       method_name: 'add'

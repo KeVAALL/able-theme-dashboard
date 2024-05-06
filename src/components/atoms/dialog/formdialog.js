@@ -125,7 +125,7 @@ export function DialogForm({
             }
           }}
         >
-          {({ values, errors, touched, handleChange, handleBlur, handleSubmit, resetForm }) => (
+          {({ values, errors, touched, handleChange, handleBlur, handleSubmit, setFieldValue, resetForm }) => (
             <DialogContent sx={{ p: 2, overflowY: 'unset' }}>
               <Box
                 component="form"

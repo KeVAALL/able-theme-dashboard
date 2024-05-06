@@ -67,6 +67,7 @@ export const CustomTextField = memo((props) => {
   const strings = /^[a-zA-Z][a-zA-Z\s]*$/;
   const specials = /^[a-zA-Z0-9.]*$/;
   const numbers = /^\d+$/;
+  // const noSpace = /^\S+$/;
   const noSpace = /^\s*\S[\s\S]*$/;
   const regexCheck = (e) => {
     e.preventDefault();
