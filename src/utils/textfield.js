@@ -21,6 +21,9 @@ export const NestedCustomTextField = memo(
     errors,
     ...props
   }) => {
+    const strings = /^[a-zA-Z][a-zA-Z\s]*$/;
+    const specials = /^[a-zA-Z0-9.]*$/;
+    const numbers = /^\d+$/;
     const regexCheck = (e) => {
       e.preventDefault();
       const { value } = e.target;
@@ -33,9 +36,6 @@ export const NestedCustomTextField = memo(
         }
       }
     };
-    const strings = /^[a-zA-Z][a-zA-Z\s]*$/;
-    const specials = /^[a-zA-Z0-9.]*$/;
-    const numbers = /^\d+$/;
     return (
       <TextField
         fullWidth
@@ -67,6 +67,28 @@ export const CustomTextField = memo((props) => {
   const strings = /^[a-zA-Z][a-zA-Z\s]*$/;
   const specials = /^[a-zA-Z0-9.]*$/;
   const numbers = /^\d+$/;
+  const noSpace = /^\s*\S[\s\S]*$/;
+  const regexCheck = (e) => {
+    e.preventDefault();
+    const { value } = e.target;
+    const regex =
+      props.regType === 'string'
+        ? strings
+        : props.regType === 'noSpace'
+        ? noSpace
+        : props.regType === 'noSpecial'
+        ? specials
+        : props.regType === 'pan'
+        ? specials
+        : numbers;
+    if (!value || regex.test(value.toString())) {
+      if (props.regType === 'pan') {
+        props.setFieldValue(props.name, value.toUpperCase());
+      } else {
+        props.setFieldValue(props.name, value);
+      }
+    }
+  };
   return (
     <Box>
       <TextField
@@ -75,19 +97,7 @@ export const CustomTextField = memo((props) => {
         size="small"
         label={props.label}
         name={props.name}
-        onChange={(e) => {
-          e.preventDefault();
-          const { value } = e.target;
-          const regex =
-            props.regType === 'string' ? strings : props.regType === 'noSpecial' ? specials : props.regType === 'pan' ? specials : numbers;
-          if (!value || regex.test(value.toString())) {
-            if (props.regType === 'pan') {
-              props.setFieldValue(props.name, value.toUpperCase());
-            } else {
-              props.setFieldValue(props.name, value);
-            }
-          }
-        }}
+        onChange={regexCheck}
         onBlur={props.handleBlur}
         value={props.values[props.name]}
         type={props.type}

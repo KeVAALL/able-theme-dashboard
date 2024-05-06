@@ -260,10 +260,11 @@ function FixDeposit() {
                       <CustomTextField
                         label="FD Name"
                         name="fd_name"
-                        placeholder={'please enter FD Name'}
+                        placeholder={'Please enter FD Name'}
                         values={values}
                         type="text"
-                        onChange={handleChange}
+                        regType="string"
+                        setFieldValue={setFieldValue}
                         onBlur={handleBlur}
                         touched={touched}
                         errors={errors}
@@ -344,7 +345,8 @@ function FixDeposit() {
                         placeholder={'Please enter Logo Url'}
                         values={values}
                         type="text"
-                        onChange={handleChange}
+                        regType="noSpace"
+                        setFieldValue={setFieldValue}
                         onBlur={handleBlur}
                         touched={touched}
                         errors={errors}

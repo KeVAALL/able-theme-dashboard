@@ -189,15 +189,6 @@ function Issuer() {
                         type="text"
                         regType="pan"
                         setFieldValue={setFieldValue}
-                        // onChange={(e) => {
-                        //   const panReg = /^([a-zA-Z]){5}([0-9]){4}([a-zA-Z]){1}?$/;
-                        //   e.preventDefault();
-                        //   const { value } = e.target;
-                        //   const panRegex = RegExp(regEx.panRegex);
-                        //   if (panRegex.test(value)) {
-                        //     console.log(panReg.test(value));
-                        //   }
-                        // }}
                         onBlur={handleBlur}
                         touched={touched}
                         errors={errors}
@@ -219,14 +210,6 @@ function Issuer() {
                         type="text"
                         regType="number"
                         setFieldValue={setFieldValue}
-                        // onChange={(e) => {
-                        //   e.preventDefault();
-                        //   const { value } = e.target;
-                        //   const regex = /^\d+$/;
-                        //   if (!value || regex.test(value.toString())) {
-                        //     setFieldValue('issuer_tollfree_number', value);
-                        //   }
-                        // }}
                         onBlur={handleBlur}
                         touched={touched}
                         errors={errors}
@@ -246,8 +229,9 @@ function Issuer() {
                         placeholder={'Please enter Logo URL'}
                         values={values}
                         type="text"
-                        regType="url"
-                        onChange={handleChange}
+                        regType="noSpace"
+                        setFieldValue={setFieldValue}
+                        // onChange={handleChange}
                         onBlur={handleBlur}
                         touched={touched}
                         errors={errors}

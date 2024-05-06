@@ -52,7 +52,10 @@ const validationSchema = yup.object().shape(
         });
       })
       .required('Maximum Tenure is required'),
-    logo_url: yup.string().required('Logo URL is required'),
+    logo_url: yup
+      .string()
+      .matches(/^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/, 'Please enter valid URL')
+      .required('Logo URL is required'),
     issuer_id: yup.number()
   },
   [

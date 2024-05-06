@@ -197,7 +197,7 @@ const Nomination = (props) => {
                           placeholder="Please enter your PAN"
                           values={values}
                           type="string"
-                          regType="noSpecial"
+                          regType="pan"
                           setFieldValue={setFieldValue}
                           onBlur={handleBlur}
                           touched={touched}
