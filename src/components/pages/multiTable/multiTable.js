@@ -133,14 +133,13 @@ function ReactTable({
                     <Grid container direction="row" spacing={1} alignItems="center">
                       {formValueFields?.map((field, id) => {
                         return (
-                          <Grid item md={3} sm={3} xs={6} key={id} sx={{ paddingTop: '0px !important', height: '45px' }}>
+                          <Grid item md={5} sm={3} xs={6} key={id} sx={{ paddingTop: '0px !important', height: '45px' }}>
                             <CustomTextField
                               label={field.label}
                               name={field.fieldName}
                               values={values}
                               placeholder={field.placeholder}
                               type={field.type}
-                              // onChange={handleChange}
                               onChange={(e) => {
                                 const strings = /^[a-zA-Z][a-zA-Z\s]*$/;
                                 const specials = /^[a-zA-Z0-9.]*$/;

@@ -75,18 +75,6 @@ export async function SaveInvestor(values, InvestorTableDataRefetch, clearFormVa
       }
     });
     console.log('error');
-    // dispatch(
-    //   openSnackbar({
-    //     open: true,
-    //     anchorOrigin: { vertical: 'top', horizontal: 'right' },
-    //     message: err.message,
-    //     variant: 'alert',
-    //     alert: {
-    //       color: 'error'
-    //     }
-    //   })
-    // );
-    // return [];
   }
 }
 export async function EditInvestor(
@@ -97,11 +85,12 @@ export async function EditInvestor(
   setActiveClose
 ) {
   try {
-    await axios.post('/investor/create', {
+    await axios.post('/investor/save', {
       ...values,
-      is_active: toInteger(isInvestorActive),
-      method_name: 'update',
-      user_id: 2
+      // is_active: toInteger(isInvestorActive),
+      user_id: 2,
+      investor_id: values.investor.investor_type,
+      method_name: 'update'
     });
     clearFormValues();
     setActiveClose();
@@ -150,8 +139,7 @@ export async function GetEditOneInvestor(setEditing, investor_id) {
 }
 export async function DeleteOneInvestor(values) {
   try {
-    console.log(values.osb_issuer_id);
-    await axios.post('/investor/create', {
+    await axios.post('/investor/save', {
       investor_id: values?.investor_id,
       user_id: 2,
       method_name: 'delete'
