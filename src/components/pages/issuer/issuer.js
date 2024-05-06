@@ -187,7 +187,7 @@ function Issuer() {
                         placeholder={'Please enter PAN'}
                         values={values}
                         type="text"
-                        regType="noSpecial"
+                        regType="pan"
                         setFieldValue={setFieldValue}
                         // onChange={(e) => {
                         //   const panReg = /^([a-zA-Z]){5}([0-9]){4}([a-zA-Z]){1}?$/;

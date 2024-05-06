@@ -334,7 +334,7 @@ function Investor() {
                         placeholder="Please enter your PAN Number"
                         values={values.investor.pan_no}
                         type="string"
-                        regType="noSpecial"
+                        regType="pan"
                         setFieldValue={setFieldValue}
                         handleBlur={handleBlur}
                         touched={touched}

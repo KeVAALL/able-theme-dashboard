@@ -24,9 +24,13 @@ export const NestedCustomTextField = memo(
     const regexCheck = (e) => {
       e.preventDefault();
       const { value } = e.target;
-      const regex = regType === 'string' ? strings : regType === 'noSpecial' ? specials : numbers;
+      const regex = regType === 'string' ? strings : regType === 'noSpecial' ? specials : regType === 'pan' ? specials : numbers;
       if (!value || regex.test(value.toString())) {
-        setFieldValue(valueName, value);
+        if (regType === 'pan') {
+          setFieldValue(valueName, value.toUpperCase());
+        } else {
+          setFieldValue(valueName, value);
+        }
       }
     };
     const strings = /^[a-zA-Z][a-zA-Z\s]*$/;
@@ -74,9 +78,14 @@ export const CustomTextField = memo((props) => {
         onChange={(e) => {
           e.preventDefault();
           const { value } = e.target;
-          const regex = props.regType === 'string' ? strings : props.regType === 'noSpecial' ? specials : numbers;
+          const regex =
+            props.regType === 'string' ? strings : props.regType === 'noSpecial' ? specials : props.regType === 'pan' ? specials : numbers;
           if (!value || regex.test(value.toString())) {
-            props.setFieldValue(props.name, value);
+            if (props.regType === 'pan') {
+              props.setFieldValue(props.name, value.toUpperCase());
+            } else {
+              props.setFieldValue(props.name, value);
+            }
           }
         }}
         onBlur={props.handleBlur}
