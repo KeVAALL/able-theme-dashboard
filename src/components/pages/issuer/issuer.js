@@ -142,6 +142,7 @@ function Issuer() {
                       <CustomTextField
                         label="Issuer Name"
                         name="issuer_name"
+                        placeholder={'Please enter Issuer Name'}
                         values={values}
                         type="text"
                         regType="string"
@@ -242,7 +243,7 @@ function Issuer() {
                       <CustomTextField
                         label="Logo URL"
                         name="logo_url"
-                        placeholder={'Please enter logo url'}
+                        placeholder={'Please enter Logo URL'}
                         values={values}
                         type="text"
                         regType="url"

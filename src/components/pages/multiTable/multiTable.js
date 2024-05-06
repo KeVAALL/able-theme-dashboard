@@ -138,6 +138,7 @@ function ReactTable({
                               label={field.label}
                               name={field.fieldName}
                               values={values}
+                              placeholder={field.placeholder}
                               type={field.type}
                               // onChange={handleChange}
                               onChange={(e) => {
