@@ -17,7 +17,18 @@ export async function GetProductData() {
     });
     return response.data.data;
   } catch (err) {
-    return err;
+    dispatch(
+      openSnackbar({
+        open: true,
+        anchorOrigin: { vertical: 'top', horizontal: 'right' },
+        message: err.message,
+        variant: 'alert',
+        alert: {
+          color: 'error'
+        }
+      })
+    );
+    return [];
   }
 }
 
@@ -95,7 +106,7 @@ export async function SaveProduct(
     ProductTableDataRefetch();
   } catch (err) {
     enqueueSnackbar(err.message, {
-      variant: 'success',
+      variant: 'error',
       autoHideDuration: 2000,
       anchorOrigin: {
         vertical: 'top',

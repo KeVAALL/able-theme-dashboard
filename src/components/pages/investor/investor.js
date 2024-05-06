@@ -279,7 +279,7 @@ function Investor() {
               );
             }
             setErrorObject(errorObject);
-            changeTableVisibility();
+            // changeTableVisibility();
           }}
         >
           {({ values, errors, touched, handleChange, handleBlur, handleSubmit, setFieldValue, resetForm, isSubmitting }) => (

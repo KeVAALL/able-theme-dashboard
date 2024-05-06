@@ -18,7 +18,15 @@ export async function GetInvestorData() {
     console.log(response);
     return response.data.data;
   } catch (err) {
-    return err;
+    enqueueSnackbar(err.message, {
+      variant: 'error',
+      autoHideDuration: 2000,
+      anchorOrigin: {
+        vertical: 'top',
+        horizontal: 'right'
+      }
+    });
+    return [];
   }
 }
 export async function GetOneInvestor(values, setSearchData) {
@@ -30,26 +38,28 @@ export async function GetOneInvestor(values, setSearchData) {
     });
     setSearchData(response.data.data);
   } catch (error) {
-    dispatch(
-      openSnackbar({
-        open: true,
-        anchorOrigin: { vertical: 'top', horizontal: 'right' },
-        message: error.message,
-        variant: 'alert',
-        alert: {
-          color: 'error'
-        }
-      })
-    );
+    enqueueSnackbar(error.message, {
+      variant: 'error',
+      autoHideDuration: 2000,
+      anchorOrigin: {
+        vertical: 'top',
+        horizontal: 'right'
+      }
+    });
   }
 }
 export async function SaveInvestor(values, InvestorTableDataRefetch, clearFormValues) {
   try {
-    await axios.post('/investor/save', {
+    const response = await axios.post('/investor/save', {
       ...values,
       user_id: 2,
       method_name: 'add'
     });
+    if (response.status === 409) {
+      console.warn('error');
+    }
+    console.warn(response);
+
     clearFormValues();
     enqueueSnackbar('Investor added', {
       variant: 'success',
@@ -62,13 +72,26 @@ export async function SaveInvestor(values, InvestorTableDataRefetch, clearFormVa
     InvestorTableDataRefetch();
   } catch (err) {
     enqueueSnackbar(err.message, {
-      variant: 'success',
+      variant: 'error',
       autoHideDuration: 2000,
       anchorOrigin: {
         vertical: 'top',
         horizontal: 'right'
       }
     });
+    console.log('error');
+    // dispatch(
+    //   openSnackbar({
+    //     open: true,
+    //     anchorOrigin: { vertical: 'top', horizontal: 'right' },
+    //     message: err.message,
+    //     variant: 'alert',
+    //     alert: {
+    //       color: 'error'
+    //     }
+    //   })
+    // );
+    // return [];
   }
 }
 export async function EditInvestor(
