@@ -55,7 +55,7 @@ const ImageCell = ({ value }) => {
 const StatusCell = ({ value }) => {
   switch (value) {
     case 0:
-      return <Chip color="error" label="InActive" size="medium" variant="light" />;
+      return <Chip color="error" label="Inactive" size="medium" variant="light" />;
     case 1:
       return <Chip color="success" label="Active" size="medium" variant="light" />;
     default:
