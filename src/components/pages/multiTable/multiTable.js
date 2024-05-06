@@ -147,14 +147,10 @@ function ReactTable({
                                 const numbers = /^\d+$/;
                                 e.preventDefault();
                                 const { value } = e.target;
-                                const regex =
-                                  formValueFields.regType === 'string'
-                                    ? strings
-                                    : formValueFields.regType === 'noSpecial'
-                                    ? specials
-                                    : numbers;
+                                const regex = field.regType === 'string' ? strings : field.regType === 'noSpecial' ? specials : numbers;
+
                                 if (!value || regex.test(value.toString())) {
-                                  setFieldValue(formValueFields.fieldName, value);
+                                  setFieldValue(field.fieldName, value);
                                 }
                               }}
                               onBlur={handleBlur}
