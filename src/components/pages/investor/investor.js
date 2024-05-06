@@ -1,9 +1,9 @@
 import { useMemo, useState } from 'react';
 
 // material-ui
-import { Divider, Box, Card, Grid, CardContent, TableCell, Button, Stack, CardHeader, TextField } from '@mui/material';
+import { Divider, Box, Card, Grid, CardContent, Button } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import { Trash, Edit2, FilterSearch, DiscountShape, Additem, SearchNormal1 } from 'iconsax-react';
+import { FilterSearch } from 'iconsax-react';
 import { useQuery } from 'react-query';
 
 // project-imports
@@ -12,7 +12,6 @@ import MultiTable from '../multiTable/multiTable';
 
 // third-party
 import { Formik } from 'formik';
-import * as yup from 'yup';
 import Loader from 'components/atoms/loader/Loader';
 import { SubmitButton } from 'components/atoms/button/button';
 import CustomTextField, { CustomAutoComplete, FormikAutoComplete, NestedCustomTextField, dateFormatter } from 'utils/textfield';
@@ -28,9 +27,6 @@ import {
   tableColumns,
   VisibleColumn,
   genderData,
-  residency,
-  marital_status,
-  occupation,
   investorType
 } from 'constant/investorValidation';
 import {
@@ -278,17 +274,14 @@ function Investor() {
                 setActiveClose
               );
             }
-            setErrorObject(errorObject);
-            // changeTableVisibility();
+            // setErrorObject(errorObject);
+            changeTableVisibility();
           }}
         >
           {({ values, errors, touched, handleChange, handleBlur, handleSubmit, setFieldValue, resetForm, isSubmitting }) => (
             <Box
               component="form"
               onSubmit={(event) => {
-                if (errors) {
-                  handleTabError(errors);
-                }
                 event.preventDefault();
                 handleSubmit();
               }}
@@ -573,6 +566,9 @@ function Investor() {
 
 export default Investor;
 
+// if (errors) {
+//   handleTabError(errors);
+// }
 {
   /* <Card
                   sx={{

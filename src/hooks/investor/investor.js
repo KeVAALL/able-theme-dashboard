@@ -33,7 +33,6 @@ export async function GetOneInvestor(values, setSearchData) {
   try {
     const response = await axios.post('investor/getinvestor', {
       method_name: 'getone',
-      // method_name: 'getdetails',
       ...values
     });
     setSearchData(response.data.data);
@@ -55,10 +54,6 @@ export async function SaveInvestor(values, InvestorTableDataRefetch, clearFormVa
       user_id: 2,
       method_name: 'add'
     });
-    if (response.status === 409) {
-      console.warn('error');
-    }
-    console.warn(response);
 
     clearFormValues();
     enqueueSnackbar('Investor added', {
