@@ -89,7 +89,7 @@ export async function EditInvestor(
       ...values,
       // is_active: toInteger(isInvestorActive),
       user_id: 2,
-      investor_id: values.investor.investor_type,
+      investor_id: values.investor.investor_id,
       method_name: 'update'
     });
     clearFormValues();
