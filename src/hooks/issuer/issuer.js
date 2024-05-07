@@ -85,7 +85,7 @@ export async function SaveIssuer(values, issuerTableDataRefetch, clearFormValues
     issuerTableDataRefetch();
   } catch (err) {
     enqueueSnackbar(err.message, {
-      variant: 'success',
+      variant: 'error',
       autoHideDuration: 2000,
       anchorOrigin: {
         vertical: 'top',
