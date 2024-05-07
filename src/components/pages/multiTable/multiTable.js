@@ -266,7 +266,6 @@ function ReactTable({
           </TableHead>
           <TableBody {...getTableBodyProps()}>
             {page?.length > 0 ? (
-              // {data?.length > 0 ? (
               page?.map((row) => {
                 prepareRow(row);
                 return (
