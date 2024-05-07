@@ -41,6 +41,10 @@ export function DialogForm({
   // Active or not Button
   const [activeButton, setActiveButton] = useState(false);
   const [liveButton, setLiveButton] = useState(false);
+  // Handle Switch Change
+  const handleActiveChange = () => {
+    setActiveButton(!activeButton);
+  };
   // Form Data
   const [schemeFormValues, setSchemeFormValues] = useState();
   const clearFormValues = () => {
@@ -78,15 +82,7 @@ export function DialogForm({
               <Box>
                 <FormControlLabel
                   value="start"
-                  control={
-                    <Switch
-                      color="primary"
-                      checked={activeButton}
-                      onChange={() => {
-                        setActiveButton(!activeButton);
-                      }}
-                    />
-                  }
+                  control={<Switch color="primary" checked={activeButton} onChange={handleActiveChange} />}
                   label="Active"
                   labelPlacement="start"
                 />
@@ -121,7 +117,7 @@ export function DialogForm({
               console.log(activeButton);
               EditInterestRate(values, activeButton, liveButton, clearFormValues, handleOpenDialog, setSchemeData, setActiveClose);
             } else {
-              SaveInterestRate(values, fdId, selectedPayoutMethod, isActive, clearFormValues, handleOpenDialog, setSchemeData);
+              SaveInterestRate(values, fdId, selectedPayoutMethod, activeButton, clearFormValues, handleOpenDialog, setSchemeData);
             }
           }}
         >

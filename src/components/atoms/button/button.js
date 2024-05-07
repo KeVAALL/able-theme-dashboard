@@ -24,6 +24,7 @@ export const SubmitButton = ({
   errors,
   handleTabError
 }) => {
+  console.log;
   useEffect(() => {
     if (setIsActive) {
       setIsActive(formValues.is_active);

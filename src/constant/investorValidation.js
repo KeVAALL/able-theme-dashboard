@@ -138,7 +138,7 @@ const relationship = [
 ];
 // Add form values
 const formAllValues = {
-  is_permanent_address_correspond: 0,
+  is_permanent_address_correspondent: 0,
   investor: {
     investor_name: '',
     pan_no: '',
@@ -170,7 +170,7 @@ const formAllValues = {
   }
 };
 const validationSchema = yup.object().shape({
-  is_permanent_address_correspond: yup.number(),
+  is_permanent_address_correspondent: yup.number(),
   investor: yup.object().shape({
     investor_name: yup.string().required('Investor Name is required'),
     pan_no: yup
@@ -191,25 +191,29 @@ const validationSchema = yup.object().shape({
     city: yup.string().required('City is required')
   }),
   correspondent_address: yup.object().shape({
-    address_line_1: yup.string().when('$is_permanent_address_correspond', {
+    address_line_1: yup.string().when('$is_permanent_address_correspondent', {
       is: 0,
       then: () => yup.string().required('Address Line 1 is required'),
-      otherwise: () => yup.string().optional()
+      otherwise: () => yup.string()
+      // .optional()
     }),
-    address_line_2: yup.string().when('$is_permanent_address_correspond', {
+    address_line_2: yup.string().when('$is_permanent_address_correspondent', {
       is: 0,
       then: () => yup.string().required('Address Line 2 is required'),
-      otherwise: () => yup.string().optional()
+      otherwise: () => yup.string()
+      // .optional()
     }),
-    pincode: yup.string().when('$is_permanent_address_correspond', {
+    pincode: yup.string().when('$is_permanent_address_correspondent', {
       is: 0,
       then: () => yup.string().required('Pin Code is required'),
-      otherwise: () => yup.string().optional()
+      otherwise: () => yup.string()
+      // .optional()
     }),
-    city: yup.string().when('$is_permanent_address_correspond', {
+    city: yup.string().when('$is_permanent_address_correspondent', {
       is: 0,
       then: () => yup.string().required('City is required'),
-      otherwise: () => yup.string().optional()
+      otherwise: () => yup.string()
+      // .optional()
     })
   }),
   professional_details: yup.object().shape({

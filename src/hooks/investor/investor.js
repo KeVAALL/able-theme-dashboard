@@ -102,7 +102,7 @@ export async function EditInvestor(
         horizontal: 'right'
       }
     });
-    InvestorTableDataRefetch();
+    // InvestorTableDataRefetch();
   } catch (err) {
     enqueueSnackbar(err.message, {
       variant: 'error',

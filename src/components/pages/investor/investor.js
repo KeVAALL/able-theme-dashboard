@@ -41,6 +41,7 @@ import {
 } from 'hooks/investor/investor';
 import AnimateButton from 'helpers/@extended/AnimateButton';
 import IconTabs from 'components/organisms/iconTabs';
+import { toInteger } from 'lodash';
 
 const headerSX = {
   p: 2.5,
@@ -98,6 +99,7 @@ function Investor() {
   const setEditing = (value) => {
     console.log(value);
     setFormValues(value);
+    handleIsInvestorActive(value.investor.is_active);
     setSelectedGender(value.investor.gender);
     setSelectedDeclaration({
       isPoliticallyExposed: Boolean(value.declaration.is_pep),
@@ -259,6 +261,7 @@ function Investor() {
                 ...values,
                 investor: {
                   ...values.investor,
+                  is_active: toInteger(isInvestorActive),
                   gender: genderValidate(selectedGender),
                   is_foreign_tax_resident: selectedDeclaration.isResidentOutsideIndia ? 1 : 0,
                   is_rpep: selectedDeclaration.isRelativeToPoliticallyExposed ? 1 : 0,
@@ -269,7 +272,7 @@ function Investor() {
               EditInvestor(
                 formValues,
                 // isFDActive,
-                // isInvestorActive,
+                isInvestorActive,
                 InvestorTableDataRefetch,
                 clearFormValues,
                 setActiveClose
@@ -302,7 +305,7 @@ function Investor() {
                   changeTableVisibility={changeTableVisibility}
                   clearFormValues={clearFormValues}
                   isEditing={isEditing}
-                  formValues={formValues}
+                  formValues={formValues?.investor}
                   setActiveClose={setActiveClose}
                   setIsActive={handleIsInvestorActive}
                   isActive={isInvestorActive}

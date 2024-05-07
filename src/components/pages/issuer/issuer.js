@@ -184,7 +184,7 @@ function Issuer() {
                       <CustomTextField
                         label="Issuer PAN"
                         name="issuer_pan"
-                        placeholder={'Please enter PAN'}
+                        placeholder={'Please enter Issuer PAN'}
                         values={values}
                         type="text"
                         regType="pan"
