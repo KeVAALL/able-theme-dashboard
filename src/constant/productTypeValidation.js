@@ -21,7 +21,8 @@ const formValueFields = [
   }
 ];
 const filterValidationSchema = yup.object({
-  product_type: yup.string().trim().required('Required').matches(/\S+/, 'Product Type cannot be empty or contain only whitespace')
+  product_type: yup.string().trim().matches(/\S+/, 'Remove Spaces')
+  // .trim().required('Required')
 });
 // Table Columns
 const VisibleColumn = [];
@@ -33,3 +34,5 @@ const tableColumns = [
 ];
 
 export { formAllValues, validationSchema, filterFormValues, formValueFields, filterValidationSchema, tableColumns, VisibleColumn };
+
+// .matches(/\S+/, 'Product Type cannot be empty or contain only whitespace')

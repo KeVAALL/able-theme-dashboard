@@ -36,7 +36,8 @@ import {
   EditInvestor,
   DeleteOneInvestor,
   GetEditOneInvestor,
-  GetIfa
+  GetIfa,
+  GetIFASearch
 } from 'hooks/investor/investor';
 import AnimateButton from 'helpers/@extended/AnimateButton';
 import IconTabs from 'components/organisms/iconTabs';
@@ -447,10 +448,9 @@ function Investor() {
             }}
             // validationSchema={formValueFields}
             onSubmit={async (values, { resetForm }) => {
-              const searchResult = await GetSchemeSearch(formValues.fd_id, selectedPayoutMethod);
+              const searchResult = await GetIFASearch(values, selectedIFA);
               if (searchResult) {
-                console.log(searchResult);
-                setSchemeData(searchResult);
+                setSearchData(searchResult);
               }
             }}
           >

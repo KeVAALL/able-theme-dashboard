@@ -51,7 +51,8 @@ const Nomination = (props) => {
   };
   const validationSchema = yup.object().shape({
     full_name: yup.string().required('Name is Required'),
-    pan: yup.string().matches(/^([A-Z]){3}([P]){1}([A-Z]){1}([0-9]){4}([A-Z]){1}$/, 'Invalid PAN format'),
+    pan: yup.string().matches(/^([a-zA-Z]){5}([0-9]){4}([a-zA-Z]){1}?$/, 'Invalid PAN format'),
+    // /^([A-Z]){3}([P]){1}([A-Z]){1}([0-9]){4}([A-Z]){1}$/
     relationship_id: yup.number(),
     birth_date: yup.date().required('Date of birth is required'),
     address_line_1: yup.string().required('Address is Required'),

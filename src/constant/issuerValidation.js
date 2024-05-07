@@ -43,7 +43,7 @@ const formValueFields = [
   }
 ];
 const filterValidationSchema = yup.object({
-  issuer_name: yup.string().trim().matches(/\S+/, 'Remove Spaces').required('Issuer Name is required')
+  issuer_name: yup.string().trim().matches(/\S+/, 'Remove Spaces')
 });
 // Table Columns
 const VisibleColumn = [];

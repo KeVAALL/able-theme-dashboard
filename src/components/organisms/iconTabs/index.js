@@ -110,11 +110,11 @@ export default function IconTabs(props) {
           <AddressDetails
             values={props.values}
             handleChange={props.handleChange}
+            setFieldValue={props.setFieldValue}
             handleBlur={props.handleBlur}
             touched={props.touched}
             errors={props.errors}
             sameAddress={props.sameAddress}
-            setFieldValue={props.setFieldValue}
             handleCheckboxChange={props.handleCheckboxChange}
           />
         </MainCard>

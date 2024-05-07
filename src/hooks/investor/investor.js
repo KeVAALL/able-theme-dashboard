@@ -167,3 +167,26 @@ export async function GetIfa() {
     console.log(err);
   }
 }
+export async function GetIFASearch(values, selectedIFA) {
+  try {
+    const response = await axios.post('investor/getinvestor', {
+      method_name: 'getifafilter',
+      ifa_id: selectedIFA,
+      ...values
+    });
+    // setEditing(response.data.data);
+    return response.data.data;
+  } catch (error) {
+    dispatch(
+      openSnackbar({
+        open: true,
+        anchorOrigin: { vertical: 'top', horizontal: 'right' },
+        message: error.message,
+        variant: 'alert',
+        alert: {
+          color: 'error'
+        }
+      })
+    );
+  }
+}

@@ -77,7 +77,8 @@ const formValueFields = [
   }
 ];
 const filterValidationSchema = yup.object({
-  fd_name: yup.string().trim().required('Name is required').matches(/\S+/, 'Name cannot be empty or contain only whitespace')
+  fd_name: yup.string().trim().matches(/\S+/, 'Name cannot be empty or contain only whitespace')
+  // .required('Name is required')
 });
 // Table Columns
 const ImageCell = ({ value }) => {
