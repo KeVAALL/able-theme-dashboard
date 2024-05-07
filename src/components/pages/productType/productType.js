@@ -114,7 +114,7 @@ function ProductType() {
             changeTableVisibility();
           }}
         >
-          {({ values, errors, touched, handleChange, handleBlur, handleSubmit, resetForm, isSubmitting }) => (
+          {({ values, errors, touched, handleChange, handleBlur, handleSubmit, setFieldValue, resetForm, isSubmitting }) => (
             <Box
               component="form"
               onSubmit={(event) => {
@@ -145,7 +145,8 @@ function ProductType() {
                         placeholder={'Please enter Product Type'}
                         values={values}
                         type="text"
-                        onChange={handleChange}
+                        regType="noSpecial"
+                        setFieldValue={setFieldValue}
                         onBlur={handleBlur}
                         touched={touched}
                         errors={errors}
