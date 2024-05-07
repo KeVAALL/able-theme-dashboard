@@ -117,7 +117,16 @@ export function DialogForm({
               console.log(activeButton);
               EditInterestRate(values, activeButton, liveButton, clearFormValues, handleOpenDialog, setSchemeData, setActiveClose);
             } else {
-              SaveInterestRate(values, fdId, selectedPayoutMethod, activeButton, clearFormValues, handleOpenDialog, setSchemeData);
+              SaveInterestRate(
+                values,
+                fdId,
+                selectedPayoutMethod,
+                liveButton,
+                activeButton,
+                clearFormValues,
+                handleOpenDialog,
+                setSchemeData
+              );
             }
           }}
         >

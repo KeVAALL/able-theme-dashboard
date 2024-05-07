@@ -34,11 +34,21 @@ export async function GetSchemeSearch(fdId, selectedPayoutMethod) {
   }
 }
 
-export async function SaveInterestRate(values, fdId, selectedPayoutMethod, activeButton, clearFormValues, handleOpenDialog, setSchemeData) {
+export async function SaveInterestRate(
+  values,
+  fdId,
+  selectedPayoutMethod,
+  liveButton,
+  activeButton,
+  clearFormValues,
+  handleOpenDialog,
+  setSchemeData
+) {
   try {
     await axios.post('/product/savescheme', {
       ...values,
       fd_id: fdId,
+      is_live: toInteger(liveButton),
       is_active: toInteger(activeButton),
       fd_payout_method_id: selectedPayoutMethod,
       method_name: 'add'
