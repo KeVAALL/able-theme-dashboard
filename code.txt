@@ -43,3 +43,10 @@ menu-items -> MainRoutes -> MainLayout
                         ))}
                       </Select> */
 }
+
+Investor
+
+  const [selectedRelation, setSelectedRelation] = useState(null);
+  const [selectedOccupation, setSelectedOccupation] = useState(null);
+  const [selectedAnnualIncome, setSelectedAnnualIncome] = useState(null);
+  const [selectedIncomeSource, setSelectedIncomeSource] = useState(null);

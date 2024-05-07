@@ -1,9 +1,7 @@
 /* eslint-disable react/prop-types */
-import { Grid, Typography } from '@mui/material';
-import { Box } from '@mui/system';
-import React, { useState } from 'react';
+import React from 'react';
+import { Grid, Typography, Chip } from '@mui/material';
 
-import Chip from '@mui/material/Chip';
 const Declaration = ({ selectedDeclaration, handleDeclarationClick }) => {
   return (
     <>

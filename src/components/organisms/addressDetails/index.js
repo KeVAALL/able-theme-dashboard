@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
-import { Checkbox, Grid, Typography, Box } from '@mui/material';
 import React from 'react';
+import { Checkbox, Grid, Typography, Box } from '@mui/material';
 import { NestedCustomTextField } from 'utils/textfield';
 
 const AddressDetails = (props) => {
@@ -100,7 +100,6 @@ const AddressDetails = (props) => {
                 placeholder="Please enter your Address Line 1"
                 values={props.values.correspondent_address.address_line_1}
                 type="string"
-                // required={!sameAddress}
                 handleChange={props.handleChange}
                 handleBlur={props.handleBlur}
                 touched={props.touched}
@@ -114,7 +113,6 @@ const AddressDetails = (props) => {
                 placeholder="Please enter your Address Line 2"
                 values={props.values.correspondent_address.address_line_2}
                 type="string"
-                // required={!sameAddress}
                 handleChange={props.handleChange}
                 handleBlur={props.handleBlur}
                 touched={props.touched}

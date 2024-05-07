@@ -160,35 +160,6 @@ function ReactTable({
                           </Grid>
                         );
                       })}
-                      {/* <Grid item md={3} sm={3} xs={6} sx={{ height: '60px' }}>
-                        <CustomTextField
-                          label={formValueFields[0].label}
-                          name={formValueFields[0].fieldName}
-                          placeholder={formValueFields[0].placeholder}
-                          values={values}
-                          type={formValueFields[0].type}
-                          onChange={(e) => {
-                            const strings = /^[a-zA-Z][a-zA-Z\s]*$/;
-                            const specials = /^[a-zA-Z0-9.]*$/;
-                            const numbers = /^\d+$/;
-                            e.preventDefault();
-                            const { value } = e.target;
-                            const regex =
-                              formValueFields[0].regType === 'string'
-                                ? strings
-                                : formValueFields[0].regType === 'noSpecial'
-                                ? specials
-                                : numbers;
-                            if (!value || regex.test(value.toString())) {
-                              setFieldValue(formValueFields[0].fieldName, value);
-                            }
-                          }}
-                          onBlur={handleBlur}
-                          touched={touched}
-                          errors={errors}
-                          inputProps={{ maxLength: 25 }}
-                        />
-                      </Grid> */}
 
                       {formValueFields && (
                         <Grid item md={3} sm={3} xs={6} sx={{ height: '60px' }}>
@@ -453,20 +424,34 @@ MultiTable.propTypes = {
 
 export default MultiTable;
 
-// const autocompleteData = [
-//   { product_type_id: 1, product_type: 'Electronics', is_active: true, is_deleted: false },
-//   { product_type_id: 2, product_type: 'Clothing', is_active: true, is_deleted: false }
-// ];
 // {
-/* <Stack direction="row" spacing={2} alignItems="center">
-            <CSVExport data={rows.map((d) => d.original)} filename={'filtering-table.csv'} headers={headers} />
-            <HidingSelect hiddenColumns={hiddenColumns} setHiddenColumns={setHiddenColumns} allColumns={allColumns} />
-          </Stack> */
-// }
-// {
-/* <TableRow>
-              <TableCell sx={{ p: 2 }} colSpan={7}>
-                <TablePagination gotoPage={gotoPage} rows={rows} setPageSize={setPageSize} pageIndex={pageIndex} pageSize={pageSize} />
-              </TableCell>
-            </TableRow> */
+/* <Grid item md={3} sm={3} xs={6} sx={{ height: '60px' }}>
+                        <CustomTextField
+                          label={formValueFields[0].label}
+                          name={formValueFields[0].fieldName}
+                          placeholder={formValueFields[0].placeholder}
+                          values={values}
+                          type={formValueFields[0].type}
+                          onChange={(e) => {
+                            const strings = /^[a-zA-Z][a-zA-Z\s]*$/;
+                            const specials = /^[a-zA-Z0-9.]*$/;
+                            const numbers = /^\d+$/;
+                            e.preventDefault();
+                            const { value } = e.target;
+                            const regex =
+                              formValueFields[0].regType === 'string'
+                                ? strings
+                                : formValueFields[0].regType === 'noSpecial'
+                                ? specials
+                                : numbers;
+                            if (!value || regex.test(value.toString())) {
+                              setFieldValue(formValueFields[0].fieldName, value);
+                            }
+                          }}
+                          onBlur={handleBlur}
+                          touched={touched}
+                          errors={errors}
+                          inputProps={{ maxLength: 25 }}
+                        />
+                      </Grid> */
 // }

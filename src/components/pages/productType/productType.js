@@ -12,10 +12,10 @@ import MultiTable from '../multiTable/multiTable';
 // third-party
 import { Formik } from 'formik';
 import Loader from 'components/atoms/loader/Loader';
-import { SubmitButton } from 'components/atoms/button/button';
-import CustomTextField from 'utils/textfield';
 
 // assets
+import { SubmitButton } from 'components/atoms/button/button';
+import CustomTextField from 'utils/textfield';
 import {
   formAllValues,
   validationSchema,

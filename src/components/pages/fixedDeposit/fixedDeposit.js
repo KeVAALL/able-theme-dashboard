@@ -14,11 +14,10 @@ import { Formik } from 'formik';
 import { useQuery } from 'react-query';
 import Select from 'react-select';
 import Loader from 'components/atoms/loader/Loader';
-import { SubmitButton } from 'components/atoms/button/button';
-import CustomTextField, { CustomCheckbox, FormikAutoComplete } from 'utils/textfield';
-import '../../../utils/custom.css';
 
 // assets
+import { SubmitButton } from 'components/atoms/button/button';
+import CustomTextField, { CustomCheckbox, FormikAutoComplete } from 'utils/textfield';
 import {
   formAllValues,
   validationSchema,
@@ -31,6 +30,7 @@ import {
 import { GetProductData, GetOneProduct, SaveProduct, EditProduct, DeleteOneProduct, GetFDTags } from 'hooks/fixedDeposit/fixedDeposit';
 import { GetActiveIssuerData } from 'hooks/issuer/issuer';
 import InterestRate from '../../organisms/fixedDeposit/interestRate';
+import '../../../utils/custom.css';
 
 function FixDeposit() {
   // Main data state to hold the list of products

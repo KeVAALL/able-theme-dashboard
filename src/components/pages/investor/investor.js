@@ -13,10 +13,11 @@ import MultiTable from '../multiTable/multiTable';
 // third-party
 import { Formik } from 'formik';
 import Loader from 'components/atoms/loader/Loader';
-import { SubmitButton } from 'components/atoms/button/button';
-import CustomTextField, { CustomAutoComplete, FormikAutoComplete, NestedCustomTextField, dateFormatter } from 'utils/textfield';
+import { toInteger } from 'lodash';
 
 // assets
+import { SubmitButton } from 'components/atoms/button/button';
+import CustomTextField, { CustomAutoComplete, FormikAutoComplete, NestedCustomTextField } from 'utils/textfield';
 import {
   formAllValues,
   validationSchema,
@@ -41,12 +42,6 @@ import {
 } from 'hooks/investor/investor';
 import AnimateButton from 'helpers/@extended/AnimateButton';
 import IconTabs from 'components/organisms/iconTabs';
-import { toInteger } from 'lodash';
-
-const headerSX = {
-  p: 2.5,
-  '& .MuiCardHeader-action': { m: '0px auto', alignSelf: 'center' }
-};
 
 function Investor() {
   // Main data states
@@ -64,10 +59,7 @@ function Investor() {
   // Selection states
   const [selectedIFA, setSelectedIFA] = useState(null);
   const [selectedGender, setSelectedGender] = useState(null);
-  const [selectedRelation, setSelectedRelation] = useState(null);
-  const [selectedOccupation, setSelectedOccupation] = useState(null);
-  const [selectedAnnualIncome, setSelectedAnnualIncome] = useState(null);
-  const [selectedIncomeSource, setSelectedIncomeSource] = useState(null);
+
   const [selectedDeclaration, setSelectedDeclaration] = useState({
     isPoliticallyExposed: true,
     isRelativeToPoliticallyExposed: true,
