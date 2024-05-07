@@ -155,6 +155,7 @@ function ReactTable({
                               onBlur={handleBlur}
                               touched={touched}
                               errors={errors}
+                              inputProps={{ maxLength: 50 }}
                             />
                           </Grid>
                         );

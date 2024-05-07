@@ -241,6 +241,7 @@ function Issuer() {
                             marginLeft: 0
                           }
                         }}
+                        inputProps={{ maxLength: 150 }}
                       />
                     </Grid>
                   </Grid>

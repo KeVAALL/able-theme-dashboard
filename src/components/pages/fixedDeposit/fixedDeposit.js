@@ -115,6 +115,7 @@ function FixDeposit() {
     setFormValues(formAllValues);
     setCheckedCumulative(false);
     setCheckedNonCumulative(false);
+    setSelected([]);
     setSelectedIssuerID();
   };
 
@@ -350,6 +351,7 @@ function FixDeposit() {
                         onBlur={handleBlur}
                         touched={touched}
                         errors={errors}
+                        inputProps={{ maxLength: 150 }}
                       />
                     </Grid>
                     <Grid item xs={4}>
@@ -371,30 +373,6 @@ function FixDeposit() {
                       />
                     </Grid>
                     <Grid item xs={4}>
-                      {/* <Select
-                        fullWidth
-                        className="common-multi_select"
-                        labelId="demo-multiple-chip-label"
-                        id="demo-multiple-chip"
-                        multiple
-                        value={fdTag}
-                        onChange={handleTagChange}
-                        input={<OutlinedInput id="select-multiple-chip" placeholder="Chip" />}
-                        renderValue={(selected) => (
-                          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                            {selected?.map((value) => (
-                              <Chip key={value.fd_tag_id} label={value.fd_tag_name} variant="light" color="primary" size="small" />
-                            ))}
-                          </Box>
-                        )}
-                        MenuProps={MenuProps}
-                      >
-                        {tags.map((name) => (
-                          <MenuItem key={name.fd_tag_id} value={name} style={getStyles(name, fdTag, theme)}>
-                            {name.fd_tag_name}
-                          </MenuItem>
-                        ))}
-                      </Select> */}
                       <Select
                         className="multi_select"
                         isMulti
@@ -414,7 +392,6 @@ function FixDeposit() {
           )}
         </Formik>
       )}
-      {/* {editingInterestRate && <InterestRate />} */}
       {!showTable && (
         <MainCard
           title="Fixed Deposit Search"

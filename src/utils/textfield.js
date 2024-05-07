@@ -43,7 +43,7 @@ export const NestedCustomTextField = memo(
         size="small"
         label={label}
         name={valueName}
-        onChange={handleChange ? handleChange : regexCheck}
+        onChange={regexCheck}
         onBlur={handleBlur}
         value={values}
         type={type}
@@ -56,6 +56,7 @@ export const NestedCustomTextField = memo(
             marginLeft: 0
           }
         }}
+        inputProps={{ maxLength: 50 }}
         // placeholder={Boolean(getIn(touched, valueName) && getIn(errors, valueName))}
         {...props}
       />
@@ -98,7 +99,7 @@ export const CustomTextField = memo((props) => {
         size="small"
         label={props.label}
         name={props.name}
-        onChange={regexCheck}
+        onChange={props.handleChange ? props.handleChange : regexCheck}
         onBlur={props.handleBlur}
         value={props.values[props.name]}
         type={props.type}
@@ -113,6 +114,7 @@ export const CustomTextField = memo((props) => {
           }
         }}
         endAdornment={props.endAdornment && props.endAdornment}
+        inputProps={{ maxLength: 50 }}
         {...props}
       />
     </Box>
