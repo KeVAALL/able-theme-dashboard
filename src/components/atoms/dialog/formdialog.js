@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, memo } from 'react';
 import {
   Dialog,
   Box,
@@ -26,7 +26,7 @@ import CustomTextField from 'utils/textfield';
 import { formAllSchemeValues, validationSchema } from 'constant/interestRateSchemeValidation';
 import { SaveInterestRate, EditInterestRate } from 'hooks/interestRate/interestRate';
 
-export function DialogForm({
+const DialogForm = ({
   openDialog,
   handleOpenDialog,
   schemeEditFormValues,
@@ -37,7 +37,7 @@ export function DialogForm({
   isEditingScheme,
   setActiveClose,
   setSchemeData
-}) {
+}) => {
   // Active or not Button
   const [activeButton, setActiveButton] = useState(false);
   const [liveButton, setLiveButton] = useState(false);
@@ -285,7 +285,8 @@ export function DialogForm({
       </Box>
     </Dialog>
   );
-}
+};
+export default memo(DialogForm);
 
 // setSchemeFormValues({
 //   scheme_master_id: 7,

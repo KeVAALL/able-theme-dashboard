@@ -1,19 +1,18 @@
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect, memo } from 'react';
 import { useTheme } from '@mui/material/styles';
 import { Divider, Box, Card, Grid, CardContent, Button, Stack, CardHeader, FormControlLabel, Switch } from '@mui/material';
 import AnimateButton from 'helpers/@extended/AnimateButton';
-import { SearchNormal1 } from 'iconsax-react';
 import PropTypes from 'prop-types';
 // third-party
 import { Formik } from 'formik';
-import * as yup from 'yup';
 import { useQuery } from 'react-query';
+import { SearchNormal1 } from 'iconsax-react';
 import Loader from 'components/atoms/loader/Loader';
-import CustomTextField, { CustomAutoComplete, FormikAutoComplete } from 'utils/textfield';
 // assets
 import { formAllValues, validationSchema, tableColumns, VisibleColumn } from 'constant/interestRateValidation';
 import { DeleteOneInterestRate, GetPayoutMethod, GetSchemeSearch } from 'hooks/interestRate/interestRate';
-import { DialogForm } from 'components/atoms/dialog/formdialog';
+import CustomTextField, { CustomAutoComplete } from 'utils/textfield';
+import DialogForm from 'components/atoms/dialog/formdialog';
 import InterestRateTable from 'components/molecules/fixedDeposit/interestRateTable';
 
 const headerSX = {
@@ -21,7 +20,7 @@ const headerSX = {
   '& .MuiCardHeader-action': { m: '0px auto', alignSelf: 'center' }
 };
 
-export default function InterestRate({ formValues, changeTableVisibility, isNotEditingInterestRate, isEditingInterestRate }) {
+const InterestRate = ({ formValues, changeTableVisibility, isNotEditingInterestRate, isEditingInterestRate }) => {
   // Main Data state
   const [schemeData, setSchemeData] = useState([]);
   // Edit Logic State
@@ -270,7 +269,7 @@ export default function InterestRate({ formValues, changeTableVisibility, isNotE
       </Formik>
     </Stack>
   );
-}
+};
 
 InterestRate.propTypes = {
   formValues: PropTypes.array,
@@ -278,3 +277,5 @@ InterestRate.propTypes = {
   changeTableVisibility: PropTypes.any,
   isNotEditingInterestRate: PropTypes.any
 };
+
+export default memo(InterestRate);

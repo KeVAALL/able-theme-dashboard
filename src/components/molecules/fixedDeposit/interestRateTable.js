@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { useState, memo } from 'react';
 
 // material-ui
 import { Box, Stack, Table, TableBody, TableCell, TableHead, TableRow, Button, Grid } from '@mui/material';
@@ -331,7 +331,7 @@ InterestRateTable.propTypes = {
   VisibleColumn: PropTypes.array
 };
 
-export default InterestRateTable;
+export default memo(InterestRateTable);
 
 // const filterTypes = useMemo(() => renderFilterTypes, []);
 // const defaultColumn = useMemo(() => ({ Filter: DefaultColumnFilter }), []);

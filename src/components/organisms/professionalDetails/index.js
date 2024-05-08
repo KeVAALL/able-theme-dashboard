@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React from 'react';
+import React, { memo } from 'react';
 import { Grid } from '@mui/material';
 
 // project-imports
@@ -53,4 +53,4 @@ const ProfessionalDetails = (props) => {
   );
 };
 
-export default ProfessionalDetails;
+export default memo(ProfessionalDetails);

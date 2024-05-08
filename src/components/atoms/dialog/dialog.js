@@ -1,11 +1,11 @@
 /* eslint-disable react/prop-types */
-import React, { useEffect } from 'react';
+import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 
 import { Dialog, Box, DialogTitle, DialogContent, DialogContentText, DialogActions, Button } from '@mui/material';
 import { PopupTransition } from 'helpers/@extended/Transitions';
 
-function DialogBox({ openDialog, handleOpenDialog, dataRefetch, item, deleteOneItem, setSchemeData }) {
+const DialogBox = ({ openDialog, handleOpenDialog, dataRefetch, item, deleteOneItem, setSchemeData }) => {
   console.log('open');
   return (
     <Dialog
@@ -46,10 +46,10 @@ function DialogBox({ openDialog, handleOpenDialog, dataRefetch, item, deleteOneI
       </Box>
     </Dialog>
   );
-}
+};
 
 DialogBox.propTypes = {
   setSchemeData: PropTypes.any
 };
 
-export default DialogBox;
+export default memo(DialogBox);

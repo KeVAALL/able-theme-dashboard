@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React from 'react';
+import React, { memo } from 'react';
 import { Checkbox, Grid, Typography, Box } from '@mui/material';
 import { NestedCustomTextField } from 'utils/textfield';
 
@@ -156,4 +156,4 @@ const AddressDetails = (props) => {
   );
 };
 
-export default AddressDetails;
+export default memo(AddressDetails);

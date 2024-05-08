@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import PropTypes from 'prop-types';
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, memo } from 'react';
 
 // material-ui
 import { Box, Stack, Table, TableBody, TableCell, TableHead, TableRow, Button, Grid } from '@mui/material';
@@ -24,7 +24,7 @@ import './multiTable.css';
 
 // ==============================|| REACT TABLE ||============================== //
 
-function ReactTable({
+const ReactTable = ({
   columns,
   data,
   formValues,
@@ -43,7 +43,7 @@ function ReactTable({
   isEditingInterestRate,
   VisibleColumn,
   doNotShowHeader
-}) {
+}) => {
   // const filterTypes = useMemo(() => renderFilterTypes, []);
   // const defaultColumn = useMemo(() => ({ Filter: DefaultColumnFilter }), []);
   // const initialState = useMemo(() => ({ filters: [{ id: 'status', value: '' }] }), []);
@@ -341,7 +341,7 @@ function ReactTable({
       </Box>
     </>
   );
-}
+};
 
 ReactTable.propTypes = {
   columns: PropTypes.array,
@@ -420,36 +420,9 @@ MultiTable.propTypes = {
   doNotShowHeader: PropTypes.any
 };
 
-export default MultiTable;
+export default memo(MultiTable);
 
-// {
 /* <Grid item md={3} sm={3} xs={6} sx={{ height: '60px' }}>
-                        <CustomTextField
-                          label={formValueFields[0].label}
-                          name={formValueFields[0].fieldName}
-                          placeholder={formValueFields[0].placeholder}
-                          values={values}
-                          type={formValueFields[0].type}
-                          onChange={(e) => {
-                            const strings = /^[a-zA-Z][a-zA-Z\s]*$/;
-                            const specials = /^[a-zA-Z0-9.]*$/;
-                            const numbers = /^\d+$/;
-                            e.preventDefault();
-                            const { value } = e.target;
-                            const regex =
-                              formValueFields[0].regType === 'string'
-                                ? strings
-                                : formValueFields[0].regType === 'noSpecial'
-                                ? specials
-                                : numbers;
-                            if (!value || regex.test(value.toString())) {
-                              setFieldValue(formValueFields[0].fieldName, value);
-                            }
-                          }}
-                          onBlur={handleBlur}
-                          touched={touched}
-                          errors={errors}
-                          inputProps={{ maxLength: 25 }}
-                        />
-                      </Grid> */
-// }
+      <CustomTextField />
+   </Grid> 
+*/

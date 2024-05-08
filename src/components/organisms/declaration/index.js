@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React from 'react';
+import React, { memo } from 'react';
 import { Grid, Typography, Chip } from '@mui/material';
 
 const Declaration = ({ selectedDeclaration, handleDeclarationClick }) => {
@@ -86,7 +86,7 @@ const Declaration = ({ selectedDeclaration, handleDeclarationClick }) => {
   );
 };
 
-export default Declaration;
+export default memo(Declaration);
 
 // const [selectedDeclaration, setSelectedDeclaration] = useState({
 //   isPoliticallyExposed: true,

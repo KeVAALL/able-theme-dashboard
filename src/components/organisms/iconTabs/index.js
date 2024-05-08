@@ -54,7 +54,6 @@ export default function IconTabs(props) {
   };
 
   useEffect(() => {
-    console.log(props.errors);
     props.handleTabError(props.errors);
   }, [props.errors]);
 
@@ -83,7 +82,6 @@ export default function IconTabs(props) {
             iconPosition="start"
             {...a11yProps(1)}
           />
-          {/* </CustomTooltip> */}
           <Tab className="tab_3" label="Professional Details" icon={<Briefcase />} iconPosition="start" {...a11yProps(2)} />
           <Tab className="tab_4" label="Add Nomination" icon={<UserOctagon />} iconPosition="start" {...a11yProps(3)} />
           <Tab className="tab_5" label="Declaration" icon={<ProfileTick />} iconPosition="start" {...a11yProps(3)} />

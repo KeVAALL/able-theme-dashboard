@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React from 'react';
+import React, { memo } from 'react';
 import { Grid } from '@mui/material';
 
 // project-imports
@@ -9,7 +9,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { residency, marital_status } from 'constant/investorValidation';
 
-const CustomChip = (props) => {
+const PersonalInfo = (props) => {
   return (
     <>
       <Grid container spacing={2} id="grid_box" sx={{ marginBottom: '20px' }}>
@@ -56,7 +56,6 @@ const CustomChip = (props) => {
               value={props.values?.investor.birth_date && new Date(props.values.investor.birth_date)}
               onChange={(newValue) => {
                 console.log(newValue);
-                // props.setFieldValue('investor.birth_date', dateFormatter(newValue));
                 props.setFieldValue('investor.birth_date', newValue);
               }}
               renderInput={(params) => <CustomTextField {...params} />}
@@ -68,7 +67,7 @@ const CustomChip = (props) => {
   );
 };
 
-export default CustomChip;
+export default memo(PersonalInfo);
 
 // const handleClick = (value) => {
 //   switch (value) {
