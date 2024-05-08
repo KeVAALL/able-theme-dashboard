@@ -47,7 +47,8 @@ const StatusCell = ({ value }) => {
 const tableColumns = [
   {
     Header: 'Date',
-    accessor: 'created_on'
+    accessor: 'created_on',
+    width: 100
   },
   {
     Header: 'Investor Name',

@@ -165,7 +165,6 @@ export const FormikAutoComplete = memo((props) => {
   const setFieldValue = props.setFieldValue;
 
   const handleOptionChange = (e, optionName, formName, setFieldValue, idName) => {
-    console.log(e.target.outerText);
     if (e.target.outerText === undefined) {
       setFieldValue(formName, 0);
     } else {
@@ -218,7 +217,7 @@ export const FormikAutoComplete = memo((props) => {
             }
           }))
       }
-      onInputChange={(e) => handleOptionChange(e, props.optionName, props.formName, setFieldValue, props.idName)}
+      onChange={(e) => handleOptionChange(e, props.optionName, props.formName, setFieldValue, props.idName)}
       getOptionLabel={(option) => option[props.optionName]} // Assuming 'product_type' is the label you want to display
       renderInput={(params) => (
         <TextField

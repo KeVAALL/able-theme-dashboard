@@ -252,7 +252,11 @@ const ReactTable = ({
             {headerGroups?.map((headerGroup) => (
               <TableRow key={headerGroup} {...headerGroup.getHeaderGroupProps()}>
                 {headerGroup.headers?.map((column) => (
-                  <TableCell key={column} cell={column} {...column.getHeaderProps([{ className: column.className }])}>
+                  <TableCell
+                    key={column}
+                    cell={column}
+                    {...column.getHeaderProps([{ className: column.className, style: { width: column.width } }])}
+                  >
                     <HeaderSort column={column} sort />
                   </TableCell>
                 ))}
@@ -270,14 +274,17 @@ const ReactTable = ({
                   <TableRow key={row} {...row.getRowProps()}>
                     {row.cells?.map((cell) => {
                       return (
-                        <TableCell key={cell} {...cell.getCellProps([{ className: cell.column.className }])}>
+                        <TableCell
+                          key={cell}
+                          {...cell.getCellProps([{ className: cell.column.className, style: { width: cell.column.width } }])}
+                        >
                           {/* {cell.render('Cell')} */}
                           {cell.column.customCell ? <cell.column.customCell value={cell.value} /> : cell.render('Cell')}
                         </TableCell>
                       );
                     })}
                     {headers?.length !== 0 && (
-                      <TableCell width="12%" sx={{ textAlign: { md: 'right', xs: 'center' } }}>
+                      <TableCell sx={{ textAlign: { md: 'right', xs: 'center' } }}>
                         <Grid container spacing={1} sx={{ display: 'flex', justifyContent: { md: 'flex-end', xs: 'center' } }}>
                           <Grid item md={4} xs={12}>
                             <Edit2
