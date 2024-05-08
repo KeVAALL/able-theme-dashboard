@@ -90,7 +90,6 @@ function ReactTable({
   const sortingRow = rows.slice(0, 10);
   const theme = useTheme();
   const mdUp = theme.breakpoints.up('md');
-  console.log(mdUp);
 
   // For Delete Item
   const [item, setItem] = useState();
@@ -225,7 +224,6 @@ function ReactTable({
                     lg: '20px !important',
                     sm: '32px !important',
                     xs: '8px !important'
-                    // sm: '0px !important'
                   }
                 }}
               >
@@ -292,6 +290,7 @@ function ReactTable({
                                     changeTableVisibility();
                                   }, 500);
                                 } else {
+                                  console.log(row.original);
                                   setEditing(row.original);
                                   changeTableVisibility();
                                 }

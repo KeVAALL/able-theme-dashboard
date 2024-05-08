@@ -145,7 +145,7 @@ function ProductType() {
                         placeholder={'Please enter Product Type'}
                         values={values}
                         type="text"
-                        regType="noSpecial"
+                        regType="string"
                         setFieldValue={setFieldValue}
                         onBlur={handleBlur}
                         touched={touched}

@@ -94,7 +94,7 @@ export async function EditInvestor(
     });
     clearFormValues();
     setActiveClose();
-    enqueueSnackbar('Product Updated', {
+    enqueueSnackbar('Investor Updated', {
       variant: 'success',
       autoHideDuration: 2000,
       anchorOrigin: {
@@ -144,7 +144,7 @@ export async function DeleteOneInvestor(values) {
       user_id: 2,
       method_name: 'delete'
     });
-    enqueueSnackbar('Product Deleted', {
+    enqueueSnackbar('Investor Deleted', {
       variant: 'error',
       autoHideDuration: 2000,
       anchorOrigin: {
