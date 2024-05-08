@@ -194,26 +194,22 @@ const validationSchema = yup.object().shape({
     address_line_1: yup.string().when('$is_permanent_address_correspondent', {
       is: 0,
       then: () => yup.string().required('Address Line 1 is required'),
-      otherwise: () => yup.string()
-      // .optional()
+      otherwise: () => yup.string().optional()
     }),
     address_line_2: yup.string().when('$is_permanent_address_correspondent', {
       is: 0,
       then: () => yup.string().required('Address Line 2 is required'),
-      otherwise: () => yup.string()
-      // .optional()
+      otherwise: () => yup.string().optional()
     }),
     pincode: yup.string().when('$is_permanent_address_correspondent', {
       is: 0,
       then: () => yup.string().required('Pin Code is required'),
-      otherwise: () => yup.string()
-      // .optional()
+      otherwise: () => yup.string().optional()
     }),
     city: yup.string().when('$is_permanent_address_correspondent', {
       is: 0,
       then: () => yup.string().required('City is required'),
-      otherwise: () => yup.string()
-      // .optional()
+      otherwise: () => yup.string().optional()
     })
   }),
   professional_details: yup.object().shape({
@@ -252,16 +248,16 @@ const VisibleColumn = [];
 const StatusCell = ({ value }) => {
   switch (value) {
     case 0:
-      return <Chip color="error" label="Inactive" size="medium" variant="light" />;
+      return <Chip color="error" label="Inactive" size="medium" variant="outlined" />;
     case 1:
-      return <Chip color="success" label="Active" size="medium" variant="light" />;
+      return <Chip color="success" label="Active" size="medium" variant="outlined" />;
     default:
       return <Chip color="info" label="None" size="medium" variant="light" />;
   }
 };
 const tableColumns = [
   {
-    Header: 'investor Name',
+    Header: 'Investor Name',
     accessor: 'investor_name'
   },
   {

@@ -37,9 +37,9 @@ const VisibleColumn = [];
 const StatusCell = ({ value }) => {
   switch (value) {
     case 0:
-      return <Chip color="error" label="Inactive" size="medium" variant="light" />;
+      return <Chip color="error" label="Inactive" size="medium" variant="outlined" />;
     case 1:
-      return <Chip color="success" label="Active" size="medium" variant="light" />;
+      return <Chip color="info" label="Pending" size="medium" variant="outlined" />;
     default:
       return <Chip color="info" label="None" size="medium" variant="light" />;
   }
@@ -47,39 +47,39 @@ const StatusCell = ({ value }) => {
 const tableColumns = [
   {
     Header: 'Date',
-    accessor: 'date'
+    accessor: 'created_on'
   },
   {
     Header: 'Investor Name',
-    accessor: 'name'
+    accessor: 'investor_name'
   },
   {
-    Header: 'Code',
-    accessor: 'code'
+    Header: 'Investor Code',
+    accessor: 'investor_code'
   },
   {
     Header: 'IFA Code',
-    accessor: 'ifa'
+    accessor: 'ifa_code'
   },
   {
     Header: 'Amount',
-    accessor: 'amount'
+    accessor: 'investment_amount'
   },
   {
     Header: 'Duration',
-    accessor: 'duration'
+    accessor: 'tenure_selected'
   },
   {
     Header: 'Payout Method',
-    accessor: 'payout_method'
+    accessor: 'fd_payout_method'
   },
   {
     Header: 'Interest Rate',
-    accessor: 'interest_rate'
+    accessor: 'rate_of_interest'
   },
   {
     Header: 'Status',
-    accessor: 'is_active',
+    accessor: 'status',
     customCell: StatusCell
   }
 ];

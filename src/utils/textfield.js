@@ -1,8 +1,8 @@
 /* eslint-disable react/prop-types */
-import PropTypes from 'prop-types';
+import React, { memo } from 'react';
 import { Autocomplete, Checkbox, FormControlLabel, TextField, Box } from '@mui/material';
 import { getIn } from 'formik';
-import React, { memo } from 'react';
+import PropTypes from 'prop-types';
 import './custom.css';
 
 export const NestedCustomTextField = memo(
@@ -164,16 +164,21 @@ export const CustomAutoComplete = memo((props) => {
 export const FormikAutoComplete = memo((props) => {
   const setFieldValue = props.setFieldValue;
 
-  const handleOptionChange = (event, optionName, formName, setFieldValue, idName) => {
-    props.options.forEach(async (el) => {
-      if (el[optionName] === event.target.outerText) {
-        if (idName) {
-          await setFieldValue(formName, el[idName]);
-        } else {
-          await setFieldValue(formName, el.id);
+  const handleOptionChange = (e, optionName, formName, setFieldValue, idName) => {
+    console.log(e.target.outerText);
+    if (e.target.outerText === undefined) {
+      setFieldValue(formName, 0);
+    } else {
+      props.options.forEach(async (el) => {
+        if (el[optionName] === e.target.outerText) {
+          if (idName) {
+            await setFieldValue(formName, el[idName]);
+          } else {
+            await setFieldValue(formName, el.id);
+          }
         }
-      }
-    });
+      });
+    }
   };
 
   return (
@@ -197,6 +202,7 @@ export const FormikAutoComplete = memo((props) => {
       }}
       id="basic-autocomplete-label"
       options={props.options}
+      // disableClearable
       // defaultValue={(props.defaultValue && props.options.find((el) => el[props.optionName] === props.defaultValue)) || props.options[0]}
       defaultValue={
         (typeof props.defaultValue === 'string' &&
@@ -212,9 +218,15 @@ export const FormikAutoComplete = memo((props) => {
             }
           }))
       }
-      onChange={(e) => handleOptionChange(e, props.optionName, props.formName, setFieldValue, props.idName)}
+      onInputChange={(e) => handleOptionChange(e, props.optionName, props.formName, setFieldValue, props.idName)}
       getOptionLabel={(option) => option[props.optionName]} // Assuming 'product_type' is the label you want to display
-      renderInput={(params) => <TextField {...params} label={props.label} />}
+      renderInput={(params) => (
+        <TextField
+          // error={Boolean(props.errors[props.formName])}
+          {...params}
+          label={props.label}
+        />
+      )}
     />
   );
 });

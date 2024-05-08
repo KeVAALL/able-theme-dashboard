@@ -277,8 +277,8 @@ const ReactTable = ({
                       );
                     })}
                     {headers?.length !== 0 && (
-                      <TableCell sx={{ textAlign: { md: 'right', xs: 'center' } }}>
-                        <Grid container spacing={0.5} sx={{ display: 'flex', justifyContent: { md: 'flex-end', xs: 'center' } }}>
+                      <TableCell width="12%" sx={{ textAlign: { md: 'right', xs: 'center' } }}>
+                        <Grid container spacing={1} sx={{ display: 'flex', justifyContent: { md: 'flex-end', xs: 'center' } }}>
                           <Grid item md={4} xs={12}>
                             <Edit2
                               size={22}

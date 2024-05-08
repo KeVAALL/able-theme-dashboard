@@ -17,17 +17,14 @@ export async function GetProductData() {
     });
     return response.data.data;
   } catch (err) {
-    dispatch(
-      openSnackbar({
-        open: true,
-        anchorOrigin: { vertical: 'top', horizontal: 'right' },
-        message: err.message,
-        variant: 'alert',
-        alert: {
-          color: 'error'
-        }
-      })
-    );
+    enqueueSnackbar(err.message, {
+      variant: 'error',
+      autoHideDuration: 2000,
+      anchorOrigin: {
+        vertical: 'top',
+        horizontal: 'right'
+      }
+    });
     return [];
   }
 }

@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 // material-ui
 import { Divider, Box, Card, Grid, CardContent, Button } from '@mui/material';
@@ -11,6 +11,7 @@ import MainCard from '../../organisms/mainCard/MainCard';
 import MultiTable from '../multiTable/multiTable';
 
 // third-party
+import * as yup from 'yup';
 import { Formik } from 'formik';
 import Loader from 'components/atoms/loader/Loader';
 import { LocalizationProvider } from '@mui/x-date-pickers-pro';
@@ -42,6 +43,7 @@ import {
   GetIFASearch
 } from 'hooks/investor/investor';
 import '../../../utils/custom.css';
+import { GetInvestmentData, GetStatusDropdown } from 'hooks/transaction/investment';
 
 function Investment() {
   // Main data states
@@ -108,26 +110,25 @@ function Investment() {
   // Custom fields/ Table Columns
   const columns = useMemo(() => tableColumns, []);
 
-  // Query for fetching investor data
-  //   const {
-  //     isPending,
-  //     error,
-  //     refetch: InvestmentTableDataRefetch
-  //   } = useQuery({
-  //     queryKey: ['investmentTableData'],
-  //     refetchOnWindowFocus: false,
-  //     keepPreviousData: true,
-  //     queryFn: GetInvestorData,
-  //     onSuccess: (data) => {
-  //       setInvestmentData(data);
-  //       // setLoading(false);
-  //     }
-  //   });
+  // // Query for fetching investment data
+  // const {
+  //   isPending,
+  //   error,
+  //   refetch: InvestmentTableDataRefetch
+  // } = useQuery({
+  //   queryKey: ['investmentTableData'],
+  //   refetchOnWindowFocus: false,
+  //   keepPreviousData: true,
+  //   queryFn: GetInvestmentData,
+  //   onSuccess: (data) => {
+  //     setInvestmentData(data);
+  //   }
+  // });
 
   // Query for fetching product data
   const {
     isPending,
-    error,
+    // error,
     refetch: ProductTableDataRefetch
   } = useQuery({
     queryKey: ['productTableData'], // Unique key for the query
@@ -140,7 +141,19 @@ function Investment() {
     }
   });
 
-  //   if (isPending) return <Loader />;
+  // Query for fetching status dropdown
+  const { refetch: StatusDropdownRefetch } = useQuery({
+    queryKey: ['statusDropdownData'], // Unique key for the query
+    refetchOnWindowFocus: false, // Disable refetch on window focus
+    keepPreviousData: true, // Keep previous data when refetching
+    queryFn: GetStatusDropdown, // Function to fetch product data
+    onSuccess: (data) => {
+      // Callback function on successful query
+      setStatusDropdown(data); // Update product data with fetched data
+    }
+  });
+
+  if (isPending) return <Loader />;
 
   return (
     <>
@@ -192,7 +205,7 @@ function Investment() {
                   formValues={formValues}
                   setActiveClose={setActiveClose}
                   setIsActive={handleIsInvestmentActive}
-                  isActive={isInvestorActive}
+                  isActive={isInvestmentActive}
                   errors={errors}
                   handleTabError={handleTabError}
                 />
@@ -221,12 +234,22 @@ function Investment() {
         >
           <Formik
             initialValues={{
-              fd_name: '',
-              fd_id: 1,
-              status_id: 1
+              fd_id: 0,
+              status_id: 0
             }}
-            // validationSchema={formValueFields}
-            onSubmit={async (values, { resetForm }) => {}}
+            validationSchema={yup.object({
+              fd_id: yup.number(),
+              status_id: yup.number()
+            })}
+            onSubmit={async (values, { resetForm }) => {
+              console.log({ ...values, from_date: dateValue[0], end_date: dateValue[1] });
+
+              const formValues = { ...values, from_date: dateValue[0], end_date: dateValue[1] };
+
+              const investmentData = await GetInvestmentData(formValues);
+
+              setInvestmentData(investmentData);
+            }}
           >
             {({ values, errors, touched, setFieldValue, handleChange, handleBlur, handleSubmit, resetForm }) => (
               <Box
@@ -247,7 +270,7 @@ function Investment() {
                           onChange={(newValue) => {
                             setDateValue(newValue);
                           }}
-                          slotProps={{ fieldSeparator: { children: 'to' } }}
+                          // slotProps={{ fieldSeparator: { children: 'TO' } }}
                         />
                       </LocalizationProvider>
                     </Grid>
@@ -257,10 +280,13 @@ function Investment() {
                         options={fdDropdown}
                         defaultValue={values.fd_id}
                         setFieldValue={setFieldValue}
+                        // errors={errors}
                         formName="fd_id"
+                        idName="fd_id"
                         optionName="fd_name"
                         label="Select FD"
                       />
+                      {/* {errors && <>`${JSON.stringify(errors)}`</>} */}
                     </Grid>
 
                     <Grid item xs={3} style={{ paddingTop: 0 }}>
@@ -268,8 +294,10 @@ function Investment() {
                         options={statusDropdown}
                         defaultValue={values.status_id}
                         setFieldValue={setFieldValue}
+                        // errors={errors}
                         formName="status_id"
-                        optionName="status_name"
+                        idName="status_id"
+                        optionName="value"
                         label="Select Status"
                       />
                     </Grid>

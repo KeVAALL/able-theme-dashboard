@@ -15,7 +15,6 @@ export async function GetInvestorData() {
     const response = await axios.post('investor/getinvestor', {
       method_name: 'getall'
     });
-    console.log(response);
     return response.data.data;
   } catch (err) {
     enqueueSnackbar(err.message, {

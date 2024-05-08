@@ -36,3 +36,6 @@
 .calendar_main input {
   padding: 8.2px 0px 8.2px 14px !important;
 }
+.calendar_main .MuiInputLabel-root {
+  margin-top: -3px !important;
+}
