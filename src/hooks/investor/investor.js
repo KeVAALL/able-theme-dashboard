@@ -170,7 +170,7 @@ export async function GetIFASearch(values, selectedIFA) {
   try {
     const response = await axios.post('investor/getinvestor', {
       method_name: 'getifafilter',
-      ifa_id: selectedIFA,
+      // ifa_id: selectedIFA,
       ...values
     });
     // setEditing(response.data.data);

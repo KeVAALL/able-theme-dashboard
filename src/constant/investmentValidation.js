@@ -1,11 +1,20 @@
 /* eslint-disable react/prop-types */
 import { Chip } from '@mui/material';
+import { minWidth } from '@mui/system';
 import * as yup from 'yup';
 
 // Autocomplete data
 
 // Add form values
-const formAllValues = {};
+const formAllValues = {
+  investor_id: 0,
+  fd_id: 0,
+  ifa_id: 0,
+  payout_method_id: 0,
+  years: 0,
+  months: 0,
+  days: 0
+};
 const validationSchema = yup.object().shape({});
 // Search Item form fields
 const filterFormValues = {
@@ -48,7 +57,7 @@ const tableColumns = [
   {
     Header: 'Date',
     accessor: 'created_on',
-    width: 100
+    minWidth: 150
   },
   {
     Header: 'Investor Name',

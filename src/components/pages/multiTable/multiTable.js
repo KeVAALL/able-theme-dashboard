@@ -255,12 +255,18 @@ const ReactTable = ({
                   <TableCell
                     key={column}
                     cell={column}
-                    {...column.getHeaderProps([{ className: column.className, style: { width: column.width } }])}
+                    // {...column.getHeaderProps([{ className: column.className }], { style: { minWidth: column.minWidth } })}
+                    {...column.getHeaderProps({ style: { minWidth: column.minWidth } })}
                   >
                     <HeaderSort column={column} sort />
                   </TableCell>
                 ))}
-                <TableCell width={150} sx={{ textAlign: 'right' }}>
+                <TableCell
+                  sx={{
+                    textAlign: 'right'
+                    // minWidth: 120 // Send minWidth props from parent?
+                  }}
+                >
                   Actions
                 </TableCell>
               </TableRow>
@@ -276,7 +282,8 @@ const ReactTable = ({
                       return (
                         <TableCell
                           key={cell}
-                          {...cell.getCellProps([{ className: cell.column.className, style: { width: cell.column.width } }])}
+                          // {...cell.getCellProps({ style: cell.column.minWidth }, [{ className: { minWidth: cell.column.minWidth } }])}
+                          {...cell.getCellProps({ style: { minWidth: cell.column.minWidth } })}
                         >
                           {/* {cell.render('Cell')} */}
                           {cell.column.customCell ? <cell.column.customCell value={cell.value} /> : cell.render('Cell')}
@@ -312,8 +319,10 @@ const ReactTable = ({
                                 size={22}
                                 style={{ cursor: 'pointer' }}
                                 onClick={async () => {
+                                  setTimeout(() => {
+                                    isEditingInterestRate();
+                                  }, 200);
                                   setEditing(row.original);
-                                  isEditingInterestRate();
                                 }}
                               />
                             </Grid>

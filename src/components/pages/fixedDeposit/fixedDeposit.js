@@ -135,7 +135,6 @@ function FixDeposit() {
     queryFn: GetActiveIssuerData, // Function to fetch active issuer data
     onSuccess: (data) => {
       // Callback function on successful query
-      console.log(data);
       setActiveIssuers(data); // Update active issuers with fetched data
     }
   });
@@ -151,7 +150,6 @@ function FixDeposit() {
     keepPreviousData: true, // Keep previous data when refetching
     queryFn: GetProductData, // Function to fetch product data
     onSuccess: (data) => {
-      // Callback function on successful query
       setProductData(data); // Update product data with fetched data
     }
   });
@@ -162,7 +160,6 @@ function FixDeposit() {
     keepPreviousData: true, // Keep previous data when refetching
     queryFn: GetFDTags, // Function to fetch product data
     onSuccess: (data) => {
-      // Callback function on successful query
       setFdTag(data); // Update product data with fetched data
     }
   });

@@ -95,7 +95,6 @@ function Investment() {
   const [fdDropdown, setFdDropdown] = useState([]);
   const [statusDropdown, setStatusDropdown] = useState([]);
   const [dateValue, setDateValue] = useState([null, null]);
-  console.log(dateValue);
 
   // Search one item state
   const setSearchData = (investor) => {
@@ -110,21 +109,31 @@ function Investment() {
   // Custom fields/ Table Columns
   const columns = useMemo(() => tableColumns, []);
 
-  // // Query for fetching investment data
+  // Query for fetching payout data
   // const {
-  //   isPending,
-  //   error,
-  //   refetch: InvestmentTableDataRefetch
+  //   // isPending,
+  //   // error,
+  //   refetch: refetchPayoutData
   // } = useQuery({
-  //   queryKey: ['investmentTableData'],
+  //   queryKey: ['payoutData', formValues.fd_id],
   //   refetchOnWindowFocus: false,
   //   keepPreviousData: true,
-  //   queryFn: GetInvestmentData,
+  //   queryFn: () => GetPayoutMethod(formValues.fd_id),
   //   onSuccess: (data) => {
-  //     setInvestmentData(data);
+  //     setPayoutData(data);
   //   }
   // });
 
+  // Duration Dropdown
+  const days = Array(32)
+    .fill()
+    .map((_, index) => ({ id: index, value: index }));
+  const month = Array(13)
+    .fill()
+    .map((_, index) => ({ id: index, value: index }));
+  const year = Array(6)
+    .fill()
+    .map((_, index) => ({ id: index, value: index }));
   // Query for fetching product data
   const {
     isPending,
@@ -140,7 +149,20 @@ function Investment() {
       setFdDropdown(data); // Update product data with fetched data
     }
   });
-
+  // Query for fetching IFA data
+  const {
+    isPending: ifaPending,
+    error: ifaError,
+    refetch: IfaTableDataRefetch
+  } = useQuery({
+    queryKey: ['ifaTableData'],
+    refetchOnWindowFocus: false,
+    keepPreviousData: true,
+    queryFn: GetIfa,
+    onSuccess: (data) => {
+      setIfaData(data.data);
+    }
+  });
   // Query for fetching status dropdown
   const { refetch: StatusDropdownRefetch } = useQuery({
     queryKey: ['statusDropdownData'], // Unique key for the query
@@ -206,15 +228,84 @@ function Investment() {
                   setActiveClose={setActiveClose}
                   setIsActive={handleIsInvestmentActive}
                   isActive={isInvestmentActive}
-                  errors={errors}
-                  handleTabError={handleTabError}
                 />
 
                 <Divider />
 
                 <CardContent>
                   <Grid container spacing={3}>
-                    {/* FORM */}
+                    <Grid item xs={4}>
+                      <FormikAutoComplete
+                        options={ifaData}
+                        defaultValue={values.ifa_id}
+                        setFieldValue={setFieldValue}
+                        formName="ifa_id"
+                        optionName="item_value"
+                        label="Select Investor"
+                      />
+                    </Grid>
+                    <Grid item xs={4}>
+                      <FormikAutoComplete
+                        options={fdDropdown}
+                        defaultValue={values.fd_id}
+                        setFieldValue={setFieldValue}
+                        // errors={errors}
+                        formName="fd_id"
+                        idName="fd_id"
+                        optionName="fd_name"
+                        label="Select FD"
+                      />
+                    </Grid>
+                    <Grid item xs={4}>
+                      <FormikAutoComplete
+                        options={ifaData}
+                        defaultValue={values.ifa_id}
+                        setFieldValue={setFieldValue}
+                        formName="ifa_id"
+                        optionName="item_value"
+                        label="Select IFA"
+                      />
+                    </Grid>
+                    <Grid item xs={3}>
+                      <FormikAutoComplete
+                        options={ifaData}
+                        defaultValue={values.ifa_id}
+                        setFieldValue={setFieldValue}
+                        formName="ifa_id"
+                        optionName="item_value"
+                        label="Select Payout Method"
+                      />
+                    </Grid>
+                    <Grid item xs={3}>
+                      <FormikAutoComplete
+                        options={year}
+                        defaultValue={values.years}
+                        setFieldValue={setFieldValue}
+                        formName="years"
+                        optionName="value"
+                        label="Select Years"
+                      />
+                    </Grid>
+                    <Grid item xs={3}>
+                      <FormikAutoComplete
+                        options={month}
+                        defaultValue={values.months}
+                        setFieldValue={setFieldValue}
+                        formName="months"
+                        optionName="value"
+                        label="Select Months"
+                      />
+                    </Grid>
+                    <Grid item xs={3}>
+                      <FormikAutoComplete
+                        options={days}
+                        defaultValue={values.days}
+                        setFieldValue={setFieldValue}
+                        formName="days"
+                        optionName="value"
+                        label="Select Years"
+                      />
+                    </Grid>
                   </Grid>
                 </CardContent>
               </Card>
@@ -242,8 +333,7 @@ function Investment() {
               status_id: yup.number()
             })}
             onSubmit={async (values, { resetForm }) => {
-              console.log({ ...values, from_date: dateValue[0], end_date: dateValue[1] });
-
+              console.log(values);
               const formValues = { ...values, from_date: dateValue[0], end_date: dateValue[1] };
 
               const investmentData = await GetInvestmentData(formValues);
@@ -263,7 +353,7 @@ function Investment() {
                 <CardContent sx={{ paddingLeft: '16px !important' }}>
                   <Grid container spacing={2}>
                     <Grid item xs={3} style={{ paddingLeft: 0, paddingTop: 0 }}>
-                      <LocalizationProvider dateAdapter={AdapterDateFns} localeText={{ start: 'From', end: 'To' }}>
+                      <LocalizationProvider dateAdapter={AdapterDateFns} localeText={{ start: 'Date From', end: 'To' }}>
                         <DesktopDateRangePicker
                           className="calendar_main"
                           value={dateValue}

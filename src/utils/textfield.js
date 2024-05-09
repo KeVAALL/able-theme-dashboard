@@ -166,14 +166,17 @@ export const FormikAutoComplete = memo((props) => {
 
   const handleOptionChange = (e, optionName, formName, setFieldValue, idName) => {
     if (e.target.outerText === undefined) {
+      console.log('undefined');
       setFieldValue(formName, 0);
     } else {
       props.options.forEach(async (el) => {
         if (el[optionName] === e.target.outerText) {
           if (idName) {
-            await setFieldValue(formName, el[idName]);
+            console.log(el[idName]);
+            console.log(formName);
+            setFieldValue(formName, el[idName]);
           } else {
-            await setFieldValue(formName, el.id);
+            setFieldValue(formName, el.id);
           }
         }
       });
@@ -213,6 +216,7 @@ export const FormikAutoComplete = memo((props) => {
             if (props.idName) {
               return el[props.idName] === props.defaultValue;
             } else {
+              console.log('match');
               return el.id === props.defaultValue;
             }
           }))

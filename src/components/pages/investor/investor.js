@@ -254,7 +254,7 @@ function Investor() {
                 investor: {
                   ...values.investor,
                   is_active: toInteger(isInvestorActive),
-                  gender: genderValidate(selectedGender),
+                  gender_id: genderValidate(selectedGender),
                   is_foreign_tax_resident: selectedDeclaration.isResidentOutsideIndia ? 1 : 0,
                   is_rpep: selectedDeclaration.isRelativeToPoliticallyExposed ? 1 : 0,
                   is_pep: selectedDeclaration.isPoliticallyExposed ? 1 : 0
@@ -439,17 +439,19 @@ function Investor() {
           <Formik
             initialValues={{
               fd_name: '',
-              search: ''
+              search: '',
+              ifa_id: 2
             }}
             // validationSchema={formValueFields}
             onSubmit={async (values, { resetForm }) => {
-              const searchResult = await GetIFASearch(values, selectedIFA);
+              // const searchResult = await GetIFASearch(values, selectedIFA);
+              const searchResult = await GetIFASearch(values);
               if (searchResult) {
                 setSearchData(searchResult);
               }
             }}
           >
-            {({ values, errors, touched, handleChange, handleBlur, handleSubmit, resetForm }) => (
+            {({ values, errors, touched, setFieldValue, handleChange, handleBlur, handleSubmit, resetForm }) => (
               <Box
                 component="form"
                 onSubmit={(event) => {
@@ -479,12 +481,13 @@ function Investor() {
                     </Grid>
 
                     <Grid item xs={3} style={{ paddingTop: 0 }}>
-                      <CustomAutoComplete
+                      <FormikAutoComplete
                         options={ifaData}
-                        defaultValue={selectedIFA}
-                        setSelected={setSelectedIFA}
+                        defaultValue={values.ifa_id}
+                        setFieldValue={setFieldValue}
+                        formName="ifa_id"
                         optionName="item_value"
-                        label="IFA"
+                        label="Select IFA"
                       />
                     </Grid>
 
@@ -561,6 +564,15 @@ function Investor() {
 
 export default Investor;
 
+{
+  /* <CustomAutoComplete
+                        options={ifaData}
+                        defaultValue={selectedIFA}
+                        setSelected={setSelectedIFA}
+                        optionName="item_value"
+                        label="IFA"
+                      /> */
+}
 // if (errors) {
 //   handleTabError(errors);
 // }
