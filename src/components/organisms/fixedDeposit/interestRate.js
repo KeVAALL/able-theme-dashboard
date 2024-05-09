@@ -12,7 +12,7 @@ import Loader from 'components/atoms/loader/Loader';
 import { formAllValues, validationSchema, tableColumns, VisibleColumn } from 'constant/interestRateValidation';
 import { DeleteOneInterestRate, GetPayoutMethod, GetSchemeSearch } from 'hooks/interestRate/interestRate';
 import CustomTextField, { CustomAutoComplete } from 'utils/textfield';
-import DialogForm from 'components/atoms/dialog/formdialog';
+import DialogForm from 'components/atoms/dialog/InterestRateDialog';
 import InterestRateTable from 'components/molecules/fixedDeposit/interestRateTable';
 
 const headerSX = {
@@ -143,7 +143,6 @@ const InterestRate = ({ formValues, changeTableVisibility, isNotEditingInterestR
           console.log(payoutValidate(selectedPayoutMethod));
           const searchResult = await GetSchemeSearch(formValues.fd_id, selectedPayoutMethod);
           if (searchResult) {
-            console.log(searchResult);
             setSchemeData(searchResult);
           }
         }}

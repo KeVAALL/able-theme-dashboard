@@ -11,7 +11,7 @@ import {
   Card,
   Stack,
   Grid,
-  InputAdornment,
+  Divider,
   FormControlLabel,
   Switch,
   Typography
@@ -76,8 +76,8 @@ const DialogForm = ({
     >
       <Box>
         <DialogTitle sx={{ p: 2 }}>
-          <Stack sx={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-            <Typography>Add Tenure</Typography>
+          <Stack sx={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+            <DialogTitle sx={{ p: 0 }}>{isEditingScheme ? 'Edit' : 'Add'} Tenure</DialogTitle>
             <Stack flexDirection="row">
               <Box>
                 <FormControlLabel
@@ -107,6 +107,7 @@ const DialogForm = ({
             </Stack>
           </Stack>
         </DialogTitle>
+        <Divider />
         <Formik
           initialValues={schemeFormValues || formAllSchemeValues}
           validationSchema={validationSchema}
@@ -114,7 +115,6 @@ const DialogForm = ({
             console.log(isEditingScheme);
             console.log(values);
             if (isEditingScheme) {
-              console.log(activeButton);
               EditInterestRate(values, activeButton, liveButton, clearFormValues, handleOpenDialog, setSchemeData, setActiveClose);
             } else {
               SaveInterestRate(
@@ -131,15 +131,15 @@ const DialogForm = ({
           }}
         >
           {({ values, errors, touched, handleChange, handleBlur, handleSubmit, setFieldValue, resetForm }) => (
-            <DialogContent sx={{ p: 2, overflowY: 'unset' }}>
-              <Box
-                component="form"
-                onSubmit={(event) => {
-                  event.preventDefault();
-                  handleSubmit();
-                }}
-                sx={{ width: '100%' }}
-              >
+            <Box
+              component="form"
+              onSubmit={(event) => {
+                event.preventDefault();
+                handleSubmit();
+              }}
+              sx={{ width: '100%' }}
+            >
+              <DialogContent sx={{ p: 2, overflowY: 'unset' }}>
                 <Grid container spacing={3}>
                   <Grid item md={6} xs={12}>
                     <CustomTextField
@@ -256,30 +256,31 @@ const DialogForm = ({
                     />
                   </Grid>
                 </Grid>
-                <DialogActions>
-                  <Button
-                    color="secondary"
-                    onClick={() => {
-                      handleOpenDialog();
-                      setActiveClose();
-                      clearFormValues();
-                    }}
-                  >
-                    Cancel
-                  </Button>
-                  <Button
-                    variant="contained"
-                    color="success"
-                    type="submit"
-                    onClick={() => {
-                      // handleOpenDialog();
-                    }}
-                  >
-                    Save
-                  </Button>
-                </DialogActions>
-              </Box>
-            </DialogContent>
+              </DialogContent>
+              <Divider />
+              <DialogActions sx={{ p: 2 }}>
+                <Button
+                  color="error"
+                  onClick={() => {
+                    handleOpenDialog();
+                    setActiveClose();
+                    clearFormValues();
+                  }}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  variant="contained"
+                  color="success"
+                  type="submit"
+                  onClick={() => {
+                    // handleOpenDialog();
+                  }}
+                >
+                  Save
+                </Button>
+              </DialogActions>
+            </Box>
           )}
         </Formik>
       </Box>

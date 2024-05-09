@@ -10,26 +10,27 @@ const formAllValues = {
   investor_id: 0,
   fd_id: 0,
   ifa_id: 0,
-  payout_method_id: 0,
+  payout_method_id: 'C',
   years: 0,
   months: 0,
   days: 0
 };
 const validationSchema = yup.object().shape({});
+// Scheme Form values
+const schemeValues = {
+  fd_name: '',
+  logo_url: '',
+  rate_of_interest: '',
+  rate_of_interest_1lakh: '',
+  tenure: '',
+  maturity_id: 1,
+  investment_amount: 0
+};
+const schemeValidation = yup.object().shape({});
 // Search Item form fields
 const filterFormValues = {
   search: ''
 };
-// const filterFormValues = {
-//   investor_id: ''
-// };
-// const formValueFields = [
-//   {
-//     fieldName: 'investor_id',
-//     label: 'Investor',
-//     type: 'number'
-//   }
-// ];
 const filterValueFields = [
   // {
   //   fieldName: 'search',
@@ -97,6 +98,8 @@ const tableColumns = [
 export {
   formAllValues,
   validationSchema,
+  schemeValues,
+  schemeValidation,
   filterFormValues,
   filterValueFields,
   filterValidationSchema,

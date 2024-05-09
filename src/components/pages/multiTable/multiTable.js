@@ -21,6 +21,7 @@ import { useGlobalFilter } from 'react-table/dist/react-table.development';
 import { useSortBy } from 'react-table';
 import DialogBox from 'components/atoms/dialog/dialog';
 import './multiTable.css';
+import IconButton from 'helpers/@extended/IconButton';
 
 // ==============================|| REACT TABLE ||============================== //
 
@@ -292,11 +293,10 @@ const ReactTable = ({
                     })}
                     {headers?.length !== 0 && (
                       <TableCell sx={{ textAlign: { md: 'right', xs: 'center' } }}>
-                        <Grid container spacing={1} sx={{ display: 'flex', justifyContent: { md: 'flex-end', xs: 'center' } }}>
+                        <Grid container sx={{ display: 'flex', justifyContent: { md: 'flex-end', xs: 'center' } }}>
                           <Grid item md={4} xs={12}>
-                            <Edit2
-                              size={22}
-                              style={{ cursor: 'pointer' }}
+                            <IconButton
+                              color="black"
                               onClick={async () => {
                                 if (getEditData) {
                                   const result = await getEditData(setEditing, row.original.investor_id);
@@ -310,35 +310,39 @@ const ReactTable = ({
                                 }
                                 setActiveEditing();
                               }}
-                            />
+                            >
+                              <Edit2 size={26} style={{ cursor: 'pointer' }} />
+                            </IconButton>
                           </Grid>
 
                           {isEditingInterestRateButton && (
                             <Grid item md={4} xs={12}>
-                              <DiscountShape
-                                size={22}
-                                style={{ cursor: 'pointer' }}
+                              <IconButton
+                                color="black"
                                 onClick={async () => {
                                   setTimeout(() => {
                                     isEditingInterestRate();
                                   }, 200);
                                   setEditing(row.original);
                                 }}
-                              />
+                              >
+                                <DiscountShape size={22} style={{ cursor: 'pointer' }} />
+                              </IconButton>
                             </Grid>
                           )}
 
                           <Grid item md={4} xs={12}>
-                            <Trash
-                              size={22}
-                              style={{ cursor: 'pointer' }}
+                            <IconButton
+                              color="error"
                               onClick={async () => {
                                 setItem(row.original);
                                 setTimeout(() => {
                                   handleOpenDialog();
                                 }, 200);
                               }}
-                            />
+                            >
+                              <Trash size={26} style={{ cursor: 'pointer' }} />
+                            </IconButton>
                           </Grid>
                         </Grid>
                       </TableCell>

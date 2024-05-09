@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React, { memo } from 'react';
+import React, { memo, useCallback } from 'react';
 import { Autocomplete, Checkbox, FormControlLabel, TextField, Box } from '@mui/material';
 import { getIn } from 'formik';
 import PropTypes from 'prop-types';
@@ -169,6 +169,7 @@ export const FormikAutoComplete = memo((props) => {
       console.log('undefined');
       setFieldValue(formName, 0);
     } else {
+      console.log(e.target.outerText);
       props.options.forEach(async (el) => {
         if (el[optionName] === e.target.outerText) {
           if (idName) {
@@ -209,7 +210,11 @@ export const FormikAutoComplete = memo((props) => {
       defaultValue={
         (typeof props.defaultValue === 'string' &&
           props.options.find((el) => {
-            return el[props.optionName] === props.defaultValue;
+            if (props.keyName) {
+              return el[props.keyName] === props.defaultValue;
+            } else {
+              return el[props.optionName] === props.defaultValue;
+            }
           })) ||
         (typeof props.defaultValue === 'number' &&
           props.options.find((el) => {
@@ -235,7 +240,8 @@ export const FormikAutoComplete = memo((props) => {
 });
 
 FormikAutoComplete.propTypes = {
-  idName: PropTypes.any
+  idName: PropTypes.any,
+  keyName: PropTypes.any
 };
 
 export const CustomCheckbox = (props) => {

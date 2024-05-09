@@ -161,7 +161,8 @@ export async function GetIfa() {
     const { data } = await axios.post('/ifa/getifa', {
       method_name: 'getall'
     });
-    return data;
+    console.log(data);
+    return data.data;
   } catch (err) {
     console.log(err);
   }

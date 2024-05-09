@@ -39,3 +39,40 @@ export async function GetInvestmentData(values) {
     return [];
   }
 }
+export async function GetMaturityAction() {
+  try {
+    const response = await axios.post('transaction/get_fdschemes', {
+      method_name: 'getmaturityactions'
+    });
+    return response.data.data;
+  } catch (err) {
+    enqueueSnackbar(err.message, {
+      variant: 'error',
+      autoHideDuration: 2000,
+      anchorOrigin: {
+        vertical: 'top',
+        horizontal: 'right'
+      }
+    });
+    return [];
+  }
+}
+export async function GetScheme(values) {
+  try {
+    const response = await axios.post('transaction/get_fdschemes', {
+      ...values,
+      method_name: 'getfdscheme'
+    });
+    return response.data.data;
+  } catch (err) {
+    enqueueSnackbar(err.message, {
+      variant: 'error',
+      autoHideDuration: 2000,
+      anchorOrigin: {
+        vertical: 'top',
+        horizontal: 'right'
+      }
+    });
+    return [];
+  }
+}

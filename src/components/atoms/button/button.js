@@ -4,8 +4,9 @@ import PropTypes from 'prop-types';
 
 import React, { useEffect, memo } from 'react';
 import { Box, Button, Stack, CardHeader, FormControlLabel, Switch } from '@mui/material';
+import { useLocation } from 'react-router';
 import AnimateButton from 'helpers/@extended/AnimateButton';
-import { Additem } from 'iconsax-react';
+import { Additem, Eye } from 'iconsax-react';
 
 const headerSX = {
   p: 2.5,
@@ -15,6 +16,8 @@ const headerSX = {
 export const SubmitButton = memo(
   ({
     title,
+    buttonTitle,
+    handleOpenDialog,
     changeTableVisibility,
     clearFormValues,
     isEditing,
@@ -25,12 +28,20 @@ export const SubmitButton = memo(
     errors,
     handleTabError
   }) => {
-    console.log;
     useEffect(() => {
+      console.log(location.pathname);
       if (setIsActive) {
         setIsActive(formValues.is_active);
       }
     }, [formValues?.is_active]);
+
+    const CancelForm = () => {
+      changeTableVisibility();
+      if (setActiveClose) {
+        setActiveClose();
+      }
+      clearFormValues();
+    };
 
     return (
       <Stack direction="row" alignItems="center" justifyContent="space-between">
@@ -59,37 +70,33 @@ export const SubmitButton = memo(
             <></>
           )}
 
-          <Box>
+          {/* <Box>
             <AnimateButton>
-              <Button
-                // onSubmit={() => {
-                //   if (errors) {
-                //     handleTabError(errors);
-                //   }
-                // }}
-                variant="contained"
-                color="success"
-                startIcon={<Additem />}
-                type="submit"
-              >
-                Submit
+              <Button variant="contained" color="success" startIcon={<Additem />} type="submit">
+                {buttonTitle ? buttonTitle : 'Submit'}
               </Button>
             </AnimateButton>
-          </Box>
+          </Box> */}
+          {location.pathname === '/transaction/investment' ? (
+            <Box>
+              <AnimateButton>
+                <Button variant="contained" color="success" startIcon={<Eye />} type="submit">
+                  {buttonTitle}
+                </Button>
+              </AnimateButton>
+            </Box>
+          ) : (
+            <Box>
+              <AnimateButton>
+                <Button variant="contained" color="success" startIcon={<Additem />} type="submit">
+                  Submit
+                </Button>
+              </AnimateButton>
+            </Box>
+          )}
           <Box>
             <AnimateButton>
-              <Button
-                variant="outlined"
-                color="secondary"
-                type="button"
-                onClick={() => {
-                  changeTableVisibility();
-                  if (setActiveClose) {
-                    setActiveClose();
-                  }
-                  clearFormValues();
-                }}
-              >
+              <Button variant="outlined" color="secondary" type="button" onClick={CancelForm}>
                 Cancel
               </Button>
             </AnimateButton>
@@ -101,6 +108,8 @@ export const SubmitButton = memo(
 );
 
 SubmitButton.PropTypes = {
+  buttonTitle: PropTypes.any,
+  handleOpenDialog: PropTypes.any,
   errors: PropTypes.any,
   handleTabError: PropTypes.any
 };

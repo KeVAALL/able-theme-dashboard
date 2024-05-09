@@ -207,11 +207,11 @@ function Investor() {
     keepPreviousData: true,
     queryFn: GetIfa,
     onSuccess: (data) => {
-      setIfaData(data.data);
+      setIfaData(data);
     }
   });
 
-  if (isPending) return <Loader />;
+  if (isPending || ifaPending) return <Loader />;
 
   return (
     <>

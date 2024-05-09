@@ -43,17 +43,27 @@ import {
   GetIFASearch
 } from 'hooks/investor/investor';
 import '../../../utils/custom.css';
-import { GetInvestmentData, GetStatusDropdown } from 'hooks/transaction/investment';
+import { GetInvestmentData, GetStatusDropdown, GetMaturityAction, GetScheme } from 'hooks/transaction/investment';
+import { GetPayoutMethod } from 'hooks/interestRate/interestRate';
+import InvestmentDialog from 'components/atoms/dialog/InvestmentDialog';
 
 function Investment() {
   // Main data states
   const [investmentData, setInvestmentData] = useState([]);
+  const [investorData, setInvestorData] = useState([]);
   const [ifaData, setIfaData] = useState([]);
+  const [payoutData, setPayoutData] = useState([]);
+  const [maturityAction, setMaturityAction] = useState([]);
+
   // const [loading, setLoading] = useState(true);
 
   // Edit Logic State
   const [isEditing, setIsEditing] = useState(false);
   const [isInvestmentActive, setInvestmentActive] = useState();
+  const [schemeFormValues, setSchemeFormValues] = useState();
+
+  // Dialog state
+  const [openDialog, setOpenDialog] = useState(false);
 
   // Toggle Table and Form Visibility
   const [showTable, setShowTable] = useState(false); // State to toggle visibility of the table form
@@ -85,6 +95,9 @@ function Investment() {
   const handleIsInvestmentActive = (initialValue) => {
     setInvestmentActive(initialValue);
   };
+  const schemeEditing = (value) => {
+    setSchemeFormValues(value);
+  };
 
   // Toggle Table and Form Visibility
   const changeTableVisibility = () => {
@@ -95,6 +108,10 @@ function Investment() {
   const [fdDropdown, setFdDropdown] = useState([]);
   const [statusDropdown, setStatusDropdown] = useState([]);
   const [dateValue, setDateValue] = useState([null, null]);
+  // Dialog state
+  const handleOpenDialog = () => {
+    setOpenDialog(!openDialog);
+  };
 
   // Search one item state
   const setSearchData = (investor) => {
@@ -127,16 +144,45 @@ function Investment() {
   // Duration Dropdown
   const days = Array(32)
     .fill()
-    .map((_, index) => ({ id: index, value: index }));
+    .map((_, index) => ({ id: index, value: index.toString() }));
   const month = Array(13)
     .fill()
-    .map((_, index) => ({ id: index, value: index }));
+    .map((_, index) => ({ id: index, value: index.toString() }));
   const year = Array(6)
     .fill()
-    .map((_, index) => ({ id: index, value: index }));
+    .map((_, index) => ({ id: index, value: index.toString() }));
+  // Query for fetching investor data
+  const {
+    isPending: investorPending,
+    // error,
+    refetch: InvestorTableDataRefetch
+  } = useQuery({
+    queryKey: ['investorTableData'],
+    refetchOnWindowFocus: false,
+    keepPreviousData: true,
+    queryFn: GetInvestorData,
+    onSuccess: (data) => {
+      setInvestorData(data);
+      // setLoading(false);
+    }
+  });
+  // Query for fetching payout data
+  const {
+    isPending: payoutPending,
+    error,
+    refetch: refetchPayoutData
+  } = useQuery({
+    queryKey: ['payoutData', 0],
+    refetchOnWindowFocus: false,
+    keepPreviousData: true,
+    queryFn: () => GetPayoutMethod(0),
+    onSuccess: (data) => {
+      setPayoutData(data);
+    }
+  });
   // Query for fetching product data
   const {
-    isPending,
+    isPending: productPending,
     // error,
     refetch: ProductTableDataRefetch
   } = useQuery({
@@ -145,7 +191,6 @@ function Investment() {
     keepPreviousData: true, // Keep previous data when refetching
     queryFn: GetProductData, // Function to fetch product data
     onSuccess: (data) => {
-      // Callback function on successful query
       setFdDropdown(data); // Update product data with fetched data
     }
   });
@@ -160,25 +205,41 @@ function Investment() {
     keepPreviousData: true,
     queryFn: GetIfa,
     onSuccess: (data) => {
-      setIfaData(data.data);
+      setIfaData(data);
     }
   });
   // Query for fetching status dropdown
-  const { refetch: StatusDropdownRefetch } = useQuery({
+  const { pending: statusPending, refetch: StatusDropdownRefetch } = useQuery({
     queryKey: ['statusDropdownData'], // Unique key for the query
     refetchOnWindowFocus: false, // Disable refetch on window focus
     keepPreviousData: true, // Keep previous data when refetching
     queryFn: GetStatusDropdown, // Function to fetch product data
     onSuccess: (data) => {
-      // Callback function on successful query
       setStatusDropdown(data); // Update product data with fetched data
     }
   });
+  // Query for fetching status dropdown
+  const { pending: maturityPending, refetch: MaturityDropdownRefetch } = useQuery({
+    queryKey: ['maturityDropdownData'], // Unique key for the query
+    refetchOnWindowFocus: false, // Disable refetch on window focus
+    keepPreviousData: true, // Keep previous data when refetching
+    queryFn: GetMaturityAction, // Function to fetch product data
+    onSuccess: (data) => {
+      setMaturityAction(data); // Update product data with fetched data
+    }
+  });
 
-  if (isPending) return <Loader />;
+  if (payoutPending || investorPending || ifaPending || statusPending || productPending) return <Loader />;
 
   return (
     <>
+      <InvestmentDialog
+        openDialog={openDialog}
+        handleOpenDialog={handleOpenDialog}
+        schemeEditFormValues={schemeFormValues}
+        clearFormValues={clearFormValues}
+        maturityAction={maturityAction}
+      />
       {showTable && (
         <Formik
           validateOnBlur={false}
@@ -186,6 +247,14 @@ function Investment() {
           validationSchema={validationSchema}
           onSubmit={async (values, { setSubmitting, resetForm }) => {
             if (isEditing === false) {
+              const schemes = await GetScheme(values);
+              console.log(schemes);
+
+              setSchemeFormValues({ ...schemes[0], maturity_id: 1 });
+
+              setTimeout(() => {
+                handleOpenDialog();
+              }, 100);
               //   SaveInvestor(formValues, InvestmentTableDataRefetch, clearFormValues);
             }
             if (isEditing === true) {
@@ -221,6 +290,8 @@ function Investment() {
               >
                 <SubmitButton
                   title="Investment Entry"
+                  buttonTitle="View Scheme"
+                  handleOpenDialog={handleOpenDialog}
                   changeTableVisibility={changeTableVisibility}
                   clearFormValues={clearFormValues}
                   isEditing={isEditing}
@@ -234,17 +305,18 @@ function Investment() {
 
                 <CardContent>
                   <Grid container spacing={3}>
-                    <Grid item xs={4}>
+                    <Grid item xs={3}>
                       <FormikAutoComplete
-                        options={ifaData}
-                        defaultValue={values.ifa_id}
+                        options={investorData}
+                        defaultValue={values.investor_id}
                         setFieldValue={setFieldValue}
-                        formName="ifa_id"
-                        optionName="item_value"
+                        formName="investor_id"
+                        idName="investor_id"
+                        optionName="investor_name"
                         label="Select Investor"
                       />
                     </Grid>
-                    <Grid item xs={4}>
+                    <Grid item xs={3}>
                       <FormikAutoComplete
                         options={fdDropdown}
                         defaultValue={values.fd_id}
@@ -256,7 +328,7 @@ function Investment() {
                         label="Select FD"
                       />
                     </Grid>
-                    <Grid item xs={4}>
+                    <Grid item xs={3}>
                       <FormikAutoComplete
                         options={ifaData}
                         defaultValue={values.ifa_id}
@@ -268,15 +340,16 @@ function Investment() {
                     </Grid>
                     <Grid item xs={3}>
                       <FormikAutoComplete
-                        options={ifaData}
-                        defaultValue={values.ifa_id}
+                        options={payoutData}
+                        defaultValue={values.payout_method_id}
                         setFieldValue={setFieldValue}
-                        formName="ifa_id"
+                        formName="payout_method_id"
+                        keyName="id"
                         optionName="item_value"
                         label="Select Payout Method"
                       />
                     </Grid>
-                    <Grid item xs={3}>
+                    <Grid item xs={4}>
                       <FormikAutoComplete
                         options={year}
                         defaultValue={values.years}
@@ -286,7 +359,7 @@ function Investment() {
                         label="Select Years"
                       />
                     </Grid>
-                    <Grid item xs={3}>
+                    <Grid item xs={4}>
                       <FormikAutoComplete
                         options={month}
                         defaultValue={values.months}
@@ -296,14 +369,14 @@ function Investment() {
                         label="Select Months"
                       />
                     </Grid>
-                    <Grid item xs={3}>
+                    <Grid item xs={4}>
                       <FormikAutoComplete
                         options={days}
                         defaultValue={values.days}
                         setFieldValue={setFieldValue}
                         formName="days"
                         optionName="value"
-                        label="Select Years"
+                        label="Select Days"
                       />
                     </Grid>
                   </Grid>

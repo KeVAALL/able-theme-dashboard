@@ -2,3 +2,6 @@
   color: #dc2626 !important;
   background-color: #f5bebe80 !important;
 }
+.dialog_main .MuiPaper-root:first-of-type {
+  overflow: visible !important;
+}
