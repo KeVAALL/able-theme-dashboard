@@ -4,6 +4,9 @@
 .common-textfield .MuiFormLabel-root {
   line-height: 1.5em !important;
 }
+.common-textfield .MuiOutlinedInput-root {
+  border-radius: 5px;
+}
 .common-textfield .Mui-disabled {
   -webkit-text-fill-color: #768087 !important;
 }
@@ -20,6 +23,7 @@
 }
 .common-autocomplete .MuiOutlinedInput-root {
   padding: 3.02px 9px !important;
+  border-radius: 5px;
 }
 #__checkbox span:first-of-type {
   padding: 0 !important;

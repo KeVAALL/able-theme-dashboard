@@ -54,6 +54,7 @@ export default function IconTabs(props) {
   };
 
   useEffect(() => {
+    console.log(props.errors);
     props.handleTabError(props.errors);
   }, [props.errors]);
 
@@ -64,8 +65,8 @@ export default function IconTabs(props) {
       <Divider />
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Tabs
-          // className={`tab_main ${props.errorObject?.addressDetailsError ? 'indicator_main' : ''}`}
-          className={`tab_main`}
+          className={`tab_main ${props.errorObject?.addressDetailsError || props.errorObject?.personalInfoError ? 'indicator_main' : ''}`}
+          // className={`tab_main`}
           variant="scrollable"
           scrollButtons
           allowScrollButtonsMobile
@@ -73,7 +74,13 @@ export default function IconTabs(props) {
           onChange={handleChange}
           aria-label="scrollable force tabs example"
         >
-          <Tab className="tab_1" label="Personal Info" icon={<Personalcard />} iconPosition="start" {...a11yProps(0)} />
+          <Tab
+            className={props.errorObject.personalInfoError ? 'tab_1' : ''}
+            label="Personal Info"
+            icon={<Personalcard />}
+            iconPosition="start"
+            {...a11yProps(0)}
+          />
           {/* <CustomTooltip title="Add" arrow color="#fff" bg="pink"> */}
           <Tab
             className={props.errorObject.addressDetailsError ? 'tab_2' : ''}

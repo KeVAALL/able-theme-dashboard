@@ -112,7 +112,7 @@ const ReactTable = ({
     <>
       {!doNotShowHeader ? (
         <Grid container alignItems="center" spacing={2} sx={{ padding: 2 }}>
-          <Grid item md={7} sm={7} xs={12}>
+          <Grid item md={6.5} sm={6.5} xs={12}>
             {formValueFields?.length >= 1 && (
               <Formik
                 initialValues={formValues}
@@ -169,6 +169,7 @@ const ReactTable = ({
                             type="submit"
                             startIcon={<FilterSearch />}
                             sx={{
+                              borderRadius: 0.6,
                               justifySelf: 'center',
                               width: !mdUp ? 'auto' : '100%' // Set width to 'auto' when screen size is medium or larger, otherwise '100%'
                             }}
@@ -185,14 +186,14 @@ const ReactTable = ({
           </Grid>
           <Grid
             item
-            md={5}
-            sm={5}
+            md={5.5}
+            sm={5.5}
             xs={12}
             sx={{
               display: 'flex',
               justifyContent: { sm: 'flex-end' },
               alignItems: 'center',
-              height: '60px',
+              height: '65px',
               paddingTop: { lg: '16px !important', sm: '0px !important' }
             }}
           >
@@ -256,7 +257,7 @@ const ReactTable = ({
                   <TableCell
                     key={column}
                     cell={column}
-                    // {...column.getHeaderProps([{ className: column.className }], { style: { minWidth: column.minWidth } })}
+                    // {...column.getHeaderProps([{ className: column.className }])}
                     {...column.getHeaderProps({ style: { minWidth: column.minWidth } })}
                   >
                     <HeaderSort column={column} sort />
@@ -283,7 +284,7 @@ const ReactTable = ({
                       return (
                         <TableCell
                           key={cell}
-                          // {...cell.getCellProps({ style: cell.column.minWidth }, [{ className: { minWidth: cell.column.minWidth } }])}
+                          // {...cell.getCellProps([{ className: { minWidth: cell.column.minWidth } }])}
                           {...cell.getCellProps({ style: { minWidth: cell.column.minWidth } })}
                         >
                           {/* {cell.render('Cell')} */}
@@ -292,9 +293,9 @@ const ReactTable = ({
                       );
                     })}
                     {headers?.length !== 0 && (
-                      <TableCell sx={{ textAlign: { md: 'right', xs: 'center' } }}>
+                      <TableCell sx={{ textAlign: { md: 'right', xs: 'center' }, width: 170 }}>
                         <Grid container sx={{ display: 'flex', justifyContent: { md: 'flex-end', xs: 'center' } }}>
-                          <Grid item md={4} xs={12}>
+                          <Grid item md={4}>
                             <IconButton
                               color="black"
                               onClick={async () => {
@@ -316,7 +317,7 @@ const ReactTable = ({
                           </Grid>
 
                           {isEditingInterestRateButton && (
-                            <Grid item md={4} xs={12}>
+                            <Grid item md={4}>
                               <IconButton
                                 color="black"
                                 onClick={async () => {
@@ -331,7 +332,7 @@ const ReactTable = ({
                             </Grid>
                           )}
 
-                          <Grid item md={4} xs={12}>
+                          <Grid item md={4}>
                             <IconButton
                               color="error"
                               onClick={async () => {

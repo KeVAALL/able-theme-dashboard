@@ -71,7 +71,10 @@ const DialogForm = ({
     <Dialog
       open={openDialog}
       TransitionComponent={PopupTransition}
-      onClose={handleOpenDialog}
+      onClose={() => {
+        handleOpenDialog();
+        clearFormValues();
+      }}
       aria-describedby="alert-dialog-slide-description"
     >
       <Box>

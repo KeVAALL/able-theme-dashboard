@@ -118,7 +118,7 @@ const InvestmentDialog = ({ openDialog, handleOpenDialog, schemeEditFormValues, 
                   </Grid>
                   <Grid item md={6} xs={12}>
                     <CustomTextField
-                      label="ROI on 1 Lakh (%)"
+                      label="Interest on 1 Lakh"
                       name="rate_of_interest_1lakh"
                       //   placeholder="Please enter Rate of Interest for Senior Citizen"
                       disabled

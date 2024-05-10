@@ -395,7 +395,7 @@ export const HidingSelect = ({ hiddenColumns, setHiddenColumns, allColumns }) =>
         displayEmpty
         value={hiddenColumns}
         onChange={handleChange}
-        input={<OutlinedInput id="select-column-hiding" placeholder="select column" />}
+        input={<OutlinedInput sx={{ borderRadius: 0.6 }} id="select-column-hiding" placeholder="select column" />}
         renderValue={(selected) => {
           if (selected.length === 0) {
             return <Typography variant="subtitle1">All columns visible</Typography>;
@@ -486,11 +486,13 @@ SortingSelect.propTypes = {
 
 export const CSVExport = ({ data, filename, headers }) => {
   return (
-    <CSVLink data={data} filename={filename} headers={headers}>
-      <Tooltip title="CSV Export">
-        <DocumentDownload size={28} style={{ color: 'gray', marginTop: 4 }} />
-      </Tooltip>
-    </CSVLink>
+    <Box>
+      <CSVLink data={data} filename={filename} headers={headers}>
+        <Tooltip title="CSV Export">
+          <DocumentDownload size={38} style={{ color: 'gray', marginTop: 5, padding: 6, border: '1px solid #BEC8D0', borderRadius: 5 }} />
+        </Tooltip>
+      </CSVLink>
+    </Box>
   );
 };
 

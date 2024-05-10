@@ -129,6 +129,7 @@ function Investor() {
       isRelativeToPoliticallyExposed: false,
       isResidentOutsideIndia: false
     });
+    setErrorObject(errorObject);
     setNomineeData([]);
   };
 
@@ -171,9 +172,16 @@ function Investor() {
   const handleTabError = (value) => {
     console.log(value);
     if (value.investor_address) {
-      setErrorObject({ ...errorObject, addressDetailsError: true });
+      setErrorObject((prevValue) => {
+        return { ...prevValue, addressDetailsError: true };
+      });
+    }
+    if (value.investor) {
+      setErrorObject((prevValue) => {
+        return { ...prevValue, personalInfoError: true };
+      });
     } else {
-      setErrorObject({ ...errorObject, addressDetailsError: false });
+      setErrorObject({ ...errorObject, addressDetailsError: false, personalInfoError: false });
     }
   };
 

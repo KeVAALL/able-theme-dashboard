@@ -4,7 +4,7 @@ import { Checkbox, Grid, Typography, Box } from '@mui/material';
 import { NestedCustomTextField } from 'utils/textfield';
 
 const AddressDetails = (props) => {
-  console.log(props.values.is_permanent_address_correspondent);
+  console.log('running');
 
   return (
     <>
@@ -157,3 +157,4 @@ const AddressDetails = (props) => {
 };
 
 export default memo(AddressDetails);
+// export default AddressDetails;

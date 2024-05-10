@@ -70,13 +70,6 @@ export const SubmitButton = memo(
             <></>
           )}
 
-          {/* <Box>
-            <AnimateButton>
-              <Button variant="contained" color="success" startIcon={<Additem />} type="submit">
-                {buttonTitle ? buttonTitle : 'Submit'}
-              </Button>
-            </AnimateButton>
-          </Box> */}
           {location.pathname === '/transaction/investment' ? (
             <Box>
               <AnimateButton>
@@ -88,7 +81,7 @@ export const SubmitButton = memo(
           ) : (
             <Box>
               <AnimateButton>
-                <Button variant="contained" color="success" startIcon={<Additem />} type="submit">
+                <Button variant="contained" color="success" sx={{ borderRadius: 0.6 }} startIcon={<Additem />} type="submit">
                   Submit
                 </Button>
               </AnimateButton>
@@ -96,7 +89,7 @@ export const SubmitButton = memo(
           )}
           <Box>
             <AnimateButton>
-              <Button variant="outlined" color="secondary" type="button" onClick={CancelForm}>
+              <Button variant="outlined" color="secondary" sx={{ borderRadius: 0.6 }} type="button" onClick={CancelForm}>
                 Cancel
               </Button>
             </AnimateButton>

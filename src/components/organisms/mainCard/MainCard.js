@@ -119,6 +119,7 @@ const MainCard = forwardRef(
                   color="success"
                   startIcon={<AddCircle />}
                   type="button"
+                  sx={{ borderRadius: 0.6 }}
                   onClick={() => {
                     setActiveAdding();
                     changeTableVisibility();

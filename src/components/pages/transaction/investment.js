@@ -258,6 +258,7 @@ function Investment() {
               //   SaveInvestor(formValues, InvestmentTableDataRefetch, clearFormValues);
             }
             if (isEditing === true) {
+              console.log('edit');
               //   EditInvestor(
               //     formValues,
               //     isFDActive,
@@ -304,7 +305,7 @@ function Investment() {
                 <Divider />
 
                 <CardContent>
-                  <Grid container spacing={3}>
+                  <Grid container spacing={2.5}>
                     <Grid item xs={3}>
                       <FormikAutoComplete
                         options={investorData}
@@ -349,34 +350,34 @@ function Investment() {
                         label="Select Payout Method"
                       />
                     </Grid>
-                    <Grid item xs={4}>
+                    <Grid item xs={1}>
                       <FormikAutoComplete
                         options={year}
                         defaultValue={values.years}
                         setFieldValue={setFieldValue}
                         formName="years"
                         optionName="value"
-                        label="Select Years"
+                        label="Years"
                       />
                     </Grid>
-                    <Grid item xs={4}>
+                    <Grid item xs={1}>
                       <FormikAutoComplete
                         options={month}
                         defaultValue={values.months}
                         setFieldValue={setFieldValue}
                         formName="months"
                         optionName="value"
-                        label="Select Months"
+                        label="Months"
                       />
                     </Grid>
-                    <Grid item xs={4}>
+                    <Grid item xs={1}>
                       <FormikAutoComplete
                         options={days}
                         defaultValue={values.days}
                         setFieldValue={setFieldValue}
                         formName="days"
                         optionName="value"
-                        label="Select Days"
+                        label="Days"
                       />
                     </Grid>
                   </Grid>
