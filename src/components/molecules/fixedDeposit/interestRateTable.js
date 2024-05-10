@@ -40,7 +40,8 @@ function ReactTable({
   setActiveEditing,
   handleIROpenDialog,
   isEditingInterestRateLogic,
-  VisibleColumn
+  VisibleColumn,
+  hideActions
 }) {
   const {
     getTableProps,
@@ -60,7 +61,7 @@ function ReactTable({
       data,
       initialState: {
         pageIndex: 0,
-        pageSize: 10,
+        pageSize: 5,
         sortBy: [
           {
             id: 'userName',
@@ -97,67 +98,75 @@ function ReactTable({
 
   return (
     <Stack>
-      <Grid container spacing={2} alignItems="center" justifyContent="space-between" sx={{ padding: 2 }}>
-        <Grid item md={7} sm={7} xs={12}>
-          {formValueFields?.length >= 1 && (
-            <Formik
-              initialValues={formValues}
-              validationSchema={validationSchema}
-              onSubmit={async (values, { setSubmitting, resetForm }) => {
-                getOneItem(values, setSearchData);
-                resetForm();
-              }}
-            >
-              {({ values, errors, touched, handleChange, handleBlur, handleSubmit, isSubmitting }) => (
-                <Box
-                  component="form"
-                  onSubmit={(event) => {
-                    event.preventDefault();
-                    handleSubmit();
-                  }}
-                  sx={{ width: '60%' }}
-                >
-                  <Grid container direction="row" spacing={2} alignItems="center" sx={{ width: '100%' }}>
-                    {formValueFields?.map((field, id) => {
-                      return (
-                        <Grid item xs={4} key={id}>
-                          <CustomTextField
-                            label={field.label}
-                            name={field.fieldName}
-                            values={values}
-                            type={field.type}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            touched={touched}
-                            errors={errors}
-                          />
-                        </Grid>
-                      );
-                    })}
+      {!hideActions && (
+        <Grid container spacing={2} alignItems="center" justifyContent="space-between" sx={{ padding: 2 }}>
+          <Grid item md={7} sm={7} xs={12}>
+            {formValueFields?.length >= 1 && (
+              <Formik
+                initialValues={formValues}
+                validationSchema={validationSchema}
+                onSubmit={async (values, { setSubmitting, resetForm }) => {
+                  getOneItem(values, setSearchData);
+                  resetForm();
+                }}
+              >
+                {({ values, errors, touched, handleChange, handleBlur, handleSubmit, isSubmitting }) => (
+                  <Box
+                    component="form"
+                    onSubmit={(event) => {
+                      event.preventDefault();
+                      handleSubmit();
+                    }}
+                    sx={{ width: '60%' }}
+                  >
+                    <Grid container direction="row" spacing={2} alignItems="center" sx={{ width: '100%' }}>
+                      {formValueFields?.map((field, id) => {
+                        return (
+                          <Grid item xs={4} key={id}>
+                            <CustomTextField
+                              label={field.label}
+                              name={field.fieldName}
+                              values={values}
+                              type={field.type}
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              touched={touched}
+                              errors={errors}
+                            />
+                          </Grid>
+                        );
+                      })}
 
-                    <Grid item xs={4}>
-                      <Button variant="contained" color="success" type="submit" startIcon={<FilterSearch />} sx={{ justifySelf: 'center' }}>
-                        Search
-                      </Button>
+                      <Grid item xs={4}>
+                        <Button
+                          variant="contained"
+                          color="success"
+                          type="submit"
+                          startIcon={<FilterSearch />}
+                          sx={{ justifySelf: 'center' }}
+                        >
+                          Search
+                        </Button>
+                      </Grid>
                     </Grid>
-                  </Grid>
-                </Box>
-              )}
-            </Formik>
-          )}
-        </Grid>
-        <Grid item md={5} sm={5} xs={12} sx={{ display: 'flex', justifyContent: { sm: 'flex-end' } }}>
-          <Grid container spacing={4} sx={{ alignItems: 'center', justifyContent: 'flex-end' }}>
-            <Grid item md={11} xs={11} sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-              <HidingSelect hiddenColumns={hiddenColumns} setHiddenColumns={setHiddenColumns} allColumns={allColumns} />
-            </Grid>
+                  </Box>
+                )}
+              </Formik>
+            )}
+          </Grid>
+          <Grid item md={5} sm={5} xs={12} sx={{ display: 'flex', justifyContent: { sm: 'flex-end' } }}>
+            <Grid container spacing={4} sx={{ alignItems: 'center', justifyContent: 'flex-end' }}>
+              <Grid item md={11} xs={11} sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+                <HidingSelect hiddenColumns={hiddenColumns} setHiddenColumns={setHiddenColumns} allColumns={allColumns} />
+              </Grid>
 
-            <Grid item md={1} xs={1} sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-              <CSVExport data={rows.map((d) => d.original)} filename={'filtering-table.csv'} headers={headers} />
+              <Grid item md={1} xs={1} sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+                <CSVExport data={rows.map((d) => d.original)} filename={'filtering-table.csv'} headers={headers} />
+              </Grid>
             </Grid>
           </Grid>
         </Grid>
-      </Grid>
+      )}
 
       {item && (
         <DialogBox
@@ -181,19 +190,21 @@ function ReactTable({
                   </TableCell>
                 ))}
 
-                <TableCell width={150} sx={{ textAlign: 'right' }}>
-                  <Box>
-                    <AnimateButton>
-                      <Button
-                        className="icon-only-button"
-                        variant="contained"
-                        color="success"
-                        startIcon={<Additem size={40} />}
-                        onClick={handleIROpenDialog}
-                      ></Button>
-                    </AnimateButton>
-                  </Box>
-                </TableCell>
+                {!hideActions && (
+                  <TableCell width={150} sx={{ textAlign: 'right' }}>
+                    <Box>
+                      <AnimateButton>
+                        <Button
+                          className="icon-only-button"
+                          variant="contained"
+                          color="success"
+                          startIcon={<Additem size={40} />}
+                          onClick={handleIROpenDialog}
+                        ></Button>
+                      </AnimateButton>
+                    </Box>
+                  </TableCell>
+                )}
               </TableRow>
             ))}
           </TableHead>
@@ -206,41 +217,42 @@ function ReactTable({
                     {row.cells.map((cell) => {
                       return (
                         <TableCell key={cell} {...cell.getCellProps([{ className: cell.column.className }])}>
-                          {/* {cell.render('Cell')} */}
                           {cell.column.customCell ? <cell.column.customCell value={cell.value} /> : cell.render('Cell')}
                         </TableCell>
                       );
                     })}
-                    <TableCell sx={{ textAlign: 'right' }}>
-                      <Edit2
-                        size={22}
-                        style={{ marginRight: 20, cursor: 'pointer' }}
-                        onClick={() => {
-                          console.log(row.original);
-                          schemeEditing(row.original);
-                          setActiveEditing();
-                          setTimeout(() => {
-                            handleIROpenDialog();
-                          }, 200);
-                        }}
-                      />
-
-                      {Boolean(row.original.is_live) === true ? (
-                        <></>
-                      ) : (
-                        <Trash
+                    {!hideActions && (
+                      <TableCell sx={{ textAlign: 'right' }}>
+                        <Edit2
                           size={22}
-                          style={{ cursor: 'pointer' }}
-                          onClick={async () => {
-                            setItem(row.original);
-                            setTimeout(() => {
-                              handleOpenDialog();
-                            }, 200);
+                          style={{ marginRight: 20, cursor: 'pointer' }}
+                          onClick={() => {
                             console.log(row.original);
+                            schemeEditing(row.original);
+                            setActiveEditing();
+                            setTimeout(() => {
+                              handleIROpenDialog();
+                            }, 200);
                           }}
                         />
-                      )}
-                    </TableCell>
+
+                        {Boolean(row.original.is_live) === true ? (
+                          <></>
+                        ) : (
+                          <Trash
+                            size={22}
+                            style={{ cursor: 'pointer' }}
+                            onClick={async () => {
+                              setItem(row.original);
+                              setTimeout(() => {
+                                handleOpenDialog();
+                              }, 200);
+                              console.log(row.original);
+                            }}
+                          />
+                        )}
+                      </TableCell>
+                    )}
                   </TableRow>
                 );
               })
@@ -251,7 +263,14 @@ function ReactTable({
         </Table>
       </Box>
       <Box sx={{ p: 2, borderTop: '1px solid #dbe0e5a6' }}>
-        <TablePagination gotoPage={gotoPage} rows={rows} setPageSize={setPageSize} pageIndex={pageIndex} pageSize={pageSize} />
+        <TablePagination
+          gotoPage={gotoPage}
+          rows={rows}
+          setPageSize={setPageSize}
+          pageIndex={pageIndex}
+          pageSize={pageSize}
+          viewOptions={[5]}
+        />
       </Box>
     </Stack>
   );
@@ -281,7 +300,8 @@ const InterestRateTable = ({
   setActiveEditing,
   handleIROpenDialog,
   isEditingInterestRateLogic,
-  VisibleColumn
+  VisibleColumn,
+  hideActions
 }) => {
   return (
     <MainCard sx={{ borderRadius: 0 }} content={false} secondary={<CSVExport data={data} filename={'pagination-bottom-table.csv'} />}>
@@ -304,6 +324,7 @@ const InterestRateTable = ({
           handleIROpenDialog={handleIROpenDialog}
           isEditingInterestRateLogic={isEditingInterestRateLogic}
           VisibleColumn={VisibleColumn}
+          hideActions={hideActions}
         />
       </ScrollX>
     </MainCard>
@@ -316,7 +337,7 @@ InterestRateTable.propTypes = {
   formValues: PropTypes.object,
   formValueFields: PropTypes.any,
   validationSchema: PropTypes.any,
-  changeTableVisibility: PropTypes.func,
+  changeTableVisibility: PropTypes.any,
   setEditing: PropTypes.any,
   schemeEditing: PropTypes.any,
   getOneItem: PropTypes.any,
@@ -328,7 +349,8 @@ InterestRateTable.propTypes = {
   // Add new table for below
   handleIROpenDialog: PropTypes.any,
   isEditingInterestRateLogic: PropTypes.any,
-  VisibleColumn: PropTypes.array
+  VisibleColumn: PropTypes.array,
+  hideActions: PropTypes.any
 };
 
 export default memo(InterestRateTable);

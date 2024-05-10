@@ -4,8 +4,6 @@ import { Checkbox, Grid, Typography, Box } from '@mui/material';
 import { NestedCustomTextField } from 'utils/textfield';
 
 const AddressDetails = (props) => {
-  console.log('running');
-
   return (
     <>
       <Box id="__permanent _address" style={{ marginBottom: '12px' }}>
@@ -157,4 +155,3 @@ const AddressDetails = (props) => {
 };
 
 export default memo(AddressDetails);
-// export default AddressDetails;

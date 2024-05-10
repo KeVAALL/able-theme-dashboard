@@ -73,9 +73,9 @@ HeaderSort.propTypes = {
 };
 // ==============================|| TABLE PAGINATION ||============================== //
 
-export const TablePagination = ({ gotoPage, rows, setPageSize, pageSize, pageIndex, initialPageSize }) => {
+export const TablePagination = ({ gotoPage, rows, setPageSize, pageSize, pageIndex, initialPageSize, viewOptions }) => {
   const [open, setOpen] = useState(false);
-  let options = [5, 10];
+  let options = viewOptions ? viewOptions : [5, 10];
 
   if (initialPageSize) {
     options = [...options, initialPageSize]
@@ -164,7 +164,8 @@ TablePagination.propTypes = {
   pageIndex: PropTypes.number,
   pageSize: PropTypes.number,
   initialPageSize: PropTypes.number,
-  rows: PropTypes.array
+  rows: PropTypes.array,
+  viewOptions: PropTypes.any
 };
 
 // ==============================|| SELECTION - PREVIEW ||============================== //

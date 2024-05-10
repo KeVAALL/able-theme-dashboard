@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React, { useEffect, useState, memo } from 'react';
+import React, { useEffect, useState, useMemo, memo } from 'react';
 import {
   Dialog,
   Box,
@@ -20,31 +20,64 @@ import {
 // third-party
 import { PopupTransition } from 'helpers/@extended/Transitions';
 import { Formik } from 'formik';
-import * as yup from 'yup';
-import Loader from '../loader/Loader';
 // assets
-import CustomTextField, { FormikAutoComplete } from 'utils/textfield';
+import DialogForm from './InterestRateDialog';
+import { formAllValues, validationSchema, tableColumns, VisibleColumn } from 'constant/interestRateValidation';
+import { DeleteOneInterestRate } from 'hooks/interestRate/interestRate';
 import { SaveInterestRate, EditInterestRate } from 'hooks/interestRate/interestRate';
-import { schemeValidation, schemeValues } from 'constant/investmentValidation';
+import InterestRateTable from 'components/molecules/fixedDeposit/interestRateTable';
 
-const InvestmentDialog = ({ openDialog, handleOpenDialog, schemeEditFormValues, maturityAction, isEditingScheme }) => {
+const InvestmentDialog = ({
+  openDialog,
+  handleOpenDialog,
+  schemeEditFormValues,
+  clearFormValues,
+  schemeData,
+  setSchemeData,
+  fdId,
+  selectedPayoutMethod
+}) => {
   // Form Data
   const [schemeEditValues, setSchemeEditValues] = useState();
-  const clearFormValues = () => {
-    setSchemeEditValues(schemeValues);
-  };
+  // Edit Logic State
+  const [isEditingScheme, setIsEditingScheme] = useState(false);
+  const [schemeFormValues, setSchemeFormValues] = useState();
 
   useEffect(() => {
     console.warn(schemeEditFormValues);
 
-    // if (isEditingScheme === false) {
-    //   clearFormValues();
-    // }
-    // if (schemeEditFormValues && isEditingScheme === true) {
     if (schemeEditFormValues) {
       setSchemeEditValues(schemeEditFormValues);
     }
   }, [schemeEditFormValues]);
+  // Dialog state
+  const [openSchemeDialog, setOpenSchemeDialog] = useState(false);
+  // Sets form values for editing
+  const schemeEditing = (value) => {
+    setSchemeFormValues(value);
+  };
+  const setActiveEditing = () => {
+    setIsEditingScheme(true);
+  };
+  const setActiveClose = () => {
+    setIsEditingScheme(false);
+  };
+  // // Main Data state
+  // const [schemeData, setSchemeData] = useState([]);
+  // Dialog state
+  const handleOpenSchemeDialog = () => {
+    setOpenSchemeDialog(!openDialog);
+  };
+  // const clearFormValues = () => {
+  //   // setFormValues(formAllValues);
+  // };
+  // Active Button state
+  const [isSchemeActive, setSchemeActive] = useState();
+  const handleIsSchemeActive = (initialValue) => {
+    setSchemeActive(initialValue);
+  };
+  // Custom fields/ columns
+  const columns = useMemo(() => tableColumns, []);
 
   // if (isLoading) return <Loader />;
 
@@ -56,156 +89,52 @@ const InvestmentDialog = ({ openDialog, handleOpenDialog, schemeEditFormValues, 
       onClose={handleOpenDialog}
       aria-describedby="alert-dialog-slide-description"
     >
-      <Box sx={{ overflow: 'visible' }}>
-        <Formik
-          initialValues={schemeEditValues || schemeValues}
-          validationSchema={schemeValidation}
-          onSubmit={async (values, { resetForm }) => {
-            console.log(values);
-          }}
-        >
-          {({ values, errors, touched, handleChange, handleBlur, handleSubmit, setFieldValue, resetForm }) => (
-            <Box
-              component="form"
-              onSubmit={(event) => {
-                event.preventDefault();
-                handleSubmit();
-              }}
-              sx={{ width: '100%' }}
-            >
-              <DialogTitle sx={{ p: 2 }}>Scheme</DialogTitle>
-              <Divider />
-              <DialogContent sx={{ p: 2, overflowY: 'unset' }}>
-                <Grid container spacing={3}>
-                  <Grid item md={6} xs={12}>
-                    <CustomTextField
-                      label="FD Name"
-                      name="fd_name"
-                      //   placeholder="Please enter your Maximum Tenure"
-                      disabled
-                      values={values}
-                      type="string"
-                      regType="string"
-                      setFieldValue={setFieldValue}
-                      onBlur={handleBlur}
-                      touched={touched}
-                      errors={errors}
-                      FormHelperTextProps={{
-                        style: {
-                          marginLeft: 0
-                        }
-                      }}
-                    />
-                  </Grid>
-                  <Grid item md={6} xs={12}>
-                    <CustomTextField
-                      label="Regular ROI (%)"
-                      name="rate_of_interest"
-                      //   placeholder="Please enter Regular Rate of Interest"
-                      disabled
-                      values={values}
-                      type="string"
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      touched={touched}
-                      errors={errors}
-                      FormHelperTextProps={{
-                        style: {
-                          marginLeft: 0
-                        }
-                      }}
-                    />
-                  </Grid>
-                  <Grid item md={6} xs={12}>
-                    <CustomTextField
-                      label="Interest on 1 Lakh"
-                      name="rate_of_interest_1lakh"
-                      //   placeholder="Please enter Rate of Interest for Senior Citizen"
-                      disabled
-                      values={values}
-                      type="string"
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      touched={touched}
-                      errors={errors}
-                      FormHelperTextProps={{
-                        style: {
-                          marginLeft: 0
-                        }
-                      }}
-                    />
-                  </Grid>
-
-                  <Grid item md={6} xs={12}>
-                    <CustomTextField
-                      label="Tenure"
-                      name="tenure"
-                      //   placeholder="Please enter Rate of Interest for Female Senior Citizen"
-                      disabled
-                      values={values}
-                      type="string"
-                      regType="noSpecial"
-                      setFieldValue={setFieldValue}
-                      onBlur={handleBlur}
-                      touched={touched}
-                      errors={errors}
-                      FormHelperTextProps={{
-                        style: {
-                          marginLeft: 0
-                        }
-                      }}
-                    />
-                  </Grid>
-                  <Grid item md={6} xs={12}>
-                    <FormikAutoComplete
-                      options={maturityAction}
-                      defaultValue={values.maturity_id}
-                      setFieldValue={setFieldValue}
-                      formName="maturity_id"
-                      optionName="item_value"
-                      label="Select Maturity Action"
-                    />
-                  </Grid>
-
-                  <Grid item md={6} xs={12}>
-                    <CustomTextField
-                      label="Investment Amount"
-                      name="investment_amount"
-                      placeholder="Please enter Investment Amount"
-                      values={values}
-                      type="number"
-                      regType="number"
-                      setFieldValue={setFieldValue}
-                      onBlur={handleBlur}
-                      touched={touched}
-                      errors={errors}
-                      FormHelperTextProps={{
-                        style: {
-                          marginLeft: 0
-                        }
-                      }}
-                    />
-                  </Grid>
-                </Grid>
-              </DialogContent>
-              <Divider />
-              <DialogActions sx={{ gap: 2, p: 2 }}>
-                <Button
-                  color="error"
-                  onClick={() => {
-                    handleOpenDialog();
-                  }}
-                >
-                  Cancel
-                </Button>
-                <Button variant="contained" color="success" type="submit">
-                  Proceed
-                </Button>
-              </DialogActions>
-            </Box>
-          )}
-        </Formik>
-      </Box>
+      <DialogForm
+        openDialog={openSchemeDialog}
+        handleOpenDialog={handleOpenSchemeDialog}
+        schemeEditFormValues={schemeFormValues}
+        fdId={fdId}
+        selectedPayoutMethod={selectedPayoutMethod}
+        clearFormValues={clearFormValues}
+        setIsActive={handleIsSchemeActive}
+        isActive={isSchemeActive}
+        isEditingScheme={isEditingScheme}
+        setActiveClose={setActiveClose}
+        setSchemeData={setSchemeData}
+      />
+      <Stack flexDirection="row" justifyContent="space-between" alignItems="center">
+        <DialogTitle sx={{ p: 2 }}>Existing Schemes</DialogTitle>
+        <DialogActions sx={{ gap: 2, p: 2 }}>
+          <Button
+            color="error"
+            onClick={() => {
+              handleOpenDialog();
+            }}
+          >
+            Close
+          </Button>
+        </DialogActions>
+      </Stack>
+      <Divider />
+      <DialogContent sx={{ p: 2, overflowY: 'unset' }}>
+        <Grid container spacing={3}>
+          <Grid item xs={12}>
+            <InterestRateTable
+              columns={columns}
+              data={schemeData}
+              // changeTableVisibility={changeTableVisibility}
+              schemeEditing={schemeEditing}
+              deleteOneItem={DeleteOneInterestRate}
+              // setSearchData={setSearchData}
+              setSchemeData={setSchemeData}
+              setActiveEditing={setActiveEditing}
+              handleIROpenDialog={handleOpenSchemeDialog}
+              VisibleColumn={VisibleColumn}
+              hideActions={true}
+            />
+          </Grid>
+        </Grid>
+      </DialogContent>
     </Dialog>
   );
 };

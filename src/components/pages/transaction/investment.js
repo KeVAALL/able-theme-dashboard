@@ -3,17 +3,17 @@ import { useEffect, useMemo, useState } from 'react';
 // material-ui
 import { Divider, Box, Card, Grid, CardContent, Button } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import { FilterSearch } from 'iconsax-react';
 import { useQuery } from 'react-query';
 
 // project-imports
 import MainCard from '../../organisms/mainCard/MainCard';
 import MultiTable from '../multiTable/multiTable';
+import Loader from 'components/atoms/loader/Loader';
 
 // third-party
 import * as yup from 'yup';
 import { Formik } from 'formik';
-import Loader from 'components/atoms/loader/Loader';
+import { Eye, FilterSearch, Calculator } from 'iconsax-react';
 import { LocalizationProvider } from '@mui/x-date-pickers-pro';
 import { DesktopDateRangePicker } from '@mui/x-date-pickers-pro';
 import { AdapterDateFns } from '@mui/x-date-pickers-pro/AdapterDateFns';
@@ -44,8 +44,9 @@ import {
 } from 'hooks/investor/investor';
 import '../../../utils/custom.css';
 import { GetInvestmentData, GetStatusDropdown, GetMaturityAction, GetScheme } from 'hooks/transaction/investment';
-import { GetPayoutMethod } from 'hooks/interestRate/interestRate';
+import { GetPayoutMethod, GetSchemeSearch } from 'hooks/interestRate/interestRate';
 import InvestmentDialog from 'components/atoms/dialog/InvestmentDialog';
+import AnimateButton from 'helpers/@extended/AnimateButton';
 
 function Investment() {
   // Main data states
@@ -54,6 +55,8 @@ function Investment() {
   const [ifaData, setIfaData] = useState([]);
   const [payoutData, setPayoutData] = useState([]);
   const [maturityAction, setMaturityAction] = useState([]);
+  // Main Data state
+  const [schemeData, setSchemeData] = useState([]);
 
   // const [loading, setLoading] = useState(true);
 
@@ -238,7 +241,8 @@ function Investment() {
         handleOpenDialog={handleOpenDialog}
         schemeEditFormValues={schemeFormValues}
         clearFormValues={clearFormValues}
-        maturityAction={maturityAction}
+        schemeData={schemeData}
+        setSchemeData={setSchemeData}
       />
       {showTable && (
         <Formik
@@ -247,14 +251,14 @@ function Investment() {
           validationSchema={validationSchema}
           onSubmit={async (values, { setSubmitting, resetForm }) => {
             if (isEditing === false) {
-              const schemes = await GetScheme(values);
-              console.log(schemes);
+              console.log(values);
+              // const schemes = await GetScheme(values);
 
-              setSchemeFormValues({ ...schemes[0], maturity_id: 1 });
+              // setSchemeFormValues({ ...schemes[0], maturity_id: 1 });
 
-              setTimeout(() => {
-                handleOpenDialog();
-              }, 100);
+              // setTimeout(() => {
+              //   handleOpenDialog();
+              // }, 100);
               //   SaveInvestor(formValues, InvestmentTableDataRefetch, clearFormValues);
             }
             if (isEditing === true) {
@@ -305,7 +309,7 @@ function Investment() {
                 <Divider />
 
                 <CardContent>
-                  <Grid container spacing={2.5}>
+                  <Grid container spacing={3}>
                     <Grid item xs={3}>
                       <FormikAutoComplete
                         options={investorData}
@@ -339,6 +343,59 @@ function Investment() {
                         label="Select IFA"
                       />
                     </Grid>
+                    <Grid item xs={3}></Grid>
+                    <Grid item xs={3}>
+                      <CustomTextField
+                        label="Investment Amount"
+                        name="investment_amount"
+                        placeholder="Please enter Investment Amount"
+                        values={values}
+                        type="number"
+                        regType="number"
+                        setFieldValue={setFieldValue}
+                        onBlur={handleBlur}
+                        touched={touched}
+                        errors={errors}
+                        FormHelperTextProps={{
+                          style: {
+                            marginLeft: 0
+                          }
+                        }}
+                      />
+                    </Grid>
+                    <Grid item xs={1}>
+                      <FormikAutoComplete
+                        disableClearable
+                        options={year}
+                        defaultValue={values.years}
+                        setFieldValue={setFieldValue}
+                        formName="years"
+                        optionName="value"
+                        label="Years"
+                      />
+                    </Grid>
+                    <Grid item xs={1}>
+                      <FormikAutoComplete
+                        disableClearable
+                        options={month}
+                        defaultValue={values.months}
+                        setFieldValue={setFieldValue}
+                        formName="months"
+                        optionName="value"
+                        label="Months"
+                      />
+                    </Grid>
+                    <Grid item xs={1}>
+                      <FormikAutoComplete
+                        disableClearable
+                        options={days}
+                        defaultValue={values.days}
+                        setFieldValue={setFieldValue}
+                        formName="days"
+                        optionName="value"
+                        label="Days"
+                      />
+                    </Grid>
                     <Grid item xs={3}>
                       <FormikAutoComplete
                         options={payoutData}
@@ -350,34 +407,86 @@ function Investment() {
                         label="Select Payout Method"
                       />
                     </Grid>
-                    <Grid item xs={1}>
-                      <FormikAutoComplete
-                        options={year}
-                        defaultValue={values.years}
+                    <Grid item xs={1.5}>
+                      <Button variant="contained" color="success" sx={{ borderRadius: 0.6 }} startIcon={<Calculator />} type="submit">
+                        Calculate
+                      </Button>
+                    </Grid>
+                    <Grid item xs={1.5} sx={{ paddingLeft: '0px !important' }}>
+                      <Button
+                        variant="contained"
+                        color="success"
+                        sx={{ borderRadius: 0.6 }}
+                        startIcon={<Eye />}
+                        onClick={async () => {
+                          const searchResult = await GetSchemeSearch(values.fd_id, values.payout_method_id);
+                          if (searchResult) {
+                            setSchemeData(searchResult);
+
+                            setTimeout(() => {
+                              handleOpenDialog();
+                            }, 200);
+                          }
+                        }}
+                      >
+                        View Scheme
+                      </Button>
+                    </Grid>
+                    <Grid item xs={3}>
+                      <CustomTextField
+                        label="Interest Rate"
+                        name="interest_rate"
+                        placeholder="Please enter Interest Rate"
+                        values={values}
+                        type="number"
+                        regType="number"
                         setFieldValue={setFieldValue}
-                        formName="years"
-                        optionName="value"
-                        label="Years"
+                        onBlur={handleBlur}
+                        touched={touched}
+                        errors={errors}
+                        FormHelperTextProps={{
+                          style: {
+                            marginLeft: 0
+                          }
+                        }}
                       />
                     </Grid>
-                    <Grid item xs={1}>
-                      <FormikAutoComplete
-                        options={month}
-                        defaultValue={values.months}
+                    <Grid item xs={3}>
+                      <CustomTextField
+                        label="Interest Amount"
+                        name="interest_amount"
+                        placeholder="Please enter Interest Amount"
+                        values={values}
+                        type="number"
+                        regType="number"
                         setFieldValue={setFieldValue}
-                        formName="months"
-                        optionName="value"
-                        label="Months"
+                        onBlur={handleBlur}
+                        touched={touched}
+                        errors={errors}
+                        FormHelperTextProps={{
+                          style: {
+                            marginLeft: 0
+                          }
+                        }}
                       />
                     </Grid>
-                    <Grid item xs={1}>
-                      <FormikAutoComplete
-                        options={days}
-                        defaultValue={values.days}
+                    <Grid item xs={3}>
+                      <CustomTextField
+                        label="Maturity Amount"
+                        name="maturity_amount"
+                        placeholder="Please enter Maturity Amount"
+                        values={values}
+                        type="number"
+                        regType="number"
                         setFieldValue={setFieldValue}
-                        formName="days"
-                        optionName="value"
-                        label="Days"
+                        onBlur={handleBlur}
+                        touched={touched}
+                        errors={errors}
+                        FormHelperTextProps={{
+                          style: {
+                            marginLeft: 0
+                          }
+                        }}
                       />
                     </Grid>
                   </Grid>

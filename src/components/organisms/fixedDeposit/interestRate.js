@@ -60,7 +60,6 @@ const InterestRate = ({ formValues, changeTableVisibility, isNotEditingInterestR
   // Active Button state
   const [isSchemeActive, setSchemeActive] = useState();
   const handleIsSchemeActive = (initialValue) => {
-    console.log(initialValue);
     setSchemeActive(initialValue);
   };
 

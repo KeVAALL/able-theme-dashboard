@@ -448,7 +448,7 @@ function Investor() {
             initialValues={{
               fd_name: '',
               search: '',
-              ifa_id: 2
+              ifa_id: 1
             }}
             // validationSchema={formValueFields}
             onSubmit={async (values, { resetForm }) => {

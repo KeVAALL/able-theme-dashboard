@@ -11,11 +11,27 @@ const formAllValues = {
   fd_id: 0,
   ifa_id: 0,
   payout_method_id: 'C',
+  investment_amount: 0,
   years: 0,
   months: 0,
-  days: 0
+  days: 0,
+  interest_rate: 0,
+  interest_amount: 0,
+  maturity_amount: 0
 };
-const validationSchema = yup.object().shape({});
+const validationSchema = yup.object().shape({
+  investor_id: yup.number(),
+  fd_id: yup.number(),
+  ifa_id: yup.number(),
+  payout_method_id: yup.string(),
+  investment_amount: yup.number(),
+  years: yup.number(),
+  months: yup.number(),
+  days: yup.number(),
+  interest_rate: yup.number(),
+  interest_amount: yup.number(),
+  maturity_amount: yup.number()
+});
 // Scheme Form values
 const schemeValues = {
   fd_name: '',

@@ -71,13 +71,14 @@ export const SubmitButton = memo(
           )}
 
           {location.pathname === '/transaction/investment' ? (
-            <Box>
-              <AnimateButton>
-                <Button variant="contained" color="success" startIcon={<Eye />} type="submit">
-                  {buttonTitle}
-                </Button>
-              </AnimateButton>
-            </Box>
+            // <Box>
+            //   <AnimateButton>
+            //     <Button variant="contained" color="success" startIcon={<Eye />} type="submit">
+            //       {buttonTitle}
+            //     </Button>
+            //   </AnimateButton>
+            // </Box>
+            <></>
           ) : (
             <Box>
               <AnimateButton>

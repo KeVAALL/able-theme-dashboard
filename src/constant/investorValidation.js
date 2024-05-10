@@ -147,8 +147,8 @@ const formAllValues = {
     // gender_id: 1,
     birth_date: new Date(),
     place_of_birth: '',
-    is_married: 0,
-    is_indian_resident: 0
+    is_married: 1,
+    is_indian_resident: 1
   },
   // Investor Address
   investor_address: {
