@@ -374,9 +374,9 @@ function Investor() {
                       /> */}
                       <FormikAutoComplete
                         options={investorType}
-                        defaultValue={values.investor.investor_type_id}
+                        defaultValue={values.investor.is_senior_citizen}
                         setFieldValue={setFieldValue}
-                        formName="investor.investor_type_id"
+                        formName="investor.is_senior_citizen"
                         optionName="investor"
                         label="Investor Type"
                       />
