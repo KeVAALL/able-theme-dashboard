@@ -362,16 +362,6 @@ function Investor() {
                       />
                     </Grid>
                     <Grid item xs={4}>
-                      {/* <NestedCustomTextField
-                        label="Investor type"
-                        valueName="investor.investor_type"
-                        values={values.investor.investor_type}
-                        type="text"
-                        handleChange={handleChange}
-                        handleBlur={handleBlur}
-                        touched={touched}
-                        errors={errors}
-                      /> */}
                       <FormikAutoComplete
                         options={investorType}
                         defaultValue={values.investor.is_senior_citizen}
