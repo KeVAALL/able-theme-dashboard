@@ -321,9 +321,9 @@ const ReactTable = ({
                               <IconButton
                                 color="black"
                                 onClick={async () => {
-                                  setTimeout(() => {
-                                    isEditingInterestRate();
-                                  }, 200);
+                                  // setTimeout(() => {
+                                  isEditingInterestRate();
+                                  // }, 500);
                                   setEditing(row.original);
                                 }}
                               >

@@ -11,7 +11,7 @@ import Loader from 'components/atoms/loader/Loader';
 // assets
 import { formAllValues, validationSchema, tableColumns, VisibleColumn } from 'constant/interestRateValidation';
 import { DeleteOneInterestRate, GetPayoutMethod, GetSchemeSearch } from 'hooks/interestRate/interestRate';
-import CustomTextField, { CustomAutoComplete } from 'utils/textfield';
+import CustomTextField, { CustomAutoComplete, FormikAutoComplete } from 'utils/textfield';
 import DialogForm from 'components/atoms/dialog/InterestRateDialog';
 import InterestRateTable from 'components/molecules/fixedDeposit/interestRateTable';
 
@@ -44,7 +44,8 @@ const InterestRate = ({ formValues, changeTableVisibility, isNotEditingInterestR
   const setEditing = (value) => {
     setFormValues({
       fd_name: value.fd_name,
-      issuer_name: value.issuer_name
+      issuer_name: value.issuer_name,
+      fd_payout_method_id: 'C'
     });
   };
   const schemeEditing = (value) => {
@@ -114,7 +115,7 @@ const InterestRate = ({ formValues, changeTableVisibility, isNotEditingInterestR
     setEditing(formValues);
     setTimeout(() => {
       setLoading(false);
-    }, 200);
+    }, 500);
   }, [formValues]);
 
   // Render Loader if data is loading
@@ -225,12 +226,21 @@ const InterestRate = ({ formValues, changeTableVisibility, isNotEditingInterestR
                     />
                   </Grid>
                   <Grid item xs={3}>
-                    <CustomAutoComplete
+                    {/* <CustomAutoComplete
                       options={payoutData}
                       defaultValue={selectedPayoutMethod}
                       setSelected={setSelectedPayoutMethod}
                       optionName="item_value"
                       label="Payout Method"
+                    /> */}
+                    <FormikAutoComplete
+                      options={payoutData}
+                      defaultValue={values.fd_payout_method_id}
+                      setFieldValue={setFieldValue}
+                      formName="fd_payout_method_id"
+                      keyName="id"
+                      optionName="item_value"
+                      label="Select Payout Method"
                     />
                   </Grid>
                   <Grid item xs={2}>
