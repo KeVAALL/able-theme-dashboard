@@ -15,8 +15,8 @@ const formAllValues = {
   years: 0,
   months: 0,
   days: 0,
-  interest_rate: 0,
-  interest_amount: 0,
+  interest_rate: '0',
+  aggrigated_interest: 0,
   maturity_amount: 0
 };
 const validationSchema = yup.object().shape({
@@ -29,7 +29,7 @@ const validationSchema = yup.object().shape({
   months: yup.number(),
   days: yup.number(),
   interest_rate: yup.number(),
-  interest_amount: yup.number(),
+  aggrigated_interest: yup.number(),
   maturity_amount: yup.number()
 });
 // Scheme Form values
@@ -43,6 +43,8 @@ const schemeValues = {
   investment_amount: 0
 };
 const schemeValidation = yup.object().shape({});
+// Investor Values
+
 // Search Item form fields
 const filterFormValues = {
   search: ''

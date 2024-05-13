@@ -13,7 +13,7 @@ import Loader from 'components/atoms/loader/Loader';
 // third-party
 import * as yup from 'yup';
 import { Formik } from 'formik';
-import { Eye, FilterSearch, Calculator } from 'iconsax-react';
+import { Eye, FilterSearch, Calculator, TimerStart } from 'iconsax-react';
 import { LocalizationProvider } from '@mui/x-date-pickers-pro';
 import { DesktopDateRangePicker } from '@mui/x-date-pickers-pro';
 import { AdapterDateFns } from '@mui/x-date-pickers-pro/AdapterDateFns';
@@ -43,7 +43,7 @@ import {
   GetIFASearch
 } from 'hooks/investor/investor';
 import '../../../utils/custom.css';
-import { GetInvestmentData, GetStatusDropdown, GetMaturityAction, GetScheme } from 'hooks/transaction/investment';
+import { GetInvestmentData, GetStatusDropdown, GetMaturityAction, GetScheme, CalculateFD } from 'hooks/transaction/investment';
 import { GetPayoutMethod, GetSchemeSearch } from 'hooks/interestRate/interestRate';
 import InvestmentDialog from 'components/atoms/dialog/InvestmentDialog';
 import AnimateButton from 'helpers/@extended/AnimateButton';
@@ -120,29 +120,63 @@ function Investment() {
   const setSearchData = (investor) => {
     setInvestmentData(investor);
   };
-
+  // Form State
+  const handleCalculate = (value) => {
+    console.log(value);
+    setFormValues(value);
+  };
   // Empty Form Fields
   const clearFormValues = () => {
     setFormValues(formAllValues);
   };
+  const resetValuesIfNeeded = (values, setFormValues) => {
+    setFormValues({
+      ...values,
+      interest_rate: '0',
+      aggrigated_interest: 0,
+      maturity_amount: 0
+    });
+  };
+  const resetCalculation = (e, key, values, setFieldValue, setFormValues) => {
+    if (values.aggrigated_interest !== 0 || values.maturity_amount !== 0) {
+      const parsed = parseInt(e.target.value, 10);
+      setFieldValue(key, parsed);
+      setFormValues({
+        ...values,
+        [key]: parsed,
+        interest_rate: '0',
+        aggrigated_interest: 0,
+        maturity_amount: 0
+      });
+    } else {
+      const parsed = parseInt(e.target.value, 10);
+      setFieldValue(key, parsed);
+    }
+  };
+  const customInputChange = (e, values, options, optionName, formName, setFieldValue, idName) => {
+    if (e.target.outerText === undefined) {
+      setFieldValue(formName, 0);
+      if (values.aggrigated_interest !== 0 || values.maturity_amount !== 0) {
+        resetValuesIfNeeded(values, setFormValues);
+      }
+    } else {
+      if (values.aggrigated_interest !== 0 || values.maturity_amount !== 0) {
+        resetValuesIfNeeded(values, setFormValues);
+      }
+      options.forEach(async (el) => {
+        if (el[optionName] === e.target.outerText) {
+          if (idName) {
+            await setFieldValue(formName, el[idName]);
+          } else {
+            await setFieldValue(formName, el.id);
+          }
+        }
+      });
+    }
+  };
 
   // Custom fields/ Table Columns
   const columns = useMemo(() => tableColumns, []);
-
-  // Query for fetching payout data
-  // const {
-  //   // isPending,
-  //   // error,
-  //   refetch: refetchPayoutData
-  // } = useQuery({
-  //   queryKey: ['payoutData', formValues.fd_id],
-  //   refetchOnWindowFocus: false,
-  //   keepPreviousData: true,
-  //   queryFn: () => GetPayoutMethod(formValues.fd_id),
-  //   onSuccess: (data) => {
-  //     setPayoutData(data);
-  //   }
-  // });
 
   // Duration Dropdown
   const days = Array(32)
@@ -232,7 +266,11 @@ function Investment() {
     }
   });
 
-  if (payoutPending || investorPending || ifaPending || statusPending || productPending) return <Loader />;
+  useEffect(() => {
+    console.log(formValues);
+  }, [formValues]);
+
+  if (payoutPending || investorPending || ifaPending || statusPending || productPending || maturityPending) return <Loader />;
 
   return (
     <>
@@ -246,19 +284,37 @@ function Investment() {
       />
       {showTable && (
         <Formik
-          validateOnBlur={false}
+          enableReinitialize={true}
           initialValues={formValues}
           validationSchema={validationSchema}
           onSubmit={async (values, { setSubmitting, resetForm }) => {
             if (isEditing === false) {
               console.log(values);
-              // const schemes = await GetScheme(values);
 
-              // setSchemeFormValues({ ...schemes[0], maturity_id: 1 });
+              const reqValues = { ...values, compounding_type: 'yearly' };
 
-              // setTimeout(() => {
-              //   handleOpenDialog();
-              // }, 100);
+              const result = await CalculateFD(reqValues);
+
+              console.log(result.data);
+              const calculated = result.data;
+
+              // console.log({
+              //   ...values,
+              //   interest_rate: calculated.interestRate,
+              //   aggrigated_interest: calculated.aggrigated_interest,
+              //   maturity_amount: calculated.maturity_amount
+              // });
+              // resetForm();
+
+              handleCalculate({
+                ...values,
+                interest_rate: calculated.interestRate,
+                // interest_rate: 7.25,
+                aggrigated_interest: calculated.aggrigated_interest,
+                // aggrigated_interest: 289.92,
+                maturity_amount: calculated.maturity_amount
+                // maturity_amount: 2289.92
+              });
               //   SaveInvestor(formValues, InvestmentTableDataRefetch, clearFormValues);
             }
             if (isEditing === true) {
@@ -313,8 +369,10 @@ function Investment() {
                     <Grid item xs={3}>
                       <FormikAutoComplete
                         options={investorData}
+                        values={values}
                         defaultValue={values.investor_id}
                         setFieldValue={setFieldValue}
+                        customInputChange={customInputChange}
                         formName="investor_id"
                         idName="investor_id"
                         optionName="investor_name"
@@ -324,8 +382,10 @@ function Investment() {
                     <Grid item xs={3}>
                       <FormikAutoComplete
                         options={fdDropdown}
+                        values={values}
                         defaultValue={values.fd_id}
                         setFieldValue={setFieldValue}
+                        customInputChange={customInputChange}
                         // errors={errors}
                         formName="fd_id"
                         idName="fd_id"
@@ -351,8 +411,8 @@ function Investment() {
                         placeholder="Please enter Investment Amount"
                         values={values}
                         type="number"
-                        regType="number"
-                        setFieldValue={setFieldValue}
+                        onChange={(e) => resetCalculation(e, 'investment_amount', values, setFieldValue, setFormValues)}
+                        // onChange={handleChange}
                         onBlur={handleBlur}
                         touched={touched}
                         errors={errors}
@@ -366,9 +426,11 @@ function Investment() {
                     <Grid item xs={1}>
                       <FormikAutoComplete
                         disableClearable
+                        values={values}
                         options={year}
                         defaultValue={values.years}
                         setFieldValue={setFieldValue}
+                        customInputChange={customInputChange}
                         formName="years"
                         optionName="value"
                         label="Years"
@@ -377,9 +439,11 @@ function Investment() {
                     <Grid item xs={1}>
                       <FormikAutoComplete
                         disableClearable
+                        values={values}
                         options={month}
                         defaultValue={values.months}
                         setFieldValue={setFieldValue}
+                        customInputChange={customInputChange}
                         formName="months"
                         optionName="value"
                         label="Months"
@@ -388,9 +452,11 @@ function Investment() {
                     <Grid item xs={1}>
                       <FormikAutoComplete
                         disableClearable
+                        values={values}
                         options={days}
                         defaultValue={values.days}
                         setFieldValue={setFieldValue}
+                        customInputChange={customInputChange}
                         formName="days"
                         optionName="value"
                         label="Days"
@@ -399,8 +465,10 @@ function Investment() {
                     <Grid item xs={3}>
                       <FormikAutoComplete
                         options={payoutData}
+                        values={values}
                         defaultValue={values.payout_method_id}
                         setFieldValue={setFieldValue}
+                        customInputChange={customInputChange}
                         formName="payout_method_id"
                         keyName="id"
                         optionName="item_value"
@@ -436,9 +504,10 @@ function Investment() {
                       <CustomTextField
                         label="Interest Rate"
                         name="interest_rate"
+                        disabled
                         placeholder="Please enter Interest Rate"
                         values={values}
-                        type="number"
+                        type="text"
                         regType="number"
                         setFieldValue={setFieldValue}
                         onBlur={handleBlur}
@@ -454,12 +523,14 @@ function Investment() {
                     <Grid item xs={3}>
                       <CustomTextField
                         label="Interest Amount"
-                        name="interest_amount"
+                        name="aggrigated_interest"
+                        disabled
                         placeholder="Please enter Interest Amount"
                         values={values}
                         type="number"
-                        regType="number"
-                        setFieldValue={setFieldValue}
+                        // regType="number"
+                        // setFieldValue={setFieldValue}
+                        onChange={handleChange}
                         onBlur={handleBlur}
                         touched={touched}
                         errors={errors}
@@ -474,11 +545,13 @@ function Investment() {
                       <CustomTextField
                         label="Maturity Amount"
                         name="maturity_amount"
+                        disabled
                         placeholder="Please enter Maturity Amount"
                         values={values}
                         type="number"
-                        regType="number"
-                        setFieldValue={setFieldValue}
+                        // regType="number"
+                        // setFieldValue={setFieldValue}
+                        onChange={handleChange}
                         onBlur={handleBlur}
                         touched={touched}
                         errors={errors}
@@ -488,6 +561,18 @@ function Investment() {
                           }
                         }}
                       />
+                    </Grid>
+                    <Grid item xs={3}>
+                      <Button
+                        fullWidth
+                        variant="contained"
+                        color="success"
+                        sx={{ borderRadius: 0.6 }}
+                        startIcon={<TimerStart />}
+                        onClick={async () => {}}
+                      >
+                        Start Investment
+                      </Button>
                     </Grid>
                   </Grid>
                 </CardContent>
@@ -620,3 +705,20 @@ function Investment() {
 }
 
 export default Investment;
+
+// onChange={(e) => {
+//   if (values.aggrigated_interest !== null) {
+//     handleChange(e);
+
+//     setFormValues({
+//       ...values,
+//       investment_amount: e.target.value,
+//       interest_rate: '0',
+//       aggrigated_interest: 0,
+//       maturity_amount: 0
+//     });
+//   } else {
+//     // handleChange('investment_amount')(event);
+//     handleChange(e);
+//   }
+// }}

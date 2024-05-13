@@ -87,6 +87,7 @@ export const CustomTextField = memo((props) => {
       if (props.regType === 'pan') {
         props.setFieldValue(props.name, value.toUpperCase());
       } else {
+        console.log(typeof value);
         props.setFieldValue(props.name, value);
       }
     }
@@ -164,6 +165,24 @@ export const CustomAutoComplete = memo((props) => {
 export const FormikAutoComplete = memo((props) => {
   const setFieldValue = props.setFieldValue;
 
+  const initialValue =
+    (typeof props.defaultValue === 'string' &&
+      props.options.find((el) => {
+        if (props.keyName) {
+          return el[props.keyName] === props.defaultValue;
+        } else {
+          return el[props.optionName] === props.defaultValue;
+        }
+      })) ||
+    (typeof props.defaultValue === 'number' &&
+      props.options.find((el) => {
+        if (props.idName) {
+          return el[props.idName] === props.defaultValue;
+        } else {
+          return el.id === props.defaultValue;
+        }
+      }));
+
   const handleOptionChange = (e, optionName, formName, setFieldValue, idName) => {
     if (e.target.outerText === undefined) {
       setFieldValue(formName, 0);
@@ -203,26 +222,14 @@ export const FormikAutoComplete = memo((props) => {
       id="basic-autocomplete-label"
       options={props.options}
       disableClearable={props.disableClearable ? true : false}
-      // defaultValue={(props.defaultValue && props.options.find((el) => el[props.optionName] === props.defaultValue)) || props.options[0]}
-      defaultValue={
-        (typeof props.defaultValue === 'string' &&
-          props.options.find((el) => {
-            if (props.keyName) {
-              return el[props.keyName] === props.defaultValue;
-            } else {
-              return el[props.optionName] === props.defaultValue;
-            }
-          })) ||
-        (typeof props.defaultValue === 'number' &&
-          props.options.find((el) => {
-            if (props.idName) {
-              return el[props.idName] === props.defaultValue;
-            } else {
-              return el.id === props.defaultValue;
-            }
-          }))
-      }
-      onChange={(e) => handleOptionChange(e, props.optionName, props.formName, setFieldValue, props.idName)}
+      defaultValue={initialValue}
+      onChange={(e) => {
+        if (props.customInputChange) {
+          props.customInputChange(e, props.values, props.options, props.optionName, props.formName, setFieldValue, props.idName);
+        } else {
+          handleOptionChange(e, props.optionName, props.formName, setFieldValue, props.idName);
+        }
+      }}
       getOptionLabel={(option) => option[props.optionName]} // Assuming 'product_type' is the label you want to display
       renderInput={(params) => (
         <TextField
@@ -237,7 +244,9 @@ export const FormikAutoComplete = memo((props) => {
 
 FormikAutoComplete.propTypes = {
   idName: PropTypes.any,
-  keyName: PropTypes.any
+  keyName: PropTypes.any,
+  values: PropTypes.any,
+  customInputChange: PropTypes.any
 };
 
 export const CustomCheckbox = (props) => {
