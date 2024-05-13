@@ -89,7 +89,6 @@ function Investor() {
 
   // Sets form values for editing
   const setEditing = (value) => {
-    console.log(value);
     setFormValues(value);
     handleIsInvestorActive(value.investor.is_active);
     setSelectedGender(value.investor.gender);
@@ -230,16 +229,6 @@ function Investor() {
           validationSchema={validationSchema}
           onSubmit={async (values, { setSubmitting, resetForm }) => {
             if (isEditing === false) {
-              console.log({
-                ...values,
-                investor: {
-                  ...values.investor,
-                  is_foreign_tax_resident: Boolean(selectedDeclaration.isResidentOutsideIndia),
-                  is_rpep: Boolean(selectedDeclaration.isRelativeToPoliticallyExposed),
-                  is_pep: Boolean(selectedDeclaration.isPoliticallyExposed)
-                },
-                nominee: nomineeData
-              });
               const formValues = {
                 ...values,
                 investor: {
@@ -254,9 +243,6 @@ function Investor() {
               SaveInvestor(formValues, InvestorTableDataRefetch, clearFormValues);
             }
             if (isEditing === true) {
-              console.log('i am editing');
-
-              console.log({ ...values, method_name: 'update' });
               const formValues = {
                 ...values,
                 investor: {
@@ -521,16 +507,6 @@ function Investor() {
                         Search
                       </Button>
                     </Grid>
-
-                    {/* <Grid item xs={2} style={{ paddingTop: 0 }}>
-                      <Box>
-                        <AnimateButton>
-                          <Button fullWidth variant="contained" color="success" startIcon={<SearchNormal1 />} type="submit">
-                            Show
-                          </Button>
-                        </AnimateButton>
-                      </Box>
-                    </Grid> */}
                   </Grid>
                 </CardContent>
               </Box>

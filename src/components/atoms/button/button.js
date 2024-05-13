@@ -4,9 +4,8 @@ import PropTypes from 'prop-types';
 
 import React, { useEffect, memo } from 'react';
 import { Box, Button, Stack, CardHeader, FormControlLabel, Switch } from '@mui/material';
-import { useLocation } from 'react-router';
 import AnimateButton from 'helpers/@extended/AnimateButton';
-import { Additem, Eye } from 'iconsax-react';
+import { Additem } from 'iconsax-react';
 
 const headerSX = {
   p: 2.5,
@@ -26,7 +25,8 @@ export const SubmitButton = memo(
     setIsActive,
     isActive,
     errors,
-    handleTabError
+    handleTabError,
+    handleIsInvestorEditing
   }) => {
     useEffect(() => {
       console.log(location.pathname);
@@ -37,6 +37,9 @@ export const SubmitButton = memo(
 
     const CancelForm = () => {
       changeTableVisibility();
+      if (handleIsInvestorEditing) {
+        handleIsInvestorEditing();
+      }
       if (setActiveClose) {
         setActiveClose();
       }
@@ -105,5 +108,6 @@ SubmitButton.PropTypes = {
   buttonTitle: PropTypes.any,
   handleOpenDialog: PropTypes.any,
   errors: PropTypes.any,
-  handleTabError: PropTypes.any
+  handleTabError: PropTypes.any,
+  handleIsInvestorEditing: PropTypes.any
 };

@@ -46,36 +46,39 @@ function a11yProps(index) {
 
 // ==============================|| TABS - ICON ||============================== //
 
-export default function IconTabs(props) {
+export default function InvestmentTabs(props) {
   const [tabValue, setTabValue] = useState(0);
 
-  const handleChange = (event, newValue) => {
+  // const handleTabChange = (event, newValue) => {
+  const handleTabChange = (event, newValue) => {
+    console.log(newValue);
     setTabValue(newValue);
   };
 
-  useEffect(() => {
-    console.log(props.errors);
-    props.handleTabError(props.errors);
-  }, [props.errors]);
+  // useEffect(() => {
+  //   console.log(props.errors);
+  //   props.handleTabError(props.errors);
+  // }, [props.errors]);
 
   const tabStyle = { borderTopLeftRadius: 0, borderTopRightRadius: 0, borderRadius: 1.5, overflow: 'visible' };
+  const contentSX = { paddingTop: 4 };
 
   return (
     <Box sx={{ width: '100%' }}>
       <Divider />
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Tabs
-          className={`tab_main ${props.errorObject?.addressDetailsError || props.errorObject?.personalInfoError ? 'indicator_main' : ''}`}
-          // className={`tab_main`}
+          // className={`tab_main ${props.errorObject?.addressDetailsError || props.errorObject?.personalInfoError ? 'indicator_main' : ''}`}
+          className={`tab_main`}
           variant="scrollable"
           scrollButtons
           allowScrollButtonsMobile
           value={tabValue}
-          onChange={handleChange}
+          onChange={handleTabChange}
           aria-label="scrollable force tabs example"
         >
           <Tab
-            className={props.errorObject.personalInfoError ? 'tab_1' : ''}
+            // className={props.errorObject.personalInfoError ? 'tab_1' : ''}
             label="Personal Info"
             icon={<Personalcard />}
             iconPosition="start"
@@ -83,7 +86,7 @@ export default function IconTabs(props) {
           />
           {/* <CustomTooltip title="Add" arrow color="#fff" bg="pink"> */}
           <Tab
-            className={props.errorObject.addressDetailsError ? 'tab_2' : ''}
+            // className={props.errorObject.addressDetailsError ? 'tab_2' : ''}
             label="Address Details"
             icon={<LocationTick />}
             iconPosition="start"
@@ -95,7 +98,7 @@ export default function IconTabs(props) {
         </Tabs>
       </Box>
       <TabPanel className="panel" value={tabValue} index={0}>
-        <MainCard sx={tabStyle}>
+        <MainCard sx={tabStyle} contentSX={contentSX}>
           <PersonalInfo
             values={props.values}
             handleChange={props.handleChange}
@@ -103,11 +106,13 @@ export default function IconTabs(props) {
             setFieldValue={props.setFieldValue}
             touched={props.touched}
             errors={props.errors}
+            tabValue={tabValue}
+            handleTabChange={handleTabChange}
           />
         </MainCard>
       </TabPanel>
       <TabPanel className={`panel`} value={tabValue} index={1}>
-        <MainCard sx={tabStyle}>
+        <MainCard sx={tabStyle} contentSX={contentSX}>
           <AddressDetails
             values={props.values}
             handleChange={props.handleChange}
@@ -115,16 +120,23 @@ export default function IconTabs(props) {
             handleBlur={props.handleBlur}
             touched={props.touched}
             errors={props.errors}
+            tabValue={tabValue}
+            handleTabChange={handleTabChange}
           />
         </MainCard>
       </TabPanel>
       <TabPanel className="panel" value={tabValue} index={2}>
-        <MainCard sx={tabStyle}>
-          <ProfessionalDetails values={props.values} setFieldValue={props.setFieldValue} />
+        <MainCard sx={tabStyle} contentSX={contentSX}>
+          <ProfessionalDetails
+            values={props.values}
+            setFieldValue={props.setFieldValue}
+            tabValue={tabValue}
+            handleTabChange={handleTabChange}
+          />
         </MainCard>
       </TabPanel>
       <TabPanel className="panel" value={tabValue} index={3}>
-        <MainCard sx={tabStyle}>
+        <MainCard sx={tabStyle} contentSX={contentSX}>
           <Nomination
             values={props.values}
             handleChange={props.handleChange}
@@ -133,12 +145,19 @@ export default function IconTabs(props) {
             errors={props.errors}
             nomineeData={props.nomineeData}
             handleNewNominee={props.handleNewNominee}
+            tabValue={tabValue}
+            handleTabChange={handleTabChange}
           />
         </MainCard>
       </TabPanel>
       <TabPanel className="panel" value={tabValue} index={4}>
-        <MainCard sx={tabStyle}>
-          <Declaration selectedDeclaration={props.selectedDeclaration} handleDeclarationClick={props.handleDeclarationClick} />
+        <MainCard sx={tabStyle} contentSX={contentSX}>
+          <Declaration
+            selectedDeclaration={props.selectedDeclaration}
+            handleDeclarationClick={props.handleDeclarationClick}
+            tabValue={tabValue}
+            handleTabChange={handleTabChange}
+          />
         </MainCard>
       </TabPanel>
     </Box>

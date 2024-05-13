@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import React, { memo } from 'react';
-import { Checkbox, Grid, Typography, Box } from '@mui/material';
+import { Checkbox, Grid, Typography, Box, Button } from '@mui/material';
 import { NestedCustomTextField } from 'utils/textfield';
 
 const AddressDetails = (props) => {
@@ -144,6 +144,36 @@ const AddressDetails = (props) => {
                 touched={props.touched}
                 errors={props.errors}
               />
+            </Grid>
+            <Grid item xs={4}></Grid>
+            <Grid item xs={4}></Grid>
+            <Grid item xs={2}>
+              <Button
+                fullWidth
+                variant="outlined"
+                color="secondary"
+                sx={{ borderRadius: 0.6 }}
+                // startIcon={<TimerStart />}
+                onClick={async () => {
+                  props.handleTabChange(event, props.tabValue - 1);
+                }}
+              >
+                Back
+              </Button>
+            </Grid>
+            <Grid item xs={2}>
+              <Button
+                fullWidth
+                variant="contained"
+                color="success"
+                sx={{ borderRadius: 0.6 }}
+                // startIcon={<TimerStart />}
+                onClick={async () => {
+                  props.handleTabChange(event, props.tabValue + 1);
+                }}
+              >
+                Proceed
+              </Button>
             </Grid>
           </Grid>
         </Box>

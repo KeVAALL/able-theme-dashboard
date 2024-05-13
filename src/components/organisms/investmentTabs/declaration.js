@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import React, { memo } from 'react';
-import { Grid, Typography, Chip } from '@mui/material';
+import { Grid, Typography, Chip, Button } from '@mui/material';
 
 const Declaration = ({ selectedDeclaration, handleDeclarationClick }) => {
   return (
@@ -80,6 +80,34 @@ const Declaration = ({ selectedDeclaration, handleDeclarationClick }) => {
               />
             </Grid>
           </Grid>
+        </Grid>
+        <Grid item xs={4}></Grid>
+        <Grid item xs={4}></Grid>
+        <Grid item xs={2}>
+          <Button
+            fullWidth
+            variant="outlined"
+            color="secondary"
+            sx={{ borderRadius: 0.6 }}
+            onClick={async () => {
+              props.handleTabChange(event, props.tabValue - 1);
+            }}
+          >
+            Back
+          </Button>
+        </Grid>
+        <Grid item xs={2}>
+          <Button
+            fullWidth
+            variant="contained"
+            color="success"
+            sx={{ borderRadius: 0.6 }}
+            onClick={async () => {
+              props.handleTabChange(event, props.tabValue + 1);
+            }}
+          >
+            Proceed
+          </Button>
         </Grid>
       </Grid>
     </>

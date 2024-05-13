@@ -120,7 +120,6 @@ export default function IconTabs(props) {
             touched={props.touched}
             errors={props.errors}
             sameAddress={props.sameAddress}
-            handleCheckboxChange={props.handleCheckboxChange}
           />
         </MainCard>
       </TabPanel>

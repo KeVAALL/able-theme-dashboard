@@ -119,7 +119,6 @@ export async function GetEditOneInvestor(setEditing, investor_id) {
       method_name: 'getdetails',
       investor_id: investor_id
     });
-    console.log(response.data.data);
     setEditing(response.data.data);
     return response.data.data;
   } catch (error) {

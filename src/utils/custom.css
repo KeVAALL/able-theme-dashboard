@@ -31,7 +31,7 @@
 
 .multi_select > div:first-of-type {
   min-height: 33px !important;
-  border-radius: 8px !important;
+  border-radius: 4px !important;
 }
 #column-hiding {
   padding: 8px 32px 8px 12px !important;

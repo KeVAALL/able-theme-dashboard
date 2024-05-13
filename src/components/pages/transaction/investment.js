@@ -21,6 +21,7 @@ import { AdapterDateFns } from '@mui/x-date-pickers-pro/AdapterDateFns';
 // assets
 import { SubmitButton } from 'components/atoms/button/button';
 import CustomTextField, { CustomAutoComplete, FormikAutoComplete, NestedCustomTextField } from 'utils/textfield';
+import { formAllValues as investorFormValues, validationSchema as investorFormValidation } from 'constant/investorValidation';
 import {
   formAllValues,
   validationSchema,
@@ -47,6 +48,7 @@ import { GetInvestmentData, GetStatusDropdown, GetMaturityAction, GetScheme, Cal
 import { GetPayoutMethod, GetSchemeSearch } from 'hooks/interestRate/interestRate';
 import InvestmentDialog from 'components/atoms/dialog/InvestmentDialog';
 import AnimateButton from 'helpers/@extended/AnimateButton';
+import InvestmentTabs from 'components/organisms/investmentTabs';
 
 function Investment() {
   // Main data states
@@ -64,6 +66,7 @@ function Investment() {
   const [isEditing, setIsEditing] = useState(false);
   const [isInvestmentActive, setInvestmentActive] = useState();
   const [schemeFormValues, setSchemeFormValues] = useState();
+  const [isInvestorEditing, setIsInvestorEditing] = useState(false);
 
   // Dialog state
   const [openDialog, setOpenDialog] = useState(false);
@@ -72,13 +75,25 @@ function Investment() {
   const [showTable, setShowTable] = useState(false); // State to toggle visibility of the table form
 
   // Selection states
-  const [selectedIFA, setSelectedIFA] = useState(null);
+  const [selectedDeclaration, setSelectedDeclaration] = useState({
+    isPoliticallyExposed: true,
+    isRelativeToPoliticallyExposed: true,
+    isResidentOutsideIndia: true
+  });
+  // Selection states
+  const [fdDropdown, setFdDropdown] = useState([]);
+  const [statusDropdown, setStatusDropdown] = useState([]);
+  const [dateValue, setDateValue] = useState([null, null]);
 
   // Address Details Checkbox
   const [sameAddress, setSameAddress] = useState(false);
 
+  // Nominee
+  const [nomineeData, setNomineeData] = useState([]);
+
   // Form State
   const [formValues, setFormValues] = useState(formAllValues);
+  const [investorEditFormValues, setInvestorEditFormValues] = useState(investorFormValues);
   // Theme
   const theme = useTheme();
   const mdUp = theme.breakpoints.up('md');
@@ -89,6 +104,18 @@ function Investment() {
     setFormValues(value);
     handleIsInvestmentActive(value.investor.is_active);
   };
+  const setInvestorEditing = (value) => {
+    console.log(value);
+    setInvestorEditFormValues(value);
+    // handleIsInvestorActive(value.investor.is_active);
+    // setSelectedGender(value.investor.gender);
+    setSelectedDeclaration({
+      isPoliticallyExposed: Boolean(value.declaration.is_pep),
+      isRelativeToPoliticallyExposed: Boolean(value.declaration.is_rpep),
+      isResidentOutsideIndia: Boolean(value.declaration.is_foreign_tax_resident)
+    });
+    setNomineeData(value.nominee);
+  };
   const setActiveEditing = () => {
     setIsEditing(true);
   };
@@ -98,19 +125,36 @@ function Investment() {
   const handleIsInvestmentActive = (initialValue) => {
     setInvestmentActive(initialValue);
   };
-  const schemeEditing = (value) => {
-    setSchemeFormValues(value);
+  const handleIsInvestorEditing = () => {
+    setIsInvestorEditing(true);
   };
-
+  const handleIsNotInvestorEditing = () => {
+    setIsInvestorEditing(false);
+  };
+  // Nominee
+  const handleNewNominee = (value) => {
+    setNomineeData((prev) => {
+      return [...prev, value];
+    });
+  };
+  // Declaration
+  const handleDeclarationClick = (value) => {
+    if (value === 'PoliticallyExposed') {
+      setSelectedDeclaration({ ...selectedDeclaration, isPoliticallyExposed: !selectedDeclaration.isPoliticallyExposed });
+    } else if (value === 'RelativeToPoliticallyExposed') {
+      setSelectedDeclaration({
+        ...selectedDeclaration,
+        isRelativeToPoliticallyExposed: !selectedDeclaration.isRelativeToPoliticallyExposed
+      });
+    } else if (value === 'ResidentOutsideIndia') {
+      setSelectedDeclaration({ ...selectedDeclaration, isResidentOutsideIndia: !selectedDeclaration.isResidentOutsideIndia });
+    }
+  };
   // Toggle Table and Form Visibility
   const changeTableVisibility = () => {
     setShowTable(!showTable);
   };
 
-  // Selection states
-  const [fdDropdown, setFdDropdown] = useState([]);
-  const [statusDropdown, setStatusDropdown] = useState([]);
-  const [dateValue, setDateValue] = useState([null, null]);
   // Dialog state
   const handleOpenDialog = () => {
     setOpenDialog(!openDialog);
@@ -266,10 +310,6 @@ function Investment() {
     }
   });
 
-  useEffect(() => {
-    console.log(formValues);
-  }, [formValues]);
-
   if (payoutPending || investorPending || ifaPending || statusPending || productPending || maturityPending) return <Loader />;
 
   return (
@@ -304,16 +344,12 @@ function Investment() {
               //   aggrigated_interest: calculated.aggrigated_interest,
               //   maturity_amount: calculated.maturity_amount
               // });
-              // resetForm();
 
               handleCalculate({
                 ...values,
                 interest_rate: calculated.interestRate,
-                // interest_rate: 7.25,
                 aggrigated_interest: calculated.aggrigated_interest,
-                // aggrigated_interest: 289.92,
                 maturity_amount: calculated.maturity_amount
-                // maturity_amount: 2289.92
               });
               //   SaveInvestor(formValues, InvestmentTableDataRefetch, clearFormValues);
             }
@@ -360,6 +396,7 @@ function Investment() {
                   setActiveClose={setActiveClose}
                   setIsActive={handleIsInvestmentActive}
                   isActive={isInvestmentActive}
+                  handleIsInvestorEditing={handleIsNotInvestorEditing}
                 />
 
                 <Divider />
@@ -403,7 +440,16 @@ function Investment() {
                         label="Select IFA"
                       />
                     </Grid>
-                    <Grid item xs={3}></Grid>
+                    <Grid item xs={3}>
+                      <FormikAutoComplete
+                        options={maturityAction}
+                        defaultValue={values.maturity_action_id}
+                        setFieldValue={setFieldValue}
+                        formName="maturity_action_id"
+                        optionName="item_value"
+                        label="Select Maturity Action"
+                      />
+                    </Grid>
                     <Grid item xs={3}>
                       <CustomTextField
                         label="Investment Amount"
@@ -412,7 +458,6 @@ function Investment() {
                         values={values}
                         type="number"
                         onChange={(e) => resetCalculation(e, 'investment_amount', values, setFieldValue, setFormValues)}
-                        // onChange={handleChange}
                         onBlur={handleBlur}
                         touched={touched}
                         errors={errors}
@@ -569,13 +614,57 @@ function Investment() {
                         color="success"
                         sx={{ borderRadius: 0.6 }}
                         startIcon={<TimerStart />}
-                        onClick={async () => {}}
+                        onClick={async () => {
+                          await GetEditOneInvestor(setInvestorEditing, values.investor_id);
+
+                          handleIsInvestorEditing();
+                        }}
                       >
                         Start Investment
                       </Button>
                     </Grid>
                   </Grid>
                 </CardContent>
+                {isInvestorEditing && (
+                  <Grid container spacing={3}>
+                    <Grid item xs={12}>
+                      <Formik
+                        enableReinitialize={true}
+                        initialValues={investorEditFormValues}
+                        validationSchema={investorFormValidation}
+                        onSubmit={async (values, { setSubmitting, resetForm }) => {}}
+                      >
+                        {({ values, errors, touched, handleChange, handleBlur, handleSubmit, setFieldValue, resetForm, isSubmitting }) => (
+                          <Box
+                            component="form"
+                            onSubmit={(event) => {
+                              event.preventDefault();
+                              handleSubmit();
+                            }}
+                            sx={{ width: '100%' }}
+                          >
+                            <InvestmentTabs
+                              values={values}
+                              handleChange={handleChange}
+                              handleBlur={handleBlur}
+                              touched={touched}
+                              errors={errors}
+                              setFieldValue={setFieldValue}
+                              selectedDeclaration={selectedDeclaration}
+                              handleDeclarationClick={handleDeclarationClick}
+                              nomineeData={nomineeData}
+                              handleNewNominee={handleNewNominee}
+                              // errorObject={errorObject}
+                              // handleTabError={handleTabError}
+                              // sameAddress={sameAddress}
+                              // handleCheckboxChange={handleCheckboxChange}
+                            />
+                          </Box>
+                        )}
+                      </Formik>
+                    </Grid>
+                  </Grid>
+                )}
               </Card>
             </Box>
           )}
@@ -601,7 +690,6 @@ function Investment() {
               status_id: yup.number()
             })}
             onSubmit={async (values, { resetForm }) => {
-              console.log(values);
               const formValues = { ...values, from_date: dateValue[0], end_date: dateValue[1] };
 
               const investmentData = await GetInvestmentData(formValues);
@@ -628,7 +716,6 @@ function Investment() {
                           onChange={(newValue) => {
                             setDateValue(newValue);
                           }}
-                          // slotProps={{ fieldSeparator: { children: 'TO' } }}
                         />
                       </LocalizationProvider>
                     </Grid>

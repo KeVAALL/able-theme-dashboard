@@ -305,29 +305,61 @@ const Nomination = (props) => {
           </Formik>
         )}
         {!showTable && (
-          <MainCard
-            title="Nominee"
-            changeTableVisibility={changeTableVisibility}
-            showButton
-            setActiveAdding={setActiveClose}
-            border
-            contentSX={{ p: 0 }}
-            sx={{ height: '100%' }}
-          >
-            <MultiTable
-              columns={columns}
-              data={props.nomineeData}
-              changeTableVisibility={changeTableVisibility}
-              setEditing={setEditing}
-              // getOneItem={GetOneProduct}
-              // deleteOneItem={DeleteOneProduct}
-              // setSearchData={setSearchData}
-              // tableDataRefetch={ProductTableDataRefetch}
-              setActiveEditing={setActiveEditing}
-              VisibleColumn={VisibleColumn}
-              doNotShowHeader={true}
-            />
-          </MainCard>
+          <Grid container spacing={4}>
+            <Grid item xs={12}>
+              <MainCard
+                title="Nominee"
+                changeTableVisibility={changeTableVisibility}
+                showButton
+                setActiveAdding={setActiveClose}
+                border
+                contentSX={{ p: 0 }}
+                sx={{ height: '100%' }}
+              >
+                <MultiTable
+                  columns={columns}
+                  data={props.nomineeData}
+                  changeTableVisibility={changeTableVisibility}
+                  setEditing={setEditing}
+                  // getOneItem={GetOneProduct}
+                  // deleteOneItem={DeleteOneProduct}
+                  // setSearchData={setSearchData}
+                  // tableDataRefetch={ProductTableDataRefetch}
+                  setActiveEditing={setActiveEditing}
+                  VisibleColumn={VisibleColumn}
+                  doNotShowHeader={true}
+                />
+              </MainCard>
+            </Grid>
+            <Grid item xs={4}></Grid>
+            <Grid item xs={4}></Grid>
+            <Grid item xs={2}>
+              <Button
+                fullWidth
+                variant="outlined"
+                color="secondary"
+                sx={{ borderRadius: 0.6 }}
+                onClick={async () => {
+                  props.handleTabChange(event, props.tabValue - 1);
+                }}
+              >
+                Back
+              </Button>
+            </Grid>
+            <Grid item xs={2}>
+              <Button
+                fullWidth
+                variant="contained"
+                color="success"
+                sx={{ borderRadius: 0.6 }}
+                onClick={async () => {
+                  props.handleTabChange(event, props.tabValue + 1);
+                }}
+              >
+                Proceed
+              </Button>
+            </Grid>
+          </Grid>
         )}
       </>
     </>
@@ -335,10 +367,3 @@ const Nomination = (props) => {
 };
 
 export default memo(Nomination);
-
-// const relation = relationship.find((el) => el.id === value.relationship_id);
-// if (relation.relation_name) {
-//   setSelectedRelation(relation.relation_name);
-// } else {
-//   selectedRelation(relation.relationship_id);
-// }

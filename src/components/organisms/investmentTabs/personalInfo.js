@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import React, { memo } from 'react';
-import { Grid } from '@mui/material';
+import { Grid, Button, Divider } from '@mui/material';
 
 // project-imports
 import CustomTextField, { FormikAutoComplete } from 'utils/textfield';
@@ -12,7 +12,7 @@ import { residency, marital_status } from 'constant/investorValidation';
 const PersonalInfo = (props) => {
   return (
     <>
-      <Grid container spacing={2} id="grid_box" sx={{ marginBottom: '20px' }}>
+      <Grid container spacing={3} id="grid_box">
         <Grid item xs={12} md={4}>
           <FormikAutoComplete
             options={residency}
@@ -61,6 +61,36 @@ const PersonalInfo = (props) => {
               renderInput={(params) => <CustomTextField {...params} />}
             />
           </LocalizationProvider>
+        </Grid>
+
+        <Grid item xs={4}></Grid>
+        <Grid item xs={4}></Grid>
+        <Grid item xs={2}>
+          <Button
+            fullWidth
+            variant="outlined"
+            color="secondary"
+            sx={{ borderRadius: 0.6 }}
+            onClick={async () => {
+              props.handleTabChange(event, props.tabValue - 1);
+            }}
+          >
+            Back
+          </Button>
+        </Grid>
+        <Grid item xs={2}>
+          <Button
+            fullWidth
+            variant="contained"
+            color="success"
+            sx={{ borderRadius: 0.6 }}
+            onClick={async () => {
+              console.log(props.values.investor);
+              props.handleTabChange(event, props.tabValue + 1);
+            }}
+          >
+            Proceed
+          </Button>
         </Grid>
       </Grid>
     </>
