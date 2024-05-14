@@ -26,6 +26,7 @@ export async function GetInvestmentData(values) {
       ...values,
       method_name: 'getinvestments'
     });
+
     return response.data.data;
   } catch (err) {
     enqueueSnackbar(err.message, {
@@ -114,8 +115,62 @@ export async function StartFD(values) {
 }
 export async function UpdatePersonalInfo(values) {
   try {
-    const response = await axios.post('invest/updatepersonalinfo', {
-      values
+    const response = await axios.post('invest/updatepersonalinfo', values);
+    enqueueSnackbar('Personal Info Updated', {
+      variant: 'success',
+      autoHideDuration: 2000,
+      anchorOrigin: {
+        vertical: 'top',
+        horizontal: 'right'
+      }
+    });
+    return response.data.data;
+  } catch (err) {
+    enqueueSnackbar(err.message, {
+      variant: 'error',
+      autoHideDuration: 2000,
+      anchorOrigin: {
+        vertical: 'top',
+        horizontal: 'right'
+      }
+    });
+    return [];
+  }
+}
+export async function UpdateAddressDetails(values) {
+  try {
+    const response = await axios.post('invest/updateaddress', values);
+    enqueueSnackbar('Address Details Updated', {
+      variant: 'success',
+      autoHideDuration: 2000,
+      anchorOrigin: {
+        vertical: 'top',
+        horizontal: 'right'
+      }
+    });
+    return response.data.data;
+  } catch (err) {
+    enqueueSnackbar(err.message, {
+      variant: 'error',
+      autoHideDuration: 2000,
+      anchorOrigin: {
+        vertical: 'top',
+        horizontal: 'right'
+      }
+    });
+    return [];
+  }
+}
+export async function UpdateProfessionalDetails(values) {
+  try {
+    const response = await axios.post('invest/updateprofessionaldetails', values);
+    enqueueSnackbar('Professional Details Updated', {
+      variant: 'success',
+      autoHideDuration: 2000,
+      anchorOrigin: {
+        vertical: 'top',
+        horizontal: 'right'
+      }
     });
     return response.data.data;
   } catch (err) {

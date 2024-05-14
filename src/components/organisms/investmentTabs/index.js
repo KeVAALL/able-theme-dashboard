@@ -47,6 +47,7 @@ function a11yProps(index) {
 // ==============================|| TABS - ICON ||============================== //
 
 export default function InvestmentTabs(props) {
+  console.log(props.values);
   const [tabValue, setTabValue] = useState(0);
 
   // const handleTabChange = (event, newValue) => {
@@ -122,6 +123,8 @@ export default function InvestmentTabs(props) {
             handleBlur={props.handleBlur}
             touched={props.touched}
             errors={props.errors}
+            investorID={props.investorID}
+            fdInvestmentID={props.fdInvestmentID}
             tabValue={tabValue}
             handleTabChange={handleTabChange}
           />
@@ -132,6 +135,8 @@ export default function InvestmentTabs(props) {
           <ProfessionalDetails
             values={props.values}
             setFieldValue={props.setFieldValue}
+            investorID={props.investorID}
+            fdInvestmentID={props.fdInvestmentID}
             tabValue={tabValue}
             handleTabChange={handleTabChange}
           />

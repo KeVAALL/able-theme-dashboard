@@ -2,6 +2,7 @@
 import React, { memo } from 'react';
 import { Checkbox, Grid, Typography, Box, Button, Divider } from '@mui/material';
 import { NestedCustomTextField } from 'utils/textfield';
+import { UpdateAddressDetails } from 'hooks/transaction/investment';
 
 const AddressDetails = (props) => {
   return (
@@ -170,10 +171,20 @@ const AddressDetails = (props) => {
                 variant="contained"
                 color="success"
                 sx={{ borderRadius: 0.6 }}
-                // startIcon={<TimerStart />}
                 onClick={async () => {
                   console.log(props.values.investor_address);
-                  props.handleTabChange(event, props.tabValue + 1);
+                  const formValues = {
+                    fd_investment_id: props.fdInvestmentID,
+                    investor_id: props.investorID,
+                    permanent_address: props.values.investor_address,
+                    correspondent_address: props.values.correspondent_address,
+                    is_permanent_address_correspondent: props.values.is_permanent_address_correspondent
+                  };
+                  const response = await UpdateAddressDetails(formValues);
+
+                  if (!response) {
+                    props.handleTabChange(event, props.tabValue + 1);
+                  }
                 }}
               >
                 Proceed

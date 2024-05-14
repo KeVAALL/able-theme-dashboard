@@ -5,6 +5,7 @@ import { Button, Divider, Grid } from '@mui/material';
 // project-imports
 import { annual_income_data, income_source_data, occupation } from 'constant/investorValidation';
 import { FormikAutoComplete } from 'utils/textfield';
+import { UpdateProfessionalDetails } from 'hooks/transaction/investment';
 
 const ProfessionalDetails = (props) => {
   return (
@@ -65,7 +66,17 @@ const ProfessionalDetails = (props) => {
             color="success"
             sx={{ borderRadius: 0.6 }}
             onClick={async () => {
-              props.handleTabChange(event, props.tabValue + 1);
+              console.log(props.values.professional_details);
+              const formValues = {
+                fd_investment_id: props.fdInvestmentID,
+                investor_id: props.investorID,
+                ...props.values.professional_details
+              };
+              const response = await UpdateProfessionalDetails(formValues);
+
+              if (!response) {
+                props.handleTabChange(event, props.tabValue + 1);
+              }
             }}
           >
             Proceed

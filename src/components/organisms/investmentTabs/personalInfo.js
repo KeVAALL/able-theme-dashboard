@@ -65,7 +65,7 @@ const PersonalInfo = (props) => {
         </Grid>
 
         <Grid item xs={12}>
-          <Divider />
+          <Divider sx={{ borderColor: '#9a9b9da6' }} />
         </Grid>
 
         <Grid item xs={4}></Grid>
@@ -97,9 +97,11 @@ const PersonalInfo = (props) => {
                 ...props.values.investor
               };
 
-              UpdatePersonalInfo(formValues);
+              const response = await UpdatePersonalInfo(formValues);
 
-              props.handleTabChange(event, props.tabValue + 1);
+              if (!response) {
+                props.handleTabChange(event, props.tabValue + 1);
+              }
             }}
           >
             Proceed
