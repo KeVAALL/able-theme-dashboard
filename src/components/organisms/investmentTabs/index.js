@@ -106,6 +106,8 @@ export default function InvestmentTabs(props) {
             setFieldValue={props.setFieldValue}
             touched={props.touched}
             errors={props.errors}
+            investorID={props.investorID}
+            fdInvestmentID={props.fdInvestmentID}
             tabValue={tabValue}
             handleTabChange={handleTabChange}
           />

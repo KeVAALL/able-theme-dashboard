@@ -14,17 +14,14 @@ export async function GetIssuerData() {
     });
     return response.data.data;
   } catch (error) {
-    dispatch(
-      openSnackbar({
-        open: true,
-        anchorOrigin: { vertical: 'top', horizontal: 'right' },
-        message: error.message,
-        variant: 'alert',
-        alert: {
-          color: 'error'
-        }
-      })
-    );
+    enqueueSnackbar(err.message, {
+      variant: 'error',
+      autoHideDuration: 2000,
+      anchorOrigin: {
+        vertical: 'top',
+        horizontal: 'right'
+      }
+    });
     return [];
   }
 }
@@ -35,7 +32,15 @@ export async function GetActiveIssuerData() {
     });
     return response.data.data;
   } catch (err) {
-    return err;
+    enqueueSnackbar(err.message, {
+      variant: 'error',
+      autoHideDuration: 2000,
+      anchorOrigin: {
+        vertical: 'top',
+        horizontal: 'right'
+      }
+    });
+    return [];
   }
 }
 export async function GetOneIssuer(values, setSearchData) {
@@ -46,17 +51,15 @@ export async function GetOneIssuer(values, setSearchData) {
     });
     setSearchData(response.data.data);
   } catch (error) {
-    dispatch(
-      openSnackbar({
-        open: true,
-        anchorOrigin: { vertical: 'top', horizontal: 'right' },
-        message: error.message,
-        variant: 'alert',
-        alert: {
-          color: 'error'
-        }
-      })
-    );
+    enqueueSnackbar(err.message, {
+      variant: 'error',
+      autoHideDuration: 2000,
+      anchorOrigin: {
+        vertical: 'top',
+        horizontal: 'right'
+      }
+    });
+    return [];
   }
 }
 export async function SaveIssuer(values, issuerTableDataRefetch, clearFormValues) {
@@ -72,7 +75,6 @@ export async function SaveIssuer(values, issuerTableDataRefetch, clearFormValues
       is_renewable: 0,
       user_id: 2
     });
-    console.log(response);
     clearFormValues();
     enqueueSnackbar('Issuer added', {
       variant: 'success',
@@ -144,6 +146,13 @@ export async function DeleteOneIssuer(values) {
       }
     });
   } catch (err) {
-    console.log(err);
+    enqueueSnackbar(err.message, {
+      variant: 'error',
+      autoHideDuration: 2000,
+      anchorOrigin: {
+        vertical: 'top',
+        horizontal: 'right'
+      }
+    });
   }
 }

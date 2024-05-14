@@ -112,3 +112,21 @@ export async function StartFD(values) {
     return [];
   }
 }
+export async function UpdatePersonalInfo(values) {
+  try {
+    const response = await axios.post('invest/updatepersonalinfo', {
+      values
+    });
+    return response.data.data;
+  } catch (err) {
+    enqueueSnackbar(err.message, {
+      variant: 'error',
+      autoHideDuration: 2000,
+      anchorOrigin: {
+        vertical: 'top',
+        horizontal: 'right'
+      }
+    });
+    return [];
+  }
+}

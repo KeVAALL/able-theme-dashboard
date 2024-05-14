@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import React, { memo } from 'react';
-import { Button, Grid } from '@mui/material';
+import { Button, Divider, Grid } from '@mui/material';
 
 // project-imports
 import { annual_income_data, income_source_data, occupation } from 'constant/investorValidation';
@@ -39,6 +39,9 @@ const ProfessionalDetails = (props) => {
             optionName="income_source"
             label="Source of Income"
           />
+        </Grid>
+        <Grid item xs={12}>
+          <Divider />
         </Grid>
         <Grid item xs={4}></Grid>
         <Grid item xs={4}></Grid>

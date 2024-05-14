@@ -165,24 +165,6 @@ export const CustomAutoComplete = memo((props) => {
 export const FormikAutoComplete = memo((props) => {
   const setFieldValue = props.setFieldValue;
 
-  const initialValue =
-    (typeof props.defaultValue === 'string' &&
-      props.options.find((el) => {
-        if (props.keyName) {
-          return el[props.keyName] === props.defaultValue;
-        } else {
-          return el[props.optionName] === props.defaultValue;
-        }
-      })) ||
-    (typeof props.defaultValue === 'number' &&
-      props.options.find((el) => {
-        if (props.idName) {
-          return el[props.idName] === props.defaultValue;
-        } else {
-          return el.id === props.defaultValue;
-        }
-      }));
-
   const handleOptionChange = (e, optionName, formName, setFieldValue, idName) => {
     if (e.target.outerText === undefined) {
       setFieldValue(formName, 0);
@@ -191,6 +173,7 @@ export const FormikAutoComplete = memo((props) => {
       props.options.forEach(async (el) => {
         if (el[optionName] === e.target.outerText) {
           if (idName) {
+            console.log(el[idName]);
             await setFieldValue(formName, el[idName]);
           } else {
             console.log(el.id);
@@ -230,6 +213,7 @@ export const FormikAutoComplete = memo((props) => {
             if (props.keyName) {
               return el[props.keyName] === props.defaultValue;
             } else {
+              console.log('Here');
               return el[props.optionName] === props.defaultValue;
             }
           })) ||
@@ -244,7 +228,8 @@ export const FormikAutoComplete = memo((props) => {
       }
       onChange={(e) => {
         if (props.customInputChange) {
-          props.customInputChange(e, props.values, props.options, props.optionName, props.formName, setFieldValue, props.idName);
+          console.log('Here');
+          props.customInputChange(e, props.values, props.options, props.optionName, props.formName, props.setFieldValue, props.idName);
         } else {
           handleOptionChange(e, props.optionName, props.formName, setFieldValue, props.idName);
         }

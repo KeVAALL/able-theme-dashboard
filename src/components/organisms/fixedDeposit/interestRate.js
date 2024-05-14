@@ -21,7 +21,6 @@ const headerSX = {
 };
 
 const InterestRate = ({ formValues, changeTableVisibility, isNotEditingInterestRate, isEditingInterestRate }) => {
-  console.log(formValues);
   // Main Data state
   const [schemeData, setSchemeData] = useState([]);
   // Edit Logic State

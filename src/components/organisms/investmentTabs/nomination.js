@@ -331,6 +331,9 @@ const Nomination = (props) => {
                 />
               </MainCard>
             </Grid>
+            <Grid item xs={12}>
+              <Divider />
+            </Grid>
             <Grid item xs={4}></Grid>
             <Grid item xs={4}></Grid>
             <Grid item xs={2}>

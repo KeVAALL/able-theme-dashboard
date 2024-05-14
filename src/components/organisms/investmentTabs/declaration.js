@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import React, { memo } from 'react';
-import { Grid, Typography, Chip, Button } from '@mui/material';
+import { Grid, Typography, Chip, Button, Divider } from '@mui/material';
 
 const Declaration = ({ selectedDeclaration, handleDeclarationClick }) => {
   return (
@@ -80,6 +80,9 @@ const Declaration = ({ selectedDeclaration, handleDeclarationClick }) => {
               />
             </Grid>
           </Grid>
+        </Grid>
+        <Grid item xs={12}>
+          <Divider />
         </Grid>
         <Grid item xs={4}></Grid>
         <Grid item xs={4}></Grid>

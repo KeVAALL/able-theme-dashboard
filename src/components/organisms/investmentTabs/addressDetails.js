@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import React, { memo } from 'react';
-import { Checkbox, Grid, Typography, Box, Button } from '@mui/material';
+import { Checkbox, Grid, Typography, Box, Button, Divider } from '@mui/material';
 import { NestedCustomTextField } from 'utils/textfield';
 
 const AddressDetails = (props) => {
@@ -144,6 +144,9 @@ const AddressDetails = (props) => {
                 touched={props.touched}
                 errors={props.errors}
               />
+            </Grid>
+            <Grid item xs={12}>
+              <Divider />
             </Grid>
             <Grid item xs={4}></Grid>
             <Grid item xs={4}></Grid>

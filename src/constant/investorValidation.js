@@ -270,7 +270,17 @@ const tableColumns = [
   },
   {
     Header: 'Type',
-    accessor: 'investor_type'
+    accessor: 'is_senior_citizen',
+    customCell: ({ value }) => {
+      switch (value) {
+        case 1:
+          return 'Senior Citizen';
+        case 2:
+          return 'Normal Citizen';
+        default:
+          return '';
+      }
+    }
   },
   {
     Header: 'Status',

@@ -66,7 +66,8 @@ function Investment() {
   const [isEditing, setIsEditing] = useState(false);
   const [isInvestmentActive, setInvestmentActive] = useState();
   const [schemeFormValues, setSchemeFormValues] = useState();
-  const [isInvestorEditing, setIsInvestorEditing] = useState(false);
+  const [isInvestorEditing, setIsInvestorEditing] = useState(false); // For Investor Form Visibility
+  const [fdInvestmentID, setFdInvestmentID] = useState();
 
   // Dialog state
   const [openDialog, setOpenDialog] = useState(false);
@@ -173,15 +174,17 @@ function Investment() {
   const clearFormValues = () => {
     setFormValues(formAllValues);
   };
-  const resetValuesIfNeeded = (values, setFormValues) => {
+  const resetValuesIfNeeded = (values, formName, formValue, setFormValues) => {
+    console.log(values);
     setFormValues({
       ...values,
+      [formName]: formValue,
       interest_rate: '0',
       aggrigated_interest: 0,
       maturity_amount: 0
     });
   };
-  const resetCalculation = (e, key, values, setFieldValue, setFormValues) => {
+  const resetCalculation = (e, type, key, values, setFieldValue, setFormValues) => {
     if (values.aggrigated_interest !== 0 || values.maturity_amount !== 0) {
       const parsed = parseInt(e.target.value, 10);
       setFieldValue(key, parsed);
@@ -201,21 +204,23 @@ function Investment() {
     if (e.target.outerText === undefined) {
       setFieldValue(formName, 0);
       if (values.aggrigated_interest !== 0 || values.maturity_amount !== 0) {
-        resetValuesIfNeeded(values, setFormValues);
+        resetValuesIfNeeded(values, formName, 0, setFormValues);
       }
     } else {
-      if (values.aggrigated_interest !== 0 || values.maturity_amount !== 0) {
-        resetValuesIfNeeded(values, setFormValues);
-      }
+      console.log('Setting');
       options.forEach(async (el) => {
         if (el[optionName] === e.target.outerText) {
           if (idName) {
             await setFieldValue(formName, el[idName]);
+            resetValuesIfNeeded(values, formName, el[idName], setFormValues);
           } else {
             await setFieldValue(formName, el.id);
+            resetValuesIfNeeded(values, formName, el.id, setFormValues);
           }
         }
       });
+      // if (values.aggrigated_interest !== 0 || values.maturity_amount !== 0) {
+      // }
     }
   };
 
@@ -456,8 +461,8 @@ function Investment() {
                         name="investment_amount"
                         placeholder="Please enter Investment Amount"
                         values={values}
-                        type="number"
-                        onChange={(e) => resetCalculation(e, 'investment_amount', values, setFieldValue, setFormValues)}
+                        type="string"
+                        onChange={(e) => resetCalculation(e, 'string', 'investment_amount', values, setFieldValue, setFormValues)}
                         onBlur={handleBlur}
                         touched={touched}
                         errors={errors}
@@ -618,6 +623,8 @@ function Investment() {
                           const result = await StartFD(values);
                           console.log(result);
 
+                          setFdInvestmentID(result.fd_investment_id);
+
                           await GetEditOneInvestor(setInvestorEditing, values.investor_id);
 
                           handleIsInvestorEditing();
@@ -657,6 +664,8 @@ function Investment() {
                               handleDeclarationClick={handleDeclarationClick}
                               nomineeData={nomineeData}
                               handleNewNominee={handleNewNominee}
+                              fdInvestmentID={fdInvestmentID}
+                              investorID={formValues.investor_id}
                               // errorObject={errorObject}
                               // handleTabError={handleTabError}
                               // sameAddress={sameAddress}

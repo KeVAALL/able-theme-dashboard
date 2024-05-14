@@ -8,6 +8,7 @@ import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { residency, marital_status } from 'constant/investorValidation';
+import { UpdatePersonalInfo } from 'hooks/transaction/investment';
 
 const PersonalInfo = (props) => {
   return (
@@ -63,6 +64,10 @@ const PersonalInfo = (props) => {
           </LocalizationProvider>
         </Grid>
 
+        <Grid item xs={12}>
+          <Divider />
+        </Grid>
+
         <Grid item xs={4}></Grid>
         <Grid item xs={4}></Grid>
         <Grid item xs={2}>
@@ -86,6 +91,14 @@ const PersonalInfo = (props) => {
             sx={{ borderRadius: 0.6 }}
             onClick={async () => {
               console.log(props.values.investor);
+              const formValues = {
+                fd_investment_id: props.fdInvestmentID,
+                investor_id: props.investorID,
+                ...props.values.investor
+              };
+
+              UpdatePersonalInfo(formValues);
+
               props.handleTabChange(event, props.tabValue + 1);
             }}
           >

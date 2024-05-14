@@ -293,14 +293,14 @@ const ReactTable = ({
                       );
                     })}
                     {headers?.length !== 0 && (
-                      <TableCell sx={{ textAlign: { md: 'right', xs: 'center' }, width: 170 }}>
+                      <TableCell sx={{ textAlign: { md: 'right', xs: 'center' }, width: 150 }}>
                         <Grid container sx={{ display: 'flex', justifyContent: { md: 'flex-end', xs: 'center' } }}>
-                          <Grid item md={4}>
+                          <Grid item md={isEditingInterestRateButton ? 4 : 6}>
                             <IconButton
                               color="black"
                               onClick={async () => {
                                 if (getEditData) {
-                                  const result = await getEditData(setEditing, row.original.investor_id);
+                                  await getEditData(setEditing, row.original.investor_id);
                                   setTimeout(() => {
                                     changeTableVisibility();
                                   }, 500);
@@ -331,7 +331,7 @@ const ReactTable = ({
                             </Grid>
                           )}
 
-                          <Grid item md={4}>
+                          <Grid item md={isEditingInterestRateButton ? 4 : 6}>
                             <IconButton
                               color="error"
                               onClick={async () => {

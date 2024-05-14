@@ -20,6 +20,7 @@ import MainCard from 'components/organisms/mainCard/MainCard';
 import ScrollX from 'components/organisms/scrollX/ScrollX';
 import DialogBox from 'components/atoms/dialog/dialog';
 import AnimateButton from 'helpers/@extended/AnimateButton';
+import IconButton from 'helpers/@extended/IconButton';
 
 // ==============================|| REACT TABLE ||============================== //
 
@@ -221,38 +222,44 @@ function ReactTable({
                         </TableCell>
                       );
                     })}
-                    {!hideActions && (
-                      <TableCell sx={{ textAlign: 'right' }}>
-                        <Edit2
-                          size={22}
-                          style={{ marginRight: 20, cursor: 'pointer' }}
-                          onClick={() => {
-                            console.log(row.original);
-                            schemeEditing(row.original);
-                            setActiveEditing();
-                            setTimeout(() => {
-                              handleIROpenDialog();
-                            }, 200);
-                          }}
-                        />
+                    {/* {!hideActions && ( */}
+                    <TableCell sx={{ textAlign: { md: 'right', xs: 'center' } }}>
+                      <Grid container sx={{ display: 'flex', justifyContent: { md: 'flex-end', xs: 'center' } }}>
+                        <Grid item md={4}>
+                          <IconButton
+                            color="black"
+                            onClick={() => {
+                              schemeEditing(row.original);
+                              setActiveEditing();
+                              setTimeout(() => {
+                                handleIROpenDialog();
+                              }, 200);
+                            }}
+                          >
+                            <Edit2 size={26} style={{ cursor: 'pointer' }} />
+                          </IconButton>
+                        </Grid>
 
                         {Boolean(row.original.is_live) === true ? (
-                          <></>
+                          <Grid item md={4}></Grid>
                         ) : (
-                          <Trash
-                            size={22}
-                            style={{ cursor: 'pointer' }}
-                            onClick={async () => {
-                              setItem(row.original);
-                              setTimeout(() => {
-                                handleOpenDialog();
-                              }, 200);
-                              console.log(row.original);
-                            }}
-                          />
+                          <Grid item md={4}>
+                            <IconButton
+                              color="error"
+                              onClick={async () => {
+                                setItem(row.original);
+                                setTimeout(() => {
+                                  handleOpenDialog();
+                                }, 200);
+                              }}
+                            >
+                              <Trash size={26} style={{ cursor: 'pointer' }} />
+                            </IconButton>
+                          </Grid>
                         )}
-                      </TableCell>
-                    )}
+                      </Grid>
+                    </TableCell>
+                    {/* // )} */}
                   </TableRow>
                 );
               })
