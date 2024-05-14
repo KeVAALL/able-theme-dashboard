@@ -169,6 +169,7 @@ const AddressDetails = (props) => {
                 sx={{ borderRadius: 0.6 }}
                 // startIcon={<TimerStart />}
                 onClick={async () => {
+                  console.log(props.values.investor_address);
                   props.handleTabChange(event, props.tabValue + 1);
                 }}
               >

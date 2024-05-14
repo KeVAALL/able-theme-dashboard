@@ -94,3 +94,21 @@ export async function CalculateFD(values) {
     return [];
   }
 }
+export async function StartFD(values) {
+  try {
+    const response = await axios.post('invest/startfd', {
+      ...values
+    });
+    return response.data.data;
+  } catch (err) {
+    enqueueSnackbar(err.message, {
+      variant: 'error',
+      autoHideDuration: 2000,
+      anchorOrigin: {
+        vertical: 'top',
+        horizontal: 'right'
+      }
+    });
+    return [];
+  }
+}

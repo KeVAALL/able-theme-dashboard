@@ -21,6 +21,7 @@ const headerSX = {
 };
 
 const InterestRate = ({ formValues, changeTableVisibility, isNotEditingInterestRate, isEditingInterestRate }) => {
+  console.log(formValues);
   // Main Data state
   const [schemeData, setSchemeData] = useState([]);
   // Edit Logic State
@@ -95,6 +96,14 @@ const InterestRate = ({ formValues, changeTableVisibility, isNotEditingInterestR
   // Custom fields/ columns
   const columns = useMemo(() => tableColumns, []);
 
+  // Effect for setting editing state and loading state
+  useEffect(() => {
+    setEditing(formValues);
+    setTimeout(() => {
+      setLoading(false);
+    }, 500);
+  }, [formValues]);
+
   // Query for fetching payout data
   const {
     isPending,
@@ -110,16 +119,8 @@ const InterestRate = ({ formValues, changeTableVisibility, isNotEditingInterestR
     }
   });
 
-  // Effect for setting editing state and loading state
-  useEffect(() => {
-    setEditing(formValues);
-    setTimeout(() => {
-      setLoading(false);
-    }, 500);
-  }, [formValues]);
-
   // Render Loader if data is loading
-  if (loading) return <Loader />;
+  if (loading || isPending) return <Loader />;
 
   return (
     <Stack spacing={2}>
@@ -128,7 +129,7 @@ const InterestRate = ({ formValues, changeTableVisibility, isNotEditingInterestR
         handleOpenDialog={handleOpenDialog}
         schemeEditFormValues={schemeFormValues}
         fdId={formValues.fd_id}
-        selectedPayoutMethod={selectedPayoutMethod}
+        selectedPayoutMethod={formValues.fd_payout_method_id}
         clearFormValues={clearFormValues}
         setIsActive={handleIsSchemeActive}
         isActive={isSchemeActive}
@@ -140,8 +141,8 @@ const InterestRate = ({ formValues, changeTableVisibility, isNotEditingInterestR
         initialValues={IRformValues}
         validationSchema={validationSchema}
         onSubmit={async (values, { resetForm }) => {
-          console.log(payoutValidate(selectedPayoutMethod));
-          const searchResult = await GetSchemeSearch(formValues.fd_id, selectedPayoutMethod);
+          console.log(formValues.fd_payout_method_id);
+          const searchResult = await GetSchemeSearch(formValues.fd_id, values.fd_payout_method_id);
           if (searchResult) {
             setSchemeData(searchResult);
           }

@@ -44,7 +44,7 @@ import {
   GetIFASearch
 } from 'hooks/investor/investor';
 import '../../../utils/custom.css';
-import { GetInvestmentData, GetStatusDropdown, GetMaturityAction, GetScheme, CalculateFD } from 'hooks/transaction/investment';
+import { GetInvestmentData, GetStatusDropdown, GetMaturityAction, GetScheme, CalculateFD, StartFD } from 'hooks/transaction/investment';
 import { GetPayoutMethod, GetSchemeSearch } from 'hooks/interestRate/interestRate';
 import InvestmentDialog from 'components/atoms/dialog/InvestmentDialog';
 import AnimateButton from 'helpers/@extended/AnimateButton';
@@ -452,7 +452,7 @@ function Investment() {
                     </Grid>
                     <Grid item xs={3}>
                       <CustomTextField
-                        label="Investment Amount"
+                        label="Investment Amount (₹)"
                         name="investment_amount"
                         placeholder="Please enter Investment Amount"
                         values={values}
@@ -547,7 +547,7 @@ function Investment() {
                     </Grid>
                     <Grid item xs={3}>
                       <CustomTextField
-                        label="Interest Rate"
+                        label="Interest Rate (%)"
                         name="interest_rate"
                         disabled
                         placeholder="Please enter Interest Rate"
@@ -567,7 +567,7 @@ function Investment() {
                     </Grid>
                     <Grid item xs={3}>
                       <CustomTextField
-                        label="Interest Amount"
+                        label="Interest Amount (₹)"
                         name="aggrigated_interest"
                         disabled
                         placeholder="Please enter Interest Amount"
@@ -588,7 +588,7 @@ function Investment() {
                     </Grid>
                     <Grid item xs={3}>
                       <CustomTextField
-                        label="Maturity Amount"
+                        label="Maturity Amount (₹)"
                         name="maturity_amount"
                         disabled
                         placeholder="Please enter Maturity Amount"
@@ -615,6 +615,9 @@ function Investment() {
                         sx={{ borderRadius: 0.6 }}
                         startIcon={<TimerStart />}
                         onClick={async () => {
+                          const result = await StartFD(values);
+                          console.log(result);
+
                           await GetEditOneInvestor(setInvestorEditing, values.investor_id);
 
                           handleIsInvestorEditing();

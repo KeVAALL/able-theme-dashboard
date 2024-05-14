@@ -22,6 +22,7 @@ export async function GetPayoutMethod(fdId) {
   }
 }
 export async function GetSchemeSearch(fdId, selectedPayoutMethod) {
+  console.log(selectedPayoutMethod);
   try {
     const response = await axios.post('product/getscheme', {
       method_name: 'getscheme',

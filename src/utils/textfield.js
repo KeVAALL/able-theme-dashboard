@@ -193,6 +193,7 @@ export const FormikAutoComplete = memo((props) => {
           if (idName) {
             await setFieldValue(formName, el[idName]);
           } else {
+            console.log(el.id);
             await setFieldValue(formName, el.id);
           }
         }
@@ -222,7 +223,25 @@ export const FormikAutoComplete = memo((props) => {
       id="basic-autocomplete-label"
       options={props.options}
       disableClearable={props.disableClearable ? true : false}
-      defaultValue={initialValue}
+      defaultValue={
+        (typeof props.defaultValue === 'string' &&
+          props.options.find((el) => {
+            console.log(props.keyName);
+            if (props.keyName) {
+              return el[props.keyName] === props.defaultValue;
+            } else {
+              return el[props.optionName] === props.defaultValue;
+            }
+          })) ||
+        (typeof props.defaultValue === 'number' &&
+          props.options.find((el) => {
+            if (props.idName) {
+              return el[props.idName] === props.defaultValue;
+            } else {
+              return el.id === props.defaultValue;
+            }
+          }))
+      }
       onChange={(e) => {
         if (props.customInputChange) {
           props.customInputChange(e, props.values, props.options, props.optionName, props.formName, setFieldValue, props.idName);
