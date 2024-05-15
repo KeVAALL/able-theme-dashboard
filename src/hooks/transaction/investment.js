@@ -82,6 +82,7 @@ export async function CalculateFD(values) {
     const response = await axios.post('product/calculatefd', {
       ...values
     });
+
     return response.data.data;
   } catch (err) {
     enqueueSnackbar(err.message, {

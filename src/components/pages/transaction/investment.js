@@ -100,6 +100,8 @@ function Investment() {
 
   // Address Details Checkbox
   const [sameAddress, setSameAddress] = useState(false);
+  // form pending
+  const [formPending, setFormPending] = useState(false);
 
   // Form State
   const [formValues, setFormValues] = useState(formAllValues);
@@ -208,6 +210,20 @@ function Investment() {
   const handleCalculate = (value) => {
     console.log(value);
     setFormValues(value);
+  };
+  // Disable field
+  const checkField = (formValue) => {
+    return (
+      formValue.investor_id != 0 &&
+      formValue.fd_id != 0 &&
+      formValue.ifa_id != 0 &&
+      formValue.maturity_action_id != 0 &&
+      formValue.investment_amount != null &&
+      formValue.years != 0 &&
+      formValue.interest_rate != '0' &&
+      formValue.aggrigated_interest != 0 &&
+      formValue.maturity_amount != 0
+    );
   };
   // Empty Form Fields
   const clearFormValues = () => {
@@ -413,7 +429,9 @@ function Investment() {
             isValid,
             dirty,
             resetForm,
-            isSubmitting
+            isSubmitting,
+            setSubmitting,
+            setStatus
           }) => (
             <Box
               component="form"
@@ -568,28 +586,38 @@ function Investment() {
                       />
                     </Grid>
                     <Grid item xs={1.5}>
-                      <Button
-                        variant="contained"
-                        color="success"
-                        sx={{ borderRadius: 0.6 }}
-                        startIcon={<Calculator />}
-                        onClick={async () => {
-                          const reqValues = { ...values, compounding_type: 'yearly' };
+                      <AnimateButton>
+                        <Button
+                          // disabled={formPending}
+                          // formPending is custom state
+                          disableElevation
+                          disabled={isSubmitting}
+                          variant="contained"
+                          color="success"
+                          sx={{ borderRadius: 0.6 }}
+                          startIcon={<Calculator />}
+                          type="submit"
+                          onClick={async () => {
+                            setSubmitting(true);
+                            const reqValues = { ...values, compounding_type: 'yearly' };
 
-                          const result = await CalculateFD(reqValues);
+                            const result = await CalculateFD(reqValues);
 
-                          const calculated = result.data;
+                            setSubmitting(false);
 
-                          handleCalculate({
-                            ...values,
-                            interest_rate: calculated.interestRate,
-                            aggrigated_interest: calculated.aggrigated_interest,
-                            maturity_amount: calculated.maturity_amount
-                          });
-                        }}
-                      >
-                        Calculate
-                      </Button>
+                            const calculated = result.data;
+
+                            handleCalculate({
+                              ...values,
+                              interest_rate: calculated.interestRate,
+                              aggrigated_interest: calculated.aggrigated_interest,
+                              maturity_amount: calculated.maturity_amount
+                            });
+                          }}
+                        >
+                          {isSubmitting ? 'Calculating...' : 'Calculate'}
+                        </Button>
+                      </AnimateButton>
                     </Grid>
                     <Grid item xs={1.5} sx={{ paddingLeft: '0px !important' }}>
                       <Button
@@ -676,6 +704,20 @@ function Investment() {
                     <Grid item xs={3}>
                       <Button
                         // disabled={!isValid || (Object.keys(touched).length === 0 && touched.constructor === Object)}
+                        // disabled={!dirty}
+                        // disabled={
+                        //   !(
+                        //     values.investor_id != 0 &&
+                        //     values.fd_id != 0 &&
+                        //     values.ifa_id != 0 &&
+                        //     values.maturity_action_id != 0 &&
+                        //     values.investment_amount != null &&
+                        //     values.years != 0 &&
+                        //     values.interest_rate != '0' &&
+                        //     values.aggrigated_interest != 0 &&
+                        //     values.maturity_amount != 0
+                        //   )
+                        // }
                         fullWidth
                         variant="contained"
                         color="success"
