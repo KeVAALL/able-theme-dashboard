@@ -1,13 +1,72 @@
 /* eslint-disable react/prop-types */
 import React, { memo } from 'react';
-import { Grid, Typography, Chip } from '@mui/material';
+import { Grid, Typography, Chip, FormControlLabel, Switch } from '@mui/material';
 
 const Declaration = ({ selectedDeclaration, handleDeclarationClick }) => {
   return (
     <>
-      <Grid id="__parent" container spacing={2}>
-        <Grid item xs={12} sm={6} md={4} lg={4} style={{ display: 'grid', gap: '10px' }}>
-          <Typography sx={{ fontWeight: '600' }} variant="p">
+      <Grid id="__parent" container spacing={2.5} sx={{ width: '100%', marginLeft: '-10px !important' }}>
+        <Grid item xs={12} lg={4} sx={{ paddingLeft: '0px !important' }}>
+          <FormControlLabel
+            value="start"
+            control={
+              <Switch
+                color="success"
+                checked={selectedDeclaration.isPoliticallyExposed}
+                onChange={() => {
+                  handleDeclarationClick('PoliticallyExposed');
+                }}
+              />
+            }
+            label="Politically Exposed Person (PEP)?"
+            labelPlacement="start"
+          />
+        </Grid>
+
+        <Grid item xs={12} lg={4} sx={{ paddingLeft: '0px !important' }}>
+          <FormControlLabel
+            value="start"
+            control={
+              <Switch
+                color="success"
+                checked={selectedDeclaration.isRelativeToPoliticallyExposed}
+                onChange={() => {
+                  handleDeclarationClick('RelativeToPoliticallyExposed');
+                }}
+              />
+            }
+            label="Relative to politically exposed person (PEP)?"
+            labelPlacement="start"
+            sx={{ ml: 0 }}
+          />
+        </Grid>
+
+        <Grid item xs={12} lg={4} sx={{ paddingLeft: '0px !important' }}>
+          <FormControlLabel
+            value="start"
+            control={
+              <Switch
+                color="success"
+                checked={selectedDeclaration.isResidentOutsideIndia}
+                onChange={() => {
+                  handleDeclarationClick('ResidentOutsideIndia');
+                }}
+                sx={{ marginBottom: '26px' }}
+              />
+            }
+            label="Citizen national or tax resident of any other country outside India?"
+            labelPlacement="start"
+          />
+        </Grid>
+      </Grid>
+    </>
+  );
+};
+
+export default memo(Declaration);
+
+{
+  /* <Typography sx={{ fontWeight: '600' }} variant="p">
             Politically Exposed Person (PEP)?
           </Typography>
           <Grid container spacing={2}>
@@ -29,10 +88,10 @@ const Declaration = ({ selectedDeclaration, handleDeclarationClick }) => {
                 onClick={(e) => handleDeclarationClick('PoliticallyExposed')}
               />
             </Grid>
-          </Grid>
-        </Grid>
-        <Grid item xs={12} sm={6} md={4} lg={4} style={{ display: 'grid', gap: '10px' }}>
-          <Typography sx={{ fontWeight: '600' }} variant="p">
+          </Grid> */
+}
+{
+  /* <Typography sx={{ fontWeight: '600' }} variant="p">
             Relative to politically exposed person (PEP)?
           </Typography>
           <Grid container spacing={2}>
@@ -54,10 +113,10 @@ const Declaration = ({ selectedDeclaration, handleDeclarationClick }) => {
                 onClick={(e) => handleDeclarationClick('RelativeToPoliticallyExposed')}
               />
             </Grid>
-          </Grid>
-        </Grid>
-        <Grid item xs={12} sm={6} md={4} lg={4} style={{ display: 'grid', gap: '10px' }}>
-          <Typography sx={{ fontWeight: '600' }} variant="p">
+          </Grid> */
+}
+{
+  /* <Typography sx={{ fontWeight: '600' }} variant="p">
             A citizen national or tax resident of any other country outside India?
           </Typography>
           <Grid container spacing={2}>
@@ -79,15 +138,8 @@ const Declaration = ({ selectedDeclaration, handleDeclarationClick }) => {
                 onClick={(e) => handleDeclarationClick('ResidentOutsideIndia')}
               />
             </Grid>
-          </Grid>
-        </Grid>
-      </Grid>
-    </>
-  );
-};
-
-export default memo(Declaration);
-
+          </Grid> */
+}
 // const [selectedDeclaration, setSelectedDeclaration] = useState({
 //   isPoliticallyExposed: true,
 //   isRelativeToPoliticallyExposed: true,

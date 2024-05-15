@@ -18,6 +18,8 @@ import { Formik } from 'formik';
 import * as yup from 'yup';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { Additem } from 'iconsax-react';
+import { UpdateNominee } from 'hooks/transaction/investment';
+import { GetEditOneInvestor } from 'hooks/investor/investor';
 
 const Nomination = (props) => {
   // theme
@@ -48,7 +50,8 @@ const Nomination = (props) => {
     address_line_2: '',
     pincode: '',
     city: '',
-    state: ''
+    state: '',
+    percentage: ''
   };
   const validationSchema = yup.object().shape({
     full_name: yup.string().required('Name is Required'),
@@ -60,7 +63,8 @@ const Nomination = (props) => {
     address_line_2: yup.string().required('Address is Required'),
     pincode: yup.string().required('Pin Code is Required'),
     city: yup.string().required('City is Required'),
-    state: yup.string()
+    state: yup.string(),
+    percentage: yup.string()
   });
   const [formValues, setFormValues] = useState(formAllValues);
   // Empty Form Fields
@@ -140,14 +144,21 @@ const Nomination = (props) => {
                             variant="contained"
                             color="success"
                             startIcon={<Additem />}
-                            onClick={() => {
-                              console.log({
-                                ...values
-                              });
-                              props.handleNewNominee({
-                                ...values
-                              });
+                            onClick={async () => {
+                              const formValues = {
+                                fd_investment_id: props.fdInvestmentID,
+                                investor_id: props.investorID,
+                                nominee: [{ ...values }]
+                              };
+
+                              await UpdateNominee(formValues);
+
+                              await GetEditOneInvestor(props.setInvestorEditing, props.investorID);
+                              // props.handleNewNominee({
+                              //   values
+                              // });
                               changeTableVisibility();
+                              clearFormValues();
                             }}
                           >
                             Submit
@@ -258,7 +269,7 @@ const Nomination = (props) => {
                           errors={errors}
                         />
                       </Grid>
-                      <Grid item xs={12} sm={4} md={4} style={{ display: 'grid', gap: '10px' }}>
+                      <Grid item xs={12} sm={3} md={3} style={{ display: 'grid', gap: '10px' }}>
                         <CustomTextField
                           label="Pin Code"
                           name="pincode"
@@ -271,7 +282,7 @@ const Nomination = (props) => {
                           errors={errors}
                         />
                       </Grid>
-                      <Grid item xs={12} sm={4} md={4} style={{ display: 'grid', gap: '10px' }}>
+                      <Grid item xs={12} sm={3} md={3} style={{ display: 'grid', gap: '10px' }}>
                         <CustomTextField
                           label="City"
                           name="city"
@@ -284,7 +295,7 @@ const Nomination = (props) => {
                           errors={errors}
                         />
                       </Grid>
-                      <Grid item xs={12} sm={4} md={4} style={{ display: 'grid', gap: '10px' }}>
+                      <Grid item xs={12} sm={3} md={3} style={{ display: 'grid', gap: '10px' }}>
                         <CustomTextField
                           label="State"
                           name="state"
@@ -292,6 +303,21 @@ const Nomination = (props) => {
                           values={values}
                           type="string"
                           onChange={handleChange}
+                          onBlur={handleBlur}
+                          touched={touched}
+                          errors={errors}
+                        />
+                      </Grid>
+                      <Grid item xs={12} sm={3} md={3} style={{ display: 'grid', gap: '10px' }}>
+                        <CustomTextField
+                          label="Percentage (%)"
+                          name="percentage"
+                          placeholder="Please enter your Percentage"
+                          values={values}
+                          type="string"
+                          reg="number"
+                          setFieldValue={setFieldValue}
+                          // onChange={handleChange}
                           onBlur={handleBlur}
                           touched={touched}
                           errors={errors}

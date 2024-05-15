@@ -185,3 +185,73 @@ export async function UpdateProfessionalDetails(values) {
     return [];
   }
 }
+export async function UpdateNominee(values) {
+  try {
+    const response = await axios.post('invest/updatenominees', values);
+    enqueueSnackbar('Nominee Updated', {
+      variant: 'success',
+      autoHideDuration: 2000,
+      anchorOrigin: {
+        vertical: 'top',
+        horizontal: 'right'
+      }
+    });
+    return response.data.data;
+  } catch (err) {
+    enqueueSnackbar(err.message, {
+      variant: 'error',
+      autoHideDuration: 2000,
+      anchorOrigin: {
+        vertical: 'top',
+        horizontal: 'right'
+      }
+    });
+    return [];
+  }
+}
+export async function GetDeclaration(value) {
+  try {
+    const response = await axios.post('invest/getdeclarations', {
+      method_name: 'getall',
+      fd_investment_id: value
+    });
+
+    return response.data.data;
+  } catch (err) {
+    enqueueSnackbar(err.message, {
+      variant: 'error',
+      autoHideDuration: 2000,
+      anchorOrigin: {
+        vertical: 'top',
+        horizontal: 'right'
+      }
+    });
+    return [];
+  }
+}
+export async function UpdateDeclaration(value) {
+  try {
+    const response = await axios.post('invest/updatedeclarations', value);
+
+    enqueueSnackbar('Declarations Updated', {
+      variant: 'success',
+      autoHideDuration: 2000,
+      anchorOrigin: {
+        vertical: 'top',
+        horizontal: 'right'
+      }
+    });
+
+    return response.data.data;
+  } catch (err) {
+    enqueueSnackbar(err.message, {
+      variant: 'error',
+      autoHideDuration: 2000,
+      anchorOrigin: {
+        vertical: 'top',
+        horizontal: 'right'
+      }
+    });
+    return [];
+  }
+}

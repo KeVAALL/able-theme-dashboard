@@ -222,44 +222,44 @@ function ReactTable({
                         </TableCell>
                       );
                     })}
-                    {/* {!hideActions && ( */}
-                    <TableCell sx={{ textAlign: { md: 'right', xs: 'center' } }}>
-                      <Grid container sx={{ display: 'flex', justifyContent: { md: 'flex-end', xs: 'center' } }}>
-                        <Grid item md={4}>
-                          <IconButton
-                            color="black"
-                            onClick={() => {
-                              schemeEditing(row.original);
-                              setActiveEditing();
-                              setTimeout(() => {
-                                handleIROpenDialog();
-                              }, 200);
-                            }}
-                          >
-                            <Edit2 size={26} style={{ cursor: 'pointer' }} />
-                          </IconButton>
-                        </Grid>
-
-                        {Boolean(row.original.is_live) === true ? (
-                          <Grid item md={4}></Grid>
-                        ) : (
+                    {!hideActions && (
+                      <TableCell sx={{ textAlign: { md: 'right', xs: 'center' } }}>
+                        <Grid container sx={{ display: 'flex', justifyContent: { md: 'flex-end', xs: 'center' } }}>
                           <Grid item md={4}>
                             <IconButton
-                              color="error"
-                              onClick={async () => {
-                                setItem(row.original);
+                              color="black"
+                              onClick={() => {
+                                schemeEditing(row.original);
+                                setActiveEditing();
                                 setTimeout(() => {
-                                  handleOpenDialog();
+                                  handleIROpenDialog();
                                 }, 200);
                               }}
                             >
-                              <Trash size={26} style={{ cursor: 'pointer' }} />
+                              <Edit2 size={26} style={{ cursor: 'pointer' }} />
                             </IconButton>
                           </Grid>
-                        )}
-                      </Grid>
-                    </TableCell>
-                    {/* // )} */}
+
+                          {Boolean(row.original.is_live) === true ? (
+                            <Grid item md={4}></Grid>
+                          ) : (
+                            <Grid item md={4}>
+                              <IconButton
+                                color="error"
+                                onClick={async () => {
+                                  setItem(row.original);
+                                  setTimeout(() => {
+                                    handleOpenDialog();
+                                  }, 200);
+                                }}
+                              >
+                                <Trash size={26} style={{ cursor: 'pointer' }} />
+                              </IconButton>
+                            </Grid>
+                          )}
+                        </Grid>
+                      </TableCell>
+                    )}
                   </TableRow>
                 );
               })

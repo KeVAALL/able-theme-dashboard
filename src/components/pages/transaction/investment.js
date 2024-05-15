@@ -20,8 +20,8 @@ import { AdapterDateFns } from '@mui/x-date-pickers-pro/AdapterDateFns';
 
 // assets
 import { SubmitButton } from 'components/atoms/button/button';
-import CustomTextField, { CustomAutoComplete, FormikAutoComplete, NestedCustomTextField } from 'utils/textfield';
-import { formAllValues as investorFormValues, validationSchema as investorFormValidation } from 'constant/investorValidation';
+import CustomTextField, { FormikAutoComplete } from 'utils/textfield';
+import { investorValues as investorFormValues, investorValidationSchema as investorFormValidation } from 'constant/investmentValidation';
 import {
   formAllValues,
   validationSchema,
@@ -44,7 +44,15 @@ import {
   GetIFASearch
 } from 'hooks/investor/investor';
 import '../../../utils/custom.css';
-import { GetInvestmentData, GetStatusDropdown, GetMaturityAction, GetScheme, CalculateFD, StartFD } from 'hooks/transaction/investment';
+import {
+  GetInvestmentData,
+  GetStatusDropdown,
+  GetMaturityAction,
+  GetScheme,
+  CalculateFD,
+  StartFD,
+  GetDeclaration
+} from 'hooks/transaction/investment';
 import { GetPayoutMethod, GetSchemeSearch } from 'hooks/interestRate/interestRate';
 import InvestmentDialog from 'components/atoms/dialog/InvestmentDialog';
 import AnimateButton from 'helpers/@extended/AnimateButton';
@@ -69,18 +77,22 @@ function Investment() {
   const [isInvestorEditing, setIsInvestorEditing] = useState(false); // For Investor Form Visibility
   const [fdInvestmentID, setFdInvestmentID] = useState();
 
+  // Nominee
+  const [nomineeData, setNomineeData] = useState([]);
+
   // Dialog state
   const [openDialog, setOpenDialog] = useState(false);
 
   // Toggle Table and Form Visibility
   const [showTable, setShowTable] = useState(false); // State to toggle visibility of the table form
 
-  // Selection states
+  // Radio states
   const [selectedDeclaration, setSelectedDeclaration] = useState({
     isPoliticallyExposed: true,
     isRelativeToPoliticallyExposed: true,
     isResidentOutsideIndia: true
   });
+  const [dynamicDeclaration, setDynamicDeclaration] = useState([]);
   // Selection states
   const [fdDropdown, setFdDropdown] = useState([]);
   const [statusDropdown, setStatusDropdown] = useState([]);
@@ -88,9 +100,6 @@ function Investment() {
 
   // Address Details Checkbox
   const [sameAddress, setSameAddress] = useState(false);
-
-  // Nominee
-  const [nomineeData, setNomineeData] = useState([]);
 
   // Form State
   const [formValues, setFormValues] = useState(formAllValues);
@@ -134,11 +143,41 @@ function Investment() {
   };
   // Nominee
   const handleNewNominee = (value) => {
-    setNomineeData((prev) => {
-      return [...prev, value];
-    });
+    console.log(value.values);
+    if (value.values.nominee_id) {
+      const editNom = nomineeData.map((nominee, index) => {
+        if (nominee.nominee_id === value.values.nominee_id) {
+          return value.values;
+        } else {
+          return nominee;
+        }
+      });
+      console.log(editNom);
+      setNomineeData(editNom);
+    } else {
+      setNomineeData((prev) => {
+        return [...prev, value.values];
+      });
+    }
   };
   // Declaration
+  const handleDynamicDeclaration = (value) => {
+    // setDynamicDeclaration([
+    //   ...dynamicDeclaration,
+    //   dynamicDeclaration[value]: { ...dynamicDeclaration[value], isSelected: !dynamicDeclaration[value].isSelected }
+    // ]);
+    setDynamicDeclaration((prevDynamicDeclaration) => {
+      // Create a new array with modified objects
+      return prevDynamicDeclaration.map((item, index) => {
+        if (item.declaration_id === value) {
+          // If the index matches the value, toggle the isSelected property
+          return { ...item, isSelected: !item.isSelected };
+        }
+        // For other indexes, return the original item
+        return item;
+      });
+    });
+  };
   const handleDeclarationClick = (value) => {
     if (value === 'PoliticallyExposed') {
       setSelectedDeclaration({ ...selectedDeclaration, isPoliticallyExposed: !selectedDeclaration.isPoliticallyExposed });
@@ -185,7 +224,7 @@ function Investment() {
     });
   };
   const resetCalculation = (e, type, key, values, setFieldValue, setFormValues) => {
-    if (values.aggrigated_interest !== 0 || values.maturity_amount !== 0) {
+    if (values.aggrigated_interest !== null || values.maturity_amount !== null) {
       const parsed = parseInt(e.target.value, 10);
       setFieldValue(key, parsed);
       setFormValues({
@@ -219,8 +258,6 @@ function Investment() {
           }
         }
       });
-      // if (values.aggrigated_interest !== 0 || values.maturity_amount !== 0) {
-      // }
     }
   };
 
@@ -334,28 +371,21 @@ function Investment() {
           validationSchema={validationSchema}
           onSubmit={async (values, { setSubmitting, resetForm }) => {
             if (isEditing === false) {
-              console.log(values);
-
-              const reqValues = { ...values, compounding_type: 'yearly' };
-
-              const result = await CalculateFD(reqValues);
-
-              console.log(result.data);
-              const calculated = result.data;
-
+              // const reqValues = { ...values, compounding_type: 'yearly' };
+              // const result = await CalculateFD(reqValues);
+              // const calculated = result.data;
               // console.log({
               //   ...values,
               //   interest_rate: calculated.interestRate,
               //   aggrigated_interest: calculated.aggrigated_interest,
               //   maturity_amount: calculated.maturity_amount
               // });
-
-              handleCalculate({
-                ...values,
-                interest_rate: calculated.interestRate,
-                aggrigated_interest: calculated.aggrigated_interest,
-                maturity_amount: calculated.maturity_amount
-              });
+              // handleCalculate({
+              //   ...values,
+              //   interest_rate: calculated.interestRate,
+              //   aggrigated_interest: calculated.aggrigated_interest,
+              //   maturity_amount: calculated.maturity_amount
+              // });
               //   SaveInvestor(formValues, InvestmentTableDataRefetch, clearFormValues);
             }
             if (isEditing === true) {
@@ -372,7 +402,19 @@ function Investment() {
             // changeTableVisibility();
           }}
         >
-          {({ values, errors, touched, handleChange, handleBlur, handleSubmit, setFieldValue, resetForm, isSubmitting }) => (
+          {({
+            values,
+            errors,
+            touched,
+            handleChange,
+            handleBlur,
+            handleSubmit,
+            setFieldValue,
+            isValid,
+            dirty,
+            resetForm,
+            isSubmitting
+          }) => (
             <Box
               component="form"
               onSubmit={(event) => {
@@ -526,7 +568,26 @@ function Investment() {
                       />
                     </Grid>
                     <Grid item xs={1.5}>
-                      <Button variant="contained" color="success" sx={{ borderRadius: 0.6 }} startIcon={<Calculator />} type="submit">
+                      <Button
+                        variant="contained"
+                        color="success"
+                        sx={{ borderRadius: 0.6 }}
+                        startIcon={<Calculator />}
+                        onClick={async () => {
+                          const reqValues = { ...values, compounding_type: 'yearly' };
+
+                          const result = await CalculateFD(reqValues);
+
+                          const calculated = result.data;
+
+                          handleCalculate({
+                            ...values,
+                            interest_rate: calculated.interestRate,
+                            aggrigated_interest: calculated.aggrigated_interest,
+                            maturity_amount: calculated.maturity_amount
+                          });
+                        }}
+                      >
                         Calculate
                       </Button>
                     </Grid>
@@ -614,6 +675,7 @@ function Investment() {
                     </Grid>
                     <Grid item xs={3}>
                       <Button
+                        // disabled={!isValid || (Object.keys(touched).length === 0 && touched.constructor === Object)}
                         fullWidth
                         variant="contained"
                         color="success"
@@ -621,9 +683,16 @@ function Investment() {
                         startIcon={<TimerStart />}
                         onClick={async () => {
                           const result = await StartFD(values);
-                          console.log(result);
 
                           setFdInvestmentID(result.fd_investment_id);
+
+                          const declarations = await GetDeclaration(result.fd_investment_id);
+                          const mappedDeclarations = declarations.map((dec) => {
+                            return { ...dec, isSelected: false };
+                          });
+                          console.log(mappedDeclarations);
+
+                          setDynamicDeclaration(mappedDeclarations);
 
                           await GetEditOneInvestor(setInvestorEditing, values.investor_id);
 
@@ -664,8 +733,11 @@ function Investment() {
                               handleDeclarationClick={handleDeclarationClick}
                               nomineeData={nomineeData}
                               handleNewNominee={handleNewNominee}
+                              dynamicDeclaration={dynamicDeclaration}
+                              handleDynamicDeclaration={handleDynamicDeclaration}
                               fdInvestmentID={fdInvestmentID}
                               investorID={formValues.investor_id}
+                              setInvestorEditing={setInvestorEditing}
                               // errorObject={errorObject}
                               // handleTabError={handleTabError}
                               // sameAddress={sameAddress}

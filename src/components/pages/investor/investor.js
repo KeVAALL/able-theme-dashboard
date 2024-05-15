@@ -61,9 +61,9 @@ function Investor() {
   const [selectedGender, setSelectedGender] = useState(null);
 
   const [selectedDeclaration, setSelectedDeclaration] = useState({
-    isPoliticallyExposed: true,
-    isRelativeToPoliticallyExposed: true,
-    isResidentOutsideIndia: true
+    isPoliticallyExposed: false,
+    isRelativeToPoliticallyExposed: false,
+    isResidentOutsideIndia: false
   });
 
   // Address Details Checkbox

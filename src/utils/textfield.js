@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React, { memo, useCallback } from 'react';
+import React, { memo, useCallback, useMemo } from 'react';
 import { Autocomplete, Checkbox, FormControlLabel, TextField, Box } from '@mui/material';
 import { getIn } from 'formik';
 import PropTypes from 'prop-types';
@@ -163,20 +163,18 @@ export const CustomAutoComplete = memo((props) => {
 });
 
 export const FormikAutoComplete = memo((props) => {
+  console.log('Rendering');
   const setFieldValue = props.setFieldValue;
 
   const handleOptionChange = (e, optionName, formName, setFieldValue, idName) => {
     if (e.target.outerText === undefined) {
       setFieldValue(formName, 0);
     } else {
-      console.log(e.target.outerText);
       props.options.forEach(async (el) => {
         if (el[optionName] === e.target.outerText) {
           if (idName) {
-            console.log(el[idName]);
             await setFieldValue(formName, el[idName]);
           } else {
-            console.log(el.id);
             await setFieldValue(formName, el.id);
           }
         }
@@ -209,11 +207,9 @@ export const FormikAutoComplete = memo((props) => {
       defaultValue={
         (typeof props.defaultValue === 'string' &&
           props.options.find((el) => {
-            console.log(props.keyName);
             if (props.keyName) {
               return el[props.keyName] === props.defaultValue;
             } else {
-              console.log('Here');
               return el[props.optionName] === props.defaultValue;
             }
           })) ||
@@ -228,7 +224,6 @@ export const FormikAutoComplete = memo((props) => {
       }
       onChange={(e) => {
         if (props.customInputChange) {
-          console.log('Here');
           props.customInputChange(e, props.values, props.options, props.optionName, props.formName, props.setFieldValue, props.idName);
         } else {
           handleOptionChange(e, props.optionName, props.formName, setFieldValue, props.idName);

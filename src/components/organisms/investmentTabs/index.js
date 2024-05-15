@@ -60,6 +60,9 @@ export default function InvestmentTabs(props) {
   //   console.log(props.errors);
   //   props.handleTabError(props.errors);
   // }, [props.errors]);
+  useEffect(() => {
+    console.log(props.dynamicDeclaration);
+  }, []);
 
   const tabStyle = { borderTopLeftRadius: 0, borderTopRightRadius: 0, borderRadius: 1.5, overflow: 'visible' };
   const contentSX = { paddingTop: 4 };
@@ -71,6 +74,7 @@ export default function InvestmentTabs(props) {
         <Tabs
           // className={`tab_main ${props.errorObject?.addressDetailsError || props.errorObject?.personalInfoError ? 'indicator_main' : ''}`}
           className={`tab_main`}
+          // orientation="vertical"
           variant="scrollable"
           scrollButtons
           allowScrollButtonsMobile
@@ -152,6 +156,9 @@ export default function InvestmentTabs(props) {
             errors={props.errors}
             nomineeData={props.nomineeData}
             handleNewNominee={props.handleNewNominee}
+            investorID={props.investorID}
+            fdInvestmentID={props.fdInvestmentID}
+            setInvestorEditing={props.setInvestorEditing}
             tabValue={tabValue}
             handleTabChange={handleTabChange}
           />
@@ -162,6 +169,9 @@ export default function InvestmentTabs(props) {
           <Declaration
             selectedDeclaration={props.selectedDeclaration}
             handleDeclarationClick={props.handleDeclarationClick}
+            dynamicDeclaration={props.dynamicDeclaration}
+            handleDynamicDeclaration={props.handleDynamicDeclaration}
+            fdInvestmentID={props.fdInvestmentID}
             tabValue={tabValue}
             handleTabChange={handleTabChange}
           />

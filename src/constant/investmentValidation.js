@@ -12,10 +12,13 @@ const formAllValues = {
   ifa_id: 0,
   maturity_action_id: 0,
   payout_method_id: 'C',
-  investment_amount: 0,
+  investment_amount: null,
   years: 0,
+  // years: '0',
   months: 0,
+  // months: '0',
   days: 0,
+  // days: '0',
   interest_rate: '0',
   aggrigated_interest: 0,
   maturity_amount: 0
@@ -46,7 +49,87 @@ const schemeValues = {
 };
 const schemeValidation = yup.object().shape({});
 // Investor Values
-
+const investorValues = {
+  is_permanent_address_correspondent: 0,
+  investor: {
+    investor_name: '',
+    pan_no: '',
+    mobile_no: '',
+    is_senior_citizen: 1,
+    // gender_id: 1,
+    birth_date: new Date(),
+    place_of_birth: '',
+    is_married: 1,
+    is_indian_resident: 1
+  },
+  // Investor Address
+  investor_address: {
+    address_line_1: '',
+    address_line_2: '',
+    pincode: '',
+    city: ''
+  },
+  correspondent_address: {
+    address_line_1: '',
+    address_line_2: '',
+    pincode: '',
+    city: ''
+  },
+  professional_details: {
+    occupation_id: 1,
+    annual_income_id: 1,
+    income_source_id: 1
+  }
+};
+const investorValidationSchema = yup.object().shape({
+  is_permanent_address_correspondent: yup.number(),
+  investor: yup.object().shape({
+    investor_name: yup.string().required('Investor Name is required'),
+    pan_no: yup
+      .string()
+      .matches(/^([a-zA-Z]){5}([0-9]){4}([a-zA-Z]){1}?$/, 'Invalid PAN format')
+      .required('Pan number is required'),
+    mobile_no: yup.string().required('Mobile number is required'),
+    is_senior_citizen: yup.number().required('Investor type is required'),
+    birth_date: yup.date(),
+    place_of_birth: yup.string().required('Place of Birth is required'),
+    is_married: yup.number(),
+    is_indian_resident: yup.number()
+  }),
+  investor_address: yup.object().shape({
+    address_line_1: yup.string().required('Address Line is required'),
+    address_line_2: yup.string().required('Address Line 2 is required'),
+    pincode: yup.string().required('Pin Code is required'),
+    city: yup.string().required('City is required')
+  }),
+  correspondent_address: yup.object().shape({
+    address_line_1: yup.string().when('$is_permanent_address_correspondent', {
+      is: 0,
+      then: () => yup.string().required('Address Line 1 is required'),
+      otherwise: () => yup.string().optional()
+    }),
+    address_line_2: yup.string().when('$is_permanent_address_correspondent', {
+      is: 0,
+      then: () => yup.string().required('Address Line 2 is required'),
+      otherwise: () => yup.string().optional()
+    }),
+    pincode: yup.string().when('$is_permanent_address_correspondent', {
+      is: 0,
+      then: () => yup.string().required('Pin Code is required'),
+      otherwise: () => yup.string().optional()
+    }),
+    city: yup.string().when('$is_permanent_address_correspondent', {
+      is: 0,
+      then: () => yup.string().required('City is required'),
+      otherwise: () => yup.string().optional()
+    })
+  }),
+  professional_details: yup.object().shape({
+    occupation_id: yup.number(),
+    annual_income_id: yup.number(),
+    income_source_id: yup.number()
+  })
+});
 // Search Item form fields
 const filterFormValues = {
   search: ''
@@ -120,6 +203,8 @@ export {
   validationSchema,
   schemeValues,
   schemeValidation,
+  investorValues,
+  investorValidationSchema,
   filterFormValues,
   filterValueFields,
   filterValidationSchema,
