@@ -704,7 +704,6 @@ function Investment() {
                     <Grid item xs={3}>
                       <Button
                         // disabled={!isValid || (Object.keys(touched).length === 0 && touched.constructor === Object)}
-                        // disabled={!dirty}
                         // disabled={
                         //   !(
                         //     values.investor_id != 0 &&
