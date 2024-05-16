@@ -50,3 +50,52 @@ Investor
   const [selectedOccupation, setSelectedOccupation] = useState(null);
   const [selectedAnnualIncome, setSelectedAnnualIncome] = useState(null);
   const [selectedIncomeSource, setSelectedIncomeSource] = useState(null);
+
+  // Investment
+    const resetValuesIfNeeded = (values, formName, formValue, setFormValues) => {
+    console.log(values);
+    setFormValues({
+      ...values,
+      [formName]: formValue,
+      interest_rate: '0',
+      aggrigated_interest: 0,
+      maturity_amount: 0
+    });
+  };
+  const resetCalculation = (e, type, key, values, setFieldValue, setFormValues) => {
+    if (values.aggrigated_interest !== null || values.maturity_amount !== null) {
+      const parsed = parseInt(e.target.value, 10);
+      setFieldValue(key, parsed);
+      setFormValues({
+        ...values,
+        [key]: parsed,
+        interest_rate: '0',
+        aggrigated_interest: 0,
+        maturity_amount: 0
+      });
+    } else {
+      const parsed = parseInt(e.target.value, 10);
+      setFieldValue(key, parsed);
+    }
+  };
+  const customInputChange = (e, values, options, optionName, formName, setFieldValue, idName) => {
+    if (e.target.outerText === undefined) {
+      setFieldValue(formName, 0);
+      if (values.aggrigated_interest !== 0 || values.maturity_amount !== 0) {
+        resetValuesIfNeeded(values, formName, 0, setFormValues);
+      }
+    } else {
+      console.log('Setting');
+      options.forEach(async (el) => {
+        if (el[optionName] === e.target.outerText) {
+          if (idName) {
+            await setFieldValue(formName, el[idName]);
+            resetValuesIfNeeded(values, formName, el[idName], setFormValues);
+          } else {
+            await setFieldValue(formName, el.id);
+            resetValuesIfNeeded(values, formName, el.id, setFormValues);
+          }
+        }
+      });
+    }
+  };

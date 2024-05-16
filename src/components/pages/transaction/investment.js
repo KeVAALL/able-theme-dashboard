@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 
 // material-ui
-import { Divider, Box, Card, Grid, CardContent, Button } from '@mui/material';
+import { Divider, Box, Card, Grid, CardContent, Button, TextField } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { useQuery } from 'react-query';
 
@@ -229,53 +229,6 @@ function Investment() {
   const clearFormValues = () => {
     setFormValues(formAllValues);
   };
-  const resetValuesIfNeeded = (values, formName, formValue, setFormValues) => {
-    console.log(values);
-    setFormValues({
-      ...values,
-      [formName]: formValue,
-      interest_rate: '0',
-      aggrigated_interest: 0,
-      maturity_amount: 0
-    });
-  };
-  const resetCalculation = (e, type, key, values, setFieldValue, setFormValues) => {
-    if (values.aggrigated_interest !== null || values.maturity_amount !== null) {
-      const parsed = parseInt(e.target.value, 10);
-      setFieldValue(key, parsed);
-      setFormValues({
-        ...values,
-        [key]: parsed,
-        interest_rate: '0',
-        aggrigated_interest: 0,
-        maturity_amount: 0
-      });
-    } else {
-      const parsed = parseInt(e.target.value, 10);
-      setFieldValue(key, parsed);
-    }
-  };
-  const customInputChange = (e, values, options, optionName, formName, setFieldValue, idName) => {
-    if (e.target.outerText === undefined) {
-      setFieldValue(formName, 0);
-      if (values.aggrigated_interest !== 0 || values.maturity_amount !== 0) {
-        resetValuesIfNeeded(values, formName, 0, setFormValues);
-      }
-    } else {
-      console.log('Setting');
-      options.forEach(async (el) => {
-        if (el[optionName] === e.target.outerText) {
-          if (idName) {
-            await setFieldValue(formName, el[idName]);
-            resetValuesIfNeeded(values, formName, el[idName], setFormValues);
-          } else {
-            await setFieldValue(formName, el.id);
-            resetValuesIfNeeded(values, formName, el.id, setFormValues);
-          }
-        }
-      });
-    }
-  };
 
   // Custom fields/ Table Columns
   const columns = useMemo(() => tableColumns, []);
@@ -471,10 +424,8 @@ function Investment() {
                     <Grid item xs={3}>
                       <FormikAutoComplete
                         options={investorData}
-                        values={values}
                         defaultValue={values.investor_id}
                         setFieldValue={setFieldValue}
-                        customInputChange={customInputChange}
                         formName="investor_id"
                         idName="investor_id"
                         optionName="investor_name"
@@ -484,10 +435,8 @@ function Investment() {
                     <Grid item xs={3}>
                       <FormikAutoComplete
                         options={fdDropdown}
-                        values={values}
                         defaultValue={values.fd_id}
                         setFieldValue={setFieldValue}
-                        customInputChange={customInputChange}
                         // errors={errors}
                         formName="fd_id"
                         idName="fd_id"
@@ -521,8 +470,8 @@ function Investment() {
                         name="investment_amount"
                         placeholder="Please enter Investment Amount"
                         values={values}
-                        type="string"
-                        onChange={(e) => resetCalculation(e, 'string', 'investment_amount', values, setFieldValue, setFormValues)}
+                        type="number"
+                        onChange={handleChange}
                         onBlur={handleBlur}
                         touched={touched}
                         errors={errors}
@@ -536,11 +485,9 @@ function Investment() {
                     <Grid item xs={1}>
                       <FormikAutoComplete
                         disableClearable
-                        values={values}
                         options={year}
                         defaultValue={values.years}
                         setFieldValue={setFieldValue}
-                        customInputChange={customInputChange}
                         formName="years"
                         optionName="value"
                         label="Years"
@@ -549,11 +496,9 @@ function Investment() {
                     <Grid item xs={1}>
                       <FormikAutoComplete
                         disableClearable
-                        values={values}
                         options={month}
                         defaultValue={values.months}
                         setFieldValue={setFieldValue}
-                        customInputChange={customInputChange}
                         formName="months"
                         optionName="value"
                         label="Months"
@@ -562,11 +507,9 @@ function Investment() {
                     <Grid item xs={1}>
                       <FormikAutoComplete
                         disableClearable
-                        values={values}
                         options={days}
                         defaultValue={values.days}
                         setFieldValue={setFieldValue}
-                        customInputChange={customInputChange}
                         formName="days"
                         optionName="value"
                         label="Days"
@@ -575,10 +518,8 @@ function Investment() {
                     <Grid item xs={3}>
                       <FormikAutoComplete
                         options={payoutData}
-                        values={values}
                         defaultValue={values.payout_method_id}
                         setFieldValue={setFieldValue}
-                        customInputChange={customInputChange}
                         formName="payout_method_id"
                         keyName="id"
                         optionName="item_value"
@@ -627,96 +568,101 @@ function Investment() {
                         startIcon={<Eye />}
                         onClick={async () => {
                           const searchResult = await GetSchemeSearch(values.fd_id, values.payout_method_id);
-                          if (searchResult) {
-                            setSchemeData(searchResult);
+                          setSchemeData(searchResult);
 
-                            setTimeout(() => {
-                              handleOpenDialog();
-                            }, 200);
-                          }
+                          setTimeout(() => {
+                            handleOpenDialog();
+                          }, 200);
                         }}
                       >
                         View Scheme
                       </Button>
                     </Grid>
                     <Grid item xs={3}>
-                      <CustomTextField
+                      <TextField
+                        fullWidth
+                        disabled
+                        className="common-textfield"
+                        size="small"
                         label="Interest Rate (%)"
                         name="interest_rate"
-                        disabled
-                        placeholder="Please enter Interest Rate"
-                        values={values}
-                        type="text"
-                        regType="number"
-                        setFieldValue={setFieldValue}
+                        onChange={handleChange}
                         onBlur={handleBlur}
-                        touched={touched}
-                        errors={errors}
+                        value={dirty ? '0' : values['interest_rate']}
+                        type="text"
+                        error={touched['interest_rate'] && Boolean(errors['interest_rate'])}
+                        placeholder={touched['interest_rate'] && errors['interest_rate']}
+                        helperText={touched['interest_rate'] && errors['interest_rate']}
                         FormHelperTextProps={{
                           style: {
                             marginLeft: 0
                           }
                         }}
+                        inputProps={{ maxLength: 50 }}
                       />
                     </Grid>
                     <Grid item xs={3}>
-                      <CustomTextField
+                      <TextField
+                        fullWidth
+                        disabled
+                        className="common-textfield"
+                        size="small"
                         label="Interest Amount (₹)"
                         name="aggrigated_interest"
-                        disabled
-                        placeholder="Please enter Interest Amount"
-                        values={values}
-                        type="number"
-                        // regType="number"
-                        // setFieldValue={setFieldValue}
                         onChange={handleChange}
                         onBlur={handleBlur}
-                        touched={touched}
-                        errors={errors}
+                        value={dirty ? 0 : values['aggrigated_interest']}
+                        type="text"
+                        error={touched['aggrigated_interest'] && Boolean(errors['aggrigated_interest'])}
+                        placeholder={touched['aggrigated_interest'] && errors['aggrigated_interest']}
+                        helperText={touched['aggrigated_interest'] && errors['aggrigated_interest']}
                         FormHelperTextProps={{
                           style: {
                             marginLeft: 0
                           }
                         }}
+                        inputProps={{ maxLength: 50 }}
                       />
                     </Grid>
                     <Grid item xs={3}>
-                      <CustomTextField
+                      <TextField
+                        fullWidth
+                        disabled
+                        className="common-textfield"
+                        size="small"
                         label="Maturity Amount (₹)"
                         name="maturity_amount"
-                        disabled
-                        placeholder="Please enter Maturity Amount"
-                        values={values}
-                        type="number"
-                        // regType="number"
-                        // setFieldValue={setFieldValue}
                         onChange={handleChange}
                         onBlur={handleBlur}
-                        touched={touched}
-                        errors={errors}
+                        value={dirty ? 0 : values['maturity_amount']}
+                        type="text"
+                        error={touched['maturity_amount'] && Boolean(errors['maturity_amount'])}
+                        placeholder={touched['maturity_amount'] && errors['maturity_amount']}
+                        helperText={touched['maturity_amount'] && errors['maturity_amount']}
                         FormHelperTextProps={{
                           style: {
                             marginLeft: 0
                           }
                         }}
+                        inputProps={{ maxLength: 50 }}
                       />
                     </Grid>
                     <Grid item xs={3}>
                       <Button
                         // disabled={!isValid || (Object.keys(touched).length === 0 && touched.constructor === Object)}
-                        // disabled={
-                        //   !(
-                        //     values.investor_id != 0 &&
-                        //     values.fd_id != 0 &&
-                        //     values.ifa_id != 0 &&
-                        //     values.maturity_action_id != 0 &&
-                        //     values.investment_amount != null &&
-                        //     values.years != 0 &&
-                        //     values.interest_rate != '0' &&
-                        //     values.aggrigated_interest != 0 &&
-                        //     values.maturity_amount != 0
-                        //   )
-                        // }
+                        disabled={
+                          !(
+                            values.investor_id != 0 &&
+                            values.fd_id != 0 &&
+                            values.ifa_id != 0 &&
+                            values.maturity_action_id != 0 &&
+                            values.investment_amount != null &&
+                            values.years != 0 &&
+                            values.interest_rate != '0' &&
+                            values.aggrigated_interest != 0 &&
+                            values.maturity_amount != 0
+                          )
+                        }
                         fullWidth
                         variant="contained"
                         color="success"
