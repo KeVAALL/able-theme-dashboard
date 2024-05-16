@@ -32,7 +32,7 @@ export const SubmitButton = memo(
     dirty
   }) => {
     useEffect(() => {
-      console.log(location.pathname);
+      console.log(isEditing);
       if (setIsActive) {
         setIsActive(formValues.is_active);
       }
@@ -88,7 +88,7 @@ export const SubmitButton = memo(
             <Box>
               <AnimateButton>
                 <Button
-                  disabled={!(isValid && dirty)}
+                  disabled={isEditing ? !(isEditing && isValid) : !(isValid && dirty)}
                   variant="contained"
                   color="success"
                   sx={{ borderRadius: 0.6 }}
