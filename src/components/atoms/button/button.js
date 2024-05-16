@@ -6,6 +6,7 @@ import React, { useEffect, memo } from 'react';
 import { Box, Button, Stack, CardHeader, FormControlLabel, Switch } from '@mui/material';
 import AnimateButton from 'helpers/@extended/AnimateButton';
 import { Additem } from 'iconsax-react';
+import { isValid } from 'date-fns';
 
 const headerSX = {
   p: 2.5,
@@ -26,7 +27,9 @@ export const SubmitButton = memo(
     isActive,
     errors,
     handleTabError,
-    handleIsInvestorEditing
+    handleIsInvestorEditing,
+    isValid,
+    dirty
   }) => {
     useEffect(() => {
       console.log(location.pathname);
@@ -63,7 +66,6 @@ export const SubmitButton = memo(
                     }}
                   />
                 }
-                // control={<Switch color="primary" checked={isActive} onChange={setIsActive} />}
                 label="Active"
                 labelPlacement="start"
                 sx={{ mr: 1 }}
@@ -85,7 +87,14 @@ export const SubmitButton = memo(
           ) : (
             <Box>
               <AnimateButton>
-                <Button variant="contained" color="success" sx={{ borderRadius: 0.6 }} startIcon={<Additem />} type="submit">
+                <Button
+                  disabled={!(isValid && dirty)}
+                  variant="contained"
+                  color="success"
+                  sx={{ borderRadius: 0.6 }}
+                  startIcon={<Additem />}
+                  type="submit"
+                >
                   Submit
                 </Button>
               </AnimateButton>
@@ -109,5 +118,7 @@ SubmitButton.PropTypes = {
   handleOpenDialog: PropTypes.any,
   errors: PropTypes.any,
   handleTabError: PropTypes.any,
-  handleIsInvestorEditing: PropTypes.any
+  handleIsInvestorEditing: PropTypes.any,
+  isValid: PropTypes.any,
+  dirty: PropTypes.any
 };

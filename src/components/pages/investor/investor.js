@@ -268,7 +268,19 @@ function Investor() {
             changeTableVisibility();
           }}
         >
-          {({ values, errors, touched, handleChange, handleBlur, handleSubmit, setFieldValue, resetForm, isSubmitting }) => (
+          {({
+            values,
+            errors,
+            touched,
+            handleChange,
+            handleBlur,
+            handleSubmit,
+            setFieldValue,
+            isValid,
+            dirty,
+            resetForm,
+            isSubmitting
+          }) => (
             <Box
               component="form"
               onSubmit={(event) => {
@@ -297,6 +309,8 @@ function Investor() {
                   isActive={isInvestorActive}
                   errors={errors}
                   handleTabError={handleTabError}
+                  isValid={isValid}
+                  dirty={dirty}
                 />
 
                 <Divider />

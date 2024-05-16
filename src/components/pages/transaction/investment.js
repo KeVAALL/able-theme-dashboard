@@ -13,7 +13,7 @@ import Loader from 'components/atoms/loader/Loader';
 // third-party
 import * as yup from 'yup';
 import { Formik } from 'formik';
-import { Eye, FilterSearch, Calculator, TimerStart } from 'iconsax-react';
+import { Eye, FilterSearch, Calculator, TimerStart, ArrangeHorizontal } from 'iconsax-react';
 import { LocalizationProvider } from '@mui/x-date-pickers-pro';
 import { DesktopDateRangePicker } from '@mui/x-date-pickers-pro';
 import { AdapterDateFns } from '@mui/x-date-pickers-pro/AdapterDateFns';
@@ -485,14 +485,15 @@ function Investment() {
                     <Grid item xs={1}>
                       <FormikAutoComplete
                         disableClearable
-                        options={year}
-                        defaultValue={values.years}
+                        options={days}
+                        defaultValue={values.days}
                         setFieldValue={setFieldValue}
-                        formName="years"
+                        formName="days"
                         optionName="value"
-                        label="Years"
+                        label="Days"
                       />
                     </Grid>
+
                     <Grid item xs={1}>
                       <FormikAutoComplete
                         disableClearable
@@ -507,12 +508,12 @@ function Investment() {
                     <Grid item xs={1}>
                       <FormikAutoComplete
                         disableClearable
-                        options={days}
-                        defaultValue={values.days}
+                        options={year}
+                        defaultValue={values.years}
                         setFieldValue={setFieldValue}
-                        formName="days"
+                        formName="years"
                         optionName="value"
-                        label="Days"
+                        label="Years"
                       />
                     </Grid>
                     <Grid item xs={3}>
@@ -532,7 +533,7 @@ function Investment() {
                           // disabled={formPending}
                           // formPending is custom state
                           fullWidth
-                          disabled={isSubmitting}
+                          disabled={isSubmitting || !isValid}
                           variant="contained"
                           type="submit"
                           color="success"
@@ -791,13 +792,14 @@ function Investment() {
                 <CardContent sx={{ paddingLeft: '16px !important' }}>
                   <Grid container spacing={2}>
                     <Grid item xs={3} style={{ paddingLeft: 0, paddingTop: 0 }}>
-                      <LocalizationProvider dateAdapter={AdapterDateFns} localeText={{ start: 'Date From', end: 'To' }}>
+                      <LocalizationProvider dateAdapter={AdapterDateFns} localeText={{ start: 'Date From', end: 'Date To' }}>
                         <DesktopDateRangePicker
                           className="calendar_main"
                           value={dateValue}
                           onChange={(newValue) => {
                             setDateValue(newValue);
                           }}
+                          slotProps={{ fieldSeparator: { children: <ArrangeHorizontal size={18} /> } }}
                         />
                       </LocalizationProvider>
                     </Grid>

@@ -105,7 +105,19 @@ function Issuer() {
             changeTableVisibility();
           }}
         >
-          {({ values, errors, touched, handleChange, handleBlur, handleSubmit, setFieldValue, resetForm, isSubmitting }) => (
+          {({
+            values,
+            errors,
+            touched,
+            handleChange,
+            handleBlur,
+            handleSubmit,
+            setFieldValue,
+            isValid,
+            dirty,
+            resetForm,
+            isSubmitting
+          }) => (
             <Box
               component="form"
               onSubmit={(event) => {
@@ -132,6 +144,8 @@ function Issuer() {
                   setActiveClose={setActiveClose}
                   setIsActive={handleIsIssuerActive}
                   isActive={isIssuerActive}
+                  isValid={isValid}
+                  dirty={dirty}
                 />
 
                 <Divider />

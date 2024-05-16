@@ -26,7 +26,7 @@ const validationSchema = yup.object().shape({
   ifa_id: yup.number(),
   maturity_action_id: yup.number(),
   payout_method_id: yup.string(),
-  investment_amount: yup.number(),
+  investment_amount: yup.number().min(1, 'Maximum tenure must be greater than or equal to 1').required('Investment Amount is required'),
   years: yup.number(),
   months: yup.number(),
   days: yup.number(),
