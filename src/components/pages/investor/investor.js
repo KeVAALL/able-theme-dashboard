@@ -237,8 +237,8 @@ function Investor() {
                   is_foreign_tax_resident: selectedDeclaration.isResidentOutsideIndia ? 1 : 0,
                   is_rpep: selectedDeclaration.isRelativeToPoliticallyExposed ? 1 : 0,
                   is_pep: selectedDeclaration.isPoliticallyExposed ? 1 : 0
-                },
-                nominee: nomineeData
+                }
+                // nominee: nomineeData
               };
               SaveInvestor(formValues, InvestorTableDataRefetch, clearFormValues);
             }
@@ -252,8 +252,8 @@ function Investor() {
                   is_foreign_tax_resident: selectedDeclaration.isResidentOutsideIndia ? 1 : 0,
                   is_rpep: selectedDeclaration.isRelativeToPoliticallyExposed ? 1 : 0,
                   is_pep: selectedDeclaration.isPoliticallyExposed ? 1 : 0
-                },
-                nominee: nomineeData
+                }
+                // nominee: nomineeData
               };
               EditInvestor(
                 formValues,
@@ -440,9 +440,7 @@ function Investor() {
               search: '',
               ifa_id: 1
             }}
-            // validationSchema={formValueFields}
             onSubmit={async (values, { resetForm }) => {
-              // const searchResult = await GetIFASearch(values, selectedIFA);
               const searchResult = await GetIFASearch(values);
               if (searchResult) {
                 setSearchData(searchResult);

@@ -139,6 +139,7 @@ const relationship = [
 // Add form values
 const formAllValues = {
   is_permanent_address_correspondent: 0,
+  nominee: [],
   investor: {
     investor_name: '',
     pan_no: '',

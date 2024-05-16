@@ -20,6 +20,7 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { Additem } from 'iconsax-react';
 
 const Nomination = (props) => {
+  console.log(props.values.nominee);
   // theme
   const theme = useTheme();
   // Toggle Table and Form Visibility
@@ -106,19 +107,37 @@ const Nomination = (props) => {
             initialValues={formValues}
             validationSchema={validationSchema}
             onSubmit={async (values, { setSubmitting, resetForm }) => {
-              if (isEditing === false) {
-                console.log({ ...values, relation_name: selectedRelation });
-              }
-              if (isEditing === true) {
-                console.log({ ...values, method_name: 'update' });
-              }
+              // if (isEditing === false) {
+              //   console.log({ ...values, relation_name: selectedRelation });
+              // }
+              // if (isEditing === true) {
+              //   console.log({ ...values, method_name: 'update' });
+              // }
+              // props.handleNewNominee({
+              //   ...values
+              // });
+              // changeTableVisibility();
             }}
           >
-            {({ values, errors, touched, handleChange, handleBlur, setFieldValue, handleSubmit, resetForm, isSubmitting }) => (
+            {({
+              values,
+              errors,
+              touched,
+              handleChange,
+              handleBlur,
+              setFieldValue,
+              isValid,
+              dirty,
+              handleSubmit,
+              resetForm,
+              isSubmitting
+            }) => (
               <Box
                 component="form"
                 onSubmit={(event) => {
                   event.preventDefault();
+
+                  // handleSubmit();
                 }}
                 sx={{ width: '100%' }}
               >
@@ -137,16 +156,19 @@ const Nomination = (props) => {
                       <Box>
                         <AnimateButton>
                           <Button
+                            disabled={isEditing ? !(isEditing && isValid) : !(isValid && dirty)}
                             variant="contained"
                             color="success"
+                            // type="submit"
                             startIcon={<Additem />}
                             onClick={() => {
                               console.log({
                                 ...values
                               });
-                              props.handleNewNominee({
-                                ...values
-                              });
+                              // props.handleNewNominee({
+                              //   ...values
+                              // });
+                              props.setFieldValue('nominee', [...props.values.nominee, values]);
                               changeTableVisibility();
                             }}
                           >
@@ -314,7 +336,8 @@ const Nomination = (props) => {
           >
             <MultiTable
               columns={columns}
-              data={props.nomineeData}
+              // data={props.nomineeData}
+              data={props.values.nominee}
               changeTableVisibility={changeTableVisibility}
               setEditing={setEditing}
               // getOneItem={GetOneProduct}

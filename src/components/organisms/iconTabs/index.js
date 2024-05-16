@@ -136,6 +136,7 @@ export default function IconTabs(props) {
             handleBlur={props.handleBlur}
             touched={props.touched}
             errors={props.errors}
+            setFieldValue={props.setFieldValue}
             // selectedRelation={props.selectedRelation}
             // setSelectedRelation={props.setSelectedRelation}
             nomineeData={props.nomineeData}
