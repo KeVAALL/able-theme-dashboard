@@ -358,7 +358,7 @@ function Investor() {
                       />
                     </Grid>
                     <Grid item xs={4}>
-                      {/* Using Normal Autocomplete because of API issues */}
+                      {/* Using Normal Autocomplete because of API body */}
                       <CustomAutoComplete
                         options={genderData}
                         defaultValue={selectedGender}
@@ -411,7 +411,7 @@ function Investor() {
       )}
       {!showTable && (
         <MainCard
-          title="Investor"
+          title="Investor Search"
           changeTableVisibility={changeTableVisibility}
           showButton
           setActiveAdding={setActiveClose}
@@ -446,7 +446,7 @@ function Investor() {
               >
                 <CardContent sx={{ paddingLeft: '16px !important' }}>
                   <Grid container spacing={2}>
-                    <Grid item xs={3} style={{ paddingLeft: 0, paddingTop: 0 }}>
+                    <Grid item xs={2.5} style={{ paddingLeft: 0, paddingTop: 0 }}>
                       <CustomTextField
                         label="FD Name"
                         name="fd_name"
@@ -464,7 +464,7 @@ function Investor() {
                       />
                     </Grid>
 
-                    <Grid item xs={3} style={{ paddingTop: 0 }}>
+                    <Grid item xs={2.5} style={{ paddingTop: 0 }}>
                       <FormikAutoComplete
                         options={ifaData}
                         defaultValue={values.ifa_id}
@@ -475,7 +475,7 @@ function Investor() {
                       />
                     </Grid>
 
-                    <Grid item xs={3} style={{ paddingTop: 0 }}>
+                    <Grid item xs={2.5} style={{ paddingTop: 0 }}>
                       <CustomTextField
                         label="Search"
                         name="search"
@@ -501,7 +501,8 @@ function Investor() {
                         startIcon={<FilterSearch />}
                         sx={{
                           justifySelf: 'center',
-                          width: !mdUp ? 'auto' : '100%' // Set width to 'auto' when screen size is medium or larger, otherwise '100%'
+                          width: !mdUp ? 'auto' : '100%',
+                          borderRadius: 0.6 // Set width to 'auto' when screen size is medium or larger, otherwise '100%'
                         }}
                       >
                         Search

@@ -91,7 +91,7 @@ const config = {
    * 'light' (default)
    * 'dark'
    */
-  mode: ThemeMode.LIGHT,
+  mode: ThemeMode.DARK,
 
   /**
    * the props used for theme primary color variants

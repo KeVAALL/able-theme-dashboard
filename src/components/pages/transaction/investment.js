@@ -51,7 +51,8 @@ import {
   GetScheme,
   CalculateFD,
   StartFD,
-  GetDeclaration
+  GetDeclaration,
+  GetInvestments
 } from 'hooks/transaction/investment';
 import { GetPayoutMethod, GetSchemeSearch } from 'hooks/interestRate/interestRate';
 import InvestmentDialog from 'components/atoms/dialog/InvestmentDialog';
@@ -114,7 +115,7 @@ function Investment() {
   const setEditing = (value) => {
     console.log(value);
     setFormValues(value);
-    handleIsInvestmentActive(value.investor.is_active);
+    // handleIsInvestmentActive(value.investor.is_active);
   };
   const setInvestorEditing = (value) => {
     console.log(value);
@@ -301,15 +302,15 @@ function Investment() {
     }
   });
   // Query for fetching status dropdown
-  const { pending: statusPending, refetch: StatusDropdownRefetch } = useQuery({
-    queryKey: ['statusDropdownData'], // Unique key for the query
-    refetchOnWindowFocus: false, // Disable refetch on window focus
-    keepPreviousData: true, // Keep previous data when refetching
-    queryFn: GetStatusDropdown, // Function to fetch product data
-    onSuccess: (data) => {
-      setStatusDropdown(data); // Update product data with fetched data
-    }
-  });
+  // const { pending: statusPending, refetch: StatusDropdownRefetch } = useQuery({
+  //   queryKey: ['statusDropdownData'], // Unique key for the query
+  //   refetchOnWindowFocus: false, // Disable refetch on window focus
+  //   keepPreviousData: true, // Keep previous data when refetching
+  //   queryFn: GetStatusDropdown, // Function to fetch product data
+  //   onSuccess: (data) => {
+  //     setStatusDropdown(data); // Update product data with fetched data
+  //   }
+  // });
   // Query for fetching status dropdown
   const { pending: maturityPending, refetch: MaturityDropdownRefetch } = useQuery({
     queryKey: ['maturityDropdownData'], // Unique key for the query
@@ -321,7 +322,7 @@ function Investment() {
     }
   });
 
-  if (payoutPending || investorPending || ifaPending || statusPending || productPending || maturityPending) return <Loader />;
+  if (payoutPending || investorPending || ifaPending || productPending || maturityPending) return <Loader />;
 
   return (
     <>
@@ -383,8 +384,7 @@ function Investment() {
             dirty,
             resetForm,
             isSubmitting,
-            setSubmitting,
-            setStatus
+            setSubmitting
           }) => (
             <Box
               component="form"
@@ -531,16 +531,21 @@ function Investment() {
                         <Button
                           // disabled={formPending}
                           // formPending is custom state
-                          disableElevation
+                          fullWidth
                           disabled={isSubmitting}
                           variant="contained"
-                          color="success"
-                          sx={{ borderRadius: 0.6 }}
-                          startIcon={<Calculator />}
                           type="submit"
+                          color="success"
+                          startIcon={<Calculator />}
                           onClick={async () => {
                             setSubmitting(true);
-                            const reqValues = { ...values, compounding_type: 'yearly' };
+                            const reqValues = {
+                              ...values,
+                              interest_rate: '0',
+                              aggrigated_interest: 0,
+                              maturity_amount: 0,
+                              compounding_type: 'yearly'
+                            };
 
                             const result = await CalculateFD(reqValues);
 
@@ -555,13 +560,15 @@ function Investment() {
                               maturity_amount: calculated.maturity_amount
                             });
                           }}
+                          sx={{ borderRadius: 0.6 }}
                         >
-                          {isSubmitting ? 'Calculating...' : 'Calculate'}
+                          {isSubmitting ? 'Calculating' : 'Calculate'}
                         </Button>
                       </AnimateButton>
                     </Grid>
-                    <Grid item xs={1.5} sx={{ paddingLeft: '0px !important' }}>
+                    <Grid item xs={1.5}>
                       <Button
+                        fullWidth
                         variant="contained"
                         color="success"
                         sx={{ borderRadius: 0.6 }}
@@ -575,7 +582,7 @@ function Investment() {
                           }, 200);
                         }}
                       >
-                        View Scheme
+                        Scheme
                       </Button>
                     </Grid>
                     <Grid item xs={3}>
@@ -665,10 +672,12 @@ function Investment() {
                         }
                         fullWidth
                         variant="contained"
+                        type="submit"
                         color="success"
                         sx={{ borderRadius: 0.6 }}
                         startIcon={<TimerStart />}
                         onClick={async () => {
+                          setSubmitting(true);
                           const result = await StartFD(values);
 
                           setFdInvestmentID(result.fd_investment_id);
@@ -684,6 +693,8 @@ function Investment() {
                           await GetEditOneInvestor(setInvestorEditing, values.investor_id);
 
                           handleIsInvestorEditing();
+
+                          setSubmitting(false);
                         }}
                       >
                         Start Investment
@@ -743,7 +754,7 @@ function Investment() {
       )}
       {!showTable && (
         <MainCard
-          title="Investment"
+          title="Investment Search"
           changeTableVisibility={changeTableVisibility}
           showButton
           setActiveAdding={setActiveClose}
@@ -753,17 +764,17 @@ function Investment() {
         >
           <Formik
             initialValues={{
-              fd_id: 0,
-              status_id: 0
+              investor_id: 0,
+              ifa_id: 0
             }}
             validationSchema={yup.object({
-              fd_id: yup.number(),
-              status_id: yup.number()
+              investor_id: yup.number(),
+              ifa_id: yup.number()
             })}
             onSubmit={async (values, { resetForm }) => {
-              const formValues = { ...values, from_date: dateValue[0], end_date: dateValue[1] };
+              const formValues = { ...values, method_name: 'getinvestmentsonifa', from_date: dateValue[0], end_date: dateValue[1] };
 
-              const investmentData = await GetInvestmentData(formValues);
+              const investmentData = await GetInvestments(formValues);
 
               setInvestmentData(investmentData);
             }}
@@ -791,30 +802,27 @@ function Investment() {
                       </LocalizationProvider>
                     </Grid>
 
-                    <Grid item xs={3} style={{ paddingTop: 0 }}>
+                    <Grid item xs={2.5} style={{ paddingTop: 0 }}>
                       <FormikAutoComplete
-                        options={fdDropdown}
-                        defaultValue={values.fd_id}
+                        options={investorData}
+                        defaultValue={values.investor_id}
                         setFieldValue={setFieldValue}
-                        // errors={errors}
-                        formName="fd_id"
-                        idName="fd_id"
-                        optionName="fd_name"
-                        label="Select FD"
+                        formName="investor_id"
+                        idName="investor_id"
+                        optionName="investor_name"
+                        label="Select Investor"
                       />
                       {/* {errors && <>`${JSON.stringify(errors)}`</>} */}
                     </Grid>
 
-                    <Grid item xs={3} style={{ paddingTop: 0 }}>
+                    <Grid item xs={2.5} style={{ paddingTop: 0 }}>
                       <FormikAutoComplete
-                        options={statusDropdown}
-                        defaultValue={values.status_id}
+                        options={ifaData}
+                        defaultValue={values.ifa_id}
                         setFieldValue={setFieldValue}
-                        // errors={errors}
-                        formName="status_id"
-                        idName="status_id"
-                        optionName="value"
-                        label="Select Status"
+                        formName="ifa_id"
+                        optionName="item_value"
+                        label="Select IFA"
                       />
                     </Grid>
 
@@ -826,7 +834,8 @@ function Investment() {
                         startIcon={<FilterSearch />}
                         sx={{
                           justifySelf: 'center',
-                          width: !mdUp ? 'auto' : '100%' // Set width to 'auto' when screen size is medium or larger, otherwise '100%'
+                          width: !mdUp ? 'auto' : '100%',
+                          borderRadius: 0.6 // Set width to 'auto' when screen size is medium or larger, otherwise '100%'
                         }}
                       >
                         Search
@@ -849,7 +858,7 @@ function Investment() {
             setEditing={setEditing}
             getOneItem={() => {}}
             deleteOneItem={() => {}}
-            getEditData={() => {}}
+            // getEditData={() => {}}
             setSearchData={setSearchData}
             // tableDataRefetch={InvestmentTableDataRefetch}
             tableDataRefetch={() => {}}

@@ -17,7 +17,7 @@ const residency = [
   { id: 1, status: 'Indian Resident' }
 ];
 const marital_status = [
-  { id: 0, status: 'Not Married' },
+  { id: 0, status: 'Unmarried' },
   { id: 1, status: 'Married' }
 ];
 const occupation = [

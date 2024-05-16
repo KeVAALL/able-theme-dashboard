@@ -11,7 +11,7 @@ import Loader from 'components/atoms/loader/Loader';
 // assets
 import { formAllValues, validationSchema, tableColumns, VisibleColumn } from 'constant/interestRateValidation';
 import { DeleteOneInterestRate, GetPayoutMethod, GetSchemeSearch } from 'hooks/interestRate/interestRate';
-import CustomTextField, { CustomAutoComplete, FormikAutoComplete } from 'utils/textfield';
+import CustomTextField, { FormikAutoComplete } from 'utils/textfield';
 import DialogForm from 'components/atoms/dialog/InterestRateDialog';
 import InterestRateTable from 'components/molecules/fixedDeposit/interestRateTable';
 
@@ -226,13 +226,6 @@ const InterestRate = ({ formValues, changeTableVisibility, isNotEditingInterestR
                     />
                   </Grid>
                   <Grid item xs={3}>
-                    {/* <CustomAutoComplete
-                      options={payoutData}
-                      defaultValue={selectedPayoutMethod}
-                      setSelected={setSelectedPayoutMethod}
-                      optionName="item_value"
-                      label="Payout Method"
-                    /> */}
                     <FormikAutoComplete
                       options={payoutData}
                       defaultValue={values.fd_payout_method_id}

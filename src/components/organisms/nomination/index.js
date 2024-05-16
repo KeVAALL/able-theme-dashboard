@@ -220,12 +220,10 @@ const Nomination = (props) => {
                         <LocalizationProvider dateAdapter={AdapterDateFns}>
                           <DesktopDatePicker
                             className="calendar_main"
-                            label="DOB"
+                            label="Date of Birth"
                             inputFormat="dd/MM/yyyy"
                             value={values?.birth_date && new Date(values?.birth_date)}
                             onChange={(newValue) => {
-                              console.log(newValue);
-                              // setFieldValue('birth_date', dateFormatter(newValue));
                               setFieldValue('birth_date', newValue);
                             }}
                             renderInput={(params) => <CustomTextField {...params} />}

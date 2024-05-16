@@ -77,6 +77,23 @@ export async function GetScheme(values) {
     return [];
   }
 }
+export async function GetInvestments(values) {
+  try {
+    const response = await axios.post('transaction/get_investments', values);
+
+    return response.data.data;
+  } catch (err) {
+    enqueueSnackbar(err.message, {
+      variant: 'error',
+      autoHideDuration: 2000,
+      anchorOrigin: {
+        vertical: 'top',
+        horizontal: 'right'
+      }
+    });
+    return [];
+  }
+}
 export async function CalculateFD(values) {
   try {
     const response = await axios.post('product/calculatefd', {

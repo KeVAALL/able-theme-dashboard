@@ -441,8 +441,3 @@ MultiTable.propTypes = {
 };
 
 export default memo(MultiTable);
-
-/* <Grid item md={3} sm={3} xs={6} sx={{ height: '60px' }}>
-      <CustomTextField />
-   </Grid> 
-*/

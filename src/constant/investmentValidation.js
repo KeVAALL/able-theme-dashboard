@@ -14,11 +14,8 @@ const formAllValues = {
   payout_method_id: 'C',
   investment_amount: null,
   years: 0,
-  // years: '0',
   months: 0,
-  // months: '0',
   days: 0,
-  // days: '0',
   interest_rate: '0',
   aggrigated_interest: 0,
   maturity_amount: 0
@@ -56,7 +53,6 @@ const investorValues = {
     pan_no: '',
     mobile_no: '',
     is_senior_citizen: 1,
-    // gender_id: 1,
     birth_date: new Date(),
     place_of_birth: '',
     is_married: 1,
@@ -157,7 +153,23 @@ const StatusCell = ({ value }) => {
       return <Chip color="info" label="None" size="medium" variant="light" />;
   }
 };
+// Function to parse and modify the value
+const parseAndModifyValue = (value) => {
+  let parsedValue = value;
+
+  // Split the value by semicolon
+  const parts = value.split('.').map((part) => part.trim());
+
+  // Join the parts back with line breaks
+  parsedValue = parts.join('.\n');
+
+  return parsedValue;
+};
 const tableColumns = [
+  {
+    Header: 'Application No.',
+    accessor: 'application_number'
+  },
   {
     Header: 'Date',
     accessor: 'created_on',
@@ -168,28 +180,24 @@ const tableColumns = [
     accessor: 'investor_name'
   },
   {
-    Header: 'Investor Code',
-    accessor: 'investor_code'
-  },
-  {
-    Header: 'IFA Code',
-    accessor: 'ifa_code'
+    Header: 'FD Name',
+    accessor: 'fd_name',
+    minWidth: 150
   },
   {
     Header: 'Amount',
     accessor: 'investment_amount'
   },
   {
-    Header: 'Duration',
-    accessor: 'tenure_selected'
-  },
-  {
-    Header: 'Payout Method',
-    accessor: 'fd_payout_method'
-  },
-  {
-    Header: 'Interest Rate',
-    accessor: 'rate_of_interest'
+    Header: 'Description',
+    accessor: 'description',
+    minWidth: 250,
+    customCell: ({ value }) => {
+      // Parse the value and modify it as needed
+      const parsedValue = parseAndModifyValue(value);
+
+      return <span>{parsedValue}</span>;
+    }
   },
   {
     Header: 'Status',

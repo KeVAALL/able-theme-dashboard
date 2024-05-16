@@ -84,7 +84,6 @@ const AddressDetails = (props) => {
         </Typography>
       </Box>
 
-      {/* {!props.values.investor.is_permanent_address_correspond && ( */}
       {!props.values.is_permanent_address_correspondent && (
         <Box id="__permanent _address" style={{ marginTop: '12px', marginBottom: '12px' }}>
           <Typography sx={{ color: '#21B546', marginBottom: '12px', display: 'block' }} variant="p">
