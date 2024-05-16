@@ -436,7 +436,7 @@ function Investor() {
           {/* here i will add the filter */}
           <Formik
             initialValues={{
-              fd_name: '',
+              // fd_name: '',
               search: '',
               ifa_id: 1
             }}
@@ -460,7 +460,7 @@ function Investor() {
               >
                 <CardContent sx={{ paddingLeft: '16px !important' }}>
                   <Grid container spacing={2}>
-                    <Grid item xs={2.5} style={{ paddingLeft: 0, paddingTop: 0 }}>
+                    {/* <Grid item xs={2.5} style={{ paddingLeft: 0, paddingTop: 0 }}>
                       <CustomTextField
                         label="FD Name"
                         name="fd_name"
@@ -476,9 +476,9 @@ function Investor() {
                           }
                         }}
                       />
-                    </Grid>
+                    </Grid> */}
 
-                    <Grid item xs={2.5} style={{ paddingTop: 0 }}>
+                    <Grid item xs={2.5} style={{ paddingLeft: 0, paddingTop: 0 }}>
                       <FormikAutoComplete
                         options={ifaData}
                         defaultValue={values.ifa_id}

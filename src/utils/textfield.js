@@ -186,10 +186,10 @@ export const FormikAutoComplete = memo((props) => {
       componentsProps={{
         popper: {
           modifiers: [
-            {
-              name: 'flip',
-              enabled: false
-            },
+            // {
+            //   name: 'flip',
+            //   enabled: false
+            // },
             {
               name: 'preventOverflow',
               enabled: false

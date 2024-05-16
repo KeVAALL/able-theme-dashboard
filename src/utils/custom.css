@@ -39,8 +39,8 @@
 
 .calendar_main {
   display: flex;
-  justify-content: center;
-  align-items: center;
+  /* justify-content: center; */
+  /* align-items: center; */
 }
 .calendar_main input {
   padding: 8.2px 0px 8.2px 14px !important;
