@@ -48,3 +48,9 @@
 .calendar_main .MuiInputLabel-root {
   margin-top: -3px !important;
 }
+
+/* Chip */
+.active-chip {
+  padding-left: 10px !important;
+  padding-right: 10px !important;
+}

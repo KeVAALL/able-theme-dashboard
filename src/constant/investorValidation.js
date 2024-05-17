@@ -2,6 +2,9 @@
 import { Chip } from '@mui/material';
 import * as yup from 'yup';
 
+// chip css
+import '../utils/custom.css';
+
 // Autocomplete data
 const genderData = [
   { id: 1, gender: 'Male' },
@@ -249,9 +252,9 @@ const VisibleColumn = [];
 const StatusCell = ({ value }) => {
   switch (value) {
     case 0:
-      return <Chip color="error" label="Inactive" size="medium" variant="outlined" />;
+      return <Chip color="error" label="In-active" size="medium" variant="outlined" />;
     case 1:
-      return <Chip color="success" label="Active" size="medium" variant="outlined" />;
+      return <Chip color="success" label="Active" size="medium" variant="outlined" className="active-chip" />;
     default:
       return <Chip color="info" label="None" size="medium" variant="light" />;
   }

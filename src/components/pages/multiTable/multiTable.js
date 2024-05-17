@@ -43,7 +43,8 @@ const ReactTable = ({
   isEditingInterestRateButton,
   isEditingInterestRate,
   VisibleColumn,
-  doNotShowHeader
+  doNotShowHeader,
+  isNomination
 }) => {
   // const filterTypes = useMemo(() => renderFilterTypes, []);
   // const defaultColumn = useMemo(() => ({ Filter: DefaultColumnFilter }), []);
@@ -229,7 +230,22 @@ const ReactTable = ({
                   }
                 }}
               >
-                <CSVExport data={rows?.map((d) => d.original)} filename={'filtering-table.csv'} headers={headers} />
+                <CSVExport
+                  data={rows?.map((d) => {
+                    if (d.original.is_active === 1) {
+                      console.log({ ...d.original, is_active: 'Active' });
+                      return { ...d.original, is_active: 'Active' };
+                    }
+                    if (d.original.is_active === 0) {
+                      console.log({ ...d.original, is_active: 'In-active' });
+
+                      return { ...d.original, is_active: 'In-active' };
+                    }
+                    // return d.original;
+                  })}
+                  filename={'filtering-table.csv'}
+                  headers={headers}
+                />
               </Grid>
             </Grid>
           </Grid>
@@ -245,6 +261,7 @@ const ReactTable = ({
           dataRefetch={tableDataRefetch}
           item={item}
           deleteOneItem={deleteOneItem}
+          isNomination={isNomination}
         />
       )}
 
@@ -293,7 +310,7 @@ const ReactTable = ({
                       );
                     })}
                     {headers?.length !== 0 && (
-                      <TableCell sx={{ textAlign: { md: 'right', xs: 'center' }, width: 150 }}>
+                      <TableCell sx={{ textAlign: { md: 'right', xs: 'center' }, width: 130 }}>
                         <Grid container sx={{ display: 'flex', justifyContent: { md: 'flex-end', xs: 'center' } }}>
                           <Grid item md={isEditingInterestRateButton ? 4 : 6}>
                             <IconButton
@@ -388,7 +405,8 @@ const MultiTable = ({
   isEditingInterestRateButton,
   isEditingInterestRate,
   VisibleColumn,
-  doNotShowHeader
+  doNotShowHeader,
+  isNomination
 }) => {
   return (
     <MainCard sx={{ borderRadius: 0 }} content={false} secondary={<CSVExport data={data} filename={'pagination-bottom-table.csv'} />}>
@@ -412,6 +430,7 @@ const MultiTable = ({
           isEditingInterestRate={isEditingInterestRate}
           VisibleColumn={VisibleColumn}
           doNotShowHeader={doNotShowHeader}
+          isNomination={isNomination}
         />
       </ScrollX>
     </MainCard>
@@ -437,7 +456,8 @@ MultiTable.propTypes = {
   isEditingInterestRateButton: PropTypes.any,
   isEditingInterestRate: PropTypes.any,
   VisibleColumn: PropTypes.any,
-  doNotShowHeader: PropTypes.any
+  doNotShowHeader: PropTypes.any,
+  isNomination: PropTypes.any
 };
 
 export default memo(MultiTable);

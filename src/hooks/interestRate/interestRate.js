@@ -53,7 +53,6 @@ export async function SaveInterestRate(
       fd_payout_method_id: selectedPayoutMethod,
       method_name: 'add'
     });
-    clearFormValues();
     handleOpenDialog();
     enqueueSnackbar('Product added', {
       variant: 'success',
@@ -63,11 +62,13 @@ export async function SaveInterestRate(
         horizontal: 'right'
       }
     });
+    console.log(selectedPayoutMethod);
     const schemeData = await GetSchemeSearch(fdId, selectedPayoutMethod);
     setSchemeData(schemeData);
+    clearFormValues();
   } catch (err) {
     enqueueSnackbar(err.message, {
-      variant: 'success',
+      variant: 'error',
       autoHideDuration: 2000,
       anchorOrigin: {
         vertical: 'top',

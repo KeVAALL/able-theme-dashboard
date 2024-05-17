@@ -3,6 +3,9 @@ import { Chip } from '@mui/material';
 import { minWidth } from '@mui/system';
 import * as yup from 'yup';
 
+// chip css
+import '../utils/custom.css';
+
 // Autocomplete data
 
 // Add form values
@@ -146,7 +149,7 @@ const VisibleColumn = [];
 const StatusCell = ({ value }) => {
   switch (value) {
     case 0:
-      return <Chip color="error" label="Inactive" size="medium" variant="outlined" />;
+      return <Chip color="error" label="In-active" size="medium" variant="outlined" />;
     case 1:
       return <Chip color="info" label="Pending" size="medium" variant="outlined" />;
     default:

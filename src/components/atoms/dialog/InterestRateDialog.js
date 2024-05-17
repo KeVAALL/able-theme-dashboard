@@ -117,6 +117,9 @@ const DialogForm = ({
           onSubmit={async (values, { resetForm }) => {
             console.log(isEditingScheme);
             console.log(values);
+            console.log(fdId);
+
+            console.log(selectedPayoutMethod);
             if (isEditingScheme) {
               EditInterestRate(values, activeButton, liveButton, clearFormValues, handleOpenDialog, setSchemeData, setActiveClose);
             } else {

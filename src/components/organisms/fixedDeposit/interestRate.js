@@ -128,7 +128,7 @@ const InterestRate = ({ formValues, changeTableVisibility, isNotEditingInterestR
         handleOpenDialog={handleOpenDialog}
         schemeEditFormValues={schemeFormValues}
         fdId={formValues.fd_id}
-        selectedPayoutMethod={formValues.fd_payout_method_id}
+        selectedPayoutMethod={IRformValues.fd_payout_method_id}
         clearFormValues={clearFormValues}
         setIsActive={handleIsSchemeActive}
         isActive={isSchemeActive}
@@ -140,7 +140,7 @@ const InterestRate = ({ formValues, changeTableVisibility, isNotEditingInterestR
         initialValues={IRformValues}
         validationSchema={validationSchema}
         onSubmit={async (values, { resetForm }) => {
-          console.log(formValues.fd_payout_method_id);
+          console.log(formValues.fd_id, formValues.fd_payout_method_id);
           const searchResult = await GetSchemeSearch(formValues.fd_id, values.fd_payout_method_id);
           if (searchResult) {
             setSchemeData(searchResult);

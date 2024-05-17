@@ -97,12 +97,22 @@ function Issuer() {
           validationSchema={validationSchema}
           onSubmit={async (values, { setSubmitting, resetForm }) => {
             if (isEditing === false) {
-              SaveIssuer(values, issuerTableDataRefetch, clearFormValues);
+              try {
+                const response = await SaveIssuer(values, issuerTableDataRefetch, clearFormValues);
+                changeTableVisibility();
+              } catch (err) {
+                console.log(err);
+              }
             }
             if (isEditing === true) {
-              EditIssuer(values, isIssuerActive, issuerTableDataRefetch, clearFormValues, setActiveClose);
+              try {
+                const response = await EditIssuer(values, isIssuerActive, issuerTableDataRefetch, clearFormValues, setActiveClose);
+                changeTableVisibility();
+              } catch (err) {
+                console.log(err);
+              }
             }
-            changeTableVisibility();
+            // changeTableVisibility();
           }}
         >
           {({
@@ -196,6 +206,7 @@ function Issuer() {
 
                     <Grid item md={4} sm={6} xs={12}>
                       <CustomTextField
+                        disabled={isEditing}
                         label="Issuer PAN"
                         name="issuer_pan"
                         placeholder={'Please enter Issuer PAN'}

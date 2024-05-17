@@ -66,9 +66,6 @@ function Investor() {
     isResidentOutsideIndia: false
   });
 
-  // Address Details Checkbox
-  const [sameAddress, setSameAddress] = useState(false);
-
   // Nominee
   const [nomineeData, setNomineeData] = useState([]);
 
@@ -97,7 +94,7 @@ function Investor() {
       isRelativeToPoliticallyExposed: Boolean(value.declaration.is_rpep),
       isResidentOutsideIndia: Boolean(value.declaration.is_foreign_tax_resident)
     });
-    setNomineeData(value.nominee);
+    // setNomineeData(value.nominee);
   };
   const setActiveEditing = () => {
     setIsEditing(true);
@@ -129,7 +126,7 @@ function Investor() {
       isResidentOutsideIndia: false
     });
     setErrorObject(errorObject);
-    setNomineeData([]);
+    // setNomineeData([]);
   };
 
   // Gender Validation
@@ -163,10 +160,7 @@ function Investor() {
       setSelectedDeclaration({ ...selectedDeclaration, isResidentOutsideIndia: !selectedDeclaration.isResidentOutsideIndia });
     }
   };
-  // Address Details Checkbox
-  const handleCheckboxChange = (event) => {
-    setSameAddress(event.target.checked);
-  };
+
   // Tabs Error
   const handleTabError = (value) => {
     console.log(value);
@@ -284,6 +278,7 @@ function Investor() {
             <Box
               component="form"
               onSubmit={(event) => {
+                console.log(errors);
                 event.preventDefault();
                 handleSubmit();
               }}
@@ -406,16 +401,12 @@ function Investor() {
                     touched={touched}
                     errors={errors}
                     setFieldValue={setFieldValue}
-                    // selectedRelation={selectedRelation}
-                    // setSelectedRelation={setSelectedRelation}
                     selectedDeclaration={selectedDeclaration}
                     handleDeclarationClick={handleDeclarationClick}
                     nomineeData={nomineeData}
                     handleNewNominee={handleNewNominee}
                     errorObject={errorObject}
                     handleTabError={handleTabError}
-                    sameAddress={sameAddress}
-                    handleCheckboxChange={handleCheckboxChange}
                   />
                 </Grid>
               </Card>
@@ -433,7 +424,6 @@ function Investor() {
           contentSX={{ p: 2 }}
           sx={{ height: '100%', boxShadow: 1 }}
         >
-          {/* here i will add the filter */}
           <Formik
             initialValues={{
               // fd_name: '',

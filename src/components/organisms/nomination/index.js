@@ -18,9 +18,9 @@ import { Formik } from 'formik';
 import * as yup from 'yup';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { Additem } from 'iconsax-react';
+import { v4 as uuidv4 } from 'uuid';
 
 const Nomination = (props) => {
-  console.log(props.values.nominee);
   // theme
   const theme = useTheme();
   // Toggle Table and Form Visibility
@@ -61,12 +61,23 @@ const Nomination = (props) => {
     address_line_2: yup.string().required('Address is Required'),
     pincode: yup.string().required('Pin Code is Required'),
     city: yup.string().required('City is Required'),
-    state: yup.string()
+    state: yup.string().required('State is Required')
   });
   const [formValues, setFormValues] = useState(formAllValues);
   // Empty Form Fields
   const clearFormValues = () => {
     setFormValues(formAllValues);
+  };
+  // Delete
+  const DeleteOneNominee = (value) => {
+    const deleteNominee = props.values.nominee.filter((nominee) => {
+      if (nominee.nominee_id) {
+        return nominee.id !== value.id;
+      } else {
+        return nominee.id !== value.id;
+      }
+    });
+    props.setFieldValue('nominee', deleteNominee);
   };
 
   // Table
@@ -116,6 +127,7 @@ const Nomination = (props) => {
               // props.handleNewNominee({
               //   ...values
               // });
+              // props.setFieldValue('nominee', [...props.values.nominee, values]);
               // changeTableVisibility();
             }}
           >
@@ -159,16 +171,46 @@ const Nomination = (props) => {
                             disabled={isEditing ? !(isEditing && isValid) : !(isValid && dirty)}
                             variant="contained"
                             color="success"
-                            // type="submit"
+                            type="submit"
                             startIcon={<Additem />}
-                            onClick={() => {
+                            onClick={(e) => {
+                              console.log(e);
+                              // e.preventDefault();
                               console.log({
                                 ...values
                               });
                               // props.handleNewNominee({
                               //   ...values
                               // });
-                              props.setFieldValue('nominee', [...props.values.nominee, values]);
+                              // setNomineeData((prev) => {
+                              //   return [...prev, value.values];
+                              // });
+                              if (values.id) {
+                                const nomineeId = values.id;
+                                const editNominee = props.values.nominee.map((nominee) => {
+                                  if (nominee.id === nomineeId) {
+                                    return values;
+                                  } else {
+                                    return nominee;
+                                  }
+                                });
+                                console.log(editNominee);
+                                props.setFieldValue('nominee', editNominee);
+                              }
+                              if (values.nominee_id) {
+                                const nomineeId = values.nominee_id;
+                                const editNominee = props.values.nominee.map((nominee) => {
+                                  if (nominee.nominee_id === nomineeId) {
+                                    return values;
+                                  } else {
+                                    return nominee;
+                                  }
+                                });
+                                console.log(editNominee);
+                                props.setFieldValue('nominee', editNominee);
+                              } else {
+                                props.setFieldValue('nominee', [...props.values.nominee, { id: uuidv4(), ...values }]);
+                              }
                               changeTableVisibility();
                             }}
                           >
@@ -341,12 +383,13 @@ const Nomination = (props) => {
               changeTableVisibility={changeTableVisibility}
               setEditing={setEditing}
               // getOneItem={GetOneProduct}
-              // deleteOneItem={DeleteOneProduct}
+              deleteOneItem={DeleteOneNominee}
               // setSearchData={setSearchData}
               // tableDataRefetch={ProductTableDataRefetch}
               setActiveEditing={setActiveEditing}
               VisibleColumn={VisibleColumn}
               doNotShowHeader={true}
+              isNomination={true}
             />
           </MainCard>
         )}
