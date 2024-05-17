@@ -7,29 +7,16 @@ import '../utils/custom.css';
 
 // Add form Values
 const formAllValues = {
-  issuer_gst_number: '',
-  issuer_name: '',
-  issuer_pan: '',
-  issuer_tollfree_number: '',
-  logo_url: ''
+  username: '',
+  mobile_no: '',
+  email_id: '',
+  role: 0
 };
 const validationSchema = yup.object({
-  issuer_gst_number: yup
-    .string()
-    .matches(/\d{2}[A-Z]{5}\d{4}[A-Z]{1}[A-Z\d]{1}[Z]{1}[A-Z\d]{1}/, 'Invalid GST')
-    .required('GST Number is required'),
-  issuer_name: yup.string().required('Issuer Name is required'),
-  issuer_pan: yup
-    .string()
-    // .matches(/^([A-Z]){3}([P]){1}([A-Z]){1}([0-9]){4}([A-Z]){1}$/, 'Invalid PAN format')
-    .matches(/^([a-zA-Z]){5}([0-9]){4}([a-zA-Z]){1}?$/, 'Invalid PAN format')
-    .required('Issuer PAN is required'),
-  issuer_tollfree_number: yup.string().min(11, 'Must be at least 11 digits').required('Tollfree Number is required'),
-  logo_url: yup
-    .string()
-    .matches(/^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/, 'Please enter valid URL')
-    // .matches(/^\s*\S[\s\S]*$/, 'Remove Spaces')
-    .required('Logo URL is required')
+  username: yup.string().required('User Name is required'),
+  mobile_no: yup.string().min(10, 'Must be at least 10 digits').required('Mobile Number is required'),
+  email_id: yup.string().trim().email('Invalid email').required('Email is required'),
+  role: yup.number()
 });
 // Search Item form fields
 const filterFormValues = {
@@ -49,13 +36,7 @@ const filterValidationSchema = yup.object({
 });
 // Table Columns
 const VisibleColumn = [];
-const ImageCell = ({ value }) => {
-  return (
-    <TableCell style={{ paddingLeft: '0px' }}>
-      <img src={value} alt="Custom" style={{ width: '90%', height: 60 }} />
-    </TableCell>
-  );
-};
+
 const StatusCell = ({ value }) => {
   switch (value) {
     case 0:
@@ -68,17 +49,20 @@ const StatusCell = ({ value }) => {
 };
 const tableColumns = [
   {
-    Header: 'Logo URL',
-    accessor: 'logo_url',
-    customCell: ImageCell
+    Header: 'Username',
+    accessor: 'username'
   },
   {
-    Header: 'Issuer Name',
-    accessor: 'issuer_name'
+    Header: 'Email ID',
+    accessor: 'email_id'
   },
   {
-    Header: 'Tollfree Number',
-    accessor: 'issuer_tollfree_number'
+    Header: 'Mobile Number',
+    accessor: 'mobile_no'
+  },
+  {
+    Header: 'Role',
+    accessor: 'role'
   },
   {
     Header: 'Status',
@@ -93,7 +77,6 @@ export {
   filterFormValues,
   formValueFields,
   filterValidationSchema,
-  ImageCell,
   StatusCell,
   tableColumns,
   VisibleColumn
