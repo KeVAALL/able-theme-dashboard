@@ -24,6 +24,7 @@ import { dispatch } from '../../../redux';
 import { openSnackbar } from 'redux/reducers/snackbar';
 import { setMenuItems } from 'redux/reducers/menu';
 import CustomTextField from 'utils/textfield';
+import { enqueueSnackbar } from 'notistack';
 
 // ============================|| JWT - LOGIN ||============================ //
 
@@ -49,8 +50,6 @@ const AuthLogin = ({ forgot }) => {
   };
 
   const transformData = (menu) => {
-    console.log(menu);
-
     let organizedMenu = [];
 
     menu?.forEach((item, index) => {
@@ -102,10 +101,8 @@ const AuthLogin = ({ forgot }) => {
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
           try {
             const response = await login(values.email_id, values.password);
-            console.log(response);
 
             const transformedData = transformData(response.data.data.menus);
-            console.log(transformedData);
 
             dispatch(
               setMenuItems([
@@ -125,17 +122,14 @@ const AuthLogin = ({ forgot }) => {
             }
           } catch (err) {
             console.error(err);
-            dispatch(
-              openSnackbar({
-                open: true,
-                anchorOrigin: { vertical: 'top', horizontal: 'right' },
-                message: 'Invalid Login Credentials',
-                variant: 'alert',
-                alert: {
-                  color: 'error'
-                }
-              })
-            );
+            enqueueSnackbar('Invalid Login Credentials', {
+              variant: 'error',
+              autoHideDuration: 2000,
+              anchorOrigin: {
+                vertical: 'top',
+                horizontal: 'right'
+              }
+            });
             if (scriptedRef.current) {
               setStatus({ success: false });
               setErrors({ submit: err.message });

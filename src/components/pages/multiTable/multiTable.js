@@ -240,8 +240,9 @@ const ReactTable = ({
                       console.log({ ...d.original, is_active: 'In-active' });
 
                       return { ...d.original, is_active: 'In-active' };
+                    } else {
+                      return d.original;
                     }
-                    // return d.original;
                   })}
                   filename={'filtering-table.csv'}
                   headers={headers}
