@@ -9,6 +9,7 @@ import FixDeposit from '../fixedDeposit/fixedDeposit';
 import Investor from '../investor/investor';
 import Investment from '../transaction/investment';
 import UserList from '../userList/userList';
+import Role from '../userList/role';
 
 // Product
 const Product = Loadable(lazy(() => import('components/pages/productType/productType')));
@@ -81,7 +82,7 @@ const MainRoutes = {
           children: [
             {
               path: 'role',
-              element: <></>
+              element: <Role />
             },
             {
               path: 'users',
