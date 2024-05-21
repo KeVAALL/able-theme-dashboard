@@ -140,3 +140,40 @@ Investor
               />
             </Grid> */
 }
+
+Role page
+
+{/* <Stack
+  sx={{ width: '100%' }}
+  flexDirection="row"
+  alignItems="center"
+  onClick={() => {
+    handleCheckbox(dec.menu_id);
+  }}
+>
+  <ListItemText primary={dec.menu_id} sx={{ width: '5%', display: 'flex', justifyContent: 'center' }} />
+  <Divider orientation="vertical" flexItem />
+  {/* <Stack sx={{ width: '95%' }} flexDirection="row" alignItems="center"> */}
+//   <FormControlLabel
+//     control={
+//       <Checkbox
+//         checked={dec.isSelected}
+//         // onChange={() => {
+//         //   handleCheckbox(dec.menu_id);
+//         // }}
+//         name="isSelected"
+//         sx={{ width: '15%' }}
+//       />
+//     }
+//     label={
+//       <ListItemButton sx={{ width: '100%' }}>
+//         <ListItemText primary={dec.menu_name} />
+//       </ListItemButton>
+//     }
+//     // label={dec.menu_name}
+//     labelPlacement="start"
+//     // sx={{ mr: 1, ml: 0, width: '15%', display: 'flex', justifyContent: 'center' }}
+//     sx={{ mr: 1, ml: 0, width: '95%', display: 'flex', justifyContent: 'space-between' }}
+//   />
+//    </Stack> 
+// </Stack>
