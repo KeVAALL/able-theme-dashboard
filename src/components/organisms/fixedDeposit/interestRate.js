@@ -123,19 +123,6 @@ const InterestRate = ({ formValues, changeTableVisibility, isNotEditingInterestR
 
   return (
     <Stack spacing={2}>
-      <DialogForm
-        openDialog={openDialog}
-        handleOpenDialog={handleOpenDialog}
-        schemeEditFormValues={schemeFormValues}
-        fdId={formValues.fd_id}
-        selectedPayoutMethod={IRformValues.fd_payout_method_id}
-        clearFormValues={clearFormValues}
-        setIsActive={handleIsSchemeActive}
-        isActive={isSchemeActive}
-        isEditingScheme={isEditingScheme}
-        setActiveClose={setActiveClose}
-        setSchemeData={setSchemeData}
-      />
       <Formik
         initialValues={IRformValues}
         validationSchema={validationSchema}
@@ -156,6 +143,19 @@ const InterestRate = ({ formValues, changeTableVisibility, isNotEditingInterestR
             }}
             sx={{ width: '100%' }}
           >
+            <DialogForm
+              openDialog={openDialog}
+              handleOpenDialog={handleOpenDialog}
+              schemeEditFormValues={schemeFormValues}
+              fdId={formValues.fd_id}
+              selectedPayoutMethod={values.fd_payout_method_id}
+              clearFormValues={clearFormValues}
+              setIsActive={handleIsSchemeActive}
+              isActive={isSchemeActive}
+              isEditingScheme={isEditingScheme}
+              setActiveClose={setActiveClose}
+              setSchemeData={setSchemeData}
+            />
             <Card
               sx={{
                 position: 'relative',
