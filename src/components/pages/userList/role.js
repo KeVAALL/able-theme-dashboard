@@ -55,6 +55,8 @@ function Role() {
   const [showTable, setShowTable] = useState(false); // State to hold form input values
   // Form State
   const [formValues, setFormValues] = useState(formAllValues); // State to hold form input values
+  // Dropdown
+  const [roleDropdown, setRoleDropdown] = useState([]);
   // Checkbox
   const [allMenu, setAllMenu] = useState([]);
   // Theme
@@ -130,7 +132,7 @@ function Role() {
     queryFn: GetSelectedMenu, // Function to fetch issuer data
     onSuccess: (data) => {
       console.log(data);
-
+      setRoleDropdown(data);
       setUserRoleData(data);
     }
   });
@@ -186,15 +188,13 @@ function Role() {
             }
             if (isEditing === true) {
               const selectedMenus = allMenu.filter((menu) => menu.isSelected === true).map((menu) => menu.menu_id);
-
               const formValues = {
+                ...values,
                 method_name: 'update',
-                is_active: isRoleActive,
+                is_active: toInteger(isRoleActive),
                 user_id: toInteger(userID),
-                menu_id: selectedMenus,
-                ...values
+                menu_id: selectedMenus
               };
-              console.log(selectedMenus);
               try {
                 const response = await EditRole(formValues);
                 changeTableVisibility();
@@ -240,7 +240,7 @@ function Role() {
                   title="Role Entry"
                   changeTableVisibility={changeTableVisibility}
                   clearFormValues={clearFormValues}
-                  isEditing={true}
+                  isEditing={isEditing}
                   formValues={formValues}
                   setActiveClose={setActiveClose}
                   setIsActive={handleIsRoleActive}
@@ -359,7 +359,7 @@ function Role() {
           <Formik
             initialValues={{
               username: '',
-              role: 1
+              role_id: 1
             }}
             onSubmit={async (values, { resetForm }) => {
               //   const searchResult = await GetIFASearch(values);
@@ -379,7 +379,7 @@ function Role() {
               >
                 <CardContent sx={{ paddingLeft: '16px !important' }}>
                   <Grid container spacing={2}>
-                    <Grid item xs={2.5} style={{ paddingLeft: 0, paddingTop: 0 }}>
+                    {/* <Grid item xs={2.5} style={{ paddingLeft: 0, paddingTop: 0 }}>
                       <CustomTextField
                         label="User Name"
                         name="username"
@@ -395,15 +395,16 @@ function Role() {
                           }
                         }}
                       />
-                    </Grid>
+                    </Grid> */}
 
-                    <Grid item xs={2.5} style={{ paddingTop: 0 }}>
+                    <Grid item xs={2.5} style={{ paddingLeft: 0, paddingTop: 0 }}>
                       <FormikAutoComplete
-                        options={[]}
-                        defaultValue={values.role}
+                        options={roleDropdown}
+                        defaultValue={values.role_id}
                         setFieldValue={setFieldValue}
-                        formName="role"
-                        optionName="role"
+                        formName="role_id"
+                        idName="role_id"
+                        optionName="role_name"
                         label="Role"
                       />
                     </Grid>

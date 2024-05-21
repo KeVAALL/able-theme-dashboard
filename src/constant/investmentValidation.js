@@ -170,13 +170,8 @@ const parseAndModifyValue = (value) => {
 };
 const tableColumns = [
   {
-    Header: 'Application No.',
-    accessor: 'application_number'
-  },
-  {
-    Header: 'Date',
-    accessor: 'created_on',
-    minWidth: 150
+    Header: 'Folio ID',
+    accessor: 'folio_id'
   },
   {
     Header: 'Investor Name',
@@ -201,6 +196,11 @@ const tableColumns = [
 
       return <span>{parsedValue}</span>;
     }
+  },
+  {
+    Header: 'Reg. date',
+    accessor: 'created_on',
+    minWidth: 150
   },
   {
     Header: 'Status',

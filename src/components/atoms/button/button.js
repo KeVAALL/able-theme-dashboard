@@ -63,6 +63,7 @@ export const SubmitButton = memo(
                     color="primary"
                     checked={isActive}
                     onChange={() => {
+                      console.log(!isActive);
                       setIsActive(!isActive);
                     }}
                   />

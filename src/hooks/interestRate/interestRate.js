@@ -38,7 +38,7 @@ export async function GetSchemeSearch(fdId, selectedPayoutMethod) {
     });
     return response.data.data;
   } catch (err) {
-    enqueueSnackbar(err.message, {
+    enqueueSnackbar('Please provide Payout Method', {
       variant: 'error',
       autoHideDuration: 2000,
       anchorOrigin: {

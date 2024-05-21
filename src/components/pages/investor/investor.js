@@ -428,7 +428,7 @@ function Investor() {
             initialValues={{
               // fd_name: '',
               search: '',
-              ifa_id: 1
+              ifa_id: 0
             }}
             onSubmit={async (values, { resetForm }) => {
               const searchResult = await GetIFASearch(values);
