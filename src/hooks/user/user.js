@@ -36,13 +36,13 @@ export async function GetRoles() {
     return [];
   }
 }
-export async function GetSelectedMenu() {
+export async function GetSelectedMenu(setEditing, role_id) {
   try {
     const response = await axios.post('role/rolemenu', {
-      method_name: 'getrolemenu'
+      method_name: 'getrolemenu',
+      role_id: role_id
     });
-    //   role_id: role_id
-    // setEditing(response.data.data);
+    setEditing(response.data.data);
     return response.data.data;
   } catch (err) {
     enqueueSnackbar(err.message, {

@@ -129,13 +129,29 @@ function Role() {
     queryKey: ['getAllRoles'], // Unique key for the query
     refetchOnWindowFocus: false, // Disable refetch on window focus
     keepPreviousData: true, // Keep previous data when refetching
-    queryFn: GetSelectedMenu, // Function to fetch issuer data
+    queryFn: GetRoles, // Function to fetch issuer data
     onSuccess: (data) => {
-      console.log(data);
       setRoleDropdown(data);
       setUserRoleData(data);
     }
   });
+
+  // Query for fetching role Data
+  // const {
+  //   isPending: rolePending, // Flag indicating if query is pending
+  //   error: roleError, // Error object if query fails
+  //   refetch: refetchRole // Function to refetch issuer data
+  // } = useQuery({
+  //   queryKey: ['getAllRoles'], // Unique key for the query
+  //   refetchOnWindowFocus: false, // Disable refetch on window focus
+  //   keepPreviousData: true, // Keep previous data when refetching
+  //   queryFn: GetSelectedMenu, // Function to fetch issuer data
+  //   onSuccess: (data) => {
+  //     console.log(data);
+  //     setRoleDropdown(data);
+  //     setUserRoleData(data);
+  //   }
+  // });
 
   // Query for fetching menu Data
   const {
@@ -379,24 +395,6 @@ function Role() {
               >
                 <CardContent sx={{ paddingLeft: '16px !important' }}>
                   <Grid container spacing={2}>
-                    {/* <Grid item xs={2.5} style={{ paddingLeft: 0, paddingTop: 0 }}>
-                      <CustomTextField
-                        label="User Name"
-                        name="username"
-                        values={values}
-                        type="text"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        touched={touched}
-                        errors={errors}
-                        FormHelperTextProps={{
-                          style: {
-                            marginLeft: 0
-                          }
-                        }}
-                      />
-                    </Grid> */}
-
                     <Grid item xs={2.5} style={{ paddingLeft: 0, paddingTop: 0 }}>
                       <FormikAutoComplete
                         options={roleDropdown}
@@ -440,8 +438,8 @@ function Role() {
             setEditing={setEditing}
             getOneItem={GetOneIssuer}
             deleteOneItem={DeleteOneIssuer}
-            // getEditData={GetSelectedMenu}
-            // getEditReqField={'role_id'}
+            getEditData={GetSelectedMenu}
+            getEditReqField={'role_id'}
             setSearchData={setSearchData}
             tableDataRefetch={() => {}}
             setActiveEditing={setActiveEditing}
