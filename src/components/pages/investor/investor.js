@@ -528,6 +528,7 @@ function Investor() {
             getOneItem={GetOneInvestor}
             deleteOneItem={DeleteOneInvestor}
             getEditData={GetEditOneInvestor}
+            getEditReqField={'investor_id'}
             setSearchData={setSearchData}
             tableDataRefetch={InvestorTableDataRefetch}
             setActiveEditing={setActiveEditing}

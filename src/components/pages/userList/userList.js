@@ -27,9 +27,9 @@ import {
 } from 'constant/userListValidation';
 import { GetIssuerData, GetOneIssuer, SaveIssuer, EditIssuer, DeleteOneIssuer } from 'hooks/issuer/issuer';
 import { FilterSearch } from 'iconsax-react';
+import { GetRoles } from 'hooks/user/user';
 
 function UserList() {
-  // Main data state to hold the list of issuers
   const [userListData, setUserListData] = useState([]);
   // Editing States
   const [isEditing, setIsEditing] = useState(false); // State to track if editing mode is active
@@ -38,6 +38,8 @@ function UserList() {
   const [showTable, setShowTable] = useState(false); // State to hold form input values
   // Form State
   const [formValues, setFormValues] = useState(formAllValues); // State to hold form input values
+  // Dropdown
+  const [roleDropdown, setRoleDropdown] = useState([]);
   // Theme
   const theme = useTheme();
   const mdUp = theme.breakpoints.up('md');
@@ -73,21 +75,20 @@ function UserList() {
   // Table Columns
   const columns = useMemo(() => tableColumns, []);
 
-  // Query for fetching issuer data // Main Data
-  //   const {
-  //     isPending, // Flag indicating if query is pending
-  //     error, // Error object if query fails
-  //     refetch: issuerTableDataRefetch // Function to refetch issuer data
-  //   } = useQuery({
-  //     queryKey: ['issuerTableData'], // Unique key for the query
-  //     refetchOnWindowFocus: false, // Disable refetch on window focus
-  //     keepPreviousData: true, // Keep previous data when refetching
-  //     queryFn: GetIssuerData, // Function to fetch issuer data
-  //     onSuccess: (data) => {
-  //       console.log(data);
-  //       setIssuerData(data); // Update issuer data on successful query
-  //     }
-  //   });
+  // Query for fetching role Data
+  const {
+    isPending: rolePending, // Flag indicating if query is pending
+    error: roleError, // Error object if query fails
+    refetch: refetchRole // Function to refetch issuer data
+  } = useQuery({
+    queryKey: ['getAllRoles'], // Unique key for the query
+    refetchOnWindowFocus: false, // Disable refetch on window focus
+    keepPreviousData: true, // Keep previous data when refetching
+    queryFn: GetRoles, // Function to fetch issuer data
+    onSuccess: (data) => {
+      setRoleDropdown(data);
+    }
+  });
 
   //   if (isPending) return <Loader />;
 
@@ -227,12 +228,13 @@ function UserList() {
 
                     <Grid item md={4} sm={6} xs={12}>
                       <FormikAutoComplete
-                        options={[]}
-                        defaultValue={values.role}
+                        options={roleDropdown}
+                        defaultValue={values.role_id}
                         setFieldValue={setFieldValue}
-                        formName="role"
-                        optionName="role"
-                        label="Select Role"
+                        formName="role_id"
+                        idName="role_id"
+                        optionName="role_name"
+                        label="Role"
                       />
                     </Grid>
 
@@ -257,9 +259,10 @@ function UserList() {
           <Formik
             initialValues={{
               username: '',
-              role: 1
+              role_id: 1
             }}
             onSubmit={async (values, { resetForm }) => {
+              console.log(values);
               //   const searchResult = await GetIFASearch(values);
               //   if (searchResult) {
               //     setSearchData(searchResult);
@@ -297,11 +300,12 @@ function UserList() {
 
                     <Grid item xs={2.5} style={{ paddingTop: 0 }}>
                       <FormikAutoComplete
-                        options={[]}
-                        defaultValue={values.role}
+                        options={roleDropdown}
+                        defaultValue={values.role_id}
                         setFieldValue={setFieldValue}
-                        formName="role"
-                        optionName="role"
+                        formName="role_id"
+                        idName="role_id"
+                        optionName="role_name"
                         label="Role"
                       />
                     </Grid>

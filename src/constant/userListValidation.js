@@ -10,7 +10,7 @@ const formAllValues = {
   username: '',
   mobile_no: '',
   email_id: '',
-  role: 0
+  role_id: 1
 };
 const validationSchema = yup.object({
   username: yup.string().required('User Name is required'),

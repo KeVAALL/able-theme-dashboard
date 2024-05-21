@@ -33,6 +33,7 @@ export const SubmitButton = memo(
   }) => {
     useEffect(() => {
       console.log(isEditing);
+      console.log(formValues.is_active);
       if (setIsActive) {
         setIsActive(formValues.is_active);
       }

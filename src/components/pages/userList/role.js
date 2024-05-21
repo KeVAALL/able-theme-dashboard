@@ -1,7 +1,21 @@
 import { useMemo, useState } from 'react';
 
 // material-ui
-import { Divider, Box, Card, Grid, CardContent, Button } from '@mui/material';
+import {
+  Divider,
+  Box,
+  Card,
+  Grid,
+  CardContent,
+  Button,
+  FormControlLabel,
+  Checkbox,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemText,
+  Stack
+} from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { useQuery } from 'react-query';
 
@@ -15,7 +29,7 @@ import Loader from 'components/atoms/loader/Loader';
 
 // assets
 import { SubmitButton } from 'components/atoms/button/button';
-import CustomTextField, { FormikAutoComplete } from 'utils/textfield';
+import CustomTextField, { CustomCheckbox, FormikAutoComplete } from 'utils/textfield';
 import {
   formAllValues,
   validationSchema,
@@ -27,6 +41,9 @@ import {
 } from 'constant/userRoleValidation';
 import { GetIssuerData, GetOneIssuer, SaveIssuer, EditIssuer, DeleteOneIssuer } from 'hooks/issuer/issuer';
 import { FilterSearch } from 'iconsax-react';
+import { EditRole, GetMenu, GetRoles, GetSelectedMenu, SaveRole } from 'hooks/user/user';
+import { borderRadius } from '@mui/system';
+import { toInteger } from 'lodash';
 
 function Role() {
   // Main data state to hold the list of issuers
@@ -38,6 +55,8 @@ function Role() {
   const [showTable, setShowTable] = useState(false); // State to hold form input values
   // Form State
   const [formValues, setFormValues] = useState(formAllValues); // State to hold form input values
+  // Checkbox
+  const [allMenu, setAllMenu] = useState([]);
   // Theme
   const theme = useTheme();
   const mdUp = theme.breakpoints.up('md');
@@ -45,7 +64,17 @@ function Role() {
   // Functions
   // Editing States
   const setEditing = (value) => {
+    console.log(value);
     setFormValues(value);
+
+    const selectedMenus = allMenu.map((menu) => {
+      return {
+        ...menu,
+        isSelected: value.menu_ids.includes(menu.menu_id)
+      };
+    });
+
+    setAllMenu(selectedMenus);
   };
   // Activates editing mode
   const setActiveEditing = () => {
@@ -69,27 +98,65 @@ function Role() {
   // Empty Form Fields
   const clearFormValues = () => {
     setFormValues(formAllValues);
+    setAllMenu((prevMenu) => {
+      return prevMenu.map((item) => {
+        return { ...item, isSelected: false };
+      });
+    });
+  };
+  // Checkbox
+  const handleCheckbox = (value) => {
+    setAllMenu((prevMenu) => {
+      return prevMenu.map((item) => {
+        if (item.menu_id === value) {
+          return { ...item, isSelected: !item.isSelected };
+        }
+        return item;
+      });
+    });
   };
   // Table Columns
   const columns = useMemo(() => tableColumns, []);
 
-  // Query for fetching issuer data // Main Data
-  //   const {
-  //     isPending, // Flag indicating if query is pending
-  //     error, // Error object if query fails
-  //     refetch: issuerTableDataRefetch // Function to refetch issuer data
-  //   } = useQuery({
-  //     queryKey: ['issuerTableData'], // Unique key for the query
-  //     refetchOnWindowFocus: false, // Disable refetch on window focus
-  //     keepPreviousData: true, // Keep previous data when refetching
-  //     queryFn: GetIssuerData, // Function to fetch issuer data
-  //     onSuccess: (data) => {
-  //       console.log(data);
-  //       setIssuerData(data); // Update issuer data on successful query
-  //     }
-  //   });
+  // Query for fetching role Data
+  const {
+    isPending: rolePending, // Flag indicating if query is pending
+    error: roleError, // Error object if query fails
+    refetch: refetchRole // Function to refetch issuer data
+  } = useQuery({
+    queryKey: ['getAllRoles'], // Unique key for the query
+    refetchOnWindowFocus: false, // Disable refetch on window focus
+    keepPreviousData: true, // Keep previous data when refetching
+    queryFn: GetSelectedMenu, // Function to fetch issuer data
+    onSuccess: (data) => {
+      console.log(data);
 
-  //   if (isPending) return <Loader />;
+      setUserRoleData(data);
+    }
+  });
+
+  // Query for fetching menu Data
+  const {
+    isPending, // Flag indicating if query is pending
+    error, // Error object if query fails
+    refetch // Function to refetch issuer data
+  } = useQuery({
+    queryKey: ['getAllMenu'], // Unique key for the query
+    refetchOnWindowFocus: false, // Disable refetch on window focus
+    keepPreviousData: true, // Keep previous data when refetching
+    queryFn: GetMenu, // Function to fetch issuer data
+    onSuccess: (data) => {
+      const mappedMenus = data.map((menu) => {
+        return { ...menu, isSelected: false };
+      });
+
+      console.log(mappedMenus);
+
+      setAllMenu(mappedMenus);
+    }
+  });
+
+  if (isPending || rolePending) return <Loader />;
 
   return (
     <>
@@ -98,18 +165,40 @@ function Role() {
           initialValues={formValues}
           validationSchema={validationSchema}
           onSubmit={async (values, { setSubmitting, resetForm }) => {
+            const userID = localStorage.getItem('userID');
             if (isEditing === false) {
+              const selectedMenus = allMenu.filter((menu) => menu.isSelected === true).map((menu) => menu.menu_id);
+
+              const formValues = {
+                method_name: 'add',
+                user_id: toInteger(userID),
+                menu_id: selectedMenus,
+                ...values
+              };
+
               try {
-                const response = await SaveIssuer(values, issuerTableDataRefetch, clearFormValues);
+                const response = await SaveRole(formValues);
                 changeTableVisibility();
+                refetchRole();
               } catch (err) {
                 console.log(err);
               }
             }
             if (isEditing === true) {
+              const selectedMenus = allMenu.filter((menu) => menu.isSelected === true).map((menu) => menu.menu_id);
+
+              const formValues = {
+                method_name: 'update',
+                is_active: isRoleActive,
+                user_id: toInteger(userID),
+                menu_id: selectedMenus,
+                ...values
+              };
+              console.log(selectedMenus);
               try {
-                const response = await EditIssuer(values, isIssuerActive, issuerTableDataRefetch, clearFormValues, setActiveClose);
+                const response = await EditRole(formValues);
                 changeTableVisibility();
+                refetchRole();
               } catch (err) {
                 console.log(err);
               }
@@ -166,9 +255,9 @@ function Role() {
                   <Grid container spacing={3}>
                     <Grid item md={4} sm={6} xs={12}>
                       <CustomTextField
-                        label="User Name"
-                        name="username"
-                        placeholder={'Please enter User Name'}
+                        label="Role Name"
+                        name="role_name"
+                        placeholder={'Please enter Role Name'}
                         values={values}
                         type="text"
                         regType="string"
@@ -184,59 +273,72 @@ function Role() {
                         }}
                       />
                     </Grid>
-                    <Grid item md={4} sm={6} xs={12}>
-                      <CustomTextField
-                        label="Mobile Number"
-                        name="mobile_no"
-                        placeholder={'Please enter Mobile Number'}
-                        values={values}
-                        type="text"
-                        regType="number"
-                        setFieldValue={setFieldValue}
-                        onBlur={handleBlur}
-                        touched={touched}
-                        errors={errors}
-                        fullWidth
-                        FormHelperTextProps={{
-                          style: {
-                            marginLeft: 0
-                          }
-                        }}
-                        inputProps={{ maxLength: 15 }}
-                      />
-                    </Grid>
-                    <Grid item md={4} sm={6} xs={12}>
-                      <CustomTextField
-                        label="Email ID"
-                        name="email_id"
-                        placeholder="Please enter Email ID"
-                        values={values}
-                        type="email"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        touched={touched}
-                        errors={errors}
-                        autoComplete
-                        FormHelperTextProps={{
-                          style: {
-                            marginLeft: 0
-                          }
-                        }}
-                      />
-                    </Grid>
 
-                    <Grid item md={4} sm={6} xs={12}>
-                      <FormikAutoComplete
-                        options={[]}
-                        defaultValue={values.role}
-                        setFieldValue={setFieldValue}
-                        formName="role"
-                        optionName="role"
-                        label="Select Role"
-                      />
-                    </Grid>
+                    <Grid item xs={12} lg={4}></Grid>
+                    <Grid item xs={12} lg={4}></Grid>
 
-                    <Grid item md={4} sm={6} xs={12}></Grid>
+                    <Grid item xs={12}>
+                      <MainCard sx={{ borderRadius: 0.6 }} content={false}>
+                        <List sx={{ p: 0, '& .MuiListItemButton-root': { borderRadius: 0, my: 0 } }}>
+                          <Grid container>
+                            <Grid item xs={12}>
+                              <ListItem disablePadding divider>
+                                <Stack sx={{ width: '100%' }} flexDirection="row" alignItems="center">
+                                  <ListItemText primary="#" sx={{ width: '5%', display: 'flex', justifyContent: 'center' }} />
+                                  <Divider orientation="vertical" flexItem />
+                                  <Stack sx={{ width: '95%' }} flexDirection="row" alignItems="center">
+                                    <ListItemButton sx={{ width: '80%' }}>
+                                      <ListItemText primary="Menu Name" />
+                                    </ListItemButton>
+                                    <Divider orientation="vertical" flexItem />
+                                    <ListItemButton sx={{ width: '11.5%' }}>
+                                      <ListItemText sx={{ display: 'flex', justifyContent: 'center' }} primary="Display Flag" />
+                                    </ListItemButton>
+                                  </Stack>
+                                </Stack>
+                              </ListItem>
+                            </Grid>
+                            {allMenu &&
+                              allMenu.map((dec, index) => {
+                                return (
+                                  <Grid key={dec.menu_id} item xs={12}>
+                                    <ListItem disablePadding divider>
+                                      <Stack sx={{ width: '100%' }} flexDirection="row" alignItems="center">
+                                        <ListItemText
+                                          // primary={dec.menu_id}
+                                          primary={index + 1}
+                                          sx={{ width: '5%', display: 'flex', justifyContent: 'center' }}
+                                        />
+                                        <Divider orientation="vertical" flexItem />
+                                        <Stack sx={{ width: '95%' }} flexDirection="row" alignItems="center">
+                                          <ListItemButton sx={{ width: '80%' }}>
+                                            <ListItemText primary={dec.menu_name} />
+                                          </ListItemButton>
+                                          <Divider orientation="vertical" flexItem />
+                                          <FormControlLabel
+                                            control={
+                                              <Checkbox
+                                                checked={dec.isSelected}
+                                                onChange={() => {
+                                                  handleCheckbox(dec.menu_id);
+                                                }}
+                                                name="isSelected"
+                                                sx={{ width: '100%' }}
+                                              />
+                                            }
+                                            labelPlacement="start"
+                                            sx={{ mr: 1, ml: 0, width: '15%', display: 'flex', justifyContent: 'center' }}
+                                          />
+                                        </Stack>
+                                      </Stack>
+                                    </ListItem>
+                                  </Grid>
+                                );
+                              })}
+                          </Grid>
+                        </List>
+                      </MainCard>
+                    </Grid>
                   </Grid>
                 </CardContent>
               </Card>
@@ -337,6 +439,8 @@ function Role() {
             setEditing={setEditing}
             getOneItem={GetOneIssuer}
             deleteOneItem={DeleteOneIssuer}
+            // getEditData={GetSelectedMenu}
+            // getEditReqField={'role_id'}
             setSearchData={setSearchData}
             tableDataRefetch={() => {}}
             setActiveEditing={setActiveEditing}
@@ -349,3 +453,20 @@ function Role() {
 }
 
 export default Role;
+
+// <Grid key={dec.menu_id} item xs={12} lg={4}>
+//   <FormControlLabel
+//     control={
+//       <Checkbox
+//         checked={dec.isSelected}
+//         onChange={() => {
+//           handleCheckbox(dec.menu_id);
+//         }}
+//         name="isSelected"
+//       />
+//     }
+//     label={dec.menu_name}
+//     labelPlacement="start"
+//     sx={{ mr: 1, ml: 0 }}
+//   />
+// </Grid>

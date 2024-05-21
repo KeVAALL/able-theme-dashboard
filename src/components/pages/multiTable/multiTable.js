@@ -37,6 +37,7 @@ const ReactTable = ({
   getOneItem,
   deleteOneItem,
   getEditData,
+  getEditReqField,
   setSearchData,
   tableDataRefetch,
   setActiveEditing,
@@ -233,12 +234,9 @@ const ReactTable = ({
                 <CSVExport
                   data={rows?.map((d) => {
                     if (d.original.is_active === 1) {
-                      console.log({ ...d.original, is_active: 'Active' });
                       return { ...d.original, is_active: 'Active' };
                     }
                     if (d.original.is_active === 0) {
-                      console.log({ ...d.original, is_active: 'In-active' });
-
                       return { ...d.original, is_active: 'In-active' };
                     } else {
                       return d.original;
@@ -318,11 +316,12 @@ const ReactTable = ({
                               color="black"
                               onClick={async () => {
                                 if (getEditData) {
-                                  await getEditData(setEditing, row.original.investor_id);
+                                  await getEditData(setEditing, row.original[getEditReqField]);
                                   setTimeout(() => {
                                     changeTableVisibility();
                                   }, 500);
                                 } else {
+                                  console.log(row.original);
                                   setEditing(row.original);
                                   changeTableVisibility();
                                 }
@@ -400,6 +399,7 @@ const MultiTable = ({
   getOneItem,
   deleteOneItem,
   getEditData,
+  getEditReqField,
   setSearchData,
   tableDataRefetch,
   setActiveEditing,
@@ -424,6 +424,7 @@ const MultiTable = ({
           getOneItem={getOneItem}
           deleteOneItem={deleteOneItem}
           getEditData={getEditData}
+          getEditReqField={getEditReqField}
           setSearchData={setSearchData}
           tableDataRefetch={tableDataRefetch}
           setActiveEditing={setActiveEditing}
@@ -450,6 +451,7 @@ MultiTable.propTypes = {
   getOneItem: PropTypes.any,
   deleteOneItem: PropTypes.any,
   getEditData: PropTypes.any,
+  getEditReqField: PropTypes.any,
   setSearchData: PropTypes.any,
   tableDataRefetch: PropTypes.any,
   setActiveEditing: PropTypes.any,

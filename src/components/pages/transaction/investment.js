@@ -687,7 +687,6 @@ function Investment() {
                           const mappedDeclarations = declarations.map((dec) => {
                             return { ...dec, isSelected: false };
                           });
-                          console.log(mappedDeclarations);
 
                           setDynamicDeclaration(mappedDeclarations);
 

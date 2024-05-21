@@ -30,7 +30,7 @@ const MainRoutes = {
       ),
       children: [
         {
-          path: 'dash_board',
+          path: 'dashboard',
           element: <></>
         },
         {

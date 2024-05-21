@@ -273,6 +273,7 @@ const DialogForm = ({
                   onClick={() => {
                     handleOpenDialog();
                     setActiveClose();
+                    setLiveButton(false);
                     clearFormValues();
                   }}
                 >
@@ -285,6 +286,7 @@ const DialogForm = ({
                   onClick={() => {
                     if (isEditingScheme) {
                       EditInterestRate(values, activeButton, liveButton, clearFormValues, handleOpenDialog, setSchemeData, setActiveClose);
+                      setLiveButton(false);
                     } else {
                       SaveInterestRate(
                         values,
@@ -296,6 +298,7 @@ const DialogForm = ({
                         handleOpenDialog,
                         setSchemeData
                       );
+                      setLiveButton(false);
                     }
                     // handleOpenDialog();
                   }}
