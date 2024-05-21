@@ -18,7 +18,15 @@ export async function GetPayoutMethod(fdId) {
     });
     return response.data.data;
   } catch (err) {
-    return err;
+    enqueueSnackbar(err.message, {
+      variant: 'error',
+      autoHideDuration: 2000,
+      anchorOrigin: {
+        vertical: 'top',
+        horizontal: 'right'
+      }
+    });
+    return [];
   }
 }
 export async function GetSchemeSearch(fdId, selectedPayoutMethod) {
@@ -30,7 +38,15 @@ export async function GetSchemeSearch(fdId, selectedPayoutMethod) {
     });
     return response.data.data;
   } catch (err) {
-    return err;
+    enqueueSnackbar(err.message, {
+      variant: 'error',
+      autoHideDuration: 2000,
+      anchorOrigin: {
+        vertical: 'top',
+        horizontal: 'right'
+      }
+    });
+    return [];
   }
 }
 
