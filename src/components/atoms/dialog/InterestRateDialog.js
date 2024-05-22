@@ -273,8 +273,10 @@ const DialogForm = ({
                   onClick={() => {
                     handleOpenDialog();
                     setActiveClose();
-                    setLiveButton(false);
                     clearFormValues();
+                    setTimeout(() => {
+                      setLiveButton(false);
+                    }, 100);
                   }}
                 >
                   Cancel
@@ -286,7 +288,9 @@ const DialogForm = ({
                   onClick={() => {
                     if (isEditingScheme) {
                       EditInterestRate(values, activeButton, liveButton, clearFormValues, handleOpenDialog, setSchemeData, setActiveClose);
-                      setLiveButton(false);
+                      setTimeout(() => {
+                        setLiveButton(false);
+                      }, 100);
                     } else {
                       SaveInterestRate(
                         values,
@@ -298,7 +302,9 @@ const DialogForm = ({
                         handleOpenDialog,
                         setSchemeData
                       );
-                      setLiveButton(false);
+                      setTimeout(() => {
+                        setLiveButton(false);
+                      }, 100);
                     }
                     // handleOpenDialog();
                   }}

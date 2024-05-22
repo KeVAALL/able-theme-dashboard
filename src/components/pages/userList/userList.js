@@ -1,15 +1,18 @@
 import { useMemo, useState } from 'react';
 
 // material-ui
-import { Divider, Box, Card, Grid, CardContent, Button } from '@mui/material';
+import { Divider, Box, Card, Grid, CardContent, Button, InputAdornment } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { useQuery } from 'react-query';
 
 // project-imports
 import MainCard from '../../organisms/mainCard/MainCard';
 import MultiTable from '../multiTable/multiTable';
+import IconButton from 'helpers/@extended/IconButton';
 
 // third-party
+import { Eye, EyeSlash, FilterSearch } from 'iconsax-react';
+import { toInteger } from 'lodash';
 import { Formik } from 'formik';
 import Loader from 'components/atoms/loader/Loader';
 
@@ -26,8 +29,7 @@ import {
   VisibleColumn
 } from 'constant/userListValidation';
 import { GetIssuerData, GetOneIssuer, SaveIssuer, EditIssuer, DeleteOneIssuer } from 'hooks/issuer/issuer';
-import { FilterSearch } from 'iconsax-react';
-import { GetRoles } from 'hooks/user/user';
+import { DeleteUser, EditUser, GetRoles, GetUsers, SaveUser } from 'hooks/user/user';
 
 function UserList() {
   const [userListData, setUserListData] = useState([]);
@@ -40,6 +42,9 @@ function UserList() {
   const [formValues, setFormValues] = useState(formAllValues); // State to hold form input values
   // Dropdown
   const [roleDropdown, setRoleDropdown] = useState([]);
+  // User Password
+  const [showPassword, setShowPassword] = useState(false);
+
   // Theme
   const theme = useTheme();
   const mdUp = theme.breakpoints.up('md');
@@ -72,6 +77,13 @@ function UserList() {
   const clearFormValues = () => {
     setFormValues(formAllValues);
   };
+  // User Password
+  const handleClickShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
   // Table Columns
   const columns = useMemo(() => tableColumns, []);
 
@@ -89,8 +101,22 @@ function UserList() {
       setRoleDropdown(data);
     }
   });
+  // Query for fetching All Users
+  const {
+    isPending: userPending, // Flag indicating if query is pending
+    error: userError, // Error object if query fails
+    refetch: userListRefetch // Function to refetch issuer data
+  } = useQuery({
+    queryKey: ['getUserList'], // Unique key for the query
+    refetchOnWindowFocus: false, // Disable refetch on window focus
+    keepPreviousData: true, // Keep previous data when refetching
+    queryFn: GetUsers, // Function to fetch issuer data
+    onSuccess: (data) => {
+      setUserListData(data);
+    }
+  });
 
-  //   if (isPending) return <Loader />;
+  if (rolePending || userPending) return <Loader />;
 
   return (
     <>
@@ -99,18 +125,38 @@ function UserList() {
           initialValues={formValues}
           validationSchema={validationSchema}
           onSubmit={async (values, { setSubmitting, resetForm }) => {
+            const userID = localStorage.getItem('userID');
+            const applicationID = localStorage.getItem('applicationID');
             if (isEditing === false) {
+              const formValues = {
+                method_name: 'add',
+                admin_user_id: toInteger(userID),
+                application_id: toInteger(applicationID),
+                is_active: toInteger(isUserActive),
+                ...values
+              };
+
               try {
-                const response = await SaveIssuer(values, issuerTableDataRefetch, clearFormValues);
+                const response = await SaveUser(formValues);
                 changeTableVisibility();
+                userListRefetch();
               } catch (err) {
                 console.log(err);
               }
             }
             if (isEditing === true) {
+              const formValues = {
+                ...values,
+                method_name: 'update',
+                admin_user_id: toInteger(userID),
+                application_id: toInteger(applicationID),
+                is_active: toInteger(isUserActive)
+              };
+
               try {
-                const response = await EditIssuer(values, isIssuerActive, issuerTableDataRefetch, clearFormValues, setActiveClose);
+                const response = await EditUser(formValues);
                 changeTableVisibility();
+                userListRefetch();
               } catch (err) {
                 console.log(err);
               }
@@ -168,7 +214,7 @@ function UserList() {
                     <Grid item md={4} sm={6} xs={12}>
                       <CustomTextField
                         label="User Name"
-                        name="username"
+                        name="user_name"
                         placeholder={'Please enter User Name'}
                         values={values}
                         type="text"
@@ -185,6 +231,57 @@ function UserList() {
                         }}
                       />
                     </Grid>
+
+                    <Grid item md={4} sm={6} xs={12}>
+                      <CustomTextField
+                        label="Email ID"
+                        name="email_id"
+                        placeholder="Please enter Email ID"
+                        values={values}
+                        type="email"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        touched={touched}
+                        errors={errors}
+                        autoComplete
+                        FormHelperTextProps={{
+                          style: {
+                            marginLeft: 0
+                          }
+                        }}
+                      />
+                    </Grid>
+                    <Grid item md={4} sm={6} xs={12}>
+                      <CustomTextField
+                        disabled={isEditing}
+                        label="Password"
+                        name="password"
+                        placeholder="Enter Password"
+                        values={values}
+                        type={showPassword ? 'text' : 'password'}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        touched={touched}
+                        errors={errors}
+                        InputProps={{
+                          endAdornment: (
+                            <InputAdornment position="end">
+                              <IconButton
+                                aria-label="toggle password visibility"
+                                onClick={handleClickShowPassword}
+                                onMouseDown={handleMouseDownPassword}
+                                onMouseUp={handleMouseDownPassword}
+                                edge="end"
+                                color="secondary"
+                              >
+                                {showPassword ? <Eye /> : <EyeSlash />}
+                              </IconButton>
+                            </InputAdornment>
+                          )
+                        }}
+                      />
+                    </Grid>
+
                     <Grid item md={4} sm={6} xs={12}>
                       <CustomTextField
                         label="Mobile Number"
@@ -203,26 +300,7 @@ function UserList() {
                             marginLeft: 0
                           }
                         }}
-                        inputProps={{ maxLength: 15 }}
-                      />
-                    </Grid>
-                    <Grid item md={4} sm={6} xs={12}>
-                      <CustomTextField
-                        label="Email ID"
-                        name="email_id"
-                        placeholder="Please enter Email ID"
-                        values={values}
-                        type="email"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        touched={touched}
-                        errors={errors}
-                        autoComplete
-                        FormHelperTextProps={{
-                          style: {
-                            marginLeft: 0
-                          }
-                        }}
+                        inputProps={{ maxLength: 10 }}
                       />
                     </Grid>
 
@@ -340,9 +418,9 @@ function UserList() {
             changeTableVisibility={changeTableVisibility}
             setEditing={setEditing}
             getOneItem={GetOneIssuer}
-            deleteOneItem={DeleteOneIssuer}
+            deleteOneItem={DeleteUser}
             setSearchData={setSearchData}
-            tableDataRefetch={() => {}}
+            tableDataRefetch={userListRefetch}
             setActiveEditing={setActiveEditing}
             VisibleColumn={VisibleColumn}
           />

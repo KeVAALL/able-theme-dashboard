@@ -321,7 +321,6 @@ const ReactTable = ({
                                     changeTableVisibility();
                                   }, 500);
                                 } else {
-                                  console.log(row.original);
                                   setEditing(row.original);
                                   changeTableVisibility();
                                 }

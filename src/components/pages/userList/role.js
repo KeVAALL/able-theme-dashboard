@@ -41,7 +41,7 @@ import {
 } from 'constant/userRoleValidation';
 import { GetIssuerData, GetOneIssuer, SaveIssuer, EditIssuer, DeleteOneIssuer } from 'hooks/issuer/issuer';
 import { FilterSearch } from 'iconsax-react';
-import { EditRole, GetMenu, GetRoles, GetSelectedMenu, SaveRole } from 'hooks/user/user';
+import { DeleteRole, EditRole, GetMenu, GetRoles, GetSelectedMenu, SaveRole } from 'hooks/user/user';
 import { borderRadius } from '@mui/system';
 import { toInteger } from 'lodash';
 
@@ -135,23 +135,6 @@ function Role() {
       setUserRoleData(data);
     }
   });
-
-  // Query for fetching role Data
-  // const {
-  //   isPending: rolePending, // Flag indicating if query is pending
-  //   error: roleError, // Error object if query fails
-  //   refetch: refetchRole // Function to refetch issuer data
-  // } = useQuery({
-  //   queryKey: ['getAllRoles'], // Unique key for the query
-  //   refetchOnWindowFocus: false, // Disable refetch on window focus
-  //   keepPreviousData: true, // Keep previous data when refetching
-  //   queryFn: GetSelectedMenu, // Function to fetch issuer data
-  //   onSuccess: (data) => {
-  //     console.log(data);
-  //     setRoleDropdown(data);
-  //     setUserRoleData(data);
-  //   }
-  // });
 
   // Query for fetching menu Data
   const {
@@ -436,12 +419,12 @@ function Role() {
             // validationSchema={filterValidationSchema}
             changeTableVisibility={changeTableVisibility}
             setEditing={setEditing}
-            getOneItem={GetOneIssuer}
-            deleteOneItem={DeleteOneIssuer}
+            getOneItem={() => {}}
+            deleteOneItem={DeleteRole}
             getEditData={GetSelectedMenu}
             getEditReqField={'role_id'}
             setSearchData={setSearchData}
-            tableDataRefetch={() => {}}
+            tableDataRefetch={refetchRole}
             setActiveEditing={setActiveEditing}
             VisibleColumn={VisibleColumn}
           />

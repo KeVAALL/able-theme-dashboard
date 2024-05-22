@@ -41,6 +41,7 @@ function ProductType() {
   const [showTable, setShowTable] = useState(false); // State to toggle visibility of the table form
   // Editing States
   const [isEditing, setIsEditing] = useState(false); // State to track if editing mode is active
+  const [isProductTypeActive, setProductTypeActive] = useState(); // State to track if the issuer is active or not active
   // Form State
   const [formValues, setFormValues] = useState(formAllValues); // State to hold form input values
 
@@ -52,7 +53,9 @@ function ProductType() {
   const setEditing = (value) => {
     setFormValues({ product_type_id: value.product_type_id, product_type: value.product_type });
   };
-
+  const handleIsProductTypeActive = (initialValue) => {
+    setProductTypeActive(initialValue);
+  };
   // Activates editing mode
   const setActiveEditing = () => {
     setIsEditing(true);
@@ -148,6 +151,10 @@ function ProductType() {
                   title="Product Type Entry"
                   changeTableVisibility={changeTableVisibility}
                   clearFormValues={clearFormValues}
+                  isEditing={isEditing}
+                  setActiveClose={setActiveClose}
+                  setIsActive={handleIsProductTypeActive}
+                  isActive={isProductTypeActive}
                   isValid={isValid}
                   dirty={dirty}
                 />

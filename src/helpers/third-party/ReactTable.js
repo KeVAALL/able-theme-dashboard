@@ -148,7 +148,7 @@ export const TablePagination = ({ gotoPage, rows, setPageSize, pageSize, pageInd
           count={Math.ceil(rows.length / pageSize)}
           page={pageIndex + 1}
           onChange={handleChangePagination}
-          color="secondary"
+          color="primary"
           variant="combined"
           shape="circular"
           showFirstButton

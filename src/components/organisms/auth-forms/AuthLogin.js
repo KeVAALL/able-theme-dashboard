@@ -7,7 +7,7 @@ import { HomeTrendUp, Profile2User, ShoppingBag, Eye, EyeSlash } from 'iconsax-r
 
 import { FormattedMessage } from 'react-intl';
 // material-ui
-import { Button, Checkbox, FormHelperText, Grid, Link, InputAdornment, InputLabel, OutlinedInput, Stack, TextField } from '@mui/material';
+import { Button, Grid, Link, InputAdornment, } from '@mui/material';
 
 // third-party
 import * as Yup from 'yup';
