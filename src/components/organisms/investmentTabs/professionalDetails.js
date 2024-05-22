@@ -67,12 +67,12 @@ const ProfessionalDetails = (props) => {
             sx={{ borderRadius: 0.6 }}
             onClick={async () => {
               console.log(props.values.professional_details);
-              const formValues = {
+              const payload = {
                 fd_investment_id: props.fdInvestmentID,
                 investor_id: props.investorID,
                 ...props.values.professional_details
               };
-              const response = await UpdateProfessionalDetails(formValues);
+              const response = await UpdateProfessionalDetails(payload);
 
               if (!response) {
                 props.handleTabChange(event, props.tabValue + 1);

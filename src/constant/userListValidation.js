@@ -42,7 +42,7 @@ const StatusCell = ({ value }) => {
 };
 const tableColumns = [
   {
-    Header: 'Username',
+    Header: 'User name',
     accessor: 'user_name'
   },
   {
@@ -54,7 +54,7 @@ const tableColumns = [
     accessor: 'mobile_no'
   },
   {
-    Header: 'Role',
+    Header: 'Role Name',
     accessor: 'role_name'
   },
   {

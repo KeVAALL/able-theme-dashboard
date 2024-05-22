@@ -3,7 +3,7 @@ import React, { memo } from 'react';
 import { Grid, Button, Divider } from '@mui/material';
 
 // project-imports
-import CustomTextField, { FormikAutoComplete } from 'utils/textfield';
+import { CustomTextField, FormikAutoComplete } from 'utils/textfield';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
@@ -91,13 +91,13 @@ const PersonalInfo = (props) => {
             sx={{ borderRadius: 0.6 }}
             onClick={async () => {
               console.log(props.values.investor);
-              const formValues = {
+              const payload = {
                 fd_investment_id: props.fdInvestmentID,
                 investor_id: props.investorID,
                 ...props.values.investor
               };
 
-              const response = await UpdatePersonalInfo(formValues);
+              const response = await UpdatePersonalInfo(payload);
 
               if (!response) {
                 props.handleTabChange(event, props.tabValue + 1);

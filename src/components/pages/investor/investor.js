@@ -17,7 +17,7 @@ import { toInteger } from 'lodash';
 
 // assets
 import { SubmitButton } from 'components/atoms/button/button';
-import CustomTextField, { CustomAutoComplete, FormikAutoComplete, NestedCustomTextField } from 'utils/textfield';
+import { CustomTextField, CustomAutoComplete, FormikAutoComplete, NestedCustomTextField } from 'utils/textfield';
 import {
   formAllValues,
   validationSchema,
@@ -32,7 +32,7 @@ import {
 } from 'constant/investorValidation';
 import {
   GetInvestorData,
-  GetOneInvestor,
+  // GetOneInvestor,
   SaveInvestor,
   EditInvestor,
   DeleteOneInvestor,
@@ -40,7 +40,6 @@ import {
   GetIfa,
   GetIFASearch
 } from 'hooks/investor/investor';
-import AnimateButton from 'helpers/@extended/AnimateButton';
 import IconTabs from 'components/organisms/iconTabs';
 
 function Investor() {
@@ -57,7 +56,6 @@ function Investor() {
   const [showTable, setShowTable] = useState(false); // State to toggle visibility of the table form
 
   // Selection states
-  const [selectedIFA, setSelectedIFA] = useState(null);
   const [selectedGender, setSelectedGender] = useState(null);
 
   const [selectedDeclaration, setSelectedDeclaration] = useState({
@@ -94,7 +92,6 @@ function Investor() {
       isRelativeToPoliticallyExposed: Boolean(value.declaration.is_rpep),
       isResidentOutsideIndia: Boolean(value.declaration.is_foreign_tax_resident)
     });
-    // setNomineeData(value.nominee);
   };
   const setActiveEditing = () => {
     setIsEditing(true);
@@ -126,7 +123,6 @@ function Investor() {
       isResidentOutsideIndia: false
     });
     setErrorObject(errorObject);
-    // setNomineeData([]);
   };
 
   // Gender Validation
@@ -163,7 +159,6 @@ function Investor() {
 
   // Tabs Error
   const handleTabError = (value) => {
-    console.log(value);
     if (value.investor_address) {
       setErrorObject((prevValue) => {
         return { ...prevValue, addressDetailsError: true };
@@ -190,7 +185,12 @@ function Investor() {
     queryKey: ['investorTableData'],
     refetchOnWindowFocus: false,
     keepPreviousData: true,
-    queryFn: GetInvestorData,
+    queryFn: () => {
+      const payload = {
+        method_name: 'getall'
+      };
+      return GetInvestorData(payload);
+    },
     onSuccess: (data) => {
       setInvestorData(data);
       // setLoading(false);
@@ -206,7 +206,12 @@ function Investor() {
     queryKey: ['ifaTableData'],
     refetchOnWindowFocus: false,
     keepPreviousData: true,
-    queryFn: GetIfa,
+    queryFn: () => {
+      const payload = {
+        method_name: 'getall'
+      };
+      return GetIfa(payload);
+    },
     onSuccess: (data) => {
       setIfaData(data);
     }
@@ -222,44 +227,57 @@ function Investor() {
           initialValues={formValues}
           validationSchema={validationSchema}
           onSubmit={async (values, { setSubmitting, resetForm }) => {
+            const userID = localStorage.getItem('userID');
             if (isEditing === false) {
-              const formValues = {
+              const payload = {
                 ...values,
+                user_id: toInteger(userID),
+                method_name: 'add',
                 investor: {
                   ...values.investor,
                   gender_id: genderValidate(selectedGender),
-                  is_foreign_tax_resident: selectedDeclaration.isResidentOutsideIndia ? 1 : 0,
-                  is_rpep: selectedDeclaration.isRelativeToPoliticallyExposed ? 1 : 0,
-                  is_pep: selectedDeclaration.isPoliticallyExposed ? 1 : 0
+                  is_foreign_tax_resident: toInteger(selectedDeclaration.isResidentOutsideIndia),
+                  is_rpep: toInteger(selectedDeclaration.isRelativeToPoliticallyExposed),
+                  is_pep: toInteger(selectedDeclaration.isPoliticallyExposed)
                 }
-                // nominee: nomineeData
               };
-              SaveInvestor(formValues, InvestorTableDataRefetch, clearFormValues);
+              try {
+                await SaveInvestor(payload);
+
+                changeTableVisibility();
+                InvestorTableDataRefetch();
+                clearFormValues();
+              } catch (err) {
+                console.log(err);
+              }
             }
             if (isEditing === true) {
-              const formValues = {
-                ...values,
-                investor: {
-                  ...values.investor,
-                  is_active: toInteger(isInvestorActive),
-                  gender_id: genderValidate(selectedGender),
-                  is_foreign_tax_resident: selectedDeclaration.isResidentOutsideIndia ? 1 : 0,
-                  is_rpep: selectedDeclaration.isRelativeToPoliticallyExposed ? 1 : 0,
-                  is_pep: selectedDeclaration.isPoliticallyExposed ? 1 : 0
-                }
-                // nominee: nomineeData
-              };
-              EditInvestor(
-                formValues,
-                // isFDActive,
-                isInvestorActive,
-                InvestorTableDataRefetch,
-                clearFormValues,
-                setActiveClose
-              );
+              try {
+                const payload = {
+                  ...values,
+                  user_id: toInteger(userID),
+                  investor_id: values.investor.investor_id,
+                  method_name: 'update',
+                  investor: {
+                    ...values.investor,
+                    is_active: toInteger(isInvestorActive),
+                    gender_id: genderValidate(selectedGender),
+                    is_foreign_tax_resident: toInteger(selectedDeclaration.isResidentOutsideIndia),
+                    is_rpep: toInteger(selectedDeclaration.isRelativeToPoliticallyExposed),
+                    is_pep: toInteger(selectedDeclaration.isPoliticallyExposed)
+                  }
+                };
+                await EditInvestor(payload);
+
+                changeTableVisibility();
+                InvestorTableDataRefetch();
+                clearFormValues();
+                setActiveClose();
+              } catch (err) {
+                console.log(err);
+              }
             }
             // setErrorObject(errorObject);
-            changeTableVisibility();
           }}
         >
           {({
@@ -431,7 +449,11 @@ function Investor() {
               ifa_id: 0
             }}
             onSubmit={async (values, { resetForm }) => {
-              const searchResult = await GetIFASearch(values);
+              const payload = {
+                method_name: 'getifafilter',
+                ...values
+              };
+              const searchResult = await GetIFASearch(payload);
               if (searchResult) {
                 setSearchData(searchResult);
               }
@@ -525,7 +547,7 @@ function Investor() {
             validationSchema={filterValidationSchema}
             changeTableVisibility={changeTableVisibility}
             setEditing={setEditing}
-            getOneItem={GetOneInvestor}
+            getOneItem={() => {}}
             deleteOneItem={DeleteOneInvestor}
             getEditData={GetEditOneInvestor}
             getEditReqField={'investor_id'}

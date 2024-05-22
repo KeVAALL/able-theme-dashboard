@@ -11,7 +11,7 @@ import AnimateButton from 'helpers/@extended/AnimateButton';
 import { relationship } from 'constant/investorValidation';
 import MultiTable from 'components/pages/multiTable/multiTable';
 import MainCard from '../mainCard/MainCard';
-import CustomTextField, { FormikAutoComplete } from 'utils/textfield';
+import { CustomTextField, FormikAutoComplete } from 'utils/textfield';
 
 // third-party
 import { Formik } from 'formik';
@@ -145,18 +145,16 @@ const Nomination = (props) => {
                             color="success"
                             startIcon={<Additem />}
                             onClick={async () => {
-                              const formValues = {
+                              const payload = {
                                 fd_investment_id: props.fdInvestmentID,
                                 investor_id: props.investorID,
                                 nominee: [{ ...values }]
                               };
 
-                              await UpdateNominee(formValues);
+                              await UpdateNominee(payload);
 
                               await GetEditOneInvestor(props.setInvestorEditing, props.investorID);
-                              // props.handleNewNominee({
-                              //   values
-                              // });
+
                               changeTableVisibility();
                               clearFormValues();
                             }}

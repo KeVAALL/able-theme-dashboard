@@ -7,7 +7,7 @@ import { HomeTrendUp, Profile2User, ShoppingBag, Eye, EyeSlash } from 'iconsax-r
 
 import { FormattedMessage } from 'react-intl';
 // material-ui
-import { Button, Grid, Link, InputAdornment, } from '@mui/material';
+import { Button, Grid, Link, InputAdornment } from '@mui/material';
 
 // third-party
 import * as Yup from 'yup';
@@ -23,7 +23,7 @@ import AnimateButton from 'helpers/@extended/AnimateButton';
 import { dispatch } from '../../../redux';
 import { openSnackbar } from 'redux/reducers/snackbar';
 import { setMenuItems } from 'redux/reducers/menu';
-import CustomTextField from 'utils/textfield';
+import { CustomTextField } from 'utils/textfield';
 import { enqueueSnackbar } from 'notistack';
 
 // ============================|| JWT - LOGIN ||============================ //

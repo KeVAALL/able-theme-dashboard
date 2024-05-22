@@ -18,7 +18,7 @@ import Loader from 'components/atoms/loader/Loader';
 
 // assets
 import { SubmitButton } from 'components/atoms/button/button';
-import CustomTextField, { FormikAutoComplete } from 'utils/textfield';
+import { CustomTextField, FormikAutoComplete } from 'utils/textfield';
 import {
   formAllValues,
   validationSchema,
@@ -28,7 +28,6 @@ import {
   tableColumns,
   VisibleColumn
 } from 'constant/userListValidation';
-import { GetIssuerData, GetOneIssuer, SaveIssuer, EditIssuer, DeleteOneIssuer } from 'hooks/issuer/issuer';
 import { DeleteUser, EditUser, GetRoles, GetUsers, SaveUser } from 'hooks/user/user';
 
 function UserList() {
@@ -96,7 +95,12 @@ function UserList() {
     queryKey: ['getAllRoles'], // Unique key for the query
     refetchOnWindowFocus: false, // Disable refetch on window focus
     keepPreviousData: true, // Keep previous data when refetching
-    queryFn: GetRoles, // Function to fetch issuer data
+    queryFn: () => {
+      const payload = {
+        method_name: 'getall'
+      };
+      return GetRoles(payload);
+    }, // Function to fetch issuer data
     onSuccess: (data) => {
       setRoleDropdown(data);
     }
@@ -110,7 +114,12 @@ function UserList() {
     queryKey: ['getUserList'], // Unique key for the query
     refetchOnWindowFocus: false, // Disable refetch on window focus
     keepPreviousData: true, // Keep previous data when refetching
-    queryFn: GetUsers, // Function to fetch issuer data
+    queryFn: () => {
+      const payload = {
+        method_name: 'getall'
+      };
+      return GetUsers(payload);
+    }, // Function to fetch issuer data
     onSuccess: (data) => {
       setUserListData(data);
     }
@@ -417,7 +426,7 @@ function UserList() {
             // validationSchema={filterValidationSchema}
             changeTableVisibility={changeTableVisibility}
             setEditing={setEditing}
-            getOneItem={GetOneIssuer}
+            getOneItem={() => {}}
             deleteOneItem={DeleteUser}
             setSearchData={setSearchData}
             tableDataRefetch={userListRefetch}

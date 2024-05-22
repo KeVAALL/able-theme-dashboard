@@ -3,11 +3,9 @@ import axios from 'utils/axios';
 import { enqueueSnackbar } from 'notistack';
 import { toInteger } from 'lodash';
 
-export async function GetMenu() {
+export async function GetMenu(payload) {
   try {
-    const response = await axios.post('menu/getmenu', {
-      method_name: 'getmenu'
-    });
+    const response = await axios.post('menu/getmenu', payload);
     return response.data.data;
   } catch (err) {
     enqueueSnackbar(err.message, {
@@ -41,11 +39,25 @@ export async function GetSelectedMenu(setEditing, role_id) {
     return [];
   }
 }
-export async function GetRoles() {
+export async function GetRoles(payload) {
   try {
-    const response = await axios.post('role/rolemenu', {
-      method_name: 'getall'
+    const response = await axios.post('role/rolemenu', payload);
+    return response.data.data;
+  } catch (err) {
+    enqueueSnackbar(err.message, {
+      variant: 'error',
+      autoHideDuration: 2000,
+      anchorOrigin: {
+        vertical: 'top',
+        horizontal: 'right'
+      }
     });
+    return [];
+  }
+}
+export async function SearchRoles(payload) {
+  try {
+    const response = await axios.post('role/rolemenu', payload);
     return response.data.data;
   } catch (err) {
     enqueueSnackbar(err.message, {
@@ -129,11 +141,9 @@ export async function DeleteRole(values) {
   }
 }
 // User
-export async function GetUsers() {
+export async function GetUsers(payload) {
   try {
-    const response = await axios.post('user/getuser', {
-      method_name: 'getall'
-    });
+    const response = await axios.post('user/getuser', payload);
     return response.data.data;
   } catch (err) {
     enqueueSnackbar(err.message, {

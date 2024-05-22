@@ -250,8 +250,6 @@ export const CustomCheckbox = (props) => {
   );
 };
 
-export default CustomTextField;
-
 {
   /* <TextField
                   variant="standard"

@@ -20,7 +20,7 @@ import { AdapterDateFns } from '@mui/x-date-pickers-pro/AdapterDateFns';
 
 // assets
 import { SubmitButton } from 'components/atoms/button/button';
-import CustomTextField, { FormikAutoComplete } from 'utils/textfield';
+import { CustomTextField, FormikAutoComplete } from 'utils/textfield';
 import { investorValues as investorFormValues, investorValidationSchema as investorFormValidation } from 'constant/investmentValidation';
 import {
   formAllValues,
@@ -247,13 +247,18 @@ function Investment() {
   // Query for fetching investor data
   const {
     isPending: investorPending,
-    // error,
+    error: investorError,
     refetch: InvestorTableDataRefetch
   } = useQuery({
     queryKey: ['investorTableData'],
     refetchOnWindowFocus: false,
     keepPreviousData: true,
-    queryFn: GetInvestorData,
+    queryFn: () => {
+      const payload = {
+        method_name: 'getall'
+      };
+      return GetInvestorData(payload);
+    },
     onSuccess: (data) => {
       setInvestorData(data);
       // setLoading(false);
@@ -265,10 +270,16 @@ function Investment() {
     error,
     refetch: refetchPayoutData
   } = useQuery({
-    queryKey: ['payoutData', 0],
+    queryKey: ['payoutData'],
     refetchOnWindowFocus: false,
     keepPreviousData: true,
-    queryFn: () => GetPayoutMethod(0),
+    queryFn: () => {
+      const payload = {
+        method_name: 'getpayouts',
+        fd_id: 0
+      };
+      return GetPayoutMethod(payload);
+    },
     onSuccess: (data) => {
       setPayoutData(data);
     }
@@ -282,7 +293,12 @@ function Investment() {
     queryKey: ['productTableData'], // Unique key for the query
     refetchOnWindowFocus: false, // Disable refetch on window focus
     keepPreviousData: true, // Keep previous data when refetching
-    queryFn: GetProductData, // Function to fetch product data
+    queryFn: () => {
+      const payload = {
+        method_name: 'getall'
+      };
+      return GetProductData(payload);
+    }, // Function to fetch product data
     onSuccess: (data) => {
       setFdDropdown(data); // Update product data with fetched data
     }
@@ -296,7 +312,12 @@ function Investment() {
     queryKey: ['ifaTableData'],
     refetchOnWindowFocus: false,
     keepPreviousData: true,
-    queryFn: GetIfa,
+    queryFn: () => {
+      const payload = {
+        method_name: 'getall'
+      };
+      return GetIfa(payload);
+    },
     onSuccess: (data) => {
       setIfaData(data);
     }
@@ -316,7 +337,12 @@ function Investment() {
     queryKey: ['maturityDropdownData'], // Unique key for the query
     refetchOnWindowFocus: false, // Disable refetch on window focus
     keepPreviousData: true, // Keep previous data when refetching
-    queryFn: GetMaturityAction, // Function to fetch product data
+    queryFn: () => {
+      const payload = {
+        method_name: 'getmaturityactions'
+      };
+      return GetMaturityAction(payload);
+    }, // Function to fetch product data
     onSuccess: (data) => {
       setMaturityAction(data); // Update product data with fetched data
     }
@@ -341,35 +367,11 @@ function Investment() {
           validationSchema={validationSchema}
           onSubmit={async (values, { setSubmitting, resetForm }) => {
             if (isEditing === false) {
-              // const reqValues = { ...values, compounding_type: 'yearly' };
-              // const result = await CalculateFD(reqValues);
-              // const calculated = result.data;
-              // console.log({
-              //   ...values,
-              //   interest_rate: calculated.interestRate,
-              //   aggrigated_interest: calculated.aggrigated_interest,
-              //   maturity_amount: calculated.maturity_amount
-              // });
-              // handleCalculate({
-              //   ...values,
-              //   interest_rate: calculated.interestRate,
-              //   aggrigated_interest: calculated.aggrigated_interest,
-              //   maturity_amount: calculated.maturity_amount
-              // });
-              //   SaveInvestor(formValues, InvestmentTableDataRefetch, clearFormValues);
+              console.log(values);
             }
             if (isEditing === true) {
-              console.log('edit');
-              //   EditInvestor(
-              //     formValues,
-              //     isFDActive,
-              //     isInvestorActive,
-              //     InvestmentTableDataRefetch,
-              //     clearFormValues,
-              //     setActiveClose
-              //   );
+              console.log(values);
             }
-            // changeTableVisibility();
           }}
         >
           {({
@@ -530,8 +532,6 @@ function Investment() {
                     <Grid item xs={1.5}>
                       <AnimateButton>
                         <Button
-                          // disabled={formPending}
-                          // formPending is custom state
                           fullWidth
                           disabled={isSubmitting || !isValid}
                           variant="contained"
@@ -540,7 +540,7 @@ function Investment() {
                           startIcon={<Calculator />}
                           onClick={async () => {
                             setSubmitting(true);
-                            const reqValues = {
+                            const payload = {
                               ...values,
                               interest_rate: '0',
                               aggrigated_interest: 0,
@@ -548,7 +548,7 @@ function Investment() {
                               compounding_type: 'yearly'
                             };
 
-                            const result = await CalculateFD(reqValues);
+                            const result = await CalculateFD(payload);
 
                             setSubmitting(false);
 
@@ -575,7 +575,13 @@ function Investment() {
                         sx={{ borderRadius: 0.6 }}
                         startIcon={<Eye />}
                         onClick={async () => {
-                          const searchResult = await GetSchemeSearch(values.fd_id, values.payout_method_id);
+                          const payload = {
+                            method_name: 'getscheme',
+                            fd_id: values.fd_id,
+                            fd_payout_method_id: values.payout_method_id
+                          };
+                          const searchResult = await GetSchemeSearch(payload);
+
                           setSchemeData(searchResult);
 
                           setTimeout(() => {
@@ -683,7 +689,12 @@ function Investment() {
 
                           setFdInvestmentID(result.fd_investment_id);
 
-                          const declarations = await GetDeclaration(result.fd_investment_id);
+                          const declarationPayload = {
+                            method_name: 'getall',
+                            fd_investment_id: result.fd_investment_id
+                          };
+
+                          const declarations = await GetDeclaration(declarationPayload);
                           const mappedDeclarations = declarations.map((dec) => {
                             return { ...dec, isSelected: false };
                           });
@@ -772,9 +783,9 @@ function Investment() {
               ifa_id: yup.number()
             })}
             onSubmit={async (values, { resetForm }) => {
-              const formValues = { ...values, method_name: 'getinvestmentsonifa', from_date: dateValue[0], end_date: dateValue[1] };
+              const payload = { ...values, method_name: 'getinvestmentsonifa', from_date: dateValue[0], end_date: dateValue[1] };
 
-              const investmentData = await GetInvestments(formValues);
+              const investmentData = await GetInvestments(payload);
 
               setInvestmentData(investmentData);
             }}

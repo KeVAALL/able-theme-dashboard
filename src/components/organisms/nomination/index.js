@@ -11,7 +11,7 @@ import AnimateButton from 'helpers/@extended/AnimateButton';
 import { relationship } from 'constant/investorValidation';
 import MultiTable from 'components/pages/multiTable/multiTable';
 import MainCard from '../mainCard/MainCard';
-import CustomTextField, { FormikAutoComplete } from 'utils/textfield';
+import { CustomTextField, FormikAutoComplete } from 'utils/textfield';
 
 // third-party
 import { Formik } from 'formik';

@@ -176,14 +176,14 @@ const AddressDetails = (props) => {
             sx={{ borderRadius: 0.6 }}
             onClick={async () => {
               console.log(props.values.investor_address);
-              const formValues = {
+              const payload = {
                 fd_investment_id: props.fdInvestmentID,
                 investor_id: props.investorID,
                 permanent_address: props.values.investor_address,
                 correspondent_address: props.values.correspondent_address,
                 is_permanent_address_correspondent: props.values.is_permanent_address_correspondent
               };
-              const response = await UpdateAddressDetails(formValues);
+              const response = await UpdateAddressDetails(payload);
 
               if (!response) {
                 props.handleTabChange(event, props.tabValue + 1);
