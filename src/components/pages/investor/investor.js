@@ -75,6 +75,11 @@ function Investor() {
     nomineeError: false,
     declarationError: false
   });
+  const [personalInfoError, setPersonalInfoError] = useState(false);
+  const [addressDetailsError, setAddressDetailsError] = useState(false);
+  const [professionalDetailsError, setProfessionalDetailsError] = useState(false);
+  const [nomineeError, setNomineeError] = useState(false);
+  const [declarationError, setDeclarationError] = useState(false);
 
   // Form State
   const [formValues, setFormValues] = useState(formAllValues);
@@ -223,7 +228,9 @@ function Investor() {
     <>
       {showTable && (
         <Formik
-          validateOnBlur={false}
+          // validateOnBlur={false}
+          validateOnChange={false}
+          // validate={validate}
           initialValues={formValues}
           validationSchema={validationSchema}
           onSubmit={async (values, { setSubmitting, resetForm }) => {
@@ -297,8 +304,13 @@ function Investor() {
               component="form"
               onSubmit={(event) => {
                 console.log(errors);
-                event.preventDefault();
+                console.log(dirty.valueOf('investor_address'));
+                console.log(isValid.valueOf('investor_address'));
+                // const errorsList = validate(values);
+                // console.log(errorsList);
+
                 handleSubmit();
+                event.preventDefault();
               }}
               sx={{ width: '100%' }}
             >
@@ -320,10 +332,8 @@ function Investor() {
                   setActiveClose={setActiveClose}
                   setIsActive={handleIsInvestorActive}
                   isActive={isInvestorActive}
-                  errors={errors}
-                  handleTabError={handleTabError}
-                  isValid={isValid}
-                  dirty={dirty}
+                  isValid={true}
+                  dirty={true}
                 />
 
                 <Divider />
@@ -423,8 +433,20 @@ function Investor() {
                     handleDeclarationClick={handleDeclarationClick}
                     nomineeData={nomineeData}
                     handleNewNominee={handleNewNominee}
-                    errorObject={errorObject}
-                    handleTabError={handleTabError}
+                    // errorObject={errorObject}
+                    // handleTabError={handleTabError}
+                    personalInfoError={personalInfoError}
+                    setPersonalInfoError={setPersonalInfoError}
+                    addressDetailsError={addressDetailsError}
+                    setAddressDetailsError={setAddressDetailsError}
+                    professionalDetailsError={professionalDetailsError}
+                    setProfessionalDetailsError={setProfessionalDetailsError}
+                    nomineeError={nomineeError}
+                    setNomineeError={setNomineeError}
+                    declarationError={declarationError}
+                    setDeclarationError={setDeclarationError}
+                    isValid={isValid}
+                    dirty={dirty}
                   />
                 </Grid>
               </Card>

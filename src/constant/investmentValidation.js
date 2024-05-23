@@ -189,6 +189,11 @@ const tableColumns = [
     accessor: 'application_id'
   },
   {
+    Header: 'Status',
+    accessor: 'status',
+    customCell: StatusCell
+  },
+  {
     Header: 'Duration',
     accessor: 'tenure_selected',
     minWidth: 150
@@ -203,10 +208,7 @@ const tableColumns = [
     accessor: 'ifa_name',
     minWidth: 150
   },
-  {
-    Header: 'Issuer Reference Number',
-    accessor: 'issuer_ref_number'
-  },
+
   {
     Header: 'Reg. date',
     accessor: 'created_on',
@@ -238,9 +240,8 @@ const tableColumns = [
     accessor: 'rate_of_interest'
   },
   {
-    Header: 'Status',
-    accessor: 'status',
-    customCell: StatusCell
+    Header: 'Issuer Reference Number',
+    accessor: 'issuer_ref_number'
   }
 ];
 

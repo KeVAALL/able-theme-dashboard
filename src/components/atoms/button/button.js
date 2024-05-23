@@ -31,7 +31,7 @@ export const SubmitButton = memo(
     isValid,
     dirty
   }) => {
-    console.log('Rendering');
+    console.log(isValid, dirty);
     useEffect(() => {
       if (setIsActive) {
         setIsActive(formValues?.is_active);

@@ -346,7 +346,7 @@ function UserList() {
           <Formik
             initialValues={{
               username: '',
-              role_id: 1
+              role_id: 0
             }}
             onSubmit={async (values, { resetForm }) => {
               const payload = {

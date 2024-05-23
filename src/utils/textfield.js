@@ -164,6 +164,7 @@ export const FormikAutoComplete = memo((props) => {
 
   const handleOptionChange = (e, optionName, formName, setFieldValue, idName) => {
     if (e.target.outerText === undefined) {
+      console.log('yes');
       setFieldValue(formName, 0);
     } else {
       props.options.forEach(async (el) => {

@@ -49,13 +49,45 @@ function a11yProps(index) {
 export default function IconTabs(props) {
   const [tabValue, setTabValue] = useState(0);
 
+  const validateCurrentTab = () => {
+    const { errors, dirty, touched } = props;
+    switch (tabValue) {
+      case 0:
+        return true;
+      case 1: {
+        if (errors.investor_address || !dirty.valueOf('investor_address')) {
+          props.setAddressDetailsError(true);
+        } else {
+          props.setAddressDetailsError(false);
+        }
+        // return (
+        //   !errors.investor_address &&
+        //   Object.keys(touched.investor_address || {}).length > 0 &&
+        //   !errors.correspondent_address &&
+        //   Object.keys(touched.correspondent_address || {}).length > 0
+        // );
+        return true;
+      }
+      case 2:
+        return !errors.professional_details;
+      case 3:
+        return true;
+      default:
+        return true;
+    }
+  };
+
   const handleChange = (event, newValue) => {
-    setTabValue(newValue);
+    if (validateCurrentTab()) {
+      setTabValue(newValue);
+    } else {
+      // Optionally, you can display an error message or highlight the fields with errors
+      console.log('Please fix the errors before proceeding');
+    }
   };
 
   useEffect(() => {
     console.log(props.errors);
-    // props.handleTabError(props.errors);
   }, [props.errors]);
 
   const tabStyle = { borderTopLeftRadius: 0, borderTopRightRadius: 0, borderRadius: 1.5, overflow: 'visible' };
@@ -65,7 +97,7 @@ export default function IconTabs(props) {
       <Divider />
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Tabs
-          className={`tab_main ${props.errorObject?.addressDetailsError || props.errorObject?.personalInfoError ? 'indicator_main' : ''}`}
+          className={`tab_main ${props.addressDetailsError || props.personalInfoError ? 'indicator_main' : ''}`}
           // className={`tab_main`}
           variant="scrollable"
           scrollButtons
@@ -75,7 +107,7 @@ export default function IconTabs(props) {
           aria-label="scrollable force tabs example"
         >
           <Tab
-            className={props.errorObject.personalInfoError ? 'tab_1' : ''}
+            className={props.personalInfoError ? 'tab_1' : ''}
             label="Personal Info"
             icon={<Personalcard />}
             iconPosition="start"
@@ -83,7 +115,7 @@ export default function IconTabs(props) {
           />
           {/* <CustomTooltip title="Add" arrow color="#fff" bg="pink"> */}
           <Tab
-            className={props.errorObject.addressDetailsError ? 'tab_2' : ''}
+            className={props.addressDetailsError ? 'tab_2' : ''}
             label="Address Details"
             icon={<LocationTick />}
             iconPosition="start"
@@ -115,7 +147,6 @@ export default function IconTabs(props) {
             handleBlur={props.handleBlur}
             touched={props.touched}
             errors={props.errors}
-            sameAddress={props.sameAddress}
           />
         </MainCard>
       </TabPanel>
