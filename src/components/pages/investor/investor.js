@@ -40,7 +40,7 @@ import {
   GetIfa,
   GetIFASearch
 } from 'hooks/investor/investor';
-import IconTabs from 'components/organisms/iconTabs';
+import IconTabs from 'components/organisms/investorTabs';
 
 function Investor() {
   // Main data states

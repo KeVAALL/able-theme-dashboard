@@ -180,7 +180,7 @@ function FixDeposit() {
     }
   });
 
-  if (isPending || isActiveIssuerPending || tagsPending) return <Loader />;
+  if (isPending) return <Loader />;
 
   if (editingInterestRate)
     return (

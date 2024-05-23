@@ -10,11 +10,11 @@ import MainCard from 'components/molecules/mainCard';
 
 // assets
 import { Briefcase, LocationTick, UserOctagon, Personalcard, ProfileTick } from 'iconsax-react';
-import PersonalInfo from '../personalInfo';
-import AddressDetails from '../addressDetails';
-import ProfessionalDetails from '../professionalDetails';
-import Nomination from '../nomination';
-import Declaration from '../declaration';
+import PersonalInfo from './personalInfo';
+import AddressDetails from './addressDetails';
+import ProfessionalDetails from './professionalDetails';
+import Nomination from './nomination';
+import Declaration from './declaration';
 
 // css
 import './index.css';

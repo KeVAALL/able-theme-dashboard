@@ -174,8 +174,19 @@ const tableColumns = [
     accessor: 'folio_id'
   },
   {
-    Header: 'Investor Name',
-    accessor: 'investor_name'
+    Header: 'Master ID',
+    accessor: 'investor_code'
+  },
+  {
+    Header: 'Transaction ID',
+    accessor: 'application_id'
+  },
+  {
+    Header: 'Investment amount',
+    accessor: 'investment_amount',
+    customCell: ({ value }) => {
+      return <span>₹ {value}</span>;
+    }
   },
   {
     Header: 'FD Name',
@@ -183,24 +194,40 @@ const tableColumns = [
     minWidth: 150
   },
   {
-    Header: 'Amount',
-    accessor: 'investment_amount'
+    Header: 'IFA Name',
+    accessor: 'ifa_name',
+    minWidth: 150
   },
   {
-    Header: 'Description',
-    accessor: 'description',
-    minWidth: 250,
-    customCell: ({ value }) => {
-      // Parse the value and modify it as needed
-      const parsedValue = parseAndModifyValue(value);
-
-      return <span>{parsedValue}</span>;
-    }
+    Header: 'Issuer Reference Number',
+    accessor: 'issuer_ref_number'
   },
   {
     Header: 'Reg. date',
     accessor: 'created_on',
     minWidth: 150
+  },
+  {
+    Header: 'Principal amount',
+    accessor: '',
+    customCell: ({ value }) => {
+      return <span>₹ {value}</span>;
+    }
+  },
+  {
+    Header: 'Interest Earned',
+    accessor: '',
+    customCell: ({ value }) => {
+      return <span>₹ {value}</span>;
+    }
+  },
+  {
+    Header: 'Maturity',
+    accessor: 'maturity'
+  },
+  {
+    Header: 'Rate of Interest',
+    accessor: 'rate_of_interest'
   },
   {
     Header: 'Status',
@@ -223,3 +250,14 @@ export {
   tableColumns,
   VisibleColumn
 };
+
+// {
+//   Header: 'Description',
+//   accessor: 'description',
+//   minWidth: 250,
+//   customCell: ({ value }) => {
+//     const parsedValue = parseAndModifyValue(value);
+
+//     return <span>{parsedValue}</span>;
+//   }
+// },

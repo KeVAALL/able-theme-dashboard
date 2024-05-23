@@ -28,7 +28,7 @@ import {
   tableColumns,
   VisibleColumn
 } from 'constant/userListValidation';
-import { DeleteUser, EditUser, GetRoles, GetUsers, SaveUser } from 'hooks/user/user';
+import { DeleteUser, EditUser, GetRoles, GetUsers, SaveUser, SearchUsers } from 'hooks/user/user';
 
 function UserList() {
   const [userListData, setUserListData] = useState([]);
@@ -349,11 +349,13 @@ function UserList() {
               role_id: 1
             }}
             onSubmit={async (values, { resetForm }) => {
-              console.log(values);
-              //   const searchResult = await GetIFASearch(values);
-              //   if (searchResult) {
-              //     setSearchData(searchResult);
-              //   }
+              const payload = {
+                method_name: 'getone',
+                ...values
+              };
+              const search = await SearchUsers(payload);
+
+              setUserListData(search);
             }}
           >
             {({ values, errors, touched, setFieldValue, handleChange, handleBlur, handleSubmit, resetForm }) => (

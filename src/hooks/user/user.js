@@ -157,6 +157,22 @@ export async function GetUsers(payload) {
     return [];
   }
 }
+export async function SearchUsers(payload) {
+  try {
+    const response = await axios.post('user/getuser', payload);
+    return response.data.data;
+  } catch (err) {
+    enqueueSnackbar(err.message, {
+      variant: 'error',
+      autoHideDuration: 2000,
+      anchorOrigin: {
+        vertical: 'top',
+        horizontal: 'right'
+      }
+    });
+    return [];
+  }
+}
 export async function SaveUser(values) {
   try {
     const response = await axios.post('user/saveuser', values);
