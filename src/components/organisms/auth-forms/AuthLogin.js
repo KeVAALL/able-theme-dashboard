@@ -21,7 +21,6 @@ import AnimateButton from 'helpers/@extended/AnimateButton';
 
 // assets
 import { dispatch } from '../../../redux';
-import { openSnackbar } from 'redux/reducers/snackbar';
 import { setMenuItems } from 'redux/reducers/menu';
 import { CustomTextField } from 'utils/textfield';
 import { enqueueSnackbar } from 'notistack';
@@ -122,7 +121,7 @@ const AuthLogin = ({ forgot }) => {
             }
           } catch (err) {
             console.error(err);
-            enqueueSnackbar('Invalid Login Credentials', {
+            enqueueSnackbar(err.message, {
               variant: 'error',
               autoHideDuration: 2000,
               anchorOrigin: {

@@ -9,6 +9,9 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { residency, marital_status } from 'constant/investorValidation';
 
+// third-party
+import enGB from 'date-fns/locale/en-GB';
+
 const PersonalInfo = (props) => {
   return (
     <>
@@ -48,7 +51,7 @@ const PersonalInfo = (props) => {
             gap: '6px'
           }}
         >
-          <LocalizationProvider dateAdapter={AdapterDateFns}>
+          <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={enGB}>
             <DesktopDatePicker
               className="calendar_main"
               label="Date of Birth"

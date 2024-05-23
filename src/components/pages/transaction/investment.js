@@ -58,6 +58,7 @@ import { GetPayoutMethod, GetSchemeSearch } from 'hooks/interestRate/interestRat
 import InvestmentDialog from 'components/atoms/dialog/InvestmentDialog';
 import AnimateButton from 'helpers/@extended/AnimateButton';
 import InvestmentTabs from 'components/organisms/investmentTabs';
+import enGB from 'date-fns/locale/en-GB';
 
 function Investment() {
   // Main data states
@@ -802,7 +803,11 @@ function Investment() {
                 <CardContent sx={{ paddingLeft: '16px !important' }}>
                   <Grid container spacing={2}>
                     <Grid item xs={3} style={{ paddingLeft: 0, paddingTop: 0 }}>
-                      <LocalizationProvider dateAdapter={AdapterDateFns} localeText={{ start: 'Date From', end: 'Date To' }}>
+                      <LocalizationProvider
+                        dateAdapter={AdapterDateFns}
+                        localeText={{ start: 'Date From', end: 'Date To' }}
+                        adapterLocale={enGB}
+                      >
                         <DesktopDateRangePicker
                           className="calendar_main"
                           value={dateValue}

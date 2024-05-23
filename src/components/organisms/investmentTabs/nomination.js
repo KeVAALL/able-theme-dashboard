@@ -20,6 +20,7 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { Additem } from 'iconsax-react';
 import { UpdateNominee } from 'hooks/transaction/investment';
 import { GetEditOneInvestor } from 'hooks/investor/investor';
+import enGB from 'date-fns/locale/en-GB';
 
 const Nomination = (props) => {
   // theme
@@ -226,7 +227,7 @@ const Nomination = (props) => {
                         />
                       </Grid>
                       <Grid item xs={12} sm={6} md={6} style={{ display: 'grid', gap: '10px' }}>
-                        <LocalizationProvider dateAdapter={AdapterDateFns}>
+                        <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={enGB}>
                           <DesktopDatePicker
                             className="calendar_main"
                             label="DOB"
