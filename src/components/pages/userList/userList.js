@@ -273,7 +273,7 @@ function UserList() {
                         touched={touched}
                         errors={errors}
                         InputProps={{
-                          endAdornment: (
+                          endAdornment: !isEditing && (
                             <InputAdornment position="end">
                               <IconButton
                                 aria-label="toggle password visibility"

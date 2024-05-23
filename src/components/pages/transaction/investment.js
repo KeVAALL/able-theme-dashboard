@@ -872,10 +872,10 @@ function Investment() {
             deleteOneItem={() => {}}
             // getEditData={() => {}}
             setSearchData={setSearchData}
-            // tableDataRefetch={InvestmentTableDataRefetch}
             tableDataRefetch={() => {}}
             setActiveEditing={setActiveEditing}
             VisibleColumn={VisibleColumn}
+            isInvestment={true}
           />
         </MainCard>
       )}

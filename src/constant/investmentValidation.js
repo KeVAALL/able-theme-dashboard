@@ -149,9 +149,11 @@ const VisibleColumn = [];
 const StatusCell = ({ value }) => {
   switch (value) {
     case 0:
-      return <Chip color="error" label="In-active" size="medium" variant="outlined" />;
+      return <Chip color="warning" label="Pending" size="medium" variant="outlined" />;
     case 1:
-      return <Chip color="info" label="Pending" size="medium" variant="outlined" />;
+      return <Chip color="info" label="In-progress" size="medium" variant="outlined" />;
+    case 2:
+      return <Chip color="success" label="Active" size="medium" variant="outlined" className="active-chip" />;
     default:
       return <Chip color="info" label="None" size="medium" variant="light" />;
   }
@@ -174,19 +176,22 @@ const tableColumns = [
     accessor: 'folio_id'
   },
   {
+    Header: 'Investor Name',
+    accessor: 'investor_name',
+    minWidth: 150
+  },
+  {
     Header: 'Master ID',
-    accessor: 'investor_code'
+    accessor: 'master_id'
   },
   {
     Header: 'Transaction ID',
     accessor: 'application_id'
   },
   {
-    Header: 'Investment amount',
-    accessor: 'investment_amount',
-    customCell: ({ value }) => {
-      return <span>₹ {value}</span>;
-    }
+    Header: 'Duration',
+    accessor: 'tenure_selected',
+    minWidth: 150
   },
   {
     Header: 'FD Name',
@@ -209,24 +214,27 @@ const tableColumns = [
   },
   {
     Header: 'Principal amount',
-    accessor: '',
+    accessor: 'investment_amount',
     customCell: ({ value }) => {
       return <span>₹ {value}</span>;
     }
   },
   {
     Header: 'Interest Earned',
-    accessor: '',
+    accessor: 'interest_earned',
     customCell: ({ value }) => {
       return <span>₹ {value}</span>;
     }
   },
   {
     Header: 'Maturity',
-    accessor: 'maturity'
+    accessor: 'fd_payout_method'
+    // customCell: ({ value }) => {
+    //   return <span>₹ {value}</span>;
+    // }
   },
   {
-    Header: 'Rate of Interest',
+    Header: 'Rate of Interest (%)',
     accessor: 'rate_of_interest'
   },
   {
