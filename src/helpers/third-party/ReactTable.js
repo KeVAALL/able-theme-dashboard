@@ -149,8 +149,7 @@ export const TablePagination = ({ gotoPage, rows, setPageSize, pageSize, pageInd
           page={pageIndex + 1}
           onChange={handleChangePagination}
           color="primary"
-          variant="combined"
-          shape="circular"
+          variant="contained"
           showFirstButton
           showLastButton
         />
