@@ -54,16 +54,16 @@ export default function IconTabs(props) {
   const [nomineeErrorShown, setNomineeErrorShown] = useState(false);
 
   const validateCurrentTab = () => {
-    const { errors, dirty, setAddressDetailsError, setProfessionalDetailsError, setNomineeError } = props;
+    const { errors, dirty, setAddressDetailsError, setProfessionalDetailsError, setNomineeError, isEditing } = props;
     switch (tabValue) {
       case 0:
         return true;
       case 1: {
         if (
           errors.investor_address ||
-          !dirty.valueOf('investor_address') ||
+          (!isEditing && !dirty.valueOf('investor_address')) ||
           errors.correspondent_address ||
-          !dirty.valueOf('correspondent_address')
+          (!isEditing && !dirty.valueOf('correspondent_address'))
         ) {
           console.log(addressErrorShown);
           if (!addressErrorShown) {
@@ -109,7 +109,7 @@ export default function IconTabs(props) {
         return true;
       }
       case 3: {
-        if (errors.nominee) {
+        if (errors.nominee || (!isEditing && !dirty.valueOf('nominee'))) {
           if (!nomineeErrorShown) {
             enqueueSnackbar('Please fill Nominee Details', {
               variant: 'error',

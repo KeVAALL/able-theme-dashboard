@@ -431,6 +431,7 @@ function Investor() {
                     values={values}
                     handleChange={handleChange}
                     handleBlur={handleBlur}
+                    isEditing={isEditing}
                     touched={touched}
                     errors={errors}
                     setFieldValue={setFieldValue}
