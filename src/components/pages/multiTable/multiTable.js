@@ -137,7 +137,7 @@ const ReactTable = ({
                     <Grid container direction="row" spacing={1} alignItems="center">
                       {formValueFields?.map((field, id) => {
                         return (
-                          <Grid item md={5} sm={3} xs={6} key={id} sx={{ paddingTop: '0px !important', height: '45px' }}>
+                          <Grid item md={5} sm={4} xs={7} key={id} sx={{ paddingTop: '0px !important', height: '45px' }}>
                             <CustomTextField
                               label={field.label}
                               name={field.fieldName}
@@ -166,7 +166,7 @@ const ReactTable = ({
                       })}
 
                       {formValueFields && (
-                        <Grid item md={3} sm={3} xs={6} sx={{ height: '60px' }}>
+                        <Grid item md={3} sm={4} xs={5} sx={{ height: '60px' }}>
                           <Button
                             variant="contained"
                             color="success"

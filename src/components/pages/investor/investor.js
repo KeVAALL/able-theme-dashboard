@@ -197,7 +197,9 @@ function Investor() {
     keepPreviousData: true,
     queryFn: () => {
       const payload = {
-        method_name: 'getall'
+        method_name: 'getinvestor',
+        search: '',
+        ifa_id: 0
       };
       return GetInvestorData(payload);
     },
@@ -478,7 +480,7 @@ function Investor() {
             }}
             onSubmit={async (values, { resetForm }) => {
               const payload = {
-                method_name: 'getifafilter',
+                method_name: 'getinvestor',
                 ...values
               };
               const searchResult = await GetIFASearch(payload);
@@ -516,7 +518,7 @@ function Investor() {
                       />
                     </Grid> */}
 
-                    <Grid item xs={2.5} style={{ paddingLeft: 0, paddingTop: 0 }}>
+                    <Grid item md={2.5} sm={3} xs={4} style={{ paddingLeft: 0, paddingTop: 0 }}>
                       <FormikAutoComplete
                         options={ifaData}
                         defaultValue={values.ifa_id}
@@ -527,7 +529,7 @@ function Investor() {
                       />
                     </Grid>
 
-                    <Grid item xs={2.5} style={{ paddingTop: 0 }}>
+                    <Grid item md={2.5} sm={3} xs={4} style={{ paddingTop: 0 }}>
                       <CustomTextField
                         label="Search"
                         name="search"
@@ -545,7 +547,7 @@ function Investor() {
                       />
                     </Grid>
 
-                    <Grid item xs={1.5} style={{ paddingTop: 0 }}>
+                    <Grid item md={1.5} sm={3} xs={4} style={{ paddingTop: 0 }}>
                       <Button
                         variant="contained"
                         color="success"

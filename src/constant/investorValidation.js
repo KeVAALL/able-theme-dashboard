@@ -262,31 +262,57 @@ const StatusCell = ({ value }) => {
 };
 const tableColumns = [
   {
+    Header: 'Master ID',
+    accessor: 'investor_code'
+  },
+  {
+    Header: 'Folio ID',
+    accessor: 'folio_code'
+  },
+  {
     Header: 'Investor Name',
     accessor: 'investor_name'
   },
   {
+    Header: 'IFA',
+    accessor: 'ifa_name',
+    minWidth: 150
+  },
+  // {
+  //   Header: 'Source',
+  //   accessor: 'source',
+  //   minWidth: 150
+  // },
+  {
     Header: 'Pan Number',
     accessor: 'pan_no'
+  },
+  {
+    Header: 'Email',
+    accessor: 'email_id'
   },
   {
     Header: 'Mobile Number',
     accessor: 'mobile_no'
   },
   {
-    Header: 'Type',
-    accessor: 'is_senior_citizen',
-    customCell: ({ value }) => {
-      switch (value) {
-        case 1:
-          return 'Senior Citizen';
-        case 2:
-          return 'Normal Citizen';
-        default:
-          return '';
-      }
-    }
+    Header: 'Reg. date',
+    accessor: 'created_on'
   },
+  // {
+  //   Header: 'Type',
+  //   accessor: 'is_senior_citizen',
+  //   customCell: ({ value }) => {
+  //     switch (value) {
+  //       case 1:
+  //         return 'Senior Citizen';
+  //       case 2:
+  //         return 'Normal Citizen';
+  //       default:
+  //         return '';
+  //     }
+  //   }
+  // },
   {
     Header: 'Status',
     accessor: 'is_active',

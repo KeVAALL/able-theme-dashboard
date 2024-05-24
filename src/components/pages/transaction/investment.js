@@ -1,7 +1,7 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 // material-ui
-import { Divider, Box, Card, Grid, CardContent, Button, TextField } from '@mui/material';
+import { Divider, Box, Card, Grid, CardContent, Button, TextField, useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { useQuery } from 'react-query';
 
@@ -104,7 +104,8 @@ function Investment() {
   const [investorEditFormValues, setInvestorEditFormValues] = useState(investorFormValues);
   // Theme
   const theme = useTheme();
-  const mdUp = theme.breakpoints.up('md');
+  const matchUpMD = useMediaQuery((theme) => theme.breakpoints.up('md'));
+  const matchDownSM = useMediaQuery((theme) => theme.breakpoints.down('sm'));
 
   // Sets form values for editing
   const setEditing = (value) => {
@@ -232,7 +233,9 @@ function Investment() {
     keepPreviousData: true,
     queryFn: () => {
       const payload = {
-        method_name: 'getall'
+        method_name: 'getinvestor',
+        search: '',
+        ifa_id: 0
       };
       return GetInvestorData(payload);
     },
@@ -324,6 +327,9 @@ function Investment() {
       setMaturityAction(data); // Update product data with fetched data
     }
   });
+  useEffect(() => {
+    console.log(matchUpMD);
+  }, [matchUpMD]);
 
   if (payoutPending || investorPending || ifaPending || productPending || maturityPending) return <Loader />;
 
@@ -770,9 +776,9 @@ function Investment() {
                 }}
                 sx={{ width: '100%' }}
               >
-                <CardContent sx={{ paddingLeft: '16px !important' }}>
-                  <Grid container spacing={2}>
-                    <Grid item xs={3} style={{ paddingLeft: 0, paddingTop: 0 }}>
+                <CardContent sx={{ paddingLeft: '16px !important', paddingRight: matchDownSM ? 0 : '24px' }}>
+                  <Grid container spacing={matchDownSM ? 3 : 2}>
+                    <Grid item md={3} sm={4} xs={12} style={{ paddingLeft: matchDownSM ? 8 : 0, paddingTop: matchDownSM ? 8 : 0 }}>
                       <LocalizationProvider
                         dateAdapter={AdapterDateFns}
                         localeText={{ start: 'Date From', end: 'Date To' }}
@@ -789,7 +795,7 @@ function Investment() {
                       </LocalizationProvider>
                     </Grid>
 
-                    <Grid item xs={2.5} style={{ paddingTop: 0 }}>
+                    <Grid item md={2.5} sm={3} xs={6} style={{ paddingLeft: matchDownSM ? 8 : 24, paddingTop: matchDownSM ? 8 : 0 }}>
                       <FormikAutoComplete
                         options={investorData}
                         defaultValue={values.investor_id}
@@ -802,7 +808,7 @@ function Investment() {
                       {/* {errors && <>`${JSON.stringify(errors)}`</>} */}
                     </Grid>
 
-                    <Grid item xs={2.5} style={{ paddingTop: 0 }}>
+                    <Grid item md={2.5} sm={3} xs={6} style={{ paddingLeft: matchDownSM ? 8 : 24, paddingTop: matchDownSM ? 8 : 0 }}>
                       <FormikAutoComplete
                         options={ifaData}
                         defaultValue={values.ifa_id}
@@ -813,15 +819,25 @@ function Investment() {
                       />
                     </Grid>
 
-                    <Grid item xs={1.5} style={{ paddingTop: 0 }}>
+                    <Grid
+                      item
+                      md={1.5}
+                      sm={2}
+                      xs={12}
+                      style={{
+                        paddingLeft: matchDownSM ? 8 : 24,
+                        paddingTop: matchDownSM ? 8 : 0,
+                        display: matchDownSM ? 'flex' : 'inline',
+                        justifyContent: 'flex-end'
+                      }}
+                    >
                       <Button
                         variant="contained"
                         color="success"
                         type="submit"
                         startIcon={<FilterSearch />}
                         sx={{
-                          justifySelf: 'center',
-                          width: !mdUp ? 'auto' : '100%',
+                          width: matchUpMD ? '100%' : matchDownSM ? '100%' : 'auto',
                           borderRadius: 0.6 // Set width to 'auto' when screen size is medium or larger, otherwise '100%'
                         }}
                       >

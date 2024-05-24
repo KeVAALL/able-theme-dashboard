@@ -22,10 +22,10 @@ import { useQuery } from 'react-query';
 // project-imports
 import MainCard from '../../organisms/mainCard/MainCard';
 import MultiTable from '../multiTable/multiTable';
+import Loader from 'components/atoms/loader/Loader';
 
 // third-party
 import { Formik } from 'formik';
-import Loader from 'components/atoms/loader/Loader';
 import { toInteger } from 'lodash';
 
 // assets
@@ -291,14 +291,16 @@ function Role() {
                             <Grid item xs={12}>
                               <ListItem disablePadding divider>
                                 <Stack sx={{ width: '100%' }} flexDirection="row" alignItems="center">
-                                  <ListItemText primary="#" sx={{ width: '5%', display: 'flex', justifyContent: 'center' }} />
+                                  <ListItemButton sx={{ width: '5%', backgroundColor: '#F5F5F5' }}>
+                                    <ListItemText primary="#" sx={{ display: 'flex', justifyContent: 'center' }} />
+                                  </ListItemButton>
                                   <Divider orientation="vertical" flexItem />
                                   <Stack sx={{ width: '95%' }} flexDirection="row" alignItems="center">
-                                    <ListItemButton sx={{ width: '80%' }}>
+                                    <ListItemButton sx={{ width: '80%', backgroundColor: '#F5F5F5' }}>
                                       <ListItemText primary="Menu Name" />
                                     </ListItemButton>
                                     <Divider orientation="vertical" flexItem />
-                                    <ListItemButton sx={{ width: '11.5%' }}>
+                                    <ListItemButton sx={{ width: '11.5%', backgroundColor: '#F5F5F5' }}>
                                       <ListItemText sx={{ display: 'flex', justifyContent: 'center' }} primary="Display Flag" />
                                     </ListItemButton>
                                   </Stack>
