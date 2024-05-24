@@ -127,7 +127,11 @@ function Investor() {
       isRelativeToPoliticallyExposed: false,
       isResidentOutsideIndia: false
     });
-    setErrorObject(errorObject);
+    setPersonalInfoError(false);
+    setAddressDetailsError(false);
+    setProfessionalDetailsError(false);
+    setNomineeError(false);
+    setDeclarationError(false);
   };
 
   // Gender Validation
@@ -144,6 +148,7 @@ function Investor() {
   };
   // Nominee
   const handleNewNominee = (value) => {
+    console.log(value);
     setNomineeData((prev) => {
       return [...prev, value];
     });
@@ -229,7 +234,7 @@ function Investor() {
       {showTable && (
         <Formik
           // validateOnBlur={false}
-          validateOnChange={false}
+          // validateOnChange={false}
           // validate={validate}
           initialValues={formValues}
           validationSchema={validationSchema}
@@ -332,8 +337,8 @@ function Investor() {
                   setActiveClose={setActiveClose}
                   setIsActive={handleIsInvestorActive}
                   isActive={isInvestorActive}
-                  isValid={true}
-                  dirty={true}
+                  isValid={isValid}
+                  dirty={dirty}
                 />
 
                 <Divider />

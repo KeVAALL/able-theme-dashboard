@@ -4,20 +4,20 @@
 .tab_main .MuiTabScrollButton-root {
   width: 20px !important;
 }
-.tab_main .tab_2 {
+.tab_main .tab_1,
+.tab_main .tab_2,
+.tab_main .tab_3,
+.tab_main .tab_4 {
   color: red !important;
-  /* border-bottom: 2px solid red !important; */
-  border-radius: 0 !important;
-  margin-bottom: 0px !important;
-}
-.tab_main .tab_1 {
-  color: red !important;
-  /* border-bottom: 2px solid red !important; */
   border-radius: 0 !important;
   margin-bottom: 0px !important;
 }
 .indicator_main .MuiTabs-scroller .MuiTabs-indicator {
-  background-color: red !important;
+  background-color: #ff0000 !important;
+  /* height: 0 !important; */
+}
+.indicator_secondary .MuiTabs-scroller .MuiTabs-indicator {
+  background-color: #068e44 !important;
   /* height: 0 !important; */
 }
 .calendar_main input {

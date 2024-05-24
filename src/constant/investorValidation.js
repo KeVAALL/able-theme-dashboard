@@ -147,10 +147,10 @@ const formAllValues = {
     investor_name: '',
     pan_no: '',
     mobile_no: '',
-    is_senior_citizen: 1,
     // gender_id: 1,
     birth_date: new Date(),
     place_of_birth: '',
+    is_senior_citizen: 1,
     is_married: 1,
     is_indian_resident: 1
   },
@@ -218,9 +218,9 @@ const validationSchema = yup.object().shape({
     })
   }),
   professional_details: yup.object().shape({
-    occupation_id: yup.number(),
-    annual_income_id: yup.number(),
-    income_source_id: yup.number()
+    occupation_id: yup.number().notOneOf([0], 'Please select Occupation'),
+    annual_income_id: yup.number().notOneOf([0], 'Please select Annual Income'),
+    income_source_id: yup.number().notOneOf([0], 'Please select Income Source')
   })
 });
 // Search Item form fields

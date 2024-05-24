@@ -18,6 +18,7 @@ import Declaration from './declaration';
 
 // css
 import './index.css';
+import { enqueueSnackbar } from 'notistack';
 
 // ==============================|| TAB PANEL ||============================== //
 
@@ -48,32 +49,104 @@ function a11yProps(index) {
 
 export default function IconTabs(props) {
   const [tabValue, setTabValue] = useState(0);
+  const [addressErrorShown, setAddressErrorShown] = useState(false);
+  const [professionalErrorShown, setProfessionalErrorShown] = useState(false);
+  const [nomineeErrorShown, setNomineeErrorShown] = useState(false);
 
   const validateCurrentTab = () => {
-    const { errors, dirty, touched } = props;
+    const { errors, dirty, setAddressDetailsError, setProfessionalDetailsError, setNomineeError } = props;
     switch (tabValue) {
       case 0:
         return true;
       case 1: {
-        if (errors.investor_address || !dirty.valueOf('investor_address')) {
-          props.setAddressDetailsError(true);
+        if (
+          errors.investor_address ||
+          !dirty.valueOf('investor_address') ||
+          errors.correspondent_address ||
+          !dirty.valueOf('correspondent_address')
+        ) {
+          console.log(addressErrorShown);
+          if (!addressErrorShown) {
+            console.log('Set Error false');
+            enqueueSnackbar('Please fill Address Details', {
+              variant: 'error',
+              autoHideDuration: 2000,
+              anchorOrigin: {
+                vertical: 'top',
+                horizontal: 'right'
+              }
+            });
+            setAddressErrorShown(true);
+          }
+          setAddressDetailsError(true);
         } else {
-          props.setAddressDetailsError(false);
+          console.log('Set Error false');
+          setAddressDetailsError(false);
+          setAddressErrorShown(false);
         }
-        // return (
-        //   !errors.investor_address &&
-        //   Object.keys(touched.investor_address || {}).length > 0 &&
-        //   !errors.correspondent_address &&
-        //   Object.keys(touched.correspondent_address || {}).length > 0
-        // );
+
         return true;
       }
-      case 2:
-        return !errors.professional_details;
-      case 3:
+      case 2: {
+        if (errors.professional_details) {
+          if (!professionalErrorShown) {
+            enqueueSnackbar('Please fill Professional Details', {
+              variant: 'error',
+              autoHideDuration: 2000,
+              anchorOrigin: {
+                vertical: 'top',
+                horizontal: 'right'
+              }
+            });
+            setProfessionalErrorShown(true);
+          }
+          setProfessionalDetailsError(true);
+        } else {
+          setProfessionalDetailsError(false);
+          setProfessionalErrorShown(false);
+        }
+
         return true;
+      }
+      case 3: {
+        if (errors.nominee) {
+          if (!nomineeErrorShown) {
+            enqueueSnackbar('Please fill Nominee Details', {
+              variant: 'error',
+              autoHideDuration: 2000,
+              anchorOrigin: {
+                vertical: 'top',
+                horizontal: 'right'
+              }
+            });
+            setNomineeErrorShown(true);
+          }
+          setNomineeError(true);
+        } else {
+          setNomineeError(false);
+          setNomineeErrorShown(false);
+        }
+
+        return true;
+      }
       default:
         return true;
+    }
+  };
+
+  const getTabClass = () => {
+    const { addressDetailsError, professionalDetailsError, nomineeError } = props;
+    switch (tabValue) {
+      case 0:
+        return 'indicator_secondary';
+      case 1:
+        return addressDetailsError ? 'indicator_main' : 'indicator_secondary';
+      case 2:
+        return professionalDetailsError ? 'indicator_main' : 'indicator_secondary';
+      case 3:
+        return nomineeError ? 'indicator_main' : 'indicator_secondary';
+      default:
+        return 'indicator_secondary';
     }
   };
 
@@ -81,7 +154,6 @@ export default function IconTabs(props) {
     if (validateCurrentTab()) {
       setTabValue(newValue);
     } else {
-      // Optionally, you can display an error message or highlight the fields with errors
       console.log('Please fix the errors before proceeding');
     }
   };
@@ -97,8 +169,7 @@ export default function IconTabs(props) {
       <Divider />
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Tabs
-          className={`tab_main ${props.addressDetailsError || props.personalInfoError ? 'indicator_main' : ''}`}
-          // className={`tab_main`}
+          className={`tab_main ${getTabClass()}`}
           variant="scrollable"
           scrollButtons
           allowScrollButtonsMobile
@@ -106,6 +177,7 @@ export default function IconTabs(props) {
           onChange={handleChange}
           aria-label="scrollable force tabs example"
         >
+          {/* <CustomTooltip title="Add" arrow color="#fff" bg="pink"> */}
           <Tab
             className={props.personalInfoError ? 'tab_1' : ''}
             label="Personal Info"
@@ -113,7 +185,6 @@ export default function IconTabs(props) {
             iconPosition="start"
             {...a11yProps(0)}
           />
-          {/* <CustomTooltip title="Add" arrow color="#fff" bg="pink"> */}
           <Tab
             className={props.addressDetailsError ? 'tab_2' : ''}
             label="Address Details"
@@ -121,9 +192,21 @@ export default function IconTabs(props) {
             iconPosition="start"
             {...a11yProps(1)}
           />
-          <Tab className="tab_3" label="Professional Details" icon={<Briefcase />} iconPosition="start" {...a11yProps(2)} />
-          <Tab className="tab_4" label="Add Nomination" icon={<UserOctagon />} iconPosition="start" {...a11yProps(3)} />
-          <Tab className="tab_5" label="Declaration" icon={<ProfileTick />} iconPosition="start" {...a11yProps(3)} />
+          <Tab
+            className={props.professionalDetailsError ? 'tab_3' : ''}
+            label="Professional Details"
+            icon={<Briefcase />}
+            iconPosition="start"
+            {...a11yProps(2)}
+          />
+          <Tab
+            className={props.nomineeError ? 'tab_4' : ''}
+            label="Add Nomination"
+            icon={<UserOctagon />}
+            iconPosition="start"
+            {...a11yProps(3)}
+          />
+          <Tab className="tab_5" label="Declaration" icon={<ProfileTick />} iconPosition="start" {...a11yProps(4)} />
         </Tabs>
       </Box>
       <TabPanel className="panel" value={tabValue} index={0}>

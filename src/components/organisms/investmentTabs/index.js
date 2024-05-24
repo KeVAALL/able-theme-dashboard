@@ -150,8 +150,6 @@ export default function InvestmentTabs(props) {
       <TabPanel className="panel" value={tabValue} index={4}>
         <MainCard sx={tabStyle} contentSX={contentSX}>
           <Declaration
-            selectedDeclaration={props.selectedDeclaration}
-            handleDeclarationClick={props.handleDeclarationClick}
             dynamicDeclaration={props.dynamicDeclaration}
             handleDynamicDeclaration={props.handleDynamicDeclaration}
             fdInvestmentID={props.fdInvestmentID}

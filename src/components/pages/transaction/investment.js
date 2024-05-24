@@ -89,19 +89,13 @@ function Investment() {
   const [showTable, setShowTable] = useState(false); // State to toggle visibility of the table form
 
   // Radio states
-  const [selectedDeclaration, setSelectedDeclaration] = useState({
-    isPoliticallyExposed: true,
-    isRelativeToPoliticallyExposed: true,
-    isResidentOutsideIndia: true
-  });
+
   const [dynamicDeclaration, setDynamicDeclaration] = useState([]);
   // Selection states
   const [fdDropdown, setFdDropdown] = useState([]);
   const [statusDropdown, setStatusDropdown] = useState([]);
   const [dateValue, setDateValue] = useState([null, null]);
 
-  // Address Details Checkbox
-  const [sameAddress, setSameAddress] = useState(false);
   // form pending
   const [formPending, setFormPending] = useState(false);
 
@@ -123,11 +117,6 @@ function Investment() {
     setInvestorEditFormValues(value);
     // handleIsInvestorActive(value.investor.is_active);
     // setSelectedGender(value.investor.gender);
-    setSelectedDeclaration({
-      isPoliticallyExposed: Boolean(value.declaration.is_pep),
-      isRelativeToPoliticallyExposed: Boolean(value.declaration.is_rpep),
-      isResidentOutsideIndia: Boolean(value.declaration.is_foreign_tax_resident)
-    });
     setNomineeData(value.nominee);
   };
   const setActiveEditing = () => {
@@ -147,7 +136,6 @@ function Investment() {
   };
   // Nominee
   const handleNewNominee = (value) => {
-    console.log(value.values);
     if (value.values.nominee_id) {
       const editNom = nomineeData.map((nominee, index) => {
         if (nominee.nominee_id === value.values.nominee_id) {
@@ -156,7 +144,6 @@ function Investment() {
           return nominee;
         }
       });
-      console.log(editNom);
       setNomineeData(editNom);
     } else {
       setNomineeData((prev) => {
@@ -182,18 +169,7 @@ function Investment() {
       });
     });
   };
-  const handleDeclarationClick = (value) => {
-    if (value === 'PoliticallyExposed') {
-      setSelectedDeclaration({ ...selectedDeclaration, isPoliticallyExposed: !selectedDeclaration.isPoliticallyExposed });
-    } else if (value === 'RelativeToPoliticallyExposed') {
-      setSelectedDeclaration({
-        ...selectedDeclaration,
-        isRelativeToPoliticallyExposed: !selectedDeclaration.isRelativeToPoliticallyExposed
-      });
-    } else if (value === 'ResidentOutsideIndia') {
-      setSelectedDeclaration({ ...selectedDeclaration, isResidentOutsideIndia: !selectedDeclaration.isResidentOutsideIndia });
-    }
-  };
+
   // Toggle Table and Form Visibility
   const changeTableVisibility = () => {
     setShowTable(!showTable);
@@ -739,8 +715,6 @@ function Investment() {
                               touched={touched}
                               errors={errors}
                               setFieldValue={setFieldValue}
-                              selectedDeclaration={selectedDeclaration}
-                              handleDeclarationClick={handleDeclarationClick}
                               nomineeData={nomineeData}
                               handleNewNominee={handleNewNominee}
                               dynamicDeclaration={dynamicDeclaration}
@@ -748,10 +722,6 @@ function Investment() {
                               fdInvestmentID={fdInvestmentID}
                               investorID={formValues.investor_id}
                               setInvestorEditing={setInvestorEditing}
-                              // errorObject={errorObject}
-                              // handleTabError={handleTabError}
-                              // sameAddress={sameAddress}
-                              // handleCheckboxChange={handleCheckboxChange}
                             />
                           </Box>
                         )}

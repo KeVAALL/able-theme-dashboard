@@ -99,10 +99,8 @@ const Nomination = (props) => {
       Header: 'Relation',
       accessor: 'relationship_id',
       customCell: ({ value }) => {
-        console.log(value);
         return relationship.map((el) => {
           if (el.id === value) {
-            console.log(el.relation_name);
             return el.relation_name;
           }
         });
@@ -175,10 +173,10 @@ const Nomination = (props) => {
                             disabled={isEditing ? !(isEditing && isValid) : !(isValid && dirty)}
                             variant="contained"
                             color="success"
-                            type="submit"
+                            // type="submit"
                             startIcon={<Additem />}
                             onClick={(e) => {
-                              console.log(e);
+                              // console.log(e);
                               // e.preventDefault();
                               console.log({
                                 ...values
@@ -186,19 +184,24 @@ const Nomination = (props) => {
                               // props.handleNewNominee({
                               //   ...values
                               // });
-                              // setNomineeData((prev) => {
-                              //   return [...prev, value.values];
-                              // });
+
+                              console.log(values.id);
+                              if (!(values.nominee_id || values.id)) {
+                                console.log('Bug');
+                                changeTableVisibility();
+                                props.setFieldValue('nominee', [...props.values.nominee, { id: uuidv4(), ...values }]);
+                              }
                               if (values.id) {
                                 const nomineeId = values.id;
                                 const editNominee = props.values.nominee.map((nominee) => {
                                   if (nominee.id === nomineeId) {
+                                    console.log('Editing..');
                                     return values;
                                   } else {
                                     return nominee;
                                   }
                                 });
-                                console.log(editNominee);
+                                changeTableVisibility();
                                 props.setFieldValue('nominee', editNominee);
                               }
                               if (values.nominee_id) {
@@ -210,12 +213,10 @@ const Nomination = (props) => {
                                     return nominee;
                                   }
                                 });
-                                console.log(editNominee);
+                                changeTableVisibility();
                                 props.setFieldValue('nominee', editNominee);
-                              } else {
-                                props.setFieldValue('nominee', [...props.values.nominee, { id: uuidv4(), ...values }]);
                               }
-                              changeTableVisibility();
+                              clearFormValues();
                             }}
                           >
                             Submit
