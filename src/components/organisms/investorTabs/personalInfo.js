@@ -56,7 +56,7 @@ const PersonalInfo = (props) => {
               className="calendar_main"
               label="Date of Birth"
               inputFormat="dd/MM/yyyy"
-              value={props.values?.investor.birth_date && new Date(props.values.investor.birth_date)}
+              value={props.values?.investor.birth_date && new Date(props.values?.investor.birth_date)}
               onChange={(newValue) => {
                 console.log(newValue);
                 props.setFieldValue('investor.birth_date', newValue);

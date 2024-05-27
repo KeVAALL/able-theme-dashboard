@@ -96,25 +96,22 @@ function Investment() {
   const [statusDropdown, setStatusDropdown] = useState([]);
   const [dateValue, setDateValue] = useState([null, null]);
 
-  // form pending
-  const [formPending, setFormPending] = useState(false);
-
   // Form State
   const [formValues, setFormValues] = useState(formAllValues);
   const [investorEditFormValues, setInvestorEditFormValues] = useState(investorFormValues);
   // Theme
   const theme = useTheme();
+  const matchDownLG = useMediaQuery((theme) => theme.breakpoints.down('lg'));
   const matchUpMD = useMediaQuery((theme) => theme.breakpoints.up('md'));
   const matchDownSM = useMediaQuery((theme) => theme.breakpoints.down('sm'));
+  const matchUpSM = useMediaQuery((theme) => theme.breakpoints.up('sm'));
 
   // Sets form values for editing
   const setEditing = (value) => {
-    console.log(value);
     setFormValues(value);
     // handleIsInvestmentActive(value.investor.is_active);
   };
   const setInvestorEditing = (value) => {
-    console.log(value);
     setInvestorEditFormValues(value);
     // handleIsInvestorActive(value.investor.is_active);
     // setSelectedGender(value.investor.gender);
@@ -241,7 +238,6 @@ function Investment() {
     },
     onSuccess: (data) => {
       setInvestorData(data);
-      // setLoading(false);
     }
   });
   // Query for fetching payout data
@@ -327,9 +323,6 @@ function Investment() {
       setMaturityAction(data); // Update product data with fetched data
     }
   });
-  useEffect(() => {
-    console.log(matchUpMD);
-  }, [matchUpMD]);
 
   if (payoutPending || investorPending || ifaPending || productPending || maturityPending) return <Loader />;
 
@@ -406,7 +399,7 @@ function Investment() {
 
                 <CardContent>
                   <Grid container spacing={3}>
-                    <Grid item xs={3}>
+                    <Grid item md={4} sm={6} xs={6}>
                       <FormikAutoComplete
                         options={investorData}
                         defaultValue={values.investor_id}
@@ -417,7 +410,7 @@ function Investment() {
                         label="Select Investor"
                       />
                     </Grid>
-                    <Grid item xs={3}>
+                    <Grid item md={4} sm={6} xs={6}>
                       <FormikAutoComplete
                         options={fdDropdown}
                         defaultValue={values.fd_id}
@@ -429,7 +422,7 @@ function Investment() {
                         label="Select FD"
                       />
                     </Grid>
-                    <Grid item xs={3}>
+                    <Grid item md={4} sm={6} xs={6}>
                       <FormikAutoComplete
                         options={ifaData}
                         defaultValue={values.ifa_id}
@@ -439,7 +432,7 @@ function Investment() {
                         label="Select IFA"
                       />
                     </Grid>
-                    <Grid item xs={3}>
+                    <Grid item md={4} sm={6} xs={6}>
                       <FormikAutoComplete
                         options={maturityAction}
                         defaultValue={values.maturity_action_id}
@@ -449,7 +442,7 @@ function Investment() {
                         label="Select Maturity Action"
                       />
                     </Grid>
-                    <Grid item xs={3}>
+                    <Grid item md={4} sm={6} xs={6}>
                       <CustomTextField
                         label="Investment Amount (₹)"
                         name="investment_amount"
@@ -467,7 +460,18 @@ function Investment() {
                         }}
                       />
                     </Grid>
-                    <Grid item xs={1}>
+                    <Grid item md={4} sm={6} xs={6}>
+                      <FormikAutoComplete
+                        options={payoutData}
+                        defaultValue={values.payout_method_id}
+                        setFieldValue={setFieldValue}
+                        formName="payout_method_id"
+                        keyName="id"
+                        optionName="item_value"
+                        label="Select Payout Method"
+                      />
+                    </Grid>
+                    <Grid item md={2} sm={2} xs={4}>
                       <FormikAutoComplete
                         disableClearable
                         options={days}
@@ -479,7 +483,7 @@ function Investment() {
                       />
                     </Grid>
 
-                    <Grid item xs={1}>
+                    <Grid item md={2} sm={2} xs={4}>
                       <FormikAutoComplete
                         disableClearable
                         options={month}
@@ -490,7 +494,7 @@ function Investment() {
                         label="Months"
                       />
                     </Grid>
-                    <Grid item xs={1}>
+                    <Grid item md={2} sm={2} xs={4}>
                       <FormikAutoComplete
                         disableClearable
                         options={year}
@@ -501,18 +505,8 @@ function Investment() {
                         label="Years"
                       />
                     </Grid>
-                    <Grid item xs={3}>
-                      <FormikAutoComplete
-                        options={payoutData}
-                        defaultValue={values.payout_method_id}
-                        setFieldValue={setFieldValue}
-                        formName="payout_method_id"
-                        keyName="id"
-                        optionName="item_value"
-                        label="Select Payout Method"
-                      />
-                    </Grid>
-                    <Grid item xs={1.5}>
+
+                    <Grid item md={3} sm={3} xs={6}>
                       <AnimateButton>
                         <Button
                           fullWidth
@@ -550,7 +544,7 @@ function Investment() {
                         </Button>
                       </AnimateButton>
                     </Grid>
-                    <Grid item xs={1.5}>
+                    <Grid item md={3} sm={3} xs={6}>
                       <Button
                         fullWidth
                         variant="contained"
@@ -575,7 +569,7 @@ function Investment() {
                         Scheme
                       </Button>
                     </Grid>
-                    <Grid item xs={3}>
+                    <Grid item md={3} sm={4} xs={12}>
                       <TextField
                         fullWidth
                         disabled
@@ -598,7 +592,7 @@ function Investment() {
                         inputProps={{ maxLength: 50 }}
                       />
                     </Grid>
-                    <Grid item xs={3}>
+                    <Grid item md={3} sm={4} xs={12}>
                       <TextField
                         fullWidth
                         disabled
@@ -621,7 +615,7 @@ function Investment() {
                         inputProps={{ maxLength: 50 }}
                       />
                     </Grid>
-                    <Grid item xs={3}>
+                    <Grid item md={3} sm={4} xs={12}>
                       <TextField
                         fullWidth
                         disabled
@@ -644,7 +638,8 @@ function Investment() {
                         inputProps={{ maxLength: 50 }}
                       />
                     </Grid>
-                    <Grid item xs={3}>
+                    {matchDownLG && matchUpSM && <Grid item sm={8} />}
+                    <Grid item md={3} sm={4} xs={12}>
                       <Button
                         // disabled={!isValid || (Object.keys(touched).length === 0 && touched.constructor === Object)}
                         disabled={

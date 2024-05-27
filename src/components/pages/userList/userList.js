@@ -369,7 +369,7 @@ function UserList() {
               >
                 <CardContent sx={{ paddingLeft: '16px !important' }}>
                   <Grid container spacing={2}>
-                    <Grid item xs={2.5} style={{ paddingLeft: 0, paddingTop: 0 }}>
+                    <Grid item md={2.5} sm={3} xs={4} style={{ paddingLeft: 0, paddingTop: 0 }}>
                       <CustomTextField
                         label="User Name"
                         name="username"
@@ -387,7 +387,7 @@ function UserList() {
                       />
                     </Grid>
 
-                    <Grid item xs={2.5} style={{ paddingTop: 0 }}>
+                    <Grid item md={2.5} sm={3} xs={4} style={{ paddingTop: 0 }}>
                       <FormikAutoComplete
                         options={roleDropdown}
                         defaultValue={values.role_id}
@@ -399,7 +399,7 @@ function UserList() {
                       />
                     </Grid>
 
-                    <Grid item xs={1.5} style={{ paddingTop: 0 }}>
+                    <Grid item md={2.5} sm={3} xs={4} style={{ paddingTop: 0 }}>
                       <Button
                         variant="contained"
                         color="success"

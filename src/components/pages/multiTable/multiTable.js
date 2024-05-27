@@ -292,7 +292,7 @@ const ReactTable = ({
               </TableRow>
             ))}
           </TableHead>
-          <TableBody {...getTableBodyProps()}>
+          <TableBody className="table_body_main" {...getTableBodyProps()}>
             {page?.length > 0 ? (
               page?.map((row) => {
                 prepareRow(row);

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 
 // material-ui
 
@@ -8,12 +8,13 @@ import { useTheme } from '@mui/material/styles';
 // project-imports
 import MainCard from '../../organisms/mainCard/MainCard';
 import MultiTable from '../multiTable/multiTable';
+import Loader from 'components/atoms/loader/Loader';
 
 // third-party
 import { Formik } from 'formik';
 import { useQuery } from 'react-query';
 import Select from 'react-select';
-import Loader from 'components/atoms/loader/Loader';
+import { toInteger } from 'lodash';
 
 // assets
 import { SubmitButton } from 'components/atoms/button/button';
@@ -31,7 +32,6 @@ import { GetProductData, GetOneProduct, SaveProduct, EditProduct, DeleteOneProdu
 import { GetActiveIssuerData } from 'hooks/issuer/issuer';
 import InterestRate from '../../organisms/fixedDeposit/interestRate';
 import '../../../utils/custom.css';
-import { toInteger } from 'lodash';
 
 function FixDeposit() {
   // Main data state to hold the list of products
@@ -287,7 +287,7 @@ function FixDeposit() {
 
                 <CardContent>
                   <Grid container spacing={3}>
-                    <Grid item xs={4}>
+                    <Grid item md={4} sm={6} xs={12}>
                       <CustomTextField
                         label="FD Name"
                         name="fd_name"
@@ -301,7 +301,7 @@ function FixDeposit() {
                         errors={errors}
                       />
                     </Grid>
-                    <Grid item xs={4}>
+                    <Grid item md={4} sm={6} xs={12}>
                       <CustomTextField
                         label="Min Amount (₹)"
                         name="fd_min_amount"
@@ -314,7 +314,7 @@ function FixDeposit() {
                         errors={errors}
                       />
                     </Grid>
-                    <Grid item xs={4}>
+                    <Grid item md={4} sm={6} xs={12}>
                       <CustomTextField
                         label="Max Amount (₹)"
                         name="fd_max_amount"
@@ -327,7 +327,7 @@ function FixDeposit() {
                         errors={errors}
                       />
                     </Grid>
-                    <Grid item xs={4}>
+                    <Grid item md={4} sm={6} xs={12}>
                       <CustomTextField
                         label="Minimum Tenure (Days)"
                         name="min_tenure"
@@ -340,7 +340,7 @@ function FixDeposit() {
                         errors={errors}
                       />
                     </Grid>
-                    <Grid item xs={4}>
+                    <Grid item md={4} sm={6} xs={12}>
                       <CustomTextField
                         label="Max Tenure (Days)"
                         name="max_tenure"
@@ -353,7 +353,7 @@ function FixDeposit() {
                         errors={errors}
                       />
                     </Grid>
-                    <Grid item xs={2}>
+                    <Grid item md={2} sm={3} xs={6}>
                       <CustomCheckbox
                         checked={checkedCumulative}
                         handleChange={handleCumulativeChange}
@@ -361,7 +361,7 @@ function FixDeposit() {
                         label="Cumulative"
                       />
                     </Grid>
-                    <Grid item xs={2}>
+                    <Grid item md={2} sm={3} xs={6}>
                       <CustomCheckbox
                         checked={checkedNonCumulative}
                         handleChange={handleNonCumulativeChange}
@@ -369,7 +369,7 @@ function FixDeposit() {
                         label="Non Cumulative"
                       />
                     </Grid>
-                    <Grid item xs={4}>
+                    <Grid item md={4} sm={6} xs={12}>
                       <CustomTextField
                         label="Logo URL"
                         name="logo_url"
@@ -384,7 +384,7 @@ function FixDeposit() {
                         inputProps={{ maxLength: 150 }}
                       />
                     </Grid>
-                    <Grid item xs={4}>
+                    <Grid item md={4} sm={6} xs={12}>
                       {/* <CustomAutoComplete
                         options={activeIssuers}
                         defaultValue={selectedIssuerID}
@@ -402,7 +402,7 @@ function FixDeposit() {
                         label="Issuers"
                       />
                     </Grid>
-                    <Grid item xs={4}>
+                    <Grid item md={4} sm={6} xs={12}>
                       <Select
                         className="multi_select"
                         isMulti
