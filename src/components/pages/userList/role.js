@@ -289,14 +289,14 @@ function Role() {
                         <List sx={{ p: 0, '& .MuiListItemButton-root': { borderRadius: 0, my: 0 } }}>
                           <Grid container>
                             <Grid item xs={12}>
-                              <ListItem disablePadding divider>
-                                <Stack sx={{ width: '100%' }} flexDirection="row" alignItems="center">
-                                  <ListItemButton sx={{ width: '5%', backgroundColor: '#F5F5F5' }}>
+                              <ListItem disablePadding divider sx={{ height: '100%' }}>
+                                <Stack sx={{ width: '100%', height: '100%' }} flexDirection="row" alignItems="center">
+                                  <ListItemButton sx={{ width: '5%', backgroundColor: '#F5F5F5', height: '100%' }}>
                                     <ListItemText primary="#" sx={{ display: 'flex', justifyContent: 'center' }} />
                                   </ListItemButton>
                                   <Divider orientation="vertical" flexItem />
-                                  <Stack sx={{ width: '95%' }} flexDirection="row" alignItems="center">
-                                    <ListItemButton sx={{ width: '80%', backgroundColor: '#F5F5F5' }}>
+                                  <Stack sx={{ width: '95%', height: '100%' }} flexDirection="row" alignItems="center">
+                                    <ListItemButton sx={{ width: '80%', height: '100%', backgroundColor: '#F5F5F5' }}>
                                       <ListItemText primary="Menu Name" />
                                     </ListItemButton>
                                     <Divider orientation="vertical" flexItem />
@@ -390,7 +390,7 @@ function Role() {
               >
                 <CardContent sx={{ paddingLeft: '16px !important' }}>
                   <Grid container spacing={2}>
-                    <Grid item md={2.5} sm={3} xs={4} style={{ paddingLeft: 0, paddingTop: 0 }}>
+                    <Grid item md={2.5} sm={3} xs={5} style={{ paddingLeft: 0, paddingTop: 0 }}>
                       <CustomTextField
                         label="Role Name"
                         name="search"
@@ -408,7 +408,7 @@ function Role() {
                       />
                     </Grid>
 
-                    <Grid item md={2.5} sm={3} xs={4} style={{ paddingTop: 0 }}>
+                    <Grid item md={2.5} sm={3} xs={5} style={{ paddingTop: 0 }}>
                       <Button
                         variant="contained"
                         color="success"
