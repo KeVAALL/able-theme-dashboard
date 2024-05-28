@@ -6,11 +6,13 @@ import { List, ListItemButton, ListItemIcon, ListItemText } from '@mui/material'
 
 // assets
 import { Card, Edit2, Logout, Profile, Profile2User } from 'iconsax-react';
+import { useNavigate } from 'react-router';
 
 // ==============================|| HEADER PROFILE - PROFILE TAB ||============================== //
 
 const ProfileTab = ({ handleLogout }) => {
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const navigate = useNavigate();
   const handleListItemClick = (event, index) => {
     setSelectedIndex(index);
   };
@@ -23,7 +25,14 @@ const ProfileTab = ({ handleLogout }) => {
         </ListItemIcon>
         <ListItemText primary="Edit Profile" />
       </ListItemButton> */}
-      <ListItemButton selected={selectedIndex === 1} onClick={(event) => handleListItemClick(event, 1)}>
+      <ListItemButton
+        selected={selectedIndex === 1}
+        onClick={(event) => {
+          console.log('Make API Call');
+          navigate('user/personal');
+          handleListItemClick(event, 1);
+        }}
+      >
         <ListItemIcon>
           <Profile variant="Bulk" size={18} />
         </ListItemIcon>
@@ -36,12 +45,12 @@ const ProfileTab = ({ handleLogout }) => {
         </ListItemIcon>
         <ListItemText primary="Social Profile" />
       </ListItemButton>
-      <ListItemButton selected={selectedIndex === 4} onClick={(event) => handleListItemClick(event, 4)}>
+      {/* <ListItemButton selected={selectedIndex === 4} onClick={(event) => handleListItemClick(event, 4)}>
         <ListItemIcon>
           <Card variant="Bulk" size={18} />
         </ListItemIcon>
         <ListItemText primary="Billing" />
-      </ListItemButton>
+      </ListItemButton> */}
       <ListItemButton selected={selectedIndex === 2} onClick={handleLogout}>
         <ListItemIcon>
           <Logout variant="Bulk" size={18} />
