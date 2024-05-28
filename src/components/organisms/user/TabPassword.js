@@ -4,6 +4,8 @@ import { useState } from 'react';
 import {
   Box,
   Button,
+  CardHeader,
+  Divider,
   FormHelperText,
   Grid,
   InputAdornment,
@@ -30,6 +32,9 @@ import { Formik } from 'formik';
 
 // assets
 import { Eye, EyeSlash, Minus, TickCircle } from 'iconsax-react';
+import { CustomTextField } from 'utils/textfield';
+import { ChangeUserPassword } from 'hooks/user/user';
+import { toInteger } from 'lodash';
 
 // ==============================|| USER PROFILE - PASSWORD CHANGE ||============================== //
 
@@ -53,16 +58,16 @@ const TabPassword = () => {
   };
 
   return (
-    <MainCard title="Change Password">
+    <MainCard content={false} title="Change Password">
       <Formik
         initialValues={{
-          old_password: '',
+          existing_password: '',
           new_password: '',
           confirm_password: '',
           submit: null
         }}
         validationSchema={Yup.object().shape({
-          old_password: Yup.string().required('Old Password is required'),
+          existing_password: Yup.string().required('Existing Password is required'),
           new_password: Yup.string()
             .required('New Password is required')
             .matches(
@@ -71,10 +76,17 @@ const TabPassword = () => {
             ),
           confirm_password: Yup.string()
             .required('Confirm Password is required')
-            .test('confirm', `Passwords don't match.`, (confirm, yup) => yup.parent.password === confirm)
+            .test('confirm', `Passwords don't match.`, (confirm, yup) => yup.parent.new_password === confirm)
         })}
         onSubmit={async (values, { resetForm, setErrors, setStatus, setSubmitting }) => {
           try {
+            const userID = localStorage.getItem('userID');
+
+            setSubmitting(true);
+
+            const payload = { user_id: toInteger(userID), ...values };
+
+            await ChangeUserPassword(payload);
             // dispatch(
             //   openSnackbar({
             //     open: true,
@@ -97,162 +109,169 @@ const TabPassword = () => {
           }
         }}
       >
-        {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
-          <form noValidate onSubmit={handleSubmit}>
-            <Grid container spacing={3}>
-              <Grid item container spacing={3} xs={12} sm={6}>
-                <Grid item xs={12}>
-                  <Stack spacing={1.25}>
-                    <InputLabel htmlFor="password-old">Old Password</InputLabel>
-                    <OutlinedInput
-                      placeholder="Enter Old Password"
-                      id="password-old"
+        {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, isValid, dirty, touched, values }) => (
+          <Box
+            component="form"
+            noValidate
+            onSubmit={(event) => {
+              event.preventDefault();
+              handleSubmit();
+            }}
+            sx={{ width: '100%' }}
+          >
+            <CardHeader title="Address" />
+            <Divider />
+            <Box sx={{ p: 3 }}>
+              <Grid container spacing={3}>
+                <Grid item container spacing={2} display="flex" xs={12} sm={6}>
+                  <Grid item xs={12}>
+                    <CustomTextField
+                      label="Existing Password"
+                      name="existing_password"
+                      placeholder="Enter Password"
+                      values={values}
                       type={showOldPassword ? 'text' : 'password'}
-                      value={values.old}
-                      name="old"
-                      onBlur={handleBlur}
                       onChange={handleChange}
-                      endAdornment={
-                        <InputAdornment position="end">
-                          <IconButton
-                            aria-label="toggle password visibility"
-                            onClick={handleClickShowOldPassword}
-                            onMouseDown={handleMouseDownPassword}
-                            edge="end"
-                            size="large"
-                            color="secondary"
-                          >
-                            {showOldPassword ? <Eye /> : <EyeSlash />}
-                          </IconButton>
-                        </InputAdornment>
-                      }
-                      autoComplete="password-old"
+                      onBlur={handleBlur}
+                      touched={touched}
+                      errors={errors}
+                      InputProps={{
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <IconButton
+                              aria-label="toggle password visibility"
+                              onClick={handleClickShowOldPassword}
+                              onMouseDown={handleMouseDownPassword}
+                              onMouseUp={handleMouseDownPassword}
+                              edge="end"
+                              size="large"
+                              color="secondary"
+                            >
+                              {showOldPassword ? <Eye /> : <EyeSlash />}
+                            </IconButton>
+                          </InputAdornment>
+                        )
+                      }}
                     />
-                    {touched.old && errors.old && (
-                      <FormHelperText error id="password-old-helper">
-                        {errors.old}
-                      </FormHelperText>
-                    )}
-                  </Stack>
-                </Grid>
-                <Grid item xs={12}>
-                  <Stack spacing={1.25}>
-                    <InputLabel htmlFor="password-password">New Password</InputLabel>
-                    <OutlinedInput
-                      placeholder="Enter New Password"
-                      id="password-password"
+                  </Grid>
+                  <Grid item xs={12}>
+                    <CustomTextField
+                      label="New Password"
+                      name="new_password"
+                      placeholder="Enter Password"
+                      values={values}
                       type={showNewPassword ? 'text' : 'password'}
-                      value={values.password}
-                      name="password"
-                      onBlur={handleBlur}
                       onChange={handleChange}
-                      endAdornment={
-                        <InputAdornment position="end">
-                          <IconButton
-                            aria-label="toggle password visibility"
-                            onClick={handleClickShowNewPassword}
-                            onMouseDown={handleMouseDownPassword}
-                            edge="end"
-                            size="large"
-                            color="secondary"
-                          >
-                            {showNewPassword ? <Eye /> : <EyeSlash />}
-                          </IconButton>
-                        </InputAdornment>
-                      }
-                      autoComplete="password-password"
+                      onBlur={handleBlur}
+                      touched={touched}
+                      errors={errors}
+                      InputProps={{
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <IconButton
+                              aria-label="toggle password visibility"
+                              onClick={handleClickShowNewPassword}
+                              onMouseDown={handleMouseDownPassword}
+                              onMouseUp={handleMouseDownPassword}
+                              edge="end"
+                              size="large"
+                              color="secondary"
+                            >
+                              {showNewPassword ? <Eye /> : <EyeSlash />}
+                            </IconButton>
+                          </InputAdornment>
+                        )
+                      }}
                     />
-                    {touched.password && errors.password && (
-                      <FormHelperText error id="password-password-helper">
-                        {errors.password}
-                      </FormHelperText>
-                    )}
-                  </Stack>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <CustomTextField
+                      label="Confirm Password"
+                      name="confirm_password"
+                      placeholder="Enter Password"
+                      values={values}
+                      type={showConfirmPassword ? 'text' : 'password'}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      touched={touched}
+                      errors={errors}
+                      InputProps={{
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <IconButton
+                              aria-label="toggle password visibility"
+                              onClick={handleClickShowConfirmPassword}
+                              onMouseDown={handleMouseDownPassword}
+                              onMouseUp={handleMouseDownPassword}
+                              edge="end"
+                              size="large"
+                              color="secondary"
+                            >
+                              {showConfirmPassword ? <Eye /> : <EyeSlash />}
+                            </IconButton>
+                          </InputAdornment>
+                        )
+                      }}
+                    />
+                  </Grid>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Box sx={{ pl: { xs: 0, sm: 2, md: 4, lg: 5 } }}>
+                    <Typography variant="h5">New password must contain:</Typography>
+                    <List sx={{ p: 0, mt: 1 }}>
+                      <ListItem divider>
+                        <ListItemIcon sx={{ color: minLength(values.new_password) ? 'success.main' : 'inherit', mr: 0.5 }}>
+                          {minLength(values.new_password) ? <TickCircle variant="Bold" /> : <Minus />}
+                        </ListItemIcon>
+                        <ListItemText primary="At least 8 characters" />
+                      </ListItem>
+                      <ListItem divider>
+                        <ListItemIcon sx={{ color: isLowercaseChar(values.new_password) ? 'success.main' : 'inherit', mr: 0.5 }}>
+                          {isLowercaseChar(values.new_password) ? <TickCircle variant="Bold" /> : <Minus />}
+                        </ListItemIcon>
+                        <ListItemText primary="At least 1 lower letter (a-z)" />
+                      </ListItem>
+                      <ListItem divider>
+                        <ListItemIcon sx={{ color: isUppercaseChar(values.new_password) ? 'success.main' : 'inherit', mr: 0.5 }}>
+                          {isUppercaseChar(values.new_password) ? <TickCircle variant="Bold" /> : <Minus />}
+                        </ListItemIcon>
+                        <ListItemText primary="At least 1 uppercase letter (A-Z)" />
+                      </ListItem>
+                      <ListItem divider>
+                        <ListItemIcon sx={{ color: isNumber(values.new_password) ? 'success.main' : 'inherit', mr: 0.5 }}>
+                          {isNumber(values.new_password) ? <TickCircle variant="Bold" /> : <Minus />}
+                        </ListItemIcon>
+                        <ListItemText primary="At least 1 number (0-9)" />
+                      </ListItem>
+                      <ListItem>
+                        <ListItemIcon sx={{ color: isSpecialChar(values.new_password) ? 'success.main' : 'inherit', mr: 0.5 }}>
+                          {isSpecialChar(values.new_password) ? <TickCircle variant="Bold" /> : <Minus />}
+                        </ListItemIcon>
+                        <ListItemText primary="At least 1 special characters" />
+                      </ListItem>
+                    </List>
+                  </Box>
                 </Grid>
                 <Grid item xs={12}>
-                  <Stack spacing={1.25}>
-                    <InputLabel htmlFor="password-confirm">Confirm Password</InputLabel>
-                    <OutlinedInput
-                      placeholder="Enter Confirm Password"
-                      id="password-confirm"
-                      type={showConfirmPassword ? 'text' : 'password'}
-                      value={values.confirm}
-                      name="confirm"
-                      onBlur={handleBlur}
-                      onChange={handleChange}
-                      endAdornment={
-                        <InputAdornment position="end">
-                          <IconButton
-                            aria-label="toggle password visibility"
-                            onClick={handleClickShowConfirmPassword}
-                            onMouseDown={handleMouseDownPassword}
-                            edge="end"
-                            size="large"
-                            color="secondary"
-                          >
-                            {showConfirmPassword ? <Eye /> : <EyeSlash />}
-                          </IconButton>
-                        </InputAdornment>
-                      }
-                      autoComplete="password-confirm"
-                    />
-                    {touched.confirm && errors.confirm && (
-                      <FormHelperText error id="password-confirm-helper">
-                        {errors.confirm}
-                      </FormHelperText>
-                    )}
+                  <Divider sx={{ margin: '0 -8px !important' }} />
+                </Grid>
+                <Grid item xs={12}>
+                  <Stack direction="row" justifyContent="flex-end" alignItems="center" spacing={2}>
+                    <Button variant="outlined" color="secondary">
+                      Cancel
+                    </Button>
+                    <Button
+                      // disabled={isSubmitting || isValid}
+                      type="submit"
+                      variant="contained"
+                    >
+                      Save
+                    </Button>
                   </Stack>
                 </Grid>
               </Grid>
-              <Grid item xs={12} sm={6}>
-                <Box sx={{ p: { xs: 0, sm: 2, md: 4, lg: 5 } }}>
-                  <Typography variant="h5">New password must contain:</Typography>
-                  <List sx={{ p: 0, mt: 1 }}>
-                    <ListItem divider>
-                      <ListItemIcon sx={{ color: minLength(values.password) ? 'success.main' : 'inherit' }}>
-                        {minLength(values.password) ? <TickCircle /> : <Minus />}
-                      </ListItemIcon>
-                      <ListItemText primary="At least 8 characters" />
-                    </ListItem>
-                    <ListItem divider>
-                      <ListItemIcon sx={{ color: isLowercaseChar(values.password) ? 'success.main' : 'inherit' }}>
-                        {isLowercaseChar(values.password) ? <TickCircle /> : <Minus />}
-                      </ListItemIcon>
-                      <ListItemText primary="At least 1 lower letter (a-z)" />
-                    </ListItem>
-                    <ListItem divider>
-                      <ListItemIcon sx={{ color: isUppercaseChar(values.password) ? 'success.main' : 'inherit' }}>
-                        {isUppercaseChar(values.password) ? <TickCircle /> : <Minus />}
-                      </ListItemIcon>
-                      <ListItemText primary="At least 1 uppercase letter (A-Z)" />
-                    </ListItem>
-                    <ListItem divider>
-                      <ListItemIcon sx={{ color: isNumber(values.password) ? 'success.main' : 'inherit' }}>
-                        {isNumber(values.password) ? <TickCircle /> : <Minus />}
-                      </ListItemIcon>
-                      <ListItemText primary="At least 1 number (0-9)" />
-                    </ListItem>
-                    <ListItem>
-                      <ListItemIcon sx={{ color: isSpecialChar(values.password) ? 'success.main' : 'inherit' }}>
-                        {isSpecialChar(values.password) ? <TickCircle /> : <Minus />}
-                      </ListItemIcon>
-                      <ListItemText primary="At least 1 special characters" />
-                    </ListItem>
-                  </List>
-                </Box>
-              </Grid>
-              <Grid item xs={12}>
-                <Stack direction="row" justifyContent="flex-end" alignItems="center" spacing={2}>
-                  <Button variant="outlined" color="secondary">
-                    Cancel
-                  </Button>
-                  <Button disabled={isSubmitting || Object.keys(errors).length !== 0} type="submit" variant="contained">
-                    Save
-                  </Button>
-                </Stack>
-              </Grid>
-            </Grid>
-          </form>
+            </Box>
+          </Box>
         )}
       </Formik>
     </MainCard>

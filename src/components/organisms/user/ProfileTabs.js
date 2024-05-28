@@ -134,8 +134,8 @@ const ProfileTabs = ({ focusInput }) => {
               onChange={(e) => setSelectedImage(e.target.files?.[0])}
             />
             <Stack spacing={0.5} alignItems="center">
-              <Typography variant="h5">Stebin Ben</Typography>
-              <Typography color="secondary">Full Stack Developer</Typography>
+              <Typography variant="h5">Altcase Admin</Typography>
+              <Typography color="secondary">Admin</Typography>
             </Stack>
             <Stack direction="row" spacing={3} sx={{ '& svg': { fontSize: '1.15rem', cursor: 'pointer' } }}>
               <Google variant="Bold" color={theme.palette.error.main} />
@@ -144,8 +144,8 @@ const ProfileTabs = ({ focusInput }) => {
             </Stack>
           </Stack>
         </Grid>
-        <Grid item sm={3} sx={{ display: { sm: 'block', md: 'none' } }} />
-        <Grid item xs={12} sm={6} md={12}>
+        {/* <Grid item sm={3} sx={{ display: { sm: 'block', md: 'none' } }} /> */}
+        {/* <Grid item xs={12} sm={6} md={12}>
           <Stack direction="row" justifyContent="space-around" alignItems="center">
             <Stack spacing={0.5} alignItems="center">
               <Typography variant="h5">86</Typography>
@@ -162,8 +162,8 @@ const ProfileTabs = ({ focusInput }) => {
               <Typography color="secondary">Members</Typography>
             </Stack>
           </Stack>
-        </Grid>
-        <Grid item xs={12}>
+        </Grid> */}
+        <Grid item xs={12} sx={{ paddingTop: '32px !important' }}>
           <ProfileTab />
         </Grid>
       </Grid>

@@ -1,27 +1,15 @@
 import { useOutletContext } from 'react-router';
+import { useState } from 'react';
 
 // material-ui
-import {
-  Autocomplete,
-  Box,
-  Button,
-  CardHeader,
-  Chip,
-  Divider,
-  FormHelperText,
-  Grid,
-  InputLabel,
-  MenuItem,
-  Select,
-  Stack,
-  TextField
-} from '@mui/material';
-import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { Box, CardHeader, Divider, Grid } from '@mui/material';
 
 // third-party
 import * as Yup from 'yup';
 import { Formik } from 'formik';
+import { toInteger } from 'lodash';
+import { useQuery } from 'react-query';
+import { useLocation } from 'react-router-dom';
 
 // project-imports
 import MainCard from '../mainCard/MainCard';
@@ -30,99 +18,67 @@ import countries from './data/countries';
 // import { openSnackbar } from 'redux/reducers/snackbar';
 
 // assets
-import { Add } from 'iconsax-react';
 import { CustomTextField, FormikAutoComplete } from 'utils/textfield';
-
-// styles & constant
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
-const MenuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP
-    }
-  }
-};
-
-const skills = [
-  'Adobe XD',
-  'After Effect',
-  'Angular',
-  'Animation',
-  'ASP.Net',
-  'Bootstrap',
-  'C#',
-  'CC',
-  'Corel Draw',
-  'CSS',
-  'DIV',
-  'Dreamweaver',
-  'Figma',
-  'Graphics',
-  'HTML',
-  'Illustrator',
-  'J2Ee',
-  'Java',
-  'Javascript',
-  'JQuery',
-  'Logo Design',
-  'Material UI',
-  'Motion',
-  'MVC',
-  'MySQL',
-  'NodeJS',
-  'npm',
-  'Photoshop',
-  'PHP',
-  'React',
-  'Redux',
-  'Reduxjs & tooltit',
-  'SASS',
-  'SCSS',
-  'SQL Server',
-  'SVG',
-  'UI/UX',
-  'User Interface Designing',
-  'Wordpress'
-];
-
-function useInputRef() {
-  return useOutletContext();
-}
+import { GetUser } from 'hooks/user/user';
+import Loader from 'components/atoms/loader/Loader';
+import Loadable from 'helpers/Loadable';
 
 // ==============================|| USER PROFILE - PERSONAL ||============================== //
 
 const TabPersonal = () => {
-  const handleChangeDay = (event, date, setFieldValue) => {
-    setFieldValue('dob', new Date(date.setDate(parseInt(event.target.value, 10))));
-  };
+  // const location = useLocation();
+  // useEffect(() => {
+  //   const data = location.state || {};
+  //   if (data = {}) {
 
-  const handleChangeMonth = (event, date, setFieldValue) => {
-    setFieldValue('dob', new Date(date.setMonth(parseInt(event.target.value, 10))));
-  };
+  //   }
+  //   console.log(data);
+  //   setFormValues(data);
+  // }, [location.state]);
 
-  const maxDate = new Date();
-  maxDate.setFullYear(maxDate.getFullYear() - 18);
-  const inputRef = useInputRef();
+  const formAllValues = {
+    user_name: '',
+    email_id: '',
+    mobile_no: 0
+  };
+  const [formValues, setFormValues] = useState(formAllValues);
+
+  // Query for fetching status dropdown
+  const { pending: UserDetailPending, refetch: UserDetailRefetch } = useQuery({
+    queryKey: ['userDetailData'], // Unique key for the query
+    refetchOnWindowFocus: false, // Disable refetch on window focus
+    keepPreviousData: true, // Keep previous data when refetching
+    queryFn: () => {
+      const userID = localStorage.getItem('userID');
+
+      const payload = { user_id: toInteger(userID), method_name: 'get_user_by_id' };
+
+      return GetUser(payload);
+    }, // Function to fetch product data
+    onSuccess: (data) => {
+      setFormValues(data); // Update product data with fetched data
+    }
+  });
+
+  if (UserDetailPending) return <Loader />;
 
   return (
     <MainCard content={false} title="Personal Information" sx={{ '& .MuiInputLabel-root': { fontSize: '0.875rem' } }}>
       <Formik
+        enableReinitialize
         initialValues={{
-          username: 'Stebin',
-          email: 'stebin.ben@gmail.com',
+          ...formValues,
           countryCode: '+91',
-          contact: 9652364852,
           address: '3801 Chalk Butte Rd, Cut Bank, MT 59427, United States',
           address1: '301 Chalk Butte Rd, Cut Bank, NY 96572, New York',
           country: 'US',
-          state: 'California',
+          state: 'Maharashtra',
           submit: null
         }}
         validationSchema={Yup.object().shape({
-          username: Yup.string().max(255).required('First Name is required.'),
-          email: Yup.string().email('Invalid email address.').max(255).required('Email is required.'),
-          contact: Yup.number()
+          user_name: Yup.string().max(255).required('First Name is required.'),
+          email_id: Yup.string().email('Invalid email address.').max(255).required('Email is required.'),
+          mobile_no: Yup.number()
             .test('len', 'Contact should be exactly 10 digit', (val) => val?.toString().length === 10)
             .required('Phone number is required'),
           address: Yup.string().min(50, 'Address to short.').required('Address is required'),
@@ -160,7 +116,7 @@ const TabPersonal = () => {
                 <Grid item xs={12} sm={6}>
                   <CustomTextField
                     label="User Name"
-                    name="username"
+                    name="user_name"
                     placeholder="Enter User Name"
                     values={values}
                     type="text"
@@ -194,7 +150,7 @@ const TabPersonal = () => {
                     </Select> */}
                   <CustomTextField
                     label="Contact Number"
-                    name="contact"
+                    name="mobile_no"
                     placeholder="Enter Contact Number"
                     values={values}
                     type="text"
@@ -216,7 +172,7 @@ const TabPersonal = () => {
                 <Grid item xs={12} sm={6}>
                   <CustomTextField
                     label="Email ID"
-                    name="email"
+                    name="email_id"
                     placeholder="Enter Email ID"
                     values={values}
                     type="email"

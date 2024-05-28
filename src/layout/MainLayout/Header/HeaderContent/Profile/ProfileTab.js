@@ -7,6 +7,8 @@ import { List, ListItemButton, ListItemIcon, ListItemText } from '@mui/material'
 // assets
 import { Card, Edit2, Logout, Profile, Profile2User } from 'iconsax-react';
 import { useNavigate } from 'react-router';
+import { GetUser } from 'hooks/user/user';
+import { toInteger } from 'lodash';
 
 // ==============================|| HEADER PROFILE - PROFILE TAB ||============================== //
 
@@ -27,10 +29,21 @@ const ProfileTab = ({ handleLogout }) => {
       </ListItemButton> */}
       <ListItemButton
         selected={selectedIndex === 1}
-        onClick={(event) => {
-          console.log('Make API Call');
+        onClick={async (event) => {
           navigate('user/personal');
           handleListItemClick(event, 1);
+
+          // const userID = localStorage.getItem('userID');
+
+          // try {
+          //   const payload = { user_id: toInteger(userID), method_name: 'get_user_by_id' };
+
+          //   const data = await GetUser(payload);
+
+          //   navigate('user/personal', { state: data });
+          // } catch (err) {
+          //   console.log(err);
+          // }
         }}
       >
         <ListItemIcon>
