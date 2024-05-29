@@ -285,3 +285,44 @@ export async function ChangeUserPassword(payload) {
     throw err;
   }
 }
+export async function ResetPasswordEmail(payload) {
+  try {
+    const response = await axios.post('user/send_resetpassword', payload);
+
+    return response.data.data;
+  } catch (err) {
+    enqueueSnackbar(err.message, {
+      variant: 'error',
+      autoHideDuration: 2000,
+      anchorOrigin: {
+        vertical: 'top',
+        horizontal: 'right'
+      }
+    });
+    throw err;
+  }
+}
+export async function ResetUserPassword(payload) {
+  try {
+    const response = await axios.post('user/resetpassword', payload);
+    enqueueSnackbar('User Password Updated', {
+      variant: 'success',
+      autoHideDuration: 2000,
+      anchorOrigin: {
+        vertical: 'top',
+        horizontal: 'right'
+      }
+    });
+    return response.data.data;
+  } catch (err) {
+    enqueueSnackbar(err.message, {
+      variant: 'error',
+      autoHideDuration: 2000,
+      anchorOrigin: {
+        vertical: 'top',
+        horizontal: 'right'
+      }
+    });
+    throw err;
+  }
+}
