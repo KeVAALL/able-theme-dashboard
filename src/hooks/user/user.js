@@ -285,12 +285,17 @@ export async function ChangeUserPassword(payload) {
     throw err;
   }
 }
-export async function ResetPasswordEmail(payload) {
+export async function ResetPasswordEmail(values) {
   try {
-    const response = await axios.post('user/send_resetpassword', payload);
-
+    const response = await axios.post('user/send_resetpassword', values);
+    // debugger; // eslint-disable-line no-debugger
+    // alert('Success');
     return response.data.data;
   } catch (err) {
+    console.log(err);
+    // alert('Error');
+    // debugger; // eslint-disable-line no-debugger
+
     enqueueSnackbar(err.message, {
       variant: 'error',
       autoHideDuration: 2000,
@@ -299,7 +304,9 @@ export async function ResetPasswordEmail(payload) {
         horizontal: 'right'
       }
     });
+    // return err;
     throw err;
+    // console.log(err);
   }
 }
 export async function ResetUserPassword(payload) {

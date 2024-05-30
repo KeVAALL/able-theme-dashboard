@@ -276,7 +276,13 @@ const AuthLogin = ({ forgot }) => {
               </Grid>
 
               <Grid item xs={12} sx={{ paddingTop: '14px !important' }}>
-                <Link variant="h6" component={RouterLink} to={isLoggedIn && forgot ? forgot : '/forgot-password'} color="text.primary">
+                <Link
+                  variant="body2"
+                  component={RouterLink}
+                  to={isLoggedIn && forgot ? forgot : '/forgot-password'}
+                  color="text.primary"
+                  sx={{ opacity: 0.8 }}
+                >
                   Forgot Password?
                 </Link>
               </Grid>

@@ -41,17 +41,13 @@ const SnackbarBox = styled(SnackbarContent)(() => ({
     minWidth: '344px !important'
   }
 }));
-// ==============================|| NOTISTACK - CUSTOM ||============================== //
+// // ==============================|| NOTISTACK - CUSTOM ||============================== //
 
 const CustomNotistack = forwardRef((props, ref) => {
   const { closeSnackbar } = useSnackbar();
-  const [expanded, setExpanded] = useState(false);
-
-  const handleExpandClick = useCallback(() => {
-    setExpanded((prevState) => !prevState);
-  }, []);
 
   const handleDismiss = useCallback(() => {
+    console.log('refresh');
     closeSnackbar(props.id);
   }, [props.id, closeSnackbar]);
 
@@ -59,7 +55,7 @@ const CustomNotistack = forwardRef((props, ref) => {
     <SnackbarBox ref={ref}>
       <Card sx={{ bgcolor: 'success.main', width: '100%' }}>
         <CardActions sx={{ padding: '8px 8px 8px 16px', justifyContent: 'space-between' }}>
-          <Typography variant="subtitle2" color="white">
+          <Typography variant="h6" color="white">
             {props.message}
           </Typography>
           <Box sx={{ marginLeft: 'auto' }}>
@@ -82,9 +78,9 @@ const CustomNotistack = forwardRef((props, ref) => {
                 </IconButton>
               </Tooltip>
             </CopyToClipboard>
-            <IconButton size="large" sx={{ p: 1, transition: 'all .2s' }} onClick={handleDismiss}>
+            {/* <IconButton size="large" sx={{ p: 1, transition: 'all .2s' }} onClick={handleDismiss}>
               <Add color="white" style={{ transform: 'rotate(45deg)' }} />
-            </IconButton>
+            </IconButton> */}
           </Box>
         </CardActions>
       </Card>
@@ -104,13 +100,14 @@ const AuthForgotPassword = () => {
     <>
       <Formik
         initialValues={{
-          email_id: '',
-          submit: null
+          email_id: ''
+          // submit: null
         }}
         validationSchema={Yup.object().shape({
           email_id: Yup.string().email('Must be a valid email').max(255).required('Email is required')
         })}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting, resetForm }) => {
+          // debugger; // eslint-disable-line no-debugger
           try {
             const response = await ResetPasswordEmail(values);
             console.log(response);
@@ -122,9 +119,17 @@ const AuthForgotPassword = () => {
               },
               content: (key, message) => <CustomNotistack id={key} message={message} otp={response} />
             });
-            navigate('/login', { state: values });
+            // navigate('/login', { state: values });
+            setTimeout(() => {
+              navigate(isLoggedIn ? '/auth/login' : '/login', { replace: true, state: values });
+            }, 1500);
+            if (scriptedRef.current) {
+              setStatus({ success: true });
+              setSubmitting(false);
+            }
           } catch (err) {
             console.error(err);
+
             if (scriptedRef.current) {
               setStatus({ success: false });
               setErrors({ submit: err.message });
@@ -134,7 +139,13 @@ const AuthForgotPassword = () => {
         }}
       >
         {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values, resetForm }) => (
-          <form noValidate onSubmit={handleSubmit}>
+          <Box
+            component="form"
+            onSubmit={(event) => {
+              event.preventDefault();
+              handleSubmit();
+            }}
+          >
             <Grid container spacing={3}>
               <Grid item xs={12}>
                 <CustomTextField
@@ -155,36 +166,36 @@ const AuthForgotPassword = () => {
                   }}
                 />
               </Grid>
-              {errors.submit && (
+              {/* {errors.submit && (
                 <Grid item xs={12}>
                   <FormHelperText error>{errors.submit}</FormHelperText>
                 </Grid>
-              )}
+              )} */}
               {/* <Grid item xs={12} sx={{ mb: -2 }}>
                 <Typography variant="body1">Do not forgot to check SPAM box.</Typography>
               </Grid> */}
               <Grid item xs={12}>
-                <AnimateButton>
-                  <Button disableElevation disabled={isSubmitting} fullWidth size="large" type="submit" variant="contained" color="success">
-                    Send OTP
-                  </Button>
-                </AnimateButton>
+                {/* <AnimateButton> */}
+                <Button disableElevation disabled={isSubmitting} fullWidth size="large" variant="contained" color="success" type="submit">
+                  Send OTP
+                </Button>
+                {/* </AnimateButton> */}
               </Grid>
 
               <Grid item xs={12} sx={{ paddingTop: '14px !important' }}>
                 <Link
-                  variant="h6"
+                  variant="body2"
                   component={RouterLink}
                   to={isLoggedIn ? '/auth/login' : '/login'}
                   color="text.primary"
-                  sx={{ display: 'flex', gap: 0.5, alignItems: 'center' }}
+                  sx={{ display: 'flex', gap: 0.5, alignItems: 'center', opacity: 0.8 }}
                 >
-                  <ArrowLeft2 size="16" color="#37d67a" />
+                  <ArrowLeft2 size="14" color="#37d67a" />
                   Back to Login
                 </Link>
               </Grid>
             </Grid>
-          </form>
+          </Box>
         )}
       </Formik>
     </>
