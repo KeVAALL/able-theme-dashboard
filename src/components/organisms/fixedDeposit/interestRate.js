@@ -23,7 +23,7 @@ const headerSX = {
 };
 
 const APIAutoComplete = memo((props) => {
-  const memoizedGetSchemeSearch = useMemoize(GetSchemeSearch);
+  // const memoizedGetSchemeSearch = useMemoize(GetSchemeSearch);
 
   const handleOptionChange = async (e, optionName, formName, setFieldValue) => {
     if (e.target.outerText === undefined) {
@@ -38,9 +38,15 @@ const APIAutoComplete = memo((props) => {
             fd_payout_method_id: el.id
           };
 
-          const searchResult = await memoizedGetSchemeSearch(el.id, payload); // This will use the cache with el.id as the key
-          if (searchResult) {
-            props.setSchemeData(searchResult);
+          if (!props.cache[el.id]) {
+            // const searchResult = await memoizedGetSchemeSearch(el.id, payload);
+            const searchResult = await GetSchemeSearch(payload);
+            if (searchResult) {
+              props.setSchemeData(searchResult);
+              props.setCache(el.id, searchResult); // Update the cache
+            }
+          } else {
+            props.setSchemeData(props.cache[el.id]);
           }
         }
       }
@@ -92,7 +98,7 @@ FormikAutoComplete.propTypes = {
 const InterestRate = ({ formValues, changeTableVisibility, isNotEditingInterestRate, isEditingInterestRate }) => {
   // Main Data state
   const [schemeData, setSchemeData] = useState([]);
-  let cache = {};
+  const [cache, setCache] = useState({});
 
   // Edit Logic State
   const [loading, setLoading] = useState(true);
@@ -118,6 +124,12 @@ const InterestRate = ({ formValues, changeTableVisibility, isNotEditingInterestR
       issuer_name: value.issuer_name,
       fd_payout_method_id: 'C'
     });
+  };
+  const updateCache = (key, data) => {
+    setCache((prevCache) => ({
+      ...prevCache,
+      [key]: data
+    }));
   };
   const schemeEditing = (value) => {
     setSchemeFormValues(value);
@@ -241,6 +253,7 @@ const InterestRate = ({ formValues, changeTableVisibility, isNotEditingInterestR
               isActive={isSchemeActive}
               isEditingScheme={isEditingScheme}
               setActiveClose={setActiveClose}
+              setCache={updateCache} // Pass the update function
               setSchemeData={setSchemeData}
             />
             <Card
@@ -276,7 +289,7 @@ const InterestRate = ({ formValues, changeTableVisibility, isNotEditingInterestR
 
               <CardContent sx={{ p: 2 }}>
                 <Grid container spacing={3}>
-                  <Grid item md={3} xs={6}>
+                  <Grid item md={3} sm={4} xs={6}>
                     <CustomTextField
                       label="FD Name"
                       name="fd_name"
@@ -294,7 +307,7 @@ const InterestRate = ({ formValues, changeTableVisibility, isNotEditingInterestR
                       }}
                     />
                   </Grid>
-                  <Grid item md={3} xs={6}>
+                  <Grid item md={3} sm={4} xs={6}>
                     <CustomTextField
                       label="Issuer Name"
                       name="issuer_name"
@@ -312,12 +325,13 @@ const InterestRate = ({ formValues, changeTableVisibility, isNotEditingInterestR
                       }}
                     />
                   </Grid>
-                  <Grid item md={3} xs={6}>
+                  <Grid item md={3} sm={4} xs={12}>
                     <APIAutoComplete
                       options={payoutData}
                       defaultValue={values.fd_payout_method_id}
                       fdId={formValues.fd_id}
                       cache={cache}
+                      setCache={updateCache} // Pass the update function
                       setFieldValue={setFieldValue}
                       setSchemeData={setSchemeData}
                       formName="fd_payout_method_id"

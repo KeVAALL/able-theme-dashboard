@@ -882,7 +882,8 @@ function Investment() {
             // formValueFields={filterValueFields}
             // validationSchema={filterValidationSchema}
             changeTableVisibility={changeTableVisibility}
-            setEditing={setEditing}
+            setEditing={() => {}}
+            // setEditing={setEditing}
             getOneItem={() => {}}
             deleteOneItem={() => {}}
             // getEditData={() => {}}
