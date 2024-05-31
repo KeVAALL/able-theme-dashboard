@@ -190,6 +190,7 @@ function Issuer() {
                   <Grid container spacing={3}>
                     <Grid item md={4} sm={6} xs={12}>
                       <CustomTextField
+                        disabled={isEditing}
                         label="Issuer Name"
                         name="issuer_name"
                         placeholder={'Please enter Issuer Name'}
@@ -210,6 +211,7 @@ function Issuer() {
                     </Grid>
                     <Grid item md={4} sm={6} xs={12}>
                       <CustomTextField
+                        disabled={isEditing}
                         label="GST Number"
                         name="issuer_gst_number"
                         placeholder={'Please enter GST Number'}
@@ -254,6 +256,7 @@ function Issuer() {
                     </Grid>
                     <Grid item md={4} sm={6} xs={12}>
                       <CustomTextField
+                        disabled={isEditing}
                         label="Issuer Tollfree Number"
                         name="issuer_tollfree_number"
                         placeholder={'Please enter Toll-free Number'}
