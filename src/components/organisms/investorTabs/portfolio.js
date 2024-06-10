@@ -16,6 +16,7 @@ import pie from '../../../assets/images/ChartPie.svg';
 
 import { fdInvestmentColumns, VisibleColumn } from 'constant/investorValidation';
 import InterestRateTable from 'components/molecules/fixedDeposit/interestRateTable';
+import { inrCurrency } from 'constant/utilConstant';
 
 function Portfolio(props) {
   // Theme
@@ -83,7 +84,7 @@ function Portfolio(props) {
                         <InfoCircle color={theme.palette.background.paper} />
                       </Stack>
                       <Typography variant="h4" color="white">
-                        ₹ {props.values.port_folio.investor_total_earning.current_earning}
+                        {inrCurrency(props.values.port_folio.investor_total_earning.current_earning)}
                       </Typography>
                     </Stack>
                   </Stack>
@@ -111,7 +112,7 @@ function Portfolio(props) {
               <AnalyticEcommerce
                 title="Total Investment"
                 icon={<MoneyAdd color="#068e44" style={{ fontSize: '20px', height: '22px', width: '22px' }} />}
-                count={`₹ ${props.values.port_folio.investor_total_earning.total_investment_amount}`}
+                count={inrCurrency(props.values.port_folio.investor_total_earning.total_investment_amount)}
                 color="success"
                 extra="₹ 20,395"
               />
@@ -121,7 +122,7 @@ function Portfolio(props) {
                 title="Total Earnings"
                 icon={<Add color="#068e44" style={{ fontSize: '20px', height: '22px', width: '22px' }} />}
                 percentage={10}
-                count={`₹ ${props.values.port_folio.investor_total_earning.total_interest_amount}`}
+                count={inrCurrency(props.values.port_folio.investor_total_earning.total_interest_amount)}
                 color="success"
                 extra="₹ 10,395"
               />
