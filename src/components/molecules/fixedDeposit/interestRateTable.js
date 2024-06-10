@@ -378,7 +378,7 @@ const InterestRateTable = ({
   isFetching
 }) => {
   return (
-    <MainCard sx={{ borderRadius: 0 }} content={false} secondary={<CSVExport data={data} filename={'pagination-bottom-table.csv'} />}>
+    <MainCard sx={{ borderRadius: 1 }} content={false} secondary={<CSVExport data={data} filename={'pagination-bottom-table.csv'} />}>
       <ScrollX>
         <ReactTable
           columns={columns}

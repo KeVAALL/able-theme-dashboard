@@ -14,6 +14,9 @@ import CustomerCard from 'components/molecules/portfolio/fixDepositCard';
 import progress from '../../../assets/images/progress.png';
 import pie from '../../../assets/images/ChartPie.svg';
 
+import { fdInvestmentColumns, VisibleColumn } from 'constant/investorValidation';
+import InterestRateTable from 'components/molecules/fixedDeposit/interestRateTable';
+
 function Portfolio(props) {
   // Theme
   const theme = useTheme();
@@ -133,7 +136,22 @@ function Portfolio(props) {
             </Typography>
           </Stack>
         </Grid>
-        {props.values.port_folio.fd_investments &&
+        <Grid item xs={12}>
+          <InterestRateTable
+            columns={fdInvestmentColumns}
+            data={props.values.port_folio.fd_investments}
+            // changeTableVisibility={changeTableVisibility}
+            // schemeEditing={() => {}}
+            // deleteOneItem={() => {}}
+            // // setSearchData={setSearchData}
+            // setSchemeData={() => {}}
+            // setActiveEditing={() => {}}
+            // handleIROpenDialog={() => {}}
+            VisibleColumn={VisibleColumn}
+            hideActions={true}
+          />
+        </Grid>
+        {/* {props.values.port_folio.fd_investments &&
           props.values.port_folio.fd_investments.map((fd, index) => (
             <Grid key={index} item xs={12} md={6}>
               <CustomerCard
@@ -145,10 +163,7 @@ function Portfolio(props) {
                 maturityDate={fd.maturity_date}
               />
             </Grid>
-          ))}
-        {/* <Grid item xs={12} md={6}>
-          <CustomerCard title="Bajaj Finance" />
-        </Grid> */}
+          ))} */}
       </Grid>
     </>
   );
