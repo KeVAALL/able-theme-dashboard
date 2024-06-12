@@ -2,23 +2,12 @@
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 
-import {
-  Dialog,
-  Box,
-  Stack,
-  Avatar,
-  Typography,
-  DialogTitle,
-  DialogContent,
-  DialogContentText,
-  DialogActions,
-  Button
-} from '@mui/material';
+import { Dialog, Stack, Avatar, Typography, DialogContent, DialogActions, Button } from '@mui/material';
 import { PopupTransition } from 'helpers/@extended/Transitions';
 import { Trash } from 'iconsax-react';
 import './dialog.css';
 
-const DialogBox = ({ openDialog, handleOpenDialog, dataRefetch, item, deleteOneItem, setSchemeData, isNomination }) => {
+const DeleteDialogBox = ({ openDialog, handleOpenDialog, dataRefetch, item, deleteOneItem, setSchemeData, isNomination }) => {
   console.log('open');
   return (
     <Dialog
@@ -71,7 +60,19 @@ const DialogBox = ({ openDialog, handleOpenDialog, dataRefetch, item, deleteOneI
           </Stack>
         </Stack>
       </DialogContent>
-      {/* <DialogActions>
+    </Dialog>
+  );
+};
+
+DeleteDialogBox.propTypes = {
+  setSchemeData: PropTypes.any,
+  isNomination: PropTypes.any
+};
+
+export default memo(DeleteDialogBox);
+
+{
+  /* <DialogActions>
           <Button color="secondary" onClick={handleOpenDialog}>
             Cancel
           </Button>
@@ -93,14 +94,5 @@ const DialogBox = ({ openDialog, handleOpenDialog, dataRefetch, item, deleteOneI
           >
             Delete
           </Button>
-        </DialogActions> */}
-    </Dialog>
-  );
-};
-
-DialogBox.propTypes = {
-  setSchemeData: PropTypes.any,
-  isNomination: PropTypes.any
-};
-
-export default memo(DialogBox);
+        </DialogActions> */
+}
