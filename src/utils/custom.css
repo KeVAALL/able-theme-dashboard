@@ -104,6 +104,6 @@ html::-webkit-scrollbar-thumb {
 
 /* Chip */
 .active-chip {
-  padding-left: 10px !important;
-  padding-right: 10px !important;
+  padding-left: 7.5px !important;
+  padding-right: 7.5px !important;
 }
