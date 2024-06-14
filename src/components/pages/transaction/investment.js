@@ -33,6 +33,8 @@ import * as yup from 'yup';
 
 // assets
 import { Eye, FilterSearch, Calculator, TimerStart, ArrangeHorizontal } from 'iconsax-react';
+import Typography from 'themes/overrides/Typography';
+import { enqueueSnackbar } from 'notistack';
 
 function Investment() {
   // Main data states
@@ -69,6 +71,7 @@ function Investment() {
   const [fdDropdown, setFdDropdown] = useState([]);
   // const [statusDropdown, setStatusDropdown] = useState([]);
   const [dateValue, setDateValue] = useState([null, null]);
+  const [dateError, setDateError] = useState('');
 
   // Form State
   const [formValues, setFormValues] = useState(formAllValues);
@@ -760,7 +763,7 @@ function Investment() {
               setInvestmentData(investmentData);
             }}
           >
-            {({ values, errors, touched, setFieldValue, handleChange, handleBlur, handleSubmit, resetForm }) => (
+            {({ values, errors, touched, setFieldValue, handleChange, handleBlur, handleSubmit, resetForm, submitForm }) => (
               <Box
                 component="form"
                 onSubmit={(event) => {
@@ -829,7 +832,21 @@ function Investment() {
                       <Button
                         variant="contained"
                         color="success"
-                        type="submit"
+                        // type="submit"
+                        onClick={() => {
+                          if (dateValue[0] === null || dateValue[1] === null) {
+                            enqueueSnackbar('Please select date.', {
+                              variant: 'error',
+                              autoHideDuration: 2000,
+                              anchorOrigin: {
+                                vertical: 'top',
+                                horizontal: 'right'
+                              }
+                            });
+                            return;
+                          }
+                          submitForm();
+                        }}
                         startIcon={<FilterSearch />}
                         sx={{
                           width: matchUpMD ? '100%' : matchDownSM ? '100%' : 'auto',
